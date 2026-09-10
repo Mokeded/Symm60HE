@@ -89,6 +89,36 @@ def parts(pcb):
         out.append((ref, COL.get(pre, COL.get(ref[:1], (136,136,136))), shapes, (x,y)))
     return out
 
+CU_COL = {"B.Cu": (240, 176, 96), "F.Cu": (96, 176, 240)}
+VIA_COL = (226, 232, 238)
+
+def copper(pcb):
+    """Routed segments and vias, as (layer, shapely geometry) pairs."""
+    b = loads(open(pcb).read())
+    segs, vias = [], []
+    for s in find(b, "segment"):
+        a, c = first(s, "start"), first(s, "end")
+        w = float(first(s, "width")[1])
+        segs.append((first(s, "layer")[1],
+                     (float(a[1]), float(a[2])), (float(c[1]), float(c[2])), w))
+    for v in find(b, "via"):
+        a = first(v, "at")
+        vias.append((float(a[1]), float(a[2]), float(first(v, "size")[1])/2))
+    return segs, vias
+
+def draw_copper(c, pcb, alpha=235):
+    """Traces first, then vias on top, back layer under front."""
+    segs, vias = copper(pcb)
+    for want in ("F.Cu", "B.Cu"):
+        for lay, a, e, w in segs:
+            if lay != want: continue
+            c.d.line([c.p(a), c.p(e)], fill=CU_COL[lay] + (alpha,),
+                     width=max(1, int(w * c.s)))
+    for x, y, r in vias:
+        p = c.p((x, y)); rr = max(1.5, r * c.s)
+        c.d.ellipse([p[0]-rr, p[1]-rr, p[0]+rr, p[1]+rr], fill=VIA_COL + (alpha,))
+    return len(segs), len(vias)
+
 def layer_poly(pcb, layer="Edge.Cuts"):
     b = loads(open(pcb).read())
     segs = [(( float(first(l,"start")[1]), float(first(l,"start")[2])),

@@ -241,7 +241,7 @@ def plan(pads, outline, step, order, keepout=None):
     grid = Grid(outline, step=step)
     space = Space()
     if keepout is not None:
-        grid.block(keepout, net="#", margin=0.0)
+        grid.block(keepout, net="#", margin=PAD_MARGIN)
         space.add(keepout, "#keepout", (0, 1))
     for p in pads:
         grid.block(p["geom"], net=p["net"] if p["net"] else "#", layers=pad_layers(p))
@@ -322,7 +322,10 @@ def route_board(path, label, step=GRID, tries=1, seed=7):
     added = list(added)
     added.append(zone(outline, "GND", "F.Cu"))
     added.append(zone(outline, "GND", "B.Cu"))
-    body = list(b[1:])
+    # drop any copper from an earlier pass, so running this twice replaces the
+    # routing instead of laying a second set of traces on top of the first
+    body = [c for c in b[1:]
+            if not (isinstance(c, list) and c[0] in ("segment", "via", "zone", "arc"))]
     open(path, "w").write(dumps([Sym("kicad_pcb")] + body[:-1] + added + [body[-1]]) + "\n")
     return done, failed, fails, len([a for a in added if a[0] == "segment"]), nvia
 
