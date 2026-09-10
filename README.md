@@ -78,7 +78,7 @@ That leaves 4.4 mm of material under the pocket at the front and 28.5 mm at the
 back, and the daughterboard pocket is cut into that back solid, opening upward
 into the main cavity for the ribbons and outward through the back wall for USB.
 
-`docs/Symm60HE-case-section.svg` is a side elevation through the centre line.
+`docs/img/06-case-section.png` is a side elevation through the centre line.
 
 ## Routing
 
@@ -250,9 +250,9 @@ kernel:
 - `Symm60HE-channel-map.csv` — sensor → mux → channel, per half
 - `Symm60HE-ribbon-pinout.csv` — the 12-way link
 - `Symm60HE-BOM.csv` — both halves and the daughterboard
-- `docs/Symm60HE-preview.svg` — plan view of the whole assembly
-- `docs/Symm60HE-case-section.svg` — side elevation showing the 11° wedge
-- `docs/img/` — rendered images of every board, the plate and the case
+- `docs/img/` — rendered images: `01-assembly`, `02-left`, `03-right`,
+  `04-daughterboard` (all three with their copper drawn), `05-plate`,
+  `06-case-section` and `07-case-iso`
 - `tools/` — generators and checkers; `build.sh` runs them in order
 - `Symm60HE_Project.pretty/` — the footprint library, local and portable
 

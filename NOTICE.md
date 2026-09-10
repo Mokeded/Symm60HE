@@ -10,7 +10,7 @@ What is taken from FN40HE, and how:
 |---|---|---|
 | `Symm60HE_Project.pretty/HE_KEY_*.kicad_mod` | `HE1_MT9102ET_Key_1.00u.kicad_mod` | derived — sensor pads, MX leg holes and plate cutout kept verbatim, only the cap outline rescaled per width |
 | `Symm60HE_Project.pretty/STABILIZER_MX_2U`, `MountingHole_2.2mm_M2_Pad`, `U1`–`U4`, `Y1`, `SW1`, `C1`, `C2`, `C148`, `R3`, `F1` | same files | copied verbatim |
-| `Symm60HE_Project.pretty/AM1_SOIC-16…` | replaces FN40HE's `AM1_TSSOP-16…` | **not** copied. Same chip, SN74LV4051A**D** instead of ...**APWR**: TSSOP's 0.65 mm pitch leaves 0.25 mm between pads, which no trace clears, so every interior mux pin was unroutable. SOIC's 1.27 mm pitch leaves 0.67 mm |
+| `Symm60HE_Project.pretty/AM1_SOIC-16…` | replaces FN40HE's `AM1_TSSOP-16…`, which is not vendored here | **not** copied. Same chip, SN74LV4051A**D** instead of ...**APWR**: TSSOP's 0.65 mm pitch leaves 0.25 mm between pads, which no trace clears, so every interior mux pin was unroutable. SOIC's 1.27 mm pitch leaves 0.67 mm |
 | board `(setup)` / `(layers)` block in each `.kicad_pcb` | `FN40HE.kicad_pcb` | copied, so design rules and stackup match |
 | AT32F405RCT7 pin assignment | `FN40HE.kicad_pcb` U4 | read off the working board rather than from a datasheet: crystal on 5/6, reset on 7, mux selects on 9/10/11, analog rail on 13, the eight multiplexed inputs on 17 and 20–26, USB and its reference resistor on 33/34/35, SWD on 46/49/55, boot on 60. The daughterboard's parts are placed to suit it |
 | Analog rail as a pour of its own, alongside GND | FN40HE's `+3.3VA` zone | same idea; here it goes on F.Cu, which is free because the halves are populated on the back |
