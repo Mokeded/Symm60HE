@@ -1,4 +1,4 @@
-"""Generate the DOE60 footprint library.
+"""Generate the Symm60HE footprint library.
 
 The Hall-effect key footprints are derived from FN40HE's verified HE1 footprint
 so the sensor pads, the two 1.75 mm MX leg holes and the plate cutout outline
@@ -8,7 +8,7 @@ cap outline on Dwgs.User is rescaled per width.
 import re, os, uuid
 
 SRC = "/home/user/FN40HE/FN40_Project.pretty/HE1_MT9102ET_Key_1.00u.kicad_mod"
-OUT = "../DOE60_Project.pretty"
+OUT = "../Symm60HE_Project.pretty"
 U = 19.05
 WIDTHS = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25]
 
@@ -24,7 +24,7 @@ for w in WIDTHS:
     s = s.replace('(property "Reference" "HE1"', '(property "Reference" "HE**"')
     s = s.replace('(sheetfile "HE60.kicad_sch")', '(sheetfile "")')
     s = s.replace('(descr "SOT, 3 Pin',
-                  '(descr "DOE60 %gu key: MT9102ET sensor at cap centre, MX leg holes, plate cutout. SOT, 3 Pin' % w)
+                  '(descr "Symm60HE %gu key: MT9102ET sensor at cap centre, MX leg holes, plate cutout. SOT, 3 Pin' % w)
     # rescale only the cap outline on Dwgs.User
     hw = w * U / 2.0
     def fix(m):

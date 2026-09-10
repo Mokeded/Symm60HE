@@ -1,95 +1,132 @@
-"""Check the routing: on-board, endpoints on their pads, no foreign-pad crossings."""
-import sys, math
+"""Check the routing against the real geometry, not the router's own grid.
+
+Four things have to hold, per layer:
+  * every piece of copper is inside the board outline,
+  * no trace or via comes within CLEAR of a pad on another net,
+  * no trace or via comes within CLEAR of another net's copper -- this is the
+    one that catches two diagonal runs crossing through the same gap, which
+    cell ownership alone cannot rule out,
+  * no trace end is left hanging: it has to land on a pad of its own net, on a
+    via, on another segment end of the same net (a corner in an L-shaped run),
+    or *anywhere along* another segment of the same net -- a branch of a
+    multi-pad net leaves its trunk at a T, and the trunk has no vertex there
+    because the run was straight through.
+"""
+import sys, math, collections
 sys.path.insert(0, ".")
 from sexp import loads, find, first
 from shapely.geometry import Polygon, LineString, box, Point
 from shapely.affinity import rotate as srot, translate as stran
+from shapely.strtree import STRtree
 
-CLEAR = 0.20
+CLEAR = 0.15
+EPS = 1e-6
 
 def rot(px, py, a):
     r = math.radians(-a)
     return px*math.cos(r) - py*math.sin(r), px*math.sin(r) + py*math.cos(r)
 
 bad = 0
-for name in ("DOE60-Left", "DOE60-Right", "DOE60-Daughterboard"):
+for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
     b = loads(open("../pcb/%s.kicad_pcb" % name).read())
     es = [((float(first(l,"start")[1]), float(first(l,"start")[2])),
            (float(first(l,"end")[1]),   float(first(l,"end")[2])))
           for l in find(b,"gr_line") if first(l,"layer")[1]=="Edge.Cuts"]
     outline = Polygon([es[0][0]] + [s[1] for s in es])
+    ko = [((float(first(l,"start")[1]), float(first(l,"start")[2])),
+           (float(first(l,"end")[1]),   float(first(l,"end")[2])))
+          for l in find(b,"gr_line") if first(l,"layer")[1]=="Dwgs.User"]
+    keepout = Polygon([ko[0][0]] + [s[1] for s in ko]) if len(ko) > 2 else None
 
+    # ------------------------------------------------------------ pads
     pads = []
     for fp in find(b,"footprint"):
         at = first(fp,"at"); fx, fy = float(at[1]), float(at[2])
         fr = float(at[3]) if len(at)>3 else 0.0
         flay = first(fp,"layer")[1]
-        for p in find(fp,"pad"):
+        for i, p in enumerate(find(fp,"pad")):
             a = first(p,"at"); sz = first(p,"size")
             dx, dy = rot(float(a[1]), float(a[2]), fr)
             w, h = float(sz[1]), float(sz[2])
             g = Point(fx+dx, fy+dy).buffer(w/2) if p[3]=="circle" else \
                 stran(srot(box(-w/2,-h/2,w/2,h/2), -fr, origin=(0,0)), fx+dx, fy+dy)
             n = first(p,"net")
-            pads.append(dict(net=n[1] if n else None, g=g,
-                             layer=("B.Cu" if flay=="B.Cu" else "F.Cu"),
-                             thru=(p[2]!="smd")))
+            lays = ("F.Cu","B.Cu") if p[2]!="smd" else \
+                   (("B.Cu",) if flay=="B.Cu" else ("F.Cu",))
+            # an unnamed pad is nobody's, so give it an identity of its own
+            pads.append(dict(net=(n[1] if n else "#%d.%d" % (id(fp), i)),
+                             g=g, lays=lays))
 
-    segs = find(b,"segment")
-    # an endpoint may land on a pad, on a via, or on another segment of the same
-    # net -- the last is a corner in an L-shaped route, not a loose end
-    joints = {}
-    for s2 in segs:
-        n2 = first(s2,"net")[1]
-        for e in ("start","end"):
-            q = first(s2,e)
-            joints.setdefault((n2, round(float(q[1]),3), round(float(q[2]),3)), 0)
-            joints[(n2, round(float(q[1]),3), round(float(q[2]),3))] += 1
-    for v2 in find(b,"via"):
-        q = first(v2,"at"); n2 = first(v2,"net")[1]
-        joints[(n2, round(float(q[1]),3), round(float(q[2]),3))] = \
-            joints.get((n2, round(float(q[1]),3), round(float(q[2]),3)), 0) + 1
-    off, foreign, dangling = 0, 0, 0
-    for s in segs:
+    # ------------------------------------------------------------ copper
+    cu = []                                   # (geom, net, layers)
+    for s in find(b,"segment"):
         a = first(s,"start"); c = first(s,"end")
-        net = first(s,"net")[1]; lay = first(s,"layer")[1]
         w = float(first(s,"width")[1])
-        line = LineString([(float(a[1]),float(a[2])), (float(c[1]),float(c[2]))])
-        if not outline.buffer(-0.05).contains(line): off += 1
-        body = line.buffer(w/2)
-        for p in pads:
-            if p["net"] == net: continue
-            if not (p["thru"] or p["layer"] == lay): continue
-            if body.buffer(CLEAR).intersects(p["g"]): foreign += 1; break
-        ends = 0
-        for q in (a, c):
-            pt = Point(float(q[1]), float(q[2]))
-            on_pad = any(p["net"]==net and p["g"].buffer(0.05).contains(pt) for p in pads)
-            joined = joints.get((net, round(float(q[1]),3), round(float(q[2]),3)), 0) > 1
-            if on_pad or joined: ends += 1
-        if ends < 2: dangling += 1
+        cu.append((LineString([(float(a[1]),float(a[2])),
+                               (float(c[1]),float(c[2]))]).buffer(w/2),
+                   first(s,"net")[1], (first(s,"layer")[1],), s))
+    for v in find(b,"via"):
+        a = first(v,"at")
+        cu.append((Point(float(a[1]), float(a[2])).buffer(float(first(v,"size")[1])/2),
+                   first(v,"net")[1], ("F.Cu","B.Cu"), v))
 
-    # vias: must be on-board and clear of foreign pads
-    vias = find(b,"via")
-    voff, vclash = 0, 0
-    for v in vias:
-        a = first(v,"at"); net = first(v,"net")[1]
-        g = Point(float(a[1]), float(a[2])).buffer(float(first(v,"size")[1])/2)
-        if not outline.buffer(-0.05).contains(g): voff += 1
-        for p in pads:
-            if p["net"] == net: continue
-            if g.buffer(CLEAR).intersects(p["g"]): vclash += 1; break
+    by_layer = collections.defaultdict(list)
+    for rec in cu:
+        for L in rec[2]: by_layer[L].append(rec)
+    for p in pads:
+        for L in p["lays"]: by_layer[L].append((p["g"], p["net"], p["lays"], None))
+    trees = {L: (STRtree([r[0] for r in rs]), rs) for L, rs in by_layer.items()}
+
+    off = clash = inko = 0
+    for g, net, lays, node in cu:
+        if not outline.buffer(-0.05).contains(g): off += 1
+        if keepout is not None and keepout.intersects(g): inko += 1
+        probe = g.buffer(CLEAR - EPS)
+        hit = False
+        for L in lays:
+            tree, rs = trees[L]
+            for k in tree.query(probe):
+                og, onet, _, onode = rs[k]
+                if onet == net or onode is node: continue
+                if probe.intersects(og): hit = True; break
+            if hit: break
+        if hit: clash += 1
+
+    # ------------------------------------------------------------ loose ends
+    joints = collections.Counter()
+    for s in find(b,"segment"):
+        n = first(s,"net")[1]
+        for e in ("start","end"):
+            q = first(s,e)
+            joints[(n, round(float(q[1]),3), round(float(q[2]),3))] += 1
+    for v in find(b,"via"):
+        q = first(v,"at")
+        joints[(first(v,"net")[1], round(float(q[1]),3), round(float(q[2]),3))] += 1
+    padtree = STRtree([p["g"] for p in pads])
+    cutree = STRtree([r[0] for r in cu])
+    dangling = 0
+    for s in find(b,"segment"):
+        net = first(s,"net")[1]
+        for e in ("start","end"):
+            q = first(s,e); x, y = float(q[1]), float(q[2])
+            pt = Point(x, y)
+            if joints[(net, round(x,3), round(y,3))] > 1: continue
+            if any(pads[k]["net"] == net and pads[k]["g"].buffer(0.05).contains(pt)
+                   for k in padtree.query(pt.buffer(0.05))): continue
+            probe = pt.buffer(0.02)
+            if any(cu[k][1] == net and cu[k][3] is not s and cu[k][0].contains(pt)
+                   for k in cutree.query(probe)): continue
+            dangling += 1
 
     zones = find(b,"zone")
-    zbad = 0
-    for z in zones:
-        pts = first(first(z,"polygon"),"pts")
-        poly = Polygon([(float(q[1]),float(q[2])) for q in pts[1:]])
-        if not outline.contains(poly): zbad += 1
+    zbad = sum(0 if outline.contains(Polygon(
+        [(float(q[1]),float(q[2])) for q in first(first(z,"polygon"),"pts")[1:]])) else 1
+        for z in zones)
 
-    print("%-22s %3d segments, %3d vias | off-board %d/%d | foreign-pad clashes %d/%d | dangling ends %d | %d pours, outside %d"
-          % (name, len(segs), len(vias), off, voff, foreign, vclash, dangling, len(zones), zbad))
-    bad += off + foreign + dangling + zbad + voff + vclash
+    nseg, nvia = len(find(b,"segment")), len(find(b,"via"))
+    print("%-22s %3d segments, %3d vias | off-board %d | in keep-out %d | clearance violations %d | loose ends %d | %d pours, outside %d"
+          % (name, nseg, nvia, off, inko, clash, dangling, len(zones), zbad))
+    bad += off + inko + clash + dangling + zbad
 
 print("\n%s" % ("ROUTING CLEAN" if bad == 0 else "%d routing problems" % bad))
 sys.exit(1 if bad else 0)

@@ -1,4 +1,4 @@
-"""Switch geometry for the DOE60 split PCBs.
+"""Switch geometry for the Symm60HE split PCBs.
 
 Reads the published KLE builds, unions their key positions so one PCB carries
 every layout option, converts to millimetres, and splits into halves.
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     print("extent: x %.2f..%.2f u, y %.2f..%.2f u  (%.1f x %.1f mm)"
           % (min(xs), max(xs), min(ys), max(ys),
              (max(xs) - min(xs)) * U, (max(ys) - min(ys)) * U))
-    with open("../DOE60-switch-map.csv", "w", newline="") as f:
+    with open("../Symm60HE-switch-map.csv", "w", newline="") as f:
         wr = csv.writer(f)
         wr.writerow(["ref", "half", "label", "x_mm", "y_mm", "rotation_deg", "width_u", "in_builds"])
         n = {"L": 0, "R": 0}
@@ -83,4 +83,4 @@ if __name__ == "__main__":
                          round(k["cx"] * U, 3), round(k["cy"] * U, 3),
                          round(-k["rot"], 3), k["w"],
                          " ".join(sorted(b.replace("doe-", "") for b in k["builds"]))])
-    print("wrote DOE60-switch-map.csv")
+    print("wrote Symm60HE-switch-map.csv")

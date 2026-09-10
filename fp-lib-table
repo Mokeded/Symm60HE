@@ -1,3 +1,3 @@
 (fp_lib_table
-  (lib (name "DOE60_Project")(type "KiCad")(uri "${KIPRJMOD}/../DOE60_Project.pretty")(options "")(descr "DOE60 split-PCB footprints"))
+  (lib (name "Symm60HE_Project")(type "KiCad")(uri "${KIPRJMOD}/../Symm60HE_Project.pretty")(options "")(descr "Symm60HE split-PCB footprints"))
 )

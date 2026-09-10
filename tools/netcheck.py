@@ -13,9 +13,9 @@ def nets(path):
             if n: m[n[1]].append("%s.%s" % (ref, p[1]))
     return m
 
-L = nets("../pcb/DOE60-Left.kicad_pcb")
-R = nets("../pcb/DOE60-Right.kicad_pcb")
-D = nets("../pcb/DOE60-Daughterboard.kicad_pcb")
+L = nets("../pcb/Symm60HE-Left.kicad_pcb")
+R = nets("../pcb/Symm60HE-Right.kicad_pcb")
+D = nets("../pcb/Symm60HE-Daughterboard.kicad_pcb")
 
 bad = 0
 for half, m, nch in (("L", L, 31), ("R", R, 32)):

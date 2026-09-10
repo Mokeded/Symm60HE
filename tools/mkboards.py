@@ -1,4 +1,4 @@
-"""Emit the three DOE60 boards.
+"""Emit the three Symm60HE boards.
 
 Everything sits on the front copper: the sensor at each key centre and its two
 decoupling caps in the cell corners, clear of the 14 mm switch body.  That is a
@@ -16,9 +16,9 @@ from shapely.affinity import rotate as srot, translate as stran
 from shapely.geometry import box as sbox, Point as spoint
 from shapely.ops import unary_union
 
-FPDIR = "../DOE60_Project.pretty"
+FPDIR = "../Symm60HE_Project.pretty"
 HEADER = open("pcb_header.txt").read() if os.path.exists("pcb_header.txt") else None
-LIB = "DOE60_Project"
+LIB = "Symm60HE_Project"
 
 # ---------------------------------------------------------------- channels ---
 def channels(half):
@@ -81,10 +81,19 @@ def edge(poly):
              [Sym("layer"), "Edge.Cuts"], [Sym("uuid"), str(uuid.uuid4())]]
             for a, b in zip(pts, pts[1:])]
 
-def board(polygon, footprints, path, title):
+def outline_on(poly, layer, width=0.15):
+    pts = list(poly.exterior.coords)
+    return [[Sym("gr_line"), [Sym("start"), round(a[0],4), round(a[1],4)],
+             [Sym("end"), round(b[0],4), round(b[1],4)],
+             [Sym("stroke"), [Sym("width"), width], [Sym("type"), Sym("solid")]],
+             [Sym("layer"), layer], [Sym("uuid"), str(uuid.uuid4())]]
+            for a, b in zip(pts, pts[1:])]
+
+def board(polygon, footprints, path, title, drawings=()):
     hdr = loads(HEADER + ")")
     body = [c for c in hdr[1:]]
     body += edge(polygon)
+    body += list(drawings)
     body += footprints
     doc = [Sym("kicad_pcb")] + body + [[Sym("embedded_fonts"), Sym("no")]]
     open(path, "w").write(dumps(doc) + "\n")
@@ -143,7 +152,7 @@ def tight_pcb(half):
     g = hull.intersection(CASE_IN.buffer(-0.8)).intersection(lim)
     return max(g.geoms, key=lambda p: p.area) if hasattr(g, "geoms") else g
 
-for half, poly, fname in (("L", tight_pcb("L"), "DOE60-Left"), ("R", tight_pcb("R"), "DOE60-Right")):
+for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pcb("R"), "Symm60HE-Right")):
     groups, ks = channels(half)
     fps, nsens, ncap, nstab = [], 0, 0, 0
     ks_sorted = sorted(ks, key=lambda k: (round(k["cy"], 2), k["cx"]))
@@ -245,34 +254,62 @@ for h in ("L", "R"):
 
 # --------------------------------------------------------------- daughterboard --
 # Laid out on an explicit grid, relative to the board centre, so nothing has to
-# be guessed: USB-C on the front edge, MCU centred, the two ribbon links end-on
-# so the cables run straight out to each half.
+# be guessed: USB-C on the top edge, MCU centred, the two ribbon links end-on so
+# the cables run straight out to each half.
+#
+# The MCU pin assignment below is a PLACEHOLDER.  There is no schematic yet, so
+# it has not been checked against the AT32F405 datasheet -- the ADC channels,
+# the USB pair and the crystal pins are all fixed in silicon and will move once
+# it has been.  What it does do is put each signal on the side of the package
+# that faces the part it has to reach, which is what makes the board routable
+# at all: an LQFP-64 on 0.5 mm pitch has no room to carry a net round a corner.
+_p = []
 fps = []
 db = DB
 cx, cy = db.centroid.x, db.centroid.y
 def at(dx, dy): return cx + dx, cy + dy
 
+# USB-C receptacle keep-out, top edge, centred.  It is not a footprint yet, so
+# it goes on the board as a drawing that the router and the checks both honour;
+# without it parts and copper wander in under the connector.
+USB_KO = sbox(cx - 4.5, db.bounds[1] + 0.5, cx + 4.5, db.bounds[1] + 8.0)
+
 _p = [
+  # left edge (1-16) faces the crystal, reset and the analog LDO; bottom edge
+  # (17-32) faces both ribbons, with each half's ADC group at its own end and
+  # the three select lines in the middle so they can fan either way; top edge
+  # (49-64) faces the USB-C and the boot switch; right edge (33-48) carries the
+  # digital rail and a second tap of the analog one, for the right ribbon.
   ("U4_LQFP-64_10x10mm_P0.5mm", "U1", "AT32F405RCT7", (0, 3), 0,
      {"1": "+3V3D", "5": "XTAL_IN", "6": "XTAL_OUT", "7": "NRST",
-      "9": "MUX_A0", "10": "MUX_A1", "11": "MUX_A2",
       "12": "GND", "13": "+3V3A",
-      "17": "ADC_L1", "20": "ADC_L2", "21": "ADC_L3", "22": "ADC_L4",
-      "23": "ADC_R1", "24": "ADC_R2", "25": "ADC_R3", "26": "ADC_R4",
-      "31": "GND", "33": "USB_R", "34": "USB_DM", "35": "USB_DP",
-      "36": "+3V3D", "46": "SWDIO", "49": "SWCLK", "55": "SWO", "60": "BOOT0"}),
-  ("R3_R_0402_1005Metric", "R1", "12k", (-8, -3), 0, {"1": "USB_R", "2": "GND"}),
-  ("U1_SOT-23-6", "U2", "USBLC6-2SC6", (-11, -9), 0,
+      "17": "ADC_L1", "18": "ADC_L2", "19": "ADC_L3", "20": "ADC_L4",
+      "22": "GND",
+      "24": "MUX_A0", "25": "MUX_A1", "26": "MUX_A2",
+      "28": "GND",
+      "29": "ADC_R1", "30": "ADC_R2", "31": "ADC_R3", "32": "ADC_R4",
+      "36": "+3V3D", "40": "+3V3A", "44": "GND",
+      "49": "SWCLK", "51": "SWDIO", "53": "SWO",
+      "56": "USB_DM", "57": "USB_DP", "58": "USB_R", "60": "BOOT0",
+      "63": "+3V3D"}),
+  # USB side, up by the receptacle: ESD array first, then the CC/ID resistor
+  ("U1_SOT-23-6", "U2", "USBLC6-2SC6", (-7.5, -8.5), 0,
      {"1": "USB_DP", "2": "GND", "3": "USB_DM", "4": "USB_DM", "5": "VBUS", "6": "USB_DP"}),
-  ("F1_Fuse_0805_2012Metric", "F1", "0.5A", (11, -9), 0, {"1": "VBUS_IN", "2": "VBUS"}),
-  ("U2_SOT-23-5", "U3", "TLV75733PDBV", (14, -3), 0, {"1": "VBUS", "2": "GND", "5": "+3V3D"}),
-  ("U3_SOT-23-3", "U4", "XC6206P332MR", (14, 3), 0, {"1": "GND", "2": "+3V3A", "3": "+3V3D"}),
-  ("Y1_Crystal_SMD_3225-4Pin_3.2x2.5mm", "Y1", "12MHz", (-14, 0), 0,
+  ("R3_R_0402_1005Metric", "R1", "12k", (-8.0, -4.0), 0, {"1": "USB_R", "2": "GND"}),
+  ("F1_Fuse_0805_2012Metric", "F1", "0.5A", (7.0, -8.5), 0, {"1": "VBUS_IN", "2": "VBUS"}),
+  ("C148_C_0603_1608Metric", "C1", "10u", (12.0, -8.5), 0, {"1": "VBUS", "2": "GND"}),
+  # right edge: the digital rail, kept up out of the bottom lane the ADC runs
+  # need to reach the right ribbon
+  ("U2_SOT-23-5", "U3", "TLV75733PDBV", (14.0, -2.0), 0, {"1": "VBUS", "2": "GND", "5": "+3V3D"}),
+  ("C148_C_0603_1608Metric", "C2", "1u", (19.5, -2.0), 0, {"1": "+3V3D", "2": "GND"}),
+  # left edge: crystal, analog rail, reset
+  ("Y1_Crystal_SMD_3225-4Pin_3.2x2.5mm", "Y1", "12MHz", (-12.5, 4.5), 0,
      {"1": "XTAL_IN", "2": "GND", "3": "XTAL_OUT", "4": "GND"}),
-  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW1", "TS-1187A", (-14, 8), 0, {"1": "BOOT0", "2": "GND"}),
-  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW2", "TS-1187A", (14, 9), 0, {"1": "NRST", "2": "GND"}),
-  ("C148_C_0603_1608Metric", "C1", "10u", (8, 11), 0, {"1": "VBUS", "2": "GND"}),
-  ("C148_C_0603_1608Metric", "C2", "1u", (-8, 11), 0, {"1": "+3V3D", "2": "GND"}),
+  ("U3_SOT-23-3", "U4", "XC6206P332MR", (-17.5, 3.0), 0,
+     {"1": "GND", "2": "+3V3A", "3": "+3V3D"}),
+  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW2", "TS-1187A", (-16.5, -3.0), 0, {"1": "NRST", "2": "GND"}),
+  # top edge: boot
+  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW1", "TS-1187A", (-15.0, -10.0), 0, {"1": "BOOT0", "2": "GND"}),
 ]
 for fpn, ref, val, (dx, dy), rot, nets in _p:
     x, y = at(dx, dy)
@@ -282,10 +319,11 @@ for half, dx, rot in (("L", -24.5, 90), ("R", 24.5, 270)):
     RIB = ["+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
            "ADC_%s1" % half, "GND", "ADC_%s2" % half, "GND",
            "ADC_%s3" % half, "ADC_%s4" % half]
-    x, y = at(dx, 0)
+    x, y = at(dx, 2.0)
     fps.append(place("FFC_12P_1.00mm_TopContact", "J%s" % ("2" if half == "L" else "3"),
                      "FFC_12P", x, y, rot,
                      nets={str(i + 1): n for i, n in enumerate(RIB)}))
-n = board(db, fps, "../pcb/DOE60-Daughterboard.kicad_pcb", "DOE60-Daughterboard")
+n = board(db, fps, "../pcb/Symm60HE-Daughterboard.kicad_pcb", "Symm60HE-Daughterboard",
+          drawings=outline_on(USB_KO, "Dwgs.User"))
 print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB ESD, 2 LDOs, xtal, fuse, 2 tacts, 2 FFC)"
       % (db.bounds[2]-db.bounds[0], db.bounds[3]-db.bounds[1], n))

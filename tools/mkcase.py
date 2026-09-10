@@ -33,7 +33,7 @@ y_front, y_back = -b[3], -b[1]
 depth = y_back - y_front
 back_h = FRONT_H + depth * math.tan(math.radians(TYPING))
 
-scad = """// DOE60 case -- generated, parametric.  Units mm.
+scad = """// Symm60HE case -- generated, parametric.  Units mm.
 // Bottom flat on the desk; top face inclined at the DOE's typing angle.
 
 typing_angle_deg  = %(TYPING)s;   // DOE spec: 11 deg
@@ -156,7 +156,7 @@ case();
                    (axis_mm+40, 8), (axis_mm+40, 100),
                    (CASE_IN.bounds[2]-30, 8), (CASE_IN.bounds[2]-30, 95)]))
 
-open("../case/DOE60-case.scad", "w").write(scad)
+open("../case/Symm60HE-case.scad", "w").write(scad)
 print("typing angle   %.1f deg (DOE spec)" % TYPING)
 print("lateral tent   %.1f deg (DOE quotes none; parameter left in)" % LATERAL)
 print("front height   %.1f mm  -> DOE spec is 14.7-20.1 mm: %s"
@@ -169,4 +169,4 @@ print("standoffs      %d x M2, %.1f mm, on a pocket floor parallel to the plate"
       % (8, PCB_STANDOFF))
 print("daughterboard  pocket %.0f x %.0f mm in the back solid, floor at 5.0 mm"
       % (DB.bounds[2]-DB.bounds[0]+8, DB.bounds[3]-DB.bounds[1]+8))
-print("wrote case/DOE60-case.scad")
+print("wrote case/Symm60HE-case.scad")

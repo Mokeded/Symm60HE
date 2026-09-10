@@ -34,7 +34,7 @@ for a, b in itertools.combinations(KEYS, 2):
         excl.add((round(ax,1), round(ay,1), round(bx,1), round(by,1)))
         excl.add((round(bx,1), round(by,1), round(ax,1), round(ay,1)))
 
-for name in ("DOE60-Left", "DOE60-Right", "DOE60-Daughterboard"):
+for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
     b = loads(open("../pcb/%s.kicad_pcb" % name).read())
     fps = find(b, "footprint")
     info = []
@@ -46,9 +46,6 @@ for name in ("DOE60-Left", "DOE60-Right", "DOE60-Daughterboard"):
     # hand -- otherwise nothing stops a part being placed under the connector
     if "Daughterboard" in name:
         from sexp import first as _f
-        for t in find(b, "gr_line"):
-            if _f(t, "layer")[1] == "Dwgs.User":
-                pass
         ub = [l for l in find(b, "gr_line") if _f(l, "layer")[1] == "Dwgs.User"]
         if ub:
             xs = [float(_f(l, "start")[1]) for l in ub] + [float(_f(l, "end")[1]) for l in ub]

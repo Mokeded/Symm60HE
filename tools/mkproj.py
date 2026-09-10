@@ -4,7 +4,7 @@ sys.path.insert(0, ".")
 from sexp import loads, find, first
 
 PRO = json.load(open("/home/user/FN40HE/FN40HE.kicad_pro"))
-for name in ("DOE60-Left", "DOE60-Right", "DOE60-Daughterboard"):
+for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
     p = json.loads(json.dumps(PRO))
     p["meta"]["filename"] = name + ".kicad_pro"
     for k in ("sheets", "text_variables"):
@@ -16,7 +16,7 @@ print("wrote 3 .kicad_pro files")
 
 # channel map
 rows = []
-for name, half in (("DOE60-Left", "L"), ("DOE60-Right", "R")):
+for name, half in (("Symm60HE-Left", "L"), ("Symm60HE-Right", "R")):
     b = loads(open("../pcb/%s.kicad_pcb" % name).read())
     sens, mux = {}, {}
     for fp in find(b, "footprint"):
@@ -35,16 +35,16 @@ for name, half in (("DOE60-Left", "L"), ("DOE60-Right", "R")):
         for ref, x, y, r in sens[net]:
             m = mux.get(net, ("", ""))
             rows.append([half, net, ref, m[0], m[1], round(x, 3), round(y, 3), round(r, 2)])
-with open("../DOE60-channel-map.csv", "w", newline="") as f:
+with open("../Symm60HE-channel-map.csv", "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(["half", "channel_net", "sensor_ref", "mux_ref", "mux_pin", "x_mm", "y_mm", "rot_deg"])
     w.writerows(rows)
-print("wrote DOE60-channel-map.csv (%d sensor rows)" % len(rows))
+print("wrote Symm60HE-channel-map.csv (%d sensor rows)" % len(rows))
 
 # ribbon pinout
 RIB = ["+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
        "ADC_x1", "GND", "ADC_x2", "GND", "ADC_x3", "ADC_x4"]
-with open("../DOE60-ribbon-pinout.csv", "w", newline="") as f:
+with open("../Symm60HE-ribbon-pinout.csv", "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(["pin", "net", "direction", "notes"])
     for i, n in enumerate(RIB, 1):
@@ -55,4 +55,4 @@ with open("../DOE60-ribbon-pinout.csv", "w", newline="") as f:
                 "analog rail, from the XC6206" if n == "+3V3A" else
                 "mux address, shared by both halves" if n.startswith("MUX") else "")
         w.writerow([i, n, d, note])
-print("wrote DOE60-ribbon-pinout.csv (12 way, 1.0 mm FFC)")
+print("wrote Symm60HE-ribbon-pinout.csv (12 way, 1.0 mm FFC)")

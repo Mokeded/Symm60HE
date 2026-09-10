@@ -13,9 +13,9 @@ by ribbon cable:
 
 | Board | Size | Carries |
 |---|---|---|
-| `pcb/DOE60-Left.kicad_pcb` | 157.9 × 105.9 mm | 33 switch positions, 4 muxes, 1 ribbon link |
-| `pcb/DOE60-Right.kicad_pcb` | 155.5 × 106.4 mm | 36 switch positions, 4 muxes, 1 ribbon link |
-| `pcb/DOE60-Daughterboard.kicad_pcb` | 56 × 26 mm | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 ribbon links |
+| `pcb/Symm60HE-Left.kicad_pcb` | 157.9 × 105.9 mm | 33 switch positions, 4 muxes, 1 ribbon link |
+| `pcb/Symm60HE-Right.kicad_pcb` | 155.5 × 106.4 mm | 36 switch positions, 4 muxes, 1 ribbon link |
+| `pcb/Symm60HE-Daughterboard.kicad_pcb` | 56 × 26 mm | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 ribbon links |
 
 Open each `.kicad_pro` in KiCad 10.
 
@@ -54,7 +54,7 @@ openings and 10.79 mm from the plate edge to the nearest cutout.
 
 ## Case
 
-`case/DOE60-case.scad` is parametric and matches the DOE's published spec:
+`case/Symm60HE-case.scad` is parametric and matches the DOE's published spec:
 
 | | |
 |---|---|
@@ -78,37 +78,81 @@ That leaves 4.4 mm of material under the pocket at the front and 28.5 mm at the
 back, and the daughterboard pocket is cut into that back solid, opening upward
 into the main cavity for the ribbons and outward through the back wall for USB.
 
-`docs/DOE60-case-section.svg` is a side elevation through the centre line.
+`docs/Symm60HE-case-section.svg` is a side elevation through the centre line.
 
 ## Routing
 
-A first pass, all of it machine-checked:
+Two copper layers, and a design rule picked so that the router's own grid
+enforces it: **0.2 mm traces, 0.15 mm clearance, 0.45/0.25 mm vias**. That is a
+relaxed spec for any fabricator — 0.127/0.127 is the usual floor — and it is
+what lets nets on cells 0.5 mm apart sit beside each other without a separate
+spacing pass. Grid cells are 0.5 mm apart orthogonally and 0.354 mm diagonally,
+and 0.2 + 0.15 = 0.35 mm fits inside the smaller of those.
+
+Every component on the halves sits on the back, so the front copper stays a
+near-solid **GND plane**, which is what the analog sensor returns want, and the
+back carries the signals with a GND pour filling round them. The daughterboard
+is the other way up. **GND is never routed at all** — both pours carry it, so
+every sensor and mux ground pin ties in without a single trace.
 
 | | Left | Right | Daughterboard |
 |---|---|---|---|
-| Segments | 68 | 72 | 0 |
-| Vias | 33 | 33 | 0 |
-| Pours | +3V3A on F.Cu, GND on B.Cu | same | same |
+| Connections routed | **143** of 156 | **151** of 168 | **15** of 37 |
+| Segments | 666 | 790 | 90 |
+| Vias | 87 | 101 | 9 |
+| Signals on | B.Cu | B.Cu | F.Cu |
+| GND plane on | F.Cu | F.Cu | B.Cu |
 
-Two planes. Every component sits on the back, so the front copper is empty and
-becomes the **+3V3A plane**; the back carries the **GND pour**, which fills
-around the signal traces. Both use `connect_pads`, so every GND pad ties in
-without a single trace and each analog-rail pad needs only a via.
+### Three things in the router that were bugs first
 
-Chaining the rail sensor-to-sensor was the obvious first attempt and it was
-wrong — a straight line between two sensors' VCC pads runs straight through the
-MX leg holes between them. The checker found 24 clearance violations; the plane
-approach removed them.
+**A diagonal step needs both of its orthogonal neighbours.** Otherwise two nets
+cut the same gap from opposite corners and cross. Cell ownership cannot see it —
+neither net owns a cell the other used — and it showed up as 49 shorts on the
+left half alone. Requiring both neighbours rules out the corner cut and the
+crossing together, because the other net's diagonal owns exactly those two cells.
 
-The router routes around obstacles rather than assuming a clear line: straight
-if it fits, otherwise an L in either order, and if neither is clear it leaves
-the connection for you and says so. Five connections across both halves came
-back that way. Drilled holes count as obstacles **even when they belong to a
-switch position your layout does not populate** — the hole is there either way,
-which is a trap specific to a multi-layout board.
+**Fine-pitch pins are met head-on, never from the side.** A 0.65 mm TSSOP leaves
+0.25 mm between pads and a 0.5 mm LQFP leaves 0.2 mm; no trace fits between them
+at any sane rule. So each pad owns a private lane along its own axis, only as
+wide as the pad itself, and the maze starts from a fan-out point at the end of
+it — staggered near/far by pin parity, so neighbouring escape points land on a
+diagonal instead of at pin pitch. Without the lane a pin has no way out at all:
+its two neighbours' keep-out margins meet in front of its tip and whichever was
+blocked first owns the only cells it could have escaped through. The lane runs
+**both ways**, because outwards is not always the useful direction — an edge
+connector's contacts face off-board, since that is the way the cable goes in, so
+its only exit is inwards under its own body.
 
-**Sensor signal to mux input is deliberately not routed.** That is the part
-worth doing with a real router, and it is the bulk of the remaining work.
+**Nothing is written that cannot be proved.** Once a path is found it is rebuilt
+as real geometry and checked against every pad, trace and via already down. If
+it violates clearance it is thrown away and the next way onto the pad is tried;
+if all of them fail the connection is left unrouted and counted. The boards on
+disk are therefore clean by construction, and the honest number is the split in
+the table rather than a segment count.
+
+Nets are routed shortest-span first, which is greedy: an early net can wall off
+a later one for no better reason than that it was shorter. There is no rip-up,
+so instead the order is reshuffled a few times and the best result kept.
+
+Drilled holes count as obstacles **even when they belong to a switch position
+your layout does not populate** — the hole is there either way, which is a trap
+specific to a multi-layout board. Chaining the analog rail sensor-to-sensor was
+the first attempt at it and was wrong for the same reason: a straight line
+between two sensors' VCC pads runs through the MX leg holes between them.
+
+### The daughterboard is the weak one
+
+Its problem is upstream of the router. The MCU pin assignment is a **placeholder**
+— there is no schematic yet, so it has not been checked against the AT32F405
+datasheet, and the ADC channels, the USB pair and the crystal pins are all fixed
+in silicon. The placement and pinout here at least put each signal on the side of
+the LQFP that faces the part it has to reach, which is the only reason any of it
+routes; 9 of 37 went in before that rework. Finishing it properly means capturing
+schematics first and letting the real pin constraints drive the placement.
+
+The halves are the bulk of the design and they route. What is left on them is
+almost entirely the innermost mux pins, where the escape has to via down and come
+back up in a space a human would solve by nudging the package a millimetre.
 
 ## Building and checking
 
@@ -131,10 +175,14 @@ Checked here, by script, against the generated files:
 - net audit clean: every channel reaches exactly one mux input, one sensor and
   its decoupling; the address lines reach all four muxes and the ribbon; each
   ADC net reaches the MCU and one ribbon
-- routing clean: every segment and via on-board, no trace or via within 0.20 mm
-  of a pad or drill on another net, no loose trace ends, both pours inside the
-  outline
-- MCU pin assignment lifted from the FN40HE board rather than from memory
+- routing clean, against the real geometry rather than the router's own grid:
+  every segment and via on-board and out of the USB-C keep-out, nothing within
+  0.15 mm of a **pad, drill, trace or via belonging to another net**, no loose
+  trace ends, both pours inside the outline. The trace-to-trace half of that is
+  what catches two diagonal runs crossing through the same gap, which is a short
+  no amount of cell bookkeeping will notice
+- the mux and sensor nets on the halves follow FN40HE's architecture rather than
+  memory: 8:1 muxes into 8 ADC inputs, inhibit tied locally
 
 **Not** checked, because this environment has no KiCad, no OpenSCAD and no CAD
 kernel:
@@ -145,24 +193,28 @@ kernel:
   before a production run. Symbol libraries are not vendored here for that
   reason; use KiCad's stock ones when you capture
 - the pours are defined but not filled — KiCad fills them on open (press B)
-- most signal routing is still to do, as above
-- the USB-C receptacle is the one footprint not generated; its position and
-  keep-out are marked on the daughterboard and the BOM names the stock KiCad
-  footprint to drop in
+- routing is partial, and the split is in the Routing section above. Nothing
+  unclean was written, but a fair amount was left for you
+- the USB-C receptacle is the one footprint not generated. Its keep-out is now a
+  real rectangle on `Dwgs.User` in the daughterboard file, which both the pad
+  check and the router honour, and the BOM names the stock KiCad footprint to
+  drop in
+- **the daughterboard MCU pinout is a placeholder** and has not been checked
+  against the AT32F405 datasheet — see the Routing section
 - the case has not been rendered or printed; the SCAD is balanced and its
   modules resolve, but only OpenSCAD can confirm the booleans
 
 ## Files
 
-- `DOE60-switch-map.csv` — every switch position, mm, rotation, which layouts use it
-- `DOE60-channel-map.csv` — sensor → mux → channel, per half
-- `DOE60-ribbon-pinout.csv` — the 12-way link
-- `DOE60-BOM.csv` — both halves and the daughterboard
-- `docs/DOE60-preview.svg` — plan view of the whole assembly
-- `docs/DOE60-case-section.svg` — side elevation showing the 11° wedge
+- `Symm60HE-switch-map.csv` — every switch position, mm, rotation, which layouts use it
+- `Symm60HE-channel-map.csv` — sensor → mux → channel, per half
+- `Symm60HE-ribbon-pinout.csv` — the 12-way link
+- `Symm60HE-BOM.csv` — both halves and the daughterboard
+- `docs/Symm60HE-preview.svg` — plan view of the whole assembly
+- `docs/Symm60HE-case-section.svg` — side elevation showing the 11° wedge
 - `docs/img/` — rendered images of every board, the plate and the case
 - `tools/` — generators and checkers; `build.sh` runs them in order
-- `DOE60_Project.pretty/` — the footprint library, local and portable
+- `Symm60HE_Project.pretty/` — the footprint library, local and portable
 
 Rotation convention: KLE's `r` is a standard-matrix rotation in a y-down frame,
 so it applies as `+r` when drawing. The boards store `-r`, because KiCad's `at`

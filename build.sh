@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$0")/tools"
 python3 mkfp.py            # footprint library
 python3 mkboards.py        # three boards
-python3 route.py           # ground pours, power and decoupling routing
+python3 route.py           # two-layer maze routing and the GND pours
 python3 mkplate.py         # plate DXFs
 python3 mkcase.py          # case OpenSCAD
 python3 mkproj.py          # project files, channel map, ribbon pinout

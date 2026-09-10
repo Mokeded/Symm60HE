@@ -67,9 +67,9 @@ def check(name, cuts):
 for b in BUILDS:
     ks = [k for k in KEYS if b in k["builds"]]
     cuts, stabs = cutouts(ks)
-    write("DOE60-plate-" + b.replace("doe-", ""), cuts, stabs)
+    write("Symm60HE-plate-" + b.replace("doe-", ""), cuts, stabs)
     check(b.replace("doe-", ""), cuts)
 
 cuts, stabs = cutouts(KEYS)
-merged = write("DOE60-plate-universal", cuts, stabs, merge=True)
+merged = write("Symm60HE-plate-universal", cuts, stabs, merge=True)
 check("universal (merged)", merged)

@@ -89,9 +89,11 @@ def parts(pcb):
         out.append((ref, COL.get(pre, COL.get(ref[:1], (136,136,136))), shapes, (x,y)))
     return out
 
-def edge_poly(pcb):
+def layer_poly(pcb, layer="Edge.Cuts"):
     b = loads(open(pcb).read())
     segs = [(( float(first(l,"start")[1]), float(first(l,"start")[2])),
              ( float(first(l,"end")[1]),   float(first(l,"end")[2])))
-            for l in find(b,"gr_line") if first(l,"layer")[1]=="Edge.Cuts"]
-    return Polygon([segs[0][0]] + [s[1] for s in segs])
+            for l in find(b,"gr_line") if first(l,"layer")[1]==layer]
+    return Polygon([segs[0][0]] + [s[1] for s in segs]) if len(segs) > 2 else None
+
+def edge_poly(pcb): return layer_poly(pcb, "Edge.Cuts")

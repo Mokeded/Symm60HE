@@ -22,7 +22,7 @@ def courtyard(fp):
     xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
     return box(min(xs), min(ys), max(xs), max(ys))
 
-for name in ("DOE60-Left", "DOE60-Right", "DOE60-Daughterboard"):
+for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
     txt = open("../pcb/%s.kicad_pcb" % name).read()
     b = loads(txt)
     assert b[0] == "kicad_pcb", name

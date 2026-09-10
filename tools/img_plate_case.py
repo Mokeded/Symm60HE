@@ -26,7 +26,7 @@ c.poly(PLATE, fill=(120,130,140), outline=(231,236,239), w=1.0)
 for x in cuts:  c.poly(x, fill=(18,22,26))
 for x in stabs: c.poly(x, fill=(18,22,26))
 fy = c.im.height/SS - 32
-c.raw_text((16, fy), "DOE60 plate — filled WKL, 1.5u backspace   328.0 x 117.2 mm   60 switch cutouts at 14.0 mm", INK, 11)
+c.raw_text((16, fy), "Symm60HE plate — filled WKL, 1.5u backspace   328.0 x 117.2 mm   60 switch cutouts at 14.0 mm", INK, 11)
 c.raw_text((16, fy+15), "4.90 mm minimum bridge between openings   |   10.79 mm from plate edge to nearest cutout   |   one DXF per layout in plate/", DIM, 9.5)
 print("plate", c.save("05-plate.png"))
 
@@ -62,7 +62,7 @@ c.text(P(depth*0.40, top(depth*0.40)+4), "11 deg — DOE spec", (92,180,222), 12
 c.text(P(depth-2, top(depth)+4), "front 18.0", INK, 10, anchor="ra")
 c.text(P(2, top(0)+4), "back 42.1", INK, 10)
 fy = c.im.height/SS - 34
-c.raw_text((16, fy), "DOE60 case — side section through the centre line, 124.2 mm deep", INK, 11)
+c.raw_text((16, fy), "Symm60HE case — side section through the centre line, 124.2 mm deep", INK, 11)
 c.raw_text((16, fy+15), "flat bottom, top face at 11 deg   |   pocket floor parallel to the plate   |   grey = plate + gasket, green = PCB on 4 mm standoffs", DIM, 9.5)
 print("section", c.save("06-case-section.png"))
 
@@ -97,6 +97,6 @@ for k in KEYS:
     cut = stran2(srot2(sbox(-7,-7,7,7), k["rot"], origin=(0,0)), k["cx"]*U, k["cy"]*U)
     c.poly(Polygon([iso(x, y, zt(y)) for x, y in list(cut.exterior.coords)[:-1]]), fill=(18,22,26))
 fy = c.im.height/SS - 32
-c.raw_text((16, fy), "DOE60 case — isometric, 335 x 124 mm, 11 deg wedge, plate in place", INK, 11)
+c.raw_text((16, fy), "Symm60HE case — isometric, 335 x 124 mm, 11 deg wedge, plate in place", INK, 11)
 c.raw_text((16, fy+15), "front height 18.0 mm, back 42.1 mm   |   isolated top mount on a gasket ledge", DIM, 9.5)
 print("iso", c.save("07-case-iso.png"))

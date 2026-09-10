@@ -1,4 +1,4 @@
-// DOE60 case -- generated, parametric.  Units mm.
+// Symm60HE case -- generated, parametric.  Units mm.
 // Bottom flat on the desk; top face inclined at the DOE's typing angle.
 
 typing_angle_deg  = 11.0;   // DOE spec: 11 deg
