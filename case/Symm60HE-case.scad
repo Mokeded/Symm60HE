@@ -15,8 +15,11 @@ pcb_standoff = 4.0;
 plate_to_pcb = 5.0;   // MX plate-to-PCB
 pcb_t        = 1.6;
 usb_w        = 12.0;
-db_w         = 56.0;
-db_h         = 26.0;
+// The receptacle is not on the board's centre line -- it sits beside the MCU's
+// USB pins -- so the cutout follows it.
+usb_x_off    = 10.5;
+db_w         = 62.0;
+db_h         = 32.0;
 usb_h        = 7.0;
 
 y_front = -112.418;
@@ -77,7 +80,7 @@ module db_pocket() {
 }
 
 module usb_cutout() {
-    translate([axis_x, y_back, floor_t + pcb_standoff])
+    translate([axis_x + usb_x_off, y_back, floor_t + pcb_standoff])
         translate([-usb_w/2, -wall*3, 0]) cube([usb_w, wall*6, usb_h]);
 }
 

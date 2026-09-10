@@ -10,7 +10,7 @@ as a parameter because a tented build was asked for and the geometry supports
 it.  Raising it lifts the outer edges and the case then needs feet on one side.
 """
 import math
-from outline import CASE_OUT, CASE_IN, DB, axis_mm, WALL
+from outline import CASE_OUT, CASE_IN, DB, axis_mm, WALL, USB_X_OFF
 
 TYPING     = 11.0    # DOE spec
 LATERAL    = 0.0     # DOE has none; raise for a laterally tented build
@@ -50,6 +50,9 @@ pcb_standoff = %(PCB_STANDOFF)s;
 plate_to_pcb = 5.0;   // MX plate-to-PCB
 pcb_t        = 1.6;
 usb_w        = %(USB_W)s;
+// The receptacle is not on the board's centre line -- it sits beside the MCU's
+// USB pins -- so the cutout follows it.
+usb_x_off    = %(USB_X_OFF).1f;
 db_w         = %(DBW).1f;
 db_h         = %(DBH).1f;
 usb_h        = %(USB_H)s;
@@ -112,7 +115,7 @@ module db_pocket() {
 }
 
 module usb_cutout() {
-    translate([axis_x, y_back, floor_t + pcb_standoff])
+    translate([axis_x + usb_x_off, y_back, floor_t + pcb_standoff])
         translate([-usb_w/2, -wall*3, 0]) cube([usb_w, wall*6, usb_h]);
 }
 
@@ -147,7 +150,7 @@ case();
 """ % dict(TYPING=TYPING, LATERAL=LATERAL, FRONT_H=FRONT_H, BACK_H=back_h,
            FLOOR=FLOOR, LEDGE_H=LEDGE_H, LEDGE_W=LEDGE_W, PLATE_T=PLATE_T,
            GASKET=GASKET, WALL=WALL, PCB_STANDOFF=PCB_STANDOFF,
-           USB_W=USB_W, USB_H=USB_H,
+           USB_W=USB_W, USB_H=USB_H, USB_X_OFF=USB_X_OFF,
            DBW=DB.bounds[2]-DB.bounds[0], DBH=DB.bounds[3]-DB.bounds[1], YF=y_front, YB=y_back, AXIS=axis_mm,
            OUTER=pts(CASE_OUT), INNER=pts(CASE_IN),
            STANDOFFS="\n    ".join(

@@ -15,7 +15,7 @@ by ribbon cable:
 |---|---|---|
 | `pcb/Symm60HE-Left.kicad_pcb` | 157.9 × 105.9 mm | 33 switch positions, 4 muxes, 1 ribbon link |
 | `pcb/Symm60HE-Right.kicad_pcb` | 155.5 × 106.4 mm | 36 switch positions, 4 muxes, 1 ribbon link |
-| `pcb/Symm60HE-Daughterboard.kicad_pcb` | 56 × 26 mm | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 ribbon links |
+| `pcb/Symm60HE-Daughterboard.kicad_pcb` | 62 × 32 mm | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 ribbon links |
 
 Open each `.kicad_pro` in KiCad 10.
 
@@ -89,19 +89,41 @@ what lets nets on cells 0.5 mm apart sit beside each other without a separate
 spacing pass. Grid cells are 0.5 mm apart orthogonally and 0.354 mm diagonally,
 and 0.2 + 0.15 = 0.35 mm fits inside the smaller of those.
 
-Every component on the halves sits on the back, so the front copper stays a
-near-solid **GND plane**, which is what the analog sensor returns want, and the
-back carries the signals with a GND pour filling round them. The daughterboard
-is the other way up. **GND is never routed at all** — both pours carry it, so
-every sensor and mux ground pin ties in without a single trace.
+Every component on the halves sits on the back, so the front copper is free to
+be the **+3V3A plane**; the back carries the signals with a **GND pour** filling
+round them. The daughterboard is populated on the front, so it pours GND on both
+sides and stitches them together. Neither GND nor the analog rail is routed as a
+net on the halves — see below.
 
 | | Left | Right | Daughterboard |
 |---|---|---|---|
-| Connections routed | **143** of 156 | **151** of 168 | **15** of 37 |
-| Segments | 666 | 790 | 90 |
-| Vias | 87 | 101 | 9 |
+| Connections routed | **74** of 82 | **76** of 88 | **27** of 36 |
+| Segments | 646 | 747 | 178 |
+| Vias | 127 | 146 | 28 |
+| … of those, plane taps | 66 | 71 | 6 |
 | Signals on | B.Cu | B.Cu | F.Cu |
-| GND plane on | F.Cu | F.Cu | B.Cu |
+| F.Cu pour | +3V3A | +3V3A | GND |
+| B.Cu pour | GND | GND | GND |
+
+### Why the analog rail is a pour, not a net
+
+The rail reaches 75 pads on the left half. Routed as traces it is a spanning
+tree across the whole board, and it gets there first and walls off the three
+mux select lines, which have one shape that works and no slack. Routing the bus
+first instead just moves the failure onto the rail.
+
+So the rail stops being a net. **F.Cu is a +3V3A pour** — the halves carry no
+components on the front, so it is very nearly solid — and every rail pad is tied
+down to it by a via of its own, dropped just past the pad on its escape axis and
+joined by a stub. FN40HE does the same thing with a `+3.3VA` zone of its own
+alongside GND; it just puts it on the back, because its board is populated the
+other way up. **B.Cu is the GND pour**, filling around the signals, and every
+sensor and mux ground pin sits straight on it, so GND is never routed either.
+
+That is not free: 66 vias through the sensor field block both layers, and they
+cost almost exactly as much room as the traces they replaced. What it buys is a
+real supply plane instead of a tree of 0.2 mm traces feeding 33 sensors, and it
+is the arrangement the reference design uses.
 
 ### Three things in the router that were bugs first
 
@@ -140,19 +162,37 @@ specific to a multi-layout board. Chaining the analog rail sensor-to-sensor was
 the first attempt at it and was wrong for the same reason: a straight line
 between two sensors' VCC pads runs through the MX leg holes between them.
 
-### The daughterboard is the weak one
+### Meeting a pad in the middle
 
-Its problem is upstream of the router. The MCU pin assignment is a **placeholder**
-— there is no schematic yet, so it has not been checked against the AT32F405
-datasheet, and the ADC channels, the USB pair and the crystal pins are all fixed
-in silicon. The placement and pinout here at least put each signal on the side of
-the LQFP that faces the part it has to reach, which is the only reason any of it
-routes; 9 of 37 went in before that rework. Finishing it properly means capturing
-schematics first and letting the real pin constraints drive the placement.
+Worth its own note, because it cost more connections than anything else. Each
+pad offers the router a list of ways to be met — the escape points along its
+axis, and the bare pad centre — tried in order and capped, since each one costs
+a maze search. The pad centre was first on that list.
 
-The halves are the bulk of the design and they route. What is left on them is
-almost entirely the innermost mux pins, where the escape has to via down and come
-back up in a space a human would solve by nudging the package a millimetre.
+It should have been last. Meeting a pad in its middle lets the maze leave
+sideways, and on a 0.5 mm pitch package sideways means straight across the
+neighbouring pin, so every one of those routes was found and then thrown out by
+the clearance check. Twelve dead candidates per pad, and the escapes along the
+pad's own axis — the ones that work — were never reached. Moving the pad centre
+to the end of the list took the daughterboard from 10 routed to 27, without
+changing a single trace rule.
+
+### The daughterboard
+
+It is the hard one: an LQFP-64 on 0.5 mm pitch, two 12-way ribbons and a USB-C
+receptacle. Three changes made it routable at all:
+
+- **The pin assignment is FN40HE's**, read off its board — not invented here.
+  See `NOTICE.md`.
+- **The board grew from 56 × 26 mm to 62 × 32 mm.** The case pocket is derived
+  from this outline, so the pocket grew with it; the back solid has the depth.
+- **The USB-C receptacle moved off the centre line**, 10.5 mm right, to sit
+  beside the MCU's USB pins rather than diagonally across the board from them.
+  The case cutout follows the same offset — both come from `USB_X_OFF` in
+  `tools/outline.py`.
+
+What is left unrouted there is mostly the ribbon connectors' inner pins, where
+twelve nets at 1.0 mm pitch have to escape inwards under the connector body.
 
 ## Building and checking
 
@@ -193,14 +233,14 @@ kernel:
   before a production run. Symbol libraries are not vendored here for that
   reason; use KiCad's stock ones when you capture
 - the pours are defined but not filled — KiCad fills them on open (press B)
-- routing is partial, and the split is in the Routing section above. Nothing
-  unclean was written, but a fair amount was left for you
+- routing is partial — 74 of 82 on the left, 76 of 88 on the right, 27 of 36 on
+  the daughterboard. Nothing unclean was written, but the remainder is yours
 - the USB-C receptacle is the one footprint not generated. Its keep-out is now a
   real rectangle on `Dwgs.User` in the daughterboard file, which both the pad
   check and the router honour, and the BOM names the stock KiCad footprint to
   drop in
-- **the daughterboard MCU pinout is a placeholder** and has not been checked
-  against the AT32F405 datasheet — see the Routing section
+- the mux is SOIC-16 rather than FN40HE's TSSOP-16 — same chip, different
+  package, for the reason given in `NOTICE.md`
 - the case has not been rendered or printed; the SCAD is balanced and its
   modules resolve, but only OpenSCAD can confirm the booleans
 

@@ -6,6 +6,7 @@ Four things have to hold, per layer:
   * no trace or via comes within CLEAR of another net's copper -- this is the
     one that catches two diagonal runs crossing through the same gap, which
     cell ownership alone cannot rule out,
+  * every pad of a poured net can reach its pour, directly or through a via,
   * no trace end is left hanging: it has to land on a pad of its own net, on a
     via, on another segment end of the same net (a corner in an L-shaped run),
     or *anywhere along* another segment of the same net -- a branch of a
@@ -119,14 +120,38 @@ for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
             dangling += 1
 
     zones = find(b,"zone")
-    zbad = sum(0 if outline.contains(Polygon(
-        [(float(q[1]),float(q[2])) for q in first(first(z,"polygon"),"pts")[1:]])) else 1
-        for z in zones)
+    zbad = 0
+    zlay = {}
+    for z in zones:
+        poly = Polygon([(float(q[1]),float(q[2]))
+                        for q in first(first(z,"polygon"),"pts")[1:]])
+        if not outline.contains(poly): zbad += 1
+        zlay.setdefault(first(z,"layers")[1], []).append(first(z,"net")[1])
+    # one pour per layer, and every layer poured: a pad on an unpoured layer
+    # would have nothing to tie to
+    for L in ("F.Cu", "B.Cu"):
+        if len(zlay.get(L, [])) != 1: zbad += 1
+    # every pad of a poured net must reach its pour -- directly if it is on
+    # that layer, otherwise through a via of the same net
+    unstitched = 0
+    vpts = collections.defaultdict(list)
+    for v in find(b,"via"):
+        a = first(v,"at")
+        vpts[first(v,"net")[1]].append(Point(float(a[1]), float(a[2])))
+    for L, nets in zlay.items():
+        pn = nets[0]
+        for p in pads:
+            if p["net"] != pn or L in p["lays"]: continue
+            if not vpts[pn]: unstitched += 1; continue
+            # the pad has to be joined to some via of its net; the copper check
+            # above already proved the joining trace is legal
+            if min(p["g"].distance(q) for q in vpts[pn]) > 25.0: unstitched += 1
 
     nseg, nvia = len(find(b,"segment")), len(find(b,"via"))
-    print("%-22s %3d segments, %3d vias | off-board %d | in keep-out %d | clearance violations %d | loose ends %d | %d pours, outside %d"
-          % (name, nseg, nvia, off, inko, clash, dangling, len(zones), zbad))
-    bad += off + inko + clash + dangling + zbad
+    print("%-22s %3d segments, %3d vias | off-board %d | in keep-out %d | clearance violations %d | loose ends %d | %d pours (%s), bad %d | unstitched %d"
+          % (name, nseg, nvia, off, inko, clash, dangling, len(zones),
+             ", ".join("%s=%s" % (L, zlay[L][0]) for L in sorted(zlay)), zbad, unstitched))
+    bad += off + inko + clash + dangling + zbad + unstitched
 
 print("\n%s" % ("ROUTING CLEAN" if bad == 0 else "%d routing problems" % bad))
 sys.exit(1 if bad else 0)

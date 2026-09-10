@@ -38,7 +38,7 @@ LAYERS = ("B.Cu", "F.Cu")
 ESCAPE = (0.45, 1.05)          # near/far fan-out ring, past the pad tip
 LANE = 1.30                    # length of a pad's private escape lane
 CAND = 6                       # grid cells tried per entry point
-HOOKS = 20                     # ways of meeting one pad, before giving up
+HOOKS = 24                     # ways of meeting one pad, before giving up
 
 def rot(px, py, a):
     r = math.radians(-a)
@@ -109,16 +109,24 @@ def entries(p):
     A gullwing pad can only be met along its own axis, so the escape ring is
     staggered by pin parity: odd pins stop just past the tip, even pins carry
     on to the far ring.  Adjacent escape points are then a diagonal apart.
+    Best first matters here -- see the note on the pad centre below.
     """
-    out = [(p["x"], p["y"])]
+    out = []
     if p["ax"] or p["ay"]:
-        # forwards first, then backwards: a connector at the board edge has its
+        # Forwards first, then backwards: a connector at the board edge has its
         # contacts facing off-board, because that is the way the cable goes in,
-        # so its only way out is inwards under its own body
+        # so its only way out is inwards under its own body.
         for sgn in (1.0, -1.0):
             for k in (ESCAPE[p["idx"] % 2], ESCAPE[(p["idx"] + 1) % 2]):
                 out.append((p["x"] + sgn*p["ax"]*(p["half"] + k),
                             p["y"] + sgn*p["ay"]*(p["half"] + k)))
+    # The bare pad centre goes last, and only as a fallback.  Meeting a pad in
+    # its middle lets the maze leave sideways, which on a 0.5 mm pitch package
+    # means crossing the neighbouring pin -- and because the candidates are
+    # tried in order and capped, putting it first burned the whole budget on
+    # routes that could never pass the clearance check, before the escapes
+    # along the pad's own axis were reached at all.
+    out.append((p["x"], p["y"]))
     return out
 
 # ---------------------------------------------------------------- clearance
@@ -173,18 +181,29 @@ def zone(poly, net, layer):
              [Sym("thermal_bridge_width"), 0.5], [Sym("island_removal_mode"), 0]],
             [Sym("polygon"), [Sym("pts")] + pts]]
 
-def netlist(pads):
+def netlist(pads, planed=()):
+    """Nets to route, in the order to attempt them.
+
+    Broadcast nets go first.  The three mux select lines and the analog rail
+    reach every mux and the ribbon, so they cross the whole board; left until
+    last, as shortest-first ordering does, they arrive to find the board full
+    and fail.  Everything with more than two terminals is routed before the
+    point-to-point sensor nets, widest fan-out first, and the two-terminal
+    nets keep the shortest-first order among themselves because there the
+    easy ones really should go early."""
     nets = {}
     for p in pads:
-        if p["net"] in (None, "GND"): continue
+        if p["net"] is None or p["net"] in planed: continue
         nets.setdefault(p["net"], []).append(p)
     order = []
     for n, ps in nets.items():
         if len(ps) < 2: continue
         xs = [p["x"] for p in ps]; ys = [p["y"] for p in ps]
-        order.append(((max(xs)-min(xs)) + (max(ys)-min(ys)), n, ps))
-    order.sort()                       # short nets first, they are the easiest
-    return order
+        span = (max(xs)-min(xs)) + (max(ys)-min(ys))
+        order.append((0 if len(ps) > 2 else 1, -len(ps) if len(ps) > 2 else 0,
+                      span, n, ps))
+    order.sort(key=lambda o: o[:3])
+    return [(o[2], o[3], o[4]) for o in order]
 
 def near_cells(grid, pt, L, net, n=CAND):
     """Passable grid cells around a point, nearest first."""
@@ -226,6 +245,65 @@ def hooks(grid, space, p, net):
                 if len(out) >= HOOKS: return out
     return out
 
+NEAR = 8.0                     # a pad this close to a stitched one shares its via
+
+def stitch(grid, space, added, pads, net, layer, spacing=0.0, bridge=False):
+    """Tie a poured net down to its plane with vias.
+
+    A pour on the far side of the board is no use to a pad that cannot reach
+    it, and KiCad will not invent the via for you.  So each pad gets one --
+    dropped just past the pad on its escape axis and joined by a stub, the same
+    fan-out geometry a trace would use and checked the same way.
+
+    Not one each, though.  A via blocks both layers, and one per pad put
+    seventy-five of them through the sensor field and cost more signal nets
+    than routing the rail did.  A pad within NEAR of one already stitched is
+    tied to that pad by a short trace instead, so a sensor and its two
+    decouplers share a single tap into the plane.
+
+    With `bridge` the same machinery ties two pours of one net together: a
+    board poured GND on both sides has a back pour with nothing on it, and
+    without vias between them that copper is floating.  There `spacing` thins
+    the vias out to a stitching pattern rather than one per pad."""
+    Lp = LAYERS.index(layer)
+    mine = [p for p in pads if p["net"] == net]
+    anchors, vias_placed, joined, miss = [], 0, 0, 0
+    done_pts = []
+    for p in mine:
+        if not bridge and Lp in pad_layers(p): continue      # already on the plane
+        if spacing and any(math.hypot(q[0]-p["x"], q[1]-p["y"]) < spacing
+                           for q in done_pts): continue
+        # first try to hang off a neighbour that is already tied down
+        near = sorted(((math.hypot(a["x"]-p["x"], a["y"]-p["y"]), a) for a in anchors),
+                      key=lambda t: t[0])
+        hung = False
+        for d, a in near[:3]:
+            if d > NEAR: break
+            line = LineString([(p["x"], p["y"]), (a["x"], a["y"])])
+            if not space.clear(line.buffer(TRACE/2), net, pad_layers(p)): continue
+            keep(space, grid, added, net, [(p["x"], p["y"]), (a["x"], a["y"])],
+                 pad_layers(p)[0])
+            anchors.append(p); joined += 1; hung = True; break
+        if hung: continue
+        placed = False
+        for ept in entries(p)[1:]:
+            for _, cell, gpt in near_cells(grid, ept, pad_layers(p)[0], net):
+                v = Point(*gpt).buffer(VIA_D/2)
+                stub = [gpt, ept, (p["x"], p["y"])]
+                geoms = [(v, (0, 1))] + [
+                    (LineString([stub[k], stub[k+1]]).buffer(TRACE/2), tuple(pad_layers(p)))
+                    for k in range(len(stub)-1) if stub[k] != stub[k+1]]
+                if not all(space.clear(g, net, ls) for g, ls in geoms): continue
+                keep(space, grid, added, net, stub, pad_layers(p)[0])
+                added.append(via(gpt, net))
+                space.add(v, net, (0, 1))
+                grid.block(v, net=net, layers=(0, 1))
+                anchors.append(p); done_pts.append(gpt)
+                vias_placed += 1; placed = True; break
+            if placed: break
+        miss += not placed
+    return vias_placed, joined, miss
+
 def keep(space, grid, added, net, pts, L):
     """Write one run of copper and remember it."""
     for k in range(len(pts)-1):
@@ -236,7 +314,7 @@ def keep(space, grid, added, net, pts, L):
         space.add(line.buffer(TRACE/2), net, (L,))
         grid.block(line, net=net, layers=(L,))
 
-def plan(pads, outline, step, order, keepout=None):
+def plan(pads, outline, step, order, keepout=None, planes=()):
     """Route one ordering of the nets.  Returns the copper and the tally."""
     grid = Grid(outline, step=step)
     space = Space()
@@ -258,6 +336,22 @@ def plan(pads, outline, step, order, keepout=None):
         space.add(p["geom"], p["net"] if p["net"] else "#\x00%d" % id(p), pad_layers(p))
 
     added, done, failed, fails, nvia = [], 0, 0, [], 0
+    stitched, bridges = [], []
+    bylayer = {}
+    for net, layer in planes: bylayer.setdefault(net, []).append(layer)
+    for net, lays in bylayer.items():
+        if len(lays) > 1:
+            # The same net poured on both sides: the pads hold one pour up, so
+            # the other needs vias between them or it is floating copper.  That
+            # is the least constrained thing on the board and it waits until
+            # the end -- planted first, these land in the fan-out lanes their
+            # neighbours need and strangle the board.
+            bridges.append((net, lays[0]))
+        else:
+            # A rail with no pour of its own on the pad side is the opposite
+            # case: nothing works until each pad can reach its plane, so its
+            # taps are placed before any signal.
+            stitched.append((net,) + stitch(grid, space, added, pads, net, lays[0]))
     for span, net, ps in order:
         anchor = None
         for cell, pts in hooks(grid, space, ps[0], net):
@@ -267,7 +361,12 @@ def plan(pads, outline, step, order, keepout=None):
             fails += [(net, q["ref"], q["num"]) for q in ps[1:]]
             continue
         cell, pts = anchor
-        keep(space, grid, added, net, pts, cell[0])
+        # The anchor's own escape stub is held back until something actually
+        # connects to it.  Written eagerly, a net whose every other terminal
+        # then failed left a few millimetres of copper running from a pad to
+        # nowhere -- not a clearance problem, but not a trace either.
+        pending = []
+        keep(space, grid, pending, net, pts, cell[0])
         grid.claim([cell], net)
         connected = {cell}
 
@@ -289,6 +388,7 @@ def plan(pads, outline, step, order, keepout=None):
             if got is None:
                 failed += 1; fails.append((net, p["ref"], p["num"])); continue
             cells, runs, vias, gpts, gcell = got
+            if pending: added.extend(pending); pending = []
             grid.claim(cells, net)
             connected.update(cells)
             for L, rp in runs:
@@ -299,9 +399,22 @@ def plan(pads, outline, step, order, keepout=None):
                 space.add(Point(*v).buffer(VIA_D/2), net, (0, 1))
                 grid.block(Point(*v).buffer(VIA_D/2), net=net, layers=(0, 1))
             done += 1
-    return added, done, failed, fails, nvia
+    for net, layer in bridges:
+        stitched.append((net,) + stitch(grid, space, added, pads, net, layer,
+                                        spacing=12.0, bridge=True))
+    return added, done, failed, fails, nvia, stitched
 
-def route_board(path, label, step=GRID, tries=1, seed=7):
+# What each board pours, and on which layer.  The halves carry no components on
+# the front, so F.Cu is free to be the analog supply plane -- which is FN40HE's
+# arrangement too, a GND pour plus a zone of its own for +3.3VA.  The
+# daughterboard is populated on the front, so it pours GND on both sides and
+# routes its handful of rails.
+PLANES = {
+    "half": (("+3V3A", "F.Cu"), ("GND", "B.Cu")),
+    "db":   (("GND", "F.Cu"),   ("GND", "B.Cu")),
+}
+
+def route_board(path, label, step=GRID, tries=1, seed=7, planes=PLANES["half"]):
     """Route a board, keeping the best of several net orderings.
 
     One pass is greedy: an early net can wall off a later one for no better
@@ -310,29 +423,35 @@ def route_board(path, label, step=GRID, tries=1, seed=7):
     daughterboard, which is dense but quick, and not on the halves, which are
     neither."""
     b, pads, outline, keepout = read(path)
-    base = netlist(pads)
+    base = netlist(pads, planed=set(n for n, _ in planes))
     rng = random.Random(seed)
     best = None
     for t in range(max(1, tries)):
         order = base if t == 0 else rng.sample(base, len(base))
-        r = plan(pads, outline, step, order, keepout)
+        r = plan(pads, outline, step, order, keepout, planes)
         if best is None or r[1] > best[1]: best = r
         if best[2] == 0: break
-    added, done, failed, fails, nvia = best
+    added, done, failed, fails, nvia, stitched = best
     added = list(added)
-    added.append(zone(outline, "GND", "F.Cu"))
-    added.append(zone(outline, "GND", "B.Cu"))
+    for net, layer in planes:
+        added.append(zone(outline, net, layer))
     # drop any copper from an earlier pass, so running this twice replaces the
     # routing instead of laying a second set of traces on top of the first
     body = [c for c in b[1:]
             if not (isinstance(c, list) and c[0] in ("segment", "via", "zone", "arc"))]
     open(path, "w").write(dumps([Sym("kicad_pcb")] + body[:-1] + added + [body[-1]]) + "\n")
-    return done, failed, fails, len([a for a in added if a[0] == "segment"]), nvia
+    return (done, failed, fails, len([a for a in added if a[0] == "segment"]),
+            len([a for a in added if a[0] == "via"]), stitched)
 
 if __name__ == "__main__":
-    for name, step, tries in (("Symm60HE-Left", 0.5, 3), ("Symm60HE-Right", 0.5, 3),
-                              ("Symm60HE-Daughterboard", 0.25, 4)):
-        d, f, fl, ns, nv = route_board("../pcb/%s.kicad_pcb" % name, name, step, tries)
+    for name, step, tries, pl in (("Symm60HE-Left", 0.5, 3, PLANES["half"]),
+                                  ("Symm60HE-Right", 0.5, 3, PLANES["half"]),
+                                  ("Symm60HE-Daughterboard", 0.25, 4, PLANES["db"])):
+        d, f, fl, ns, nv, st = route_board("../pcb/%s.kicad_pcb" % name, name,
+                                           step, tries, planes=pl)
         print("%-24s %4d segments, %3d vias | %d routed, %d unrouted%s"
               % (name, ns, nv, d, f,
                  ("  " + ", ".join("%s@%s.%s" % x for x in fl[:4])) if fl else ""))
+        for net, nv2, nj, bad in st:
+            print("%-24s   %s plane: %d vias + %d pads sharing one%s"
+                  % ("", net, nv2, nj, ", %d unreached" % bad if bad else ""))

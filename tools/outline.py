@@ -46,9 +46,18 @@ def big_poly(g):
 LEFT_PCB, RIGHT_PCB = big_poly(LEFT_PCB), big_poly(RIGHT_PCB)
 
 # Daughterboard: the top-centre wedge where the two halves pull apart.
-DB_W, DB_H = 56.0, 26.0   # LQFP-64 + USB-C between two end-on FFC links
+# 56 x 26 was as small as it would go and still hold the parts; it was not big
+# enough to route.  An LQFP-64 on 0.5 mm pitch needs room on all four sides to
+# fan out, and the case pocket is cut from this outline, so growing the board
+# grows the pocket with it -- the back solid has the depth for it.
+DB_W, DB_H = 62.0, 32.0   # LQFP-64 + USB-C between two end-on FFC links
 top = CASE_IN.bounds[1]
 DB = box(axis_mm - DB_W / 2, top + 1.0, axis_mm + DB_W / 2, top + 1.0 + DB_H)
+
+# The USB-C receptacle does not sit on the board's centre line: it goes beside
+# the MCU's USB pins, which are on that package's right-hand side.  Both the
+# board keep-out and the case cutout are placed from this one number.
+USB_X_OFF = 10.5
 
 if __name__ == "__main__":
     for nm, p in (("case outer", CASE_OUT), ("case inner", CASE_IN),
