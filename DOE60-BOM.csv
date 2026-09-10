@@ -1,0 +1,21 @@
+#,Value,Package,Manufacturer,MPN,Qty_Left,Qty_Right,LCSC,Notes
+1,MT9102ET,SOT-23-3 (key centre),NOVOSENSE,MT9102ET,33,36,C5447698,"Linear Hall sensor, one per switch position; populate only the positions your layout uses"
+2,SN74LV4051A,TSSOP-16_4.4x5mm_P0.65mm,Texas Instruments,SN74LV4051APWR,4,4,C7793,8:1 analog mux; INH (pin 6) tied to GND
+3,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,37,40,C1525,One per sensor (VCC) plus one per mux
+4,4.7n,C_0402_1005Metric,Murata,GRM1555C1H472JE01D,33,36,C1518204,One per sensor output
+5,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,generic,--,1,1,--,"Ribbon link to the daughterboard; 1.0 mm pitch, 12 way"
+6,Cherry PCB-mount stabiliser,STABILIZER_MX_2U,--,--,2,3,--,2.25u shift + 2.25u spacebar per half; right also has the 2u backspace
+7,M2 mounting hole,MountingHole_2.2mm_M2_Pad,--,--,4,4,--,To the case standoffs
+
+#,Value,Package,Manufacturer,MPN,Qty_Daughterboard,LCSC,Notes
+1,AT32F405RCT7,LQFP-64_10x10mm_P0.5mm,Artery,AT32F405RCT7,1,C47090415,216 MHz MCU; pinout taken from the FN40HE board
+2,USBLC6-2SC6,SOT-23-6,ST,USBLC6-2SC6,1,C7519,USB ESD; do not substitute
+3,TLV75733PDBV,SOT-23-5,TI,TLV75733PDBVR,1,C485517,3.3 V digital LDO
+4,XC6206P332MR-G,SOT-23-3,Torex,XC6206P332MR-G,1,C5446,"3.3 V analog LDO, feeds both halves over the ribbons"
+5,X322512MSB4SI,Crystal_SMD_3225-4Pin,Yangxing,X322512MSB4SI,1,C9002,12 MHz
+6,BSMD0805-050-24V,Fuse_0805_2012Metric,BHFUSE,BSMD0805-050-24V,1,C910822,0.5 A resettable
+7,TS-1187A-B-A-B,SW_Push_1P1T_XKB,XKB,TS-1187A-B-A-B,2,C318884,BOOT0 and NRST
+8,12k,R_0402_1005Metric,UNI-ROYAL,0402WGF1202TCE,1,C25752,OTGHS1_R to GND
+9,10u / 1u,C_0603_1608Metric,--,--,2,--,VBUS and 3V3D bulk
+10,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,generic,--,2,--,One ribbon to each half
+11,USB-C receptacle,Connector:USB_C_Receptacle_HRO_TYPE-C-31-M-12,HRO,TYPE-C-31-M-12,1,--,NOT PLACED -- add from KiCad's stock library at the marked keep-out

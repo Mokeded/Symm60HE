@@ -1,0 +1,13 @@
+pin,net,direction,notes
+1,+3V3A,daughterboard -> half,"analog rail, from the XC6206"
+2,GND,common,
+3,MUX_A0,daughterboard -> half,"mux address, shared by both halves"
+4,MUX_A1,daughterboard -> half,"mux address, shared by both halves"
+5,MUX_A2,daughterboard -> half,"mux address, shared by both halves"
+6,GND,common,
+7,ADC_x1,half -> daughterboard,"analog, keep the adjacent ground"
+8,GND,common,
+9,ADC_x2,half -> daughterboard,"analog, keep the adjacent ground"
+10,GND,common,
+11,ADC_x3,half -> daughterboard,"analog, keep the adjacent ground"
+12,ADC_x4,half -> daughterboard,"analog, keep the adjacent ground"

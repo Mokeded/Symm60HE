@@ -1,0 +1,70 @@
+ref,half,label,x_mm,y_mm,rotation_deg,width_u,in_builds
+SWL1,L,Esc,11.43,9.525,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL2,L,!,30.48,9.525,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL3,L,@,49.53,9.525,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL4,L,#,68.602,9.545,-0.122,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL5,L,$,88.262,9.933,-2.185,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL6,L,%,109.189,11.233,-5.012,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL7,L,^,130.109,13.35,-6.5,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL8,L,Tab,14.288,28.575,-0.0,1.5,wkl wklarrows wklbs2 wklbs2arrows
+SWL9,L,Q,38.1,28.575,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL10,L,W,57.15,28.575,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL11,L,E,76.314,28.685,-0.665,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL12,L,R,96.537,29.373,-3.302,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL13,L,T,117.631,31.071,-5.971,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL14,L,Y,138.015,33.301,-6.5,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL15,L,Caps Lock,15.716,47.625,-0.0,1.75,wkl wklarrows wklbs2 wklbs2arrows
+SWL16,L,A,41.91,47.625,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL17,L,S,60.96,47.625,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL18,L,D,80.195,47.806,-1.102,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL19,L,F,100.731,48.682,-3.869,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL20,L,G,121.818,50.545,-6.268,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL21,L,Shift,15.716,66.675,-0.0,2.25,wkl wklarrows wklbs2 wklbs2arrows
+SWL22,L,Z,46.673,66.675,-0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL23,L,X,65.729,66.68,-0.03,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL24,L,C,85.197,66.98,-1.772,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL25,L,V,106.014,68.118,-4.583,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL26,L,B,127.016,70.153,-6.469,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWL27,L,Control,8.572,85.725,-0.0,1.0,wklarrows wklbs2arrows
+SWL28,L,Control,13.335,85.725,-0.0,1.5,wkl wklbs2
+SWL29,L,Fn,27.622,85.725,-0.0,1.0,wklarrows wklbs2arrows
+SWL30,L,Fn,41.91,85.725,-0.0,1.5,wkl wklbs2
+SWL31,L,Super,46.673,85.725,-0.0,1.0,wklarrows wklbs2arrows
+SWL32,L,Alt,85.064,86.164,-1.778,1.5,wkl wklarrows wklbs2 wklbs2arrows
+SWL33,L,Space,123.043,88.956,-5.955,2.25,wkl wklarrows wklbs2 wklbs2arrows
+SWR1,R,),231.436,9.545,0.122,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR2,R,_,250.508,9.525,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR3,R,+,269.558,9.525,0.0,1.0,wkl wklarrows
+SWR4,R,Backspace,279.083,9.525,0.0,2.0,wklbs2 wklbs2arrows
+SWR5,R,},288.608,9.525,0.0,1.0,wkl wklarrows
+SWR6,R,(,211.777,9.934,2.185,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR7,R,*,190.848,11.232,5.012,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR8,R,&,169.928,13.35,6.5,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR9,R,P,242.888,28.575,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR10,R,{,261.938,28.575,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR11,R,Backspace/},285.75,28.575,0.0,1.5,wkl wklarrows wklbs2 wklbs2arrows
+SWR12,R,O,223.725,28.685,0.665,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR13,R,I,203.501,29.373,3.302,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR14,R,U,182.406,31.072,5.971,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR15,R,Y,162.024,33.301,6.5,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR16,R,L,239.078,47.625,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR17,R,:,258.127,47.625,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR18,R,Enter,284.321,47.625,0.0,1.75,wkl wklarrows wklbs2 wklbs2arrows
+SWR19,R,K,219.843,47.806,1.102,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR20,R,J,199.307,48.683,3.869,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR21,R,H,178.22,50.546,6.268,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR22,R,<,234.309,66.68,0.03,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR23,R,>,253.365,66.675,0.0,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR24,R,↑,272.415,66.675,0.0,1.0,wklarrows wklbs2arrows
+SWR25,R,Shift,284.321,66.675,0.0,2.25,wkl wklbs2
+SWR26,R,Shift,293.846,66.675,0.0,1.25,wklarrows wklbs2arrows
+SWR27,R,M,214.841,66.98,1.772,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR28,R,N,194.023,68.118,4.583,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR29,R,B,173.023,70.153,6.469,1.0,wkl wklarrows wklbs2 wklbs2arrows
+SWR30,R,←,253.365,85.725,0.0,1.0,wklarrows wklbs2arrows
+SWR31,R,Super,258.127,85.725,0.0,1.5,wkl wklbs2
+SWR32,R,↓,272.415,85.725,0.0,1.0,wklarrows wklbs2arrows
+SWR33,R,Control,286.703,85.725,0.0,1.5,wkl wklbs2
+SWR34,R,→,291.465,85.725,0.0,1.0,wklarrows wklbs2arrows
+SWR35,R,Alt,214.973,86.163,1.778,1.5,wkl wklarrows wklbs2 wklbs2arrows
+SWR36,R,Space,176.994,88.958,5.955,2.25,wkl wklarrows wklbs2 wklbs2arrows

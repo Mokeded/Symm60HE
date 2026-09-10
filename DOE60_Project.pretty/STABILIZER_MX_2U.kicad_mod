@@ -1,0 +1,79 @@
+(footprint "S1_STABILIZER_HOLES"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "S1"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(uuid "a5df5498-f0cd-45d4-b210-83a35b2b71ab")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Value" "FN40_PCB_STABILIZER_HOLES"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "cf8e83bc-9515-4060-85b4-e4ba646d4813")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a42c3e4a-67b4-44bb-8334-bceff4b23968")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "af4fe6d1-8c3a-47a4-9e77-0150b4c79039")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr exclude_from_pos_files exclude_from_bom)
+	(duplicate_pad_numbers_are_jumpers no)
+	(pad "" np_thru_hole circle
+		(at -11.90625 -6.985)
+		(size 3.048 3.048)
+		(drill 3.048)
+		(layers "*.Cu" "*.Mask")
+		(uuid "f212a766-2d64-4ce6-b1a0-b1d412153376")
+	)
+	(pad "" np_thru_hole circle
+		(at -11.90625 8.255)
+		(size 3.9878 3.9878)
+		(drill 3.9878)
+		(layers "*.Cu" "*.Mask")
+		(uuid "d2d9af36-b201-4e36-8e4d-95b97b5b3d10")
+	)
+	(pad "" np_thru_hole circle
+		(at 11.90625 -6.985)
+		(size 3.048 3.048)
+		(drill 3.048)
+		(layers "*.Cu" "*.Mask")
+		(uuid "7284fe0f-dfe3-4f91-9e5f-77c0e3750c9d")
+	)
+	(pad "" np_thru_hole circle
+		(at 11.90625 8.255)
+		(size 3.9878 3.9878)
+		(drill 3.9878)
+		(layers "*.Cu" "*.Mask")
+		(uuid "91db311c-d72e-411e-8518-d53c0889ff8d")
+	)
+	(embedded_fonts no)
+)

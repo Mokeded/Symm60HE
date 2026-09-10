@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "DOE60_Project")(type "KiCad")(uri "${KIPRJMOD}/../DOE60_Project.pretty")(options "")(descr "DOE60 split-PCB footprints"))
+)
