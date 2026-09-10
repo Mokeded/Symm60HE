@@ -3,6 +3,10 @@
 Symmetrical Hall effect Alice keyboard based off of the Doe — split into three
 boards linked by ribbon cable.
 
+GPLv3. Derived from FN40HE; see `NOTICE.md` for what is taken and from where.
+The layout is a reconstruction of the DOE 60% by hare works, measured from
+published photographs — not affiliated with that project.
+
 The DOE 60% filled-WKL layout, built the way FN40HE is built (MT9102ET Hall
 sensors, 8:1 analog muxes into an AT32F405RCT7) but cut into three boards linked
 by ribbon cable:
@@ -199,3 +203,8 @@ B.*, and sets each placed pad's angle to its library angle plus the footprint
 rotation. That rule was read off FN40HE's own flipped footprints, and flipping
 our 1u key footprint at −90° reproduces FN40HE's placed HE16 exactly — same pad
 coordinates, same angles, same layers.
+
+## Licence
+
+GPLv3, because this derives from FN40HE which is GPLv3. See `LICENSE` and
+`NOTICE.md`. Retain source, licence and attribution when redistributing.
