@@ -19,13 +19,13 @@ for pcb in ("../pcb/Symm60HE-Left.kicad_pcb", "../pcb/Symm60HE-Right.kicad_pcb")
     for ref, col, shapes, _ in parts(pcb):
         for s in shapes: c.poly(s, fill=col+(230,))
 fy = c.im.height/SS - 34
-c.raw_text((16, fy), "Symm60HE  —  case 335 x 124 mm  |  left PCB 157.9 x 105.9  |  right PCB 155.5 x 106.4  |  69 switch positions", INK, 11)
+c.raw_text((16, fy), "Symm60HE  —  key field reference  |  left PCB 157.9 x 107.8  |  right PCB 155.5 x 107.8  |  69 switch positions", INK, 11)
 c.raw_text((16, fy+15), "all components on the underside, shown through the board   |   orange = MT9102ET   blue = decoupling   red = SN74LV4051A   purple = 12-way FFC   grey = stabiliser   white = M2", DIM, 9.5)
 print("assembly", c.save("01-assembly.png"))
 
 # ------------------------------------------------------------ 2 & 3. halves
-for nm, pcb, title in (("02-left.png", "../pcb/Symm60HE-Left.kicad_pcb", "Symm60HE-Left   157.9 x 105.9 mm   33 switch positions, 31 mux channels"),
-                       ("03-right.png", "../pcb/Symm60HE-Right.kicad_pcb", "Symm60HE-Right   155.5 x 106.4 mm   36 switch positions, 32 mux channels")):
+for nm, pcb, title in (("02-left.png", "../pcb/Symm60HE-Left.kicad_pcb", "Symm60HE-Left   157.9 x 107.8 mm   33 switch positions, 31 mux channels"),
+                       ("03-right.png", "../pcb/Symm60HE-Right.kicad_pcb", "Symm60HE-Right   155.5 x 107.8 mm   36 switch positions, 32 mux channels")):
     ep = edge_poly(pcb)
     c = Canvas(ep.bounds, 1700, foot=72)
     c.poly(ep, fill=(29,90,70), outline=(87,211,154), w=1.0)
@@ -41,7 +41,7 @@ for nm, pcb, title in (("02-left.png", "../pcb/Symm60HE-Left.kicad_pcb", "Symm60
     fy = c.im.height/SS - 34
     c.raw_text((16, fy), title, INK, 11)
     c.raw_text((16, fy+15), "everything on B.Cu, under the switches   |   4x SN74LV4051A   |   one 12-way FFC to the daughterboard   |   4x M2", DIM, 9.5)
-    c.raw_text((16, fy+29), "routing: %d segments, %d vias   |   orange = B.Cu, blue = F.Cu, white = via   |   GND is not routed, both pours carry it" % (ns, nv), (240,176,96), 9.5)
+    c.raw_text((16, fy+29), "routing: %d segments, %d vias   |   orange = B.Cu, blue = F.Cu, white = via   |   explicit +3V3A, dual GND pours" % (ns, nv), (240,176,96), 9.5)
     print(nm, c.save(nm))
 
 # ------------------------------------------------------------- 4. daughterboard
@@ -59,11 +59,12 @@ for ref, col, shapes, at in parts("../pcb/Symm60HE-Daughterboard.kicad_pcb"):
     else:
         c.text((at[0], lo - 1.6), ref, INK, 8.5, anchor="md")
 ko = layer_poly("../pcb/Symm60HE-Daughterboard.kicad_pcb", "Dwgs.User")
-c.poly(ko, outline=(176,108,214), w=1.0)
-c.text((ko.centroid.x, ko.centroid.y), "USB-C keep-out", (176,108,214), 8, anchor="mm")
+if ko is not None:
+    c.poly(ko, outline=(176,108,214), w=1.0)
+    c.text((ko.centroid.x, ko.centroid.y), "USB-C keep-out", (176,108,214), 8, anchor="mm")
 fy = c.im.height/SS - 60
-c.raw_text((20, fy), "Symm60HE-Daughterboard   56 x 26 mm", INK, 12)
+c.raw_text((20, fy), "Symm60HE-Daughterboard   57 x 28 mm   |   FFC cable mouths face outward", INK, 12)
 c.raw_text((20, fy+16), "U1 AT32F405RCT7  |  U2 USBLC6  |  U3/U4 3V3 digital + analog LDOs  |  Y1 12 MHz  |  J2/J3 ribbon to each half", DIM, 9.5)
-c.raw_text((20, fy+30), "routing: %d segments, %d vias — partial; the LQFP-64 pinout is a placeholder until there are schematics" % (dns, dnv), (240,176,96), 9.5)
-c.raw_text((20, fy+44), "USB-C receptacle not placed — add Connector:USB_C_Receptacle_HRO_TYPE-C-31-M-12 at the keep-out", (224,164,88), 9.5)
+c.raw_text((20, fy+30), "routing: %d segments, %d vias — fully connected; the LQFP-64 pin assignment follows FN40HE" % (dns, dnv), (240,176,96), 9.5)
+c.raw_text((20, fy+44), "USB-C receptacle and two M2 daughterboard mounting holes are included", (224,164,88), 9.5)
 print("daughterboard", c.save("04-daughterboard.png"))

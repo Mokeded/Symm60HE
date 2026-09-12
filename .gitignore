@@ -1,4 +1,8 @@
 __pycache__/
+.DS_Store
+.venv/
+work/
+firmware/libhmk/.pio/
 *.pyc
 *-backups/
 *.kicad_prl

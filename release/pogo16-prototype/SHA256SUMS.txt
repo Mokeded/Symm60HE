@@ -1,0 +1,3 @@
+8143fe0d5ee24f0c76fb36687db4ecc3bc4388044d9a9e95e0f18366b94daf8d  release/pogo16-prototype/Symm60HE-Pogo16-Spring-Coupon-Gerbers.zip
+356c9199922f7beb9cbeefc86edac567b3cffc1500bc4197998a414bff7ebb59  release/pogo16-prototype/Symm60HE-Pogo16-Target-Coupon-Gerbers.zip
+89f83d59d6b18ecec5c7e746c64a8448d9a4ca50d3edbcc26e1a801eb013663f  release/pogo16-prototype/README.md

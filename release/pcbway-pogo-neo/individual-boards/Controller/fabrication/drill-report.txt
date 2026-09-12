@@ -1,0 +1,25 @@
+Drill report for Symm60HE-Neo-Controller.kicad_pcb
+Created on 2026-09-12T13:41:17
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  B.Cu                      back
+
+
+Drill file 'Symm60HE-Neo-Controller-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (37 holes))
+    T2  0.600mm  0.0236"  (4 holes)  (with 4 slots)
+
+    Total plated holes count 41
+
+
+Drill file 'Symm60HE-Neo-Controller-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  0.650mm  0.0256"  (2 holes))
+    T2  2.200mm  0.0866"  (2 holes))
+
+    Total unplated holes count 4

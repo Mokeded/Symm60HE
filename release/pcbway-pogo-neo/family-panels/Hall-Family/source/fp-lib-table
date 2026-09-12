@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "Symm60HE_Project")(type "KiCad")(uri "${KIPRJMOD}/../../../../Symm60HE_Project.pretty")(options "")(descr "Symm60HE Neo pogo panel footprints"))
+)

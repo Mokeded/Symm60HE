@@ -1,0 +1,32 @@
+** Drc report for Symm60HE-Neo-Right-Half.kicad_pcb **
+** Created on 2026-09-12T13:41:30 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 0 DRC violations **
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Hole clearance violation
+    - Drilled hole too close to other hole
+    - Annular width
+    - Courtyards overlap
+    - Footprint has no courtyard defined
+    - Footprint has malformed courtyard
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Silkscreen clearance
+    - Silkscreen clipped by solder mask
+    - Silkscreen clipped by board edge
+    - Text height out of range
+    - Text thickness out of range
+    - Mirrored text on front layer
+    - Non-Mirrored text on back layer
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

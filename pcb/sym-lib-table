@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Symm60HE_Left_Symbols")(type "KiCad")(uri "${KIPRJMOD}/Symm60HE-Left.kicad_sym")(options "")(descr "PCB-derived connectivity symbols"))
+  (lib (name "Symm60HE_Right_Symbols")(type "KiCad")(uri "${KIPRJMOD}/Symm60HE-Right.kicad_sym")(options "")(descr "PCB-derived connectivity symbols"))
+  (lib (name "Symm60HE_Daughterboard_Symbols")(type "KiCad")(uri "${KIPRJMOD}/Symm60HE-Daughterboard.kicad_sym")(options "")(descr "PCB-derived connectivity symbols"))
+)

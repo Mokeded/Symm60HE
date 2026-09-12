@@ -1,12 +1,11 @@
 """Routing pass for the Symm60HE boards.
 
-Layer plan, the usual one for a two-layer analog design:
+Layer plan for the current two-layer manufacturing design:
 
-  B.Cu   components, and the great majority of the signals and the +3V3A rail.
-  F.Cu   GND plane.  Nothing is mounted on the front, so it stays essentially
-         unbroken, which is what the sensor returns want.
-  GND    is never routed at all: both pours carry it, and the sensors' and
-         muxes' ground pins sit straight on the B.Cu pour.
+  F.Cu/B.Cu  signal routing plus GND pours on both sides.
+  +3V3A      explicit routed copper on the keyboard halves and daughterboard.
+  GND        supplied by the two pours, with existing stitching vias joining
+             the layers and isolated regions.
 
 Two things make this harder than a plain maze:
 
@@ -32,8 +31,9 @@ from sexp import loads, dumps, find, first, Sym
 from router import Grid, simplify, GRID, TRACE, CLEAR, PAD_MARGIN
 from shapely.geometry import Polygon, Point, box as sbox, LineString
 from shapely.affinity import rotate as srot, translate as stran
+from shapely.ops import polygonize
 
-VIA_D, VIA_DRILL, POUR_INSET = 0.45, 0.25, 0.3
+VIA_D, VIA_DRILL, POUR_INSET = 0.60, 0.30, 0.3
 LAYERS = ("B.Cu", "F.Cu")
 ESCAPE = (0.45, 1.05)          # near/far fan-out ring, past the pad tip
 LANE = 1.30                    # length of a pad's private escape lane
@@ -79,7 +79,12 @@ def read(path):
         ls = [((float(first(l,"start")[1]), float(first(l,"start")[2])),
                (float(first(l,"end")[1]),   float(first(l,"end")[2])))
               for l in find(b, "gr_line") if first(l,"layer")[1] == layer]
-        return Polygon([ls[0][0]] + [q[1] for q in ls]) if len(ls) > 2 else None
+        if len(ls) <= 2:
+            return None
+        # KiCad and Specctra may reorder Edge.Cuts records when saving.  Build
+        # the contour from connected linework instead of relying on file order.
+        polys = list(polygonize([LineString(pair) for pair in ls]))
+        return max(polys, key=lambda p: p.area) if polys else None
     # anything drawn on Dwgs.User is a keep-out -- at the moment that is the
     # USB-C receptacle, whose body and shield tabs are not a footprint yet
     return b, pads, poly_on("Edge.Cuts"), poly_on("Dwgs.User")
@@ -159,8 +164,12 @@ class Space:
 # ---------------------------------------------------------------- emission
 
 def seg(a, c, net, layer):
-    return [Sym("segment"), [Sym("start"), round(a[0],4), round(a[1],4)],
-            [Sym("end"), round(c[0],4), round(c[1],4)], [Sym("width"), TRACE],
+    a = (round(a[0], 4), round(a[1], 4))
+    c = (round(c[0], 4), round(c[1], 4))
+    if a == c:
+        raise ValueError("refusing to emit a zero-length segment at %r" % (a,))
+    return [Sym("segment"), [Sym("start"), a[0], a[1]],
+            [Sym("end"), c[0], c[1]], [Sym("width"), TRACE],
             [Sym("layer"), layer], [Sym("net"), net], [Sym("uuid"), str(uuid.uuid4())]]
 
 def via(pt, net):
@@ -306,8 +315,13 @@ def stitch(grid, space, added, pads, net, layer, spacing=0.0, bridge=False):
 
 def keep(space, grid, added, net, pts, L):
     """Write one run of copper and remember it."""
+    cleaned = []
+    for p in pts:
+        q = (round(p[0], 4), round(p[1], 4))
+        if not cleaned or q != cleaned[-1]:
+            cleaned.append(q)
+    pts = cleaned
     for k in range(len(pts)-1):
-        if pts[k] == pts[k+1]: continue
         added.append(seg(pts[k], pts[k+1], net, LAYERS[L]))
     if len(pts) > 1:
         line = LineString(pts)
@@ -336,7 +350,7 @@ def plan(pads, outline, step, order, keepout=None, planes=()):
         space.add(p["geom"], p["net"] if p["net"] else "#\x00%d" % id(p), pad_layers(p))
 
     added, done, failed, fails, nvia = [], 0, 0, [], 0
-    stitched, bridges = [], []
+    stitched, deferred_stitches = [], []
     bylayer = {}
     for net, layer in planes: bylayer.setdefault(net, []).append(layer)
     for net, lays in bylayer.items():
@@ -346,12 +360,13 @@ def plan(pads, outline, step, order, keepout=None, planes=()):
             # is the least constrained thing on the board and it waits until
             # the end -- planted first, these land in the fan-out lanes their
             # neighbours need and strangle the board.
-            bridges.append((net, lays[0]))
+            deferred_stitches.append((net, lays[0], True))
         else:
-            # A rail with no pour of its own on the pad side is the opposite
-            # case: nothing works until each pad can reach its plane, so its
-            # taps are placed before any signal.
-            stitched.append((net,) + stitch(grid, space, added, pads, net, lays[0]))
+            # Plane taps are local stubs.  Route constrained signals first;
+            # planting dozens of through-vias in the switch field up front
+            # blocks both layers and strands mux channels for no electrical
+            # benefit.  Failed late taps are reported just like failed routes.
+            deferred_stitches.append((net, lays[0], False))
     for span, net, ps in order:
         anchor = None
         for cell, pts in hooks(grid, space, ps[0], net):
@@ -399,18 +414,18 @@ def plan(pads, outline, step, order, keepout=None, planes=()):
                 space.add(Point(*v).buffer(VIA_D/2), net, (0, 1))
                 grid.block(Point(*v).buffer(VIA_D/2), net=net, layers=(0, 1))
             done += 1
-    for net, layer in bridges:
-        stitched.append((net,) + stitch(grid, space, added, pads, net, layer,
-                                        spacing=12.0, bridge=True))
+    for net, layer, bridge in deferred_stitches:
+        stitched.append((net,) + stitch(
+            grid, space, added, pads, net, layer,
+            spacing=12.0 if bridge else 0.0, bridge=bridge))
     return added, done, failed, fails, nvia, stitched
 
-# What each board pours, and on which layer.  The halves carry no components on
-# the front, so F.Cu is free to be the analog supply plane -- which is FN40HE's
-# arrangement too, a GND pour plus a zone of its own for +3.3VA.  The
-# daughterboard is populated on the front, so it pours GND on both sides and
-# routes its handful of rails.
+# What each board pours, and on which layer.  Power is explicit routing; both
+# external layers retain GND copper.  Keeping this declaration current matters:
+# rerunning this legacy router must not silently restore the superseded +3V3A
+# plane on either keyboard half.
 PLANES = {
-    "half": (("+3V3A", "F.Cu"), ("GND", "B.Cu")),
+    "half": (("GND", "F.Cu"),   ("GND", "B.Cu")),
     "db":   (("GND", "F.Cu"),   ("GND", "B.Cu")),
 }
 
@@ -429,7 +444,11 @@ def route_board(path, label, step=GRID, tries=1, seed=7, planes=PLANES["half"]):
     for t in range(max(1, tries)):
         order = base if t == 0 else rng.sample(base, len(base))
         r = plan(pads, outline, step, order, keepout, planes)
-        if best is None or r[1] > best[1]: best = r
+        score = (r[1], -r[2], -r[4], -len(r[0]))
+        best_score = ((best[1], -best[2], -best[4], -len(best[0]))
+                      if best is not None else None)
+        if best is None or score > best_score:
+            best = r
         if best[2] == 0: break
     added, done, failed, fails, nvia, stitched = best
     added = list(added)

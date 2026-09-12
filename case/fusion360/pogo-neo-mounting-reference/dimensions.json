@@ -1,0 +1,73 @@
+{
+  "status": "case-design reference; prototype before production",
+  "tent_angle_deg": 6.0,
+  "controller_pcb_mm": [
+    28.0,
+    57.0,
+    1.2
+  ],
+  "spring_pcb_mm": [
+    20.0,
+    20.0,
+    1.2
+  ],
+  "hall_pcb_thickness_mm": 1.2,
+  "spring_pocket_mm": [
+    20.8,
+    20.8
+  ],
+  "spring_pcb_xy_clearance_per_side_mm": 0.4,
+  "spring_to_target_pcb_spacing_mm": 6.0,
+  "pogo_spring_mpn": "854-22-012-30-004101",
+  "pogo_target_mpn": "856-10-012-30-051000",
+  "pogo_contacts": 12,
+  "pogo_pitch_mm": 1.27,
+  "pogo_body_mm": [
+    14.35,
+    1.9
+  ],
+  "pogo_spring_initial_height_mm": 4.216,
+  "pogo_spring_stroke_mm": 1.016,
+  "pogo_spring_working_height_mm": 3.79,
+  "pogo_target_projection_mm": 2.21,
+  "pogo_model_note": "dimensioned case-design reference, not vendor-certified CAD",
+  "tray_floor_mm": 1.2,
+  "controller_mount": "two existing M2 NPTH holes plus two compliant opposite-edge ledges",
+  "spring_mount": "four Poron supports and four perimeter capture lips; no rigid PCB clamp",
+  "target_mount": "target connector soldered directly to Hall PCB",
+  "ffc": "two 12-way 1.0 mm same-side cables; shown routes are clearance envelopes",
+  "objects": [
+    "ControllerTray",
+    "ControllerPCB",
+    "ControllerM2Hardware",
+    "ControllerAntiRockLedges",
+    "LeftCarrier",
+    "LeftSpringPCB",
+    "LeftSpringConnector",
+    "LeftSpringTravelEnvelope",
+    "LeftTargetConnector",
+    "LeftHallPCBDatum",
+    "LeftPoronSupports",
+    "LeftCaptureLips",
+    "LeftCompressionStops",
+    "LeftSpringFFCConnector",
+    "LeftBridgeRibs",
+    "RightCarrier",
+    "RightSpringPCB",
+    "RightSpringConnector",
+    "RightSpringTravelEnvelope",
+    "RightTargetConnector",
+    "RightHallPCBDatum",
+    "RightPoronSupports",
+    "RightCaptureLips",
+    "RightCompressionStops",
+    "RightSpringFFCConnector",
+    "RightBridgeRibs",
+    "LeftFFCEnvelope",
+    "RightFFCEnvelope"
+  ],
+  "fusion_handoff": [
+    "Symm60HE-Neo-Pogo-Mounting-Reference.step",
+    "Symm60HE-Neo-Pogo-Mounting-Reference-Exploded.step"
+  ]
+}

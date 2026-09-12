@@ -1,0 +1,11 @@
+Parameter,Requested value,Notes
+Layers,2,F.Cu and B.Cu
+Finished thickness,1.2 mm,Required for mechanical stack
+Material,FR-4,Standard Tg acceptable for prototype
+Copper,1 oz outer,No controlled impedance requirement
+Surface finish,ENIG recommended,Confirm quotation before production
+Solder mask,Customer selection,Green acceptable
+Silkscreen,White,Use supplied plots
+Electrical test,100%,All fabricated boards
+Quality,IPC Class 2,Prototype/consumer keyboard
+Panel delivery,Depanel after assembly only if quoted,Protect irregular edges

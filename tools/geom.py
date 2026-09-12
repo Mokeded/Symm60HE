@@ -3,10 +3,12 @@
 Reads the published KLE builds, unions their key positions so one PCB carries
 every layout option, converts to millimetres, and splits into halves.
 """
-import json, math, os
+import csv, json, math, os
 
 U = 19.05
-KLE = "/tmp/claude-0/-home-user/4da571d8-5a28-56aa-8c94-26cbb97dc329/scratchpad/kle"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KLE = os.environ.get("SYMM60HE_KLE_DIR", os.path.join(ROOT, "layout", "kle"))
+SWITCH_MAP = os.path.join(ROOT, "Symm60HE-switch-map.csv")
 BUILDS = ["doe-wkl", "doe-wklbs2", "doe-wklarrows", "doe-wklbs2arrows"]
 
 def parse(path):
@@ -38,6 +40,27 @@ def parse(path):
     return out
 
 def collect():
+    paths = [os.path.join(KLE, b + ".kle.json") for b in BUILDS]
+    if not all(os.path.exists(path) for path in paths):
+        if not os.path.exists(SWITCH_MAP):
+            missing = [path for path in paths if not os.path.exists(path)]
+            raise FileNotFoundError(
+                "layout inputs are missing; expected the committed switch map at %s "
+                "or all KLE files under %s (missing: %s)"
+                % (SWITCH_MAP, KLE, ", ".join(missing)))
+        keys = []
+        with open(SWITCH_MAP, newline="") as f:
+            for row in csv.DictReader(f):
+                builds = {"doe-" + name for name in row["in_builds"].split()}
+                labels = set(row["label"].split("/"))
+                keys.append(dict(label=row["label"],
+                                 cx=float(row["x_mm"]) / U,
+                                 cy=float(row["y_mm"]) / U,
+                                 rot=-float(row["rotation_deg"]),
+                                 w=float(row["width_u"]),
+                                 labels=labels, builds=builds))
+        return keys
+
     seen, keys = {}, []
     for b in BUILDS:
         for lab, cx, cy, rot, w in parse(os.path.join(KLE, b + ".kle.json")):

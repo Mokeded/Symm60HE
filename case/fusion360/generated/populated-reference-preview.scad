@@ -1,0 +1,10 @@
+$fn=36;
+color([0.08,0.30,0.14,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/LeftPCB-placed.stl");
+color([0.08,0.30,0.14,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/RightPCB-placed.stl");
+color([0.05,0.22,0.10,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/DaughterboardPCB-placed.stl");
+color([0.52,0.56,0.62,0.55]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/LeftPlate-placed.stl");
+color([0.52,0.56,0.62,0.55]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/RightPlate-placed.stl");
+color([0.10,0.10,0.12,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/LeftSwitches-placed.stl");
+color([0.10,0.10,0.12,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/RightSwitches-placed.stl");
+color([0.78,0.83,0.88,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/LeftKeycaps-placed.stl");
+color([0.78,0.83,0.88,1.0]) import("/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/case/fusion360/generated/RightKeycaps-placed.stl");

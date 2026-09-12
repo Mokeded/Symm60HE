@@ -1,0 +1,13 @@
+Mill-Max pin,Left net,Right net,Policy
+1,ADC_L4,+3V3A,Power-off only
+2,ADC_L3,GND,Power-off only
+3,GND,MUX_A0,Power-off only
+4,ADC_L2,GND,Power-off only
+5,GND,MUX_A1,Power-off only
+6,ADC_L1,MUX_A2,Power-off only
+7,GND,ADC_R1,Power-off only
+8,MUX_A2,GND,Power-off only
+9,MUX_A1,ADC_R2,Power-off only
+10,MUX_A0,GND,Power-off only
+11,GND,ADC_R3,Power-off only
+12,+3V3A,ADC_R4,Power-off only

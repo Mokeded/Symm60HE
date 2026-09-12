@@ -1,0 +1,7 @@
+ezdxf==1.4.4
+kiutils==1.4.8
+Pillow==12.3.0
+platformio==6.1.18
+pydantic~=2.11
+SCons==4.8.1
+Shapely==2.1.2

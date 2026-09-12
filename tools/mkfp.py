@@ -6,13 +6,18 @@ are byte-for-byte the shapes that already passed DRC on that board; only the
 cap outline on Dwgs.User is rescaled per width.
 """
 import re, os, uuid
+from pathlib import Path
 
-SRC = "/home/user/FN40HE/FN40_Project.pretty/HE1_MT9102ET_Key_1.00u.kicad_mod"
-OUT = "../Symm60HE_Project.pretty"
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "Symm60HE_Project.pretty"
+# The original generator reached into one developer's FN40HE checkout.  The
+# verified 1u derivative is now committed with this project, so it is the
+# portable canonical template for every supported key width.
+SRC = OUT / "HE_KEY_1.00u.kicad_mod"
 U = 19.05
 WIDTHS = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25]
 
-tpl = open(SRC).read()
+tpl = SRC.read_text()
 
 def newid(m):
     return '(uuid "%s")' % uuid.uuid4()
@@ -20,7 +25,8 @@ def newid(m):
 for w in WIDTHS:
     name = "HE_KEY_%.2fu" % w
     s = tpl
-    s = s.replace('(footprint "HE1_MT9102ET_Key_1.00u"', '(footprint "%s"' % name)
+    s = re.sub(r'^\(footprint "(?:HE1_MT9102ET_Key_1\.00u|HE_KEY_1\.00u)"',
+               '(footprint "%s"' % name, s, count=1)
     s = s.replace('(property "Reference" "HE1"', '(property "Reference" "HE**"')
     s = s.replace('(sheetfile "HE60.kicad_sch")', '(sheetfile "")')
     s = s.replace('(descr "SOT, 3 Pin',
@@ -36,7 +42,7 @@ for w in WIDTHS:
     s = re.sub(r'\(fp_line\s*\(start [^)]*\)\s*\(end [^)]*\)\s*\(stroke\s*\(width [^)]*\)\s*\(type solid\)\s*\)\s*\(layer "Dwgs\.User"\)\s*\(uuid "[^"]*"\)\s*\)',
                fix, s)
     s = re.sub(r'\(uuid "[0-9a-f-]{36}"\)', newid, s)
-    open(os.path.join(OUT, name + ".kicad_mod"), "w").write(s)
+    (OUT / (name + ".kicad_mod")).write_text(s)
     print("wrote %s.kicad_mod  (cap %.2f x 19.05 mm)" % (name, w * U))
 
 # --------------------------------------------------------------- mux package --
@@ -103,7 +109,7 @@ def soic16():
     L.append('\t(model "${KICAD9_3DMODEL_DIR}/Package_SO.3dshapes/SOIC-16_3.9x9.9mm_P1.27mm.step"'
              ' (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))')
     L.append(')')
-    open(os.path.join(OUT, n + ".kicad_mod"), "w").write("\n".join(L) + "\n")
+    (OUT / (n + ".kicad_mod")).write_text("\n".join(L) + "\n")
     print("wrote %s.kicad_mod  (16 pads, %.2f mm pitch, %.2f mm between pads)"
           % (n, s["pitch"], s["pitch"] - ph))
 

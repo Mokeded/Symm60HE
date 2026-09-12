@@ -1,0 +1,4 @@
+Item,Manufacturer,Manufacturer Part Number,Quantity per Keyboard,Install location,Notes
+12-contact spring connector,Mill-Max,854-22-012-30-004101,2,PS1 on both spring modules,Hand/consigned; qualify coupon and reflow profile first
+12-contact target,Mill-Max,856-10-012-30-051000,2,PTL1 and PTR1 on Hall PCBs,Hand/consigned; targets face the floating spring heads
+12-way 1.0 mm same-side FFC,JXTCONN,FC-1012P-100T3,2,Controller to spring modules,100 mm reference cable; confirm routing and bend radius in final case

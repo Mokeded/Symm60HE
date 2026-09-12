@@ -1,0 +1,14 @@
+Symm60HE firmware release build
+Date: 2026-09-10
+Target: symm60he
+MCU/board: AT32F405RCT7 / genericAT32F405RCT7
+Framework: at32firmlib
+Result: SUCCESS
+Flash: 33500 / 262144 bytes (12.8%)
+RAM: 13884 / 104448 bytes (13.3%)
+firmware.bin size: 33508 bytes
+firmware.bin SHA-256: 856639e04d1b6d8582e9d653f6a7f04aa83aea6be9b8a4f0ca60c88a5a7cde78
+
+Build note: the upstream metadata/link-map step does not quote project paths,
+so the checked build was performed from a temporary path without spaces and
+the resulting BIN/ELF were copied back into firmware/build.

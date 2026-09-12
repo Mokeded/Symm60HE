@@ -7,15 +7,21 @@ GPLv3. Derived from FN40HE; see `NOTICE.md` for what is taken and from where.
 The layout is a reconstruction of the DOE 60% by hare works, measured from
 published photographs — not affiliated with that project.
 
+Current manufacturing renders are in [`docs/img/`](docs/img/), including the
+two-half panel, both sides of the compact daughterboard, and a populated Fusion
+reference preview. The previous case was retired; the current case-design
+handoff is a nine-body Fusion-compatible reference assembly.
+
 The DOE 60% filled-WKL layout, built the way FN40HE is built (MT9102ET Hall
 sensors, 8:1 analog muxes into an AT32F405RCT7) but cut into three boards linked
 by ribbon cable:
 
 | Board | Size | Carries |
 |---|---|---|
-| `pcb/Symm60HE-Left.kicad_pcb` | 157.9 × 105.9 mm | 33 switch positions, 4 muxes, 1 ribbon link |
-| `pcb/Symm60HE-Right.kicad_pcb` | 155.5 × 106.4 mm | 36 switch positions, 4 muxes, 1 ribbon link |
-| `pcb/Symm60HE-Daughterboard.kicad_pcb` | 62 × 32 mm | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 ribbon links |
+| `pcb/Symm60HE-Left.kicad_pcb` | **158.9 × 107.7 mm** | 33 switch positions, 4 muxes, 1 ribbon link |
+| `pcb/Symm60HE-Right.kicad_pcb` | **158.9 × 107.7 mm** | 36 switch positions, 4 muxes, 1 ribbon link |
+| `pcb/Symm60HE-Panel.kicad_pcb` | **175.32 × 233.91 mm** | Stacked connected manufacturing panel containing both keyboard halves |
+| `pcb/Symm60HE-Daughterboard.kicad_pcb` | **57 × 28 mm** | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 outward-facing ribbon links |
 
 Open each `.kicad_pro` in KiCad 10.
 
@@ -32,98 +38,186 @@ The mux address lines are broadcast to both halves, so both scan in lockstep.
 The inhibit pin is tied to ground locally on each half, exactly as FN40HE does,
 which is why no enable line crosses the ribbon.
 
+The half-board FFC cable entries are mechanically mirrored: JL1 is at 270° and
+JR1 is at 90°, so each flex can leave toward the centre without folding back
+over its connector. Rotating JL1 reverses its numbered pad order relative to
+the daughterboard; the left cable therefore maps daughter pin `N` to JL1 pin
+`13-N`. The right cable remains pin-for-pin. The authoritative mapping is
+`Symm60HE-ribbon-pinout.csv`.
+
+The four board connectors are locked to BOOMELE `1.0-12P` / LCSC `C20111`:
+12 positions, 1.0 mm pitch, top contact, right-angle SMD, for 0.3 mm FFC. Use
+two JXTCONN `FC-1012P-100T3` / LCSC `C37635129` 10 cm same-side cables. Confirm
+pin 1 through pin 12 with a continuity meter before the first powered assembly.
+
+The two daughterboard cable mouths now face away from the MCU and toward their
+respective case sides. Their routed signal-pad centers did not move: each body
+was rotated 180 degrees, the numbered net order was reversed to preserve the
+physical conductor order, and the board grew only 1 mm at each short side to
+contain the complete manufacturer hold-down lands. This removes the avoidable
+90-degree flex turn at the daughterboard.
+
+## Magnetic pogo alternate
+
+`pcb/variants/pogo-neo/` now contains the recommended 12-contact,
+power-off-only alternate using
+the orderable Mill-Max `854-22-012-30-004101` single-row SMT spring connector
+and matching `856-10-012-30-051000` gold target. Twelve contacts carry every
+existing FFC conductor without unused or redundant positions.
+
+The 57 x 28 mm controller remains flat and rigid, oriented lengthwise on the
+centreline. Each side uses a separate 20 x 20 mm replaceable spring head in a
+captured but floating 6 degree kernel aperture. One short 12-way FFC connects
+each head to the controller. The matching target is mounted directly on its
+Hall PCB; there is no target module or second FFC. The plates carry only the
+eight side gasket tabs. Magnets
+remain retention-only and DNP until an assembled Hall offset/noise test passes.
+
+The detailed fixed-angle mechanism is in `case/fusion360/tenting-solution/`.
+It adds a 1.2 mm-floor central controller tray, mirrored 6 degree spring trays,
+direct Hall-PCB target references, 0.4 mm-per-side floating apertures, capture
+lips, asymmetric perimeter keys, compression stops, short-FFC envelopes, and
+optional DNP magnet envelopes. Both assembled and exploded renders are under
+`docs/img/24-*` and `docs/img/25-*`; the routed modules are in `docs/img/28-*`.
+
+All five Neo-style boards report zero DRC violations and zero unconnected pads.
+The existing FFC keyboard remains the checked production candidate until the
+connector coupon, FFC motion, gasket motion, and Hall-noise tests pass. See
+`pcb/variants/pogo-neo/README.md` and the coupon gate under
+`pcb/variants/pogo/CONNECTOR-AND-TENTING.md`.
+
+The pogo variant's layout-specific BOM/CPL package is under
+`release/jlcpcb-pogo-neo/`. Its Fusion-importable example carrier is under
+`case/fusion360/pogo-neo-mounting-reference/`; use the assembled STEP as the
+case-design reference and the exploded STEP to inspect the retention stack.
+
+A separate PCBWay RFQ/manufacturing package is under
+`release/pcbway-pogo-neo/`, with a distributable archive at
+`release/Symm60HE-PCBWay-Pogo-Neo.zip`. It contains both connected
+family-panel orders, individual-board fallbacks, Gerbers, separated PTH/NPTH
+drills, DRC reports, assembly/fabrication drawings, layout-specific PCBWay BOM
+and centroid pairs, fabrication specifications, critical-connector placement
+data, source boards, a manifest, and SHA-256 checksums. The two exact Mill-Max
+pogo connector MPNs are marked **no substitution** and may be quoted as PCBWay
+turnkey parts or supplied by the customer. This is independent of—and does not
+replace or modify—the JLC release.
+
+The two PCB Edge.Cuts contours are also exact reflections about the 151.209 mm
+tent axis. Because the universal right half contains several alternative-layout
+positions that the left does not, the common symmetric contour is the union of
+both required envelopes rather than the smaller intersection: neither side
+loses material needed by a switch, stabilizer, connector or mounting hole. The
+source-board contours meet at the tent axis in assembled coordinates; the
+manufacturing panel translates the right half 2 mm to create its routed slot.
+
 ## Layout options on one PCB
 
-The boards carry **69 switch positions** so a single pair of PCBs covers all
-four layouts from the published layout page. Mutually exclusive positions share
-a mux channel, the way the FN40HE BOM shares parts across its DNP columns:
+The boards carry **70 mechanical switch positions** so a single pair of PCBs
+covers all four layouts from the published layout page plus normal and stepped
+1.75u Caps Lock. Mutually exclusive positions share a mux channel, the way the
+FN40HE BOM shares parts across its DNP columns:
 
 - number row outer 2u — `=` + `]`, or one 2u backspace
 - row 4 outer 2.25u — one shift, or ↑ + 1.25u shift
 - bottom row outer 3u, each half — two 1.5u, or three 1u (`←↓→` on the right)
 
+The 4.7625 mm close alternatives use one Hall sensor at their exact midpoint:
+normal/stepped Caps Lock, left `SWL27/SWL28`, and right `SWR30/SWR31`. Both
+mechanical switch openings remain, but only the midpoint MT9102ET and one
+capacitor pair are assembled. The wider 9.525 mm and 14.2875 mm alternatives
+remain separate populate-one sensor positions on a shared logical channel; do
+not fit both sensors in one of those pairs.
+
 Left needs 31 channels, right 32; four muxes give 32 each.
 
 ## Plate
 
-`plate/` holds one DXF per layout plus a universal one. They are separate files
-because mutually exclusive switch positions overlap — a plate has to either pick
-a layout or merge the overlapping openings into a slot, which is what the
-universal plate does. Every plate clears a 4.90 mm minimum bridge between
-openings and 10.79 mm from the plate edge to the nearest cutout.
+`plate/` holds an **independent left/right DXF pair** for every layout plus an
+independent universal pair. There is no rigid centre bridge: each plate half
+follows its PCB and its own 6° tent plane. Mutually exclusive switch positions
+overlap, so a fixed-layout pair picks one layout while the universal pair merges
+the overlapping openings into durable slots. Every switch opening remains
+inside its plate half; the narrowest edge web is 2.75 mm on the right half and
+4.64 mm on the left half. The daughterboard mounts independently to the
+case and is not carried by either plate.
 
-## Case
+The PCB halves retain their stepped, keymap-following outer contours. The plate
+halves retain the key-field shape along their top and bottom edges, but use
+continuous straight walls on both the outside and centre-facing sides. Those
+walls stop at the real sloped top/bottom contours rather than extending into
+rectangular end tabs, and every gasket tongue is the outermost feature on its
+side. The completed plate exterior, including the centre-wall corners and
+integral gasket tongues, uses a 1.0 mm material-side radius. Switch and
+stabilizer openings remain dimensionally unchanged. Only the selected
+bottom-row U recess on each
+half is structurally filled. Its visual shape remains in the removable case
+top, which overlaps the plate by 3.0 mm around the recess. The obsolete right
+plate daughterboard carrier and its two holes have been removed.
 
-`case/Symm60HE-case.scad` is parametric and matches the DOE's published spec:
+The fabrication names end in `-left.dxf` and `-right.dxf`; both files are needed
+for one keyboard. Files without a side suffix are obsolete one-piece previews
+and must not be sent for fabrication.
 
-| | |
-|---|---|
-| Typing angle | **11°** — the DOE's stated figure |
-| Front height | 18.0 mm — the DOE quotes 14.7–20.1 mm excluding feet |
-| Back height | 42.1 mm over 124.2 mm of depth |
-| Mounting | isolated top, gasket ledge |
-| Lateral tent | 0°, exposed as `lateral_tent_deg` |
+`plate/Symm60HE-gasket-pads.dxf` contains eight discrete side pads: four
+outer/corner positions and four beside the centre kernel. They attach only
+to integral plate tabs with curved, tapered roots; there are no square shoulder
+steps, top/bottom gasket tabs, or gasket
+features on either Hall PCB. Cut an upper and lower set from 1.5 mm Poron.
 
-**The DOE is not laterally tented.** Its spec sheet gives a typing angle and
-nothing else, so "the same tenting the DOE has" is the 11° front-to-back angle.
-`lateral_tent_deg` is left in as a parameter because a tented build was asked
-for and the geometry supports it — raise it and the case will need feet on one
-side to sit flat.
+## Fusion 360 case-design reference
 
-The bottom is flat and the top face is inclined: a wedge, which is what a tray
-case actually is. Tipping the whole box instead would stand it on its front
-edge. The pocket floor runs parallel to the plate, the way such a case is
-milled — a flat pocket floor would leave the rear standoffs as 30 mm pillars.
-That leaves 4.4 mm of material under the pocket at the front and 28.5 mm at the
-back, and the daughterboard pocket is cut into that back solid, opening upward
-into the main cavity for the ribbons and outward through the back wall for USB.
+The previous generated case solids were removed from the active project. Import
+`case/fusion360/Symm60HE-reference-assembly.step` into Fusion 360 and build the
+case around its nine separately named reference bodies:
 
-`docs/img/06-case-section.png` is a side elevation through the centre line.
+- left PCB and left universal plate
+- right PCB and right universal plate
+- compact daughterboard PCB
+- simplified left/right switch banks
+- simplified left/right keycap banks for the primary 60-key `doe-wkl` layout
+
+The two plate/PCB pairs are positioned at 6° lateral tent and 11° front-to-back
+typing angle, with each PCB 5 mm below its plate. No case solid is included by
+design. The switch and keycap bodies are simplified visualization/clearance
+envelopes and can be hidden independently; they are not vendor-specific
+production models. Individual STEP files make it easy to import each reference
+as its own Fusion component; `Symm60HE-reference-assembly.FCStd` is the editable
+source assembly. See `case/fusion360/README.md`.
+
+The retired case is preserved, with hashes, under
+`work/recovery-case-20260911-0837/` in case any geometry needs to be recovered.
 
 ## Routing
 
 Two copper layers, and a design rule picked so that the router's own grid
-enforces it: **0.2 mm traces, 0.15 mm clearance, 0.45/0.25 mm vias**. That is a
+enforces it: **0.2 mm traces, 0.15 mm clearance, 0.60/0.30 mm vias**. That is a
 relaxed spec for any fabricator — 0.127/0.127 is the usual floor — and it is
 what lets nets on cells 0.5 mm apart sit beside each other without a separate
 spacing pass. Grid cells are 0.5 mm apart orthogonally and 0.354 mm diagonally,
 and 0.2 + 0.15 = 0.35 mm fits inside the smaller of those.
 
-Every component on the halves sits on the back, so the front copper is free to
-be the **+3V3A plane**; the back carries the signals with a **GND pour** filling
-round them. The daughterboard is populated on the front, so it pours GND on both
-sides and stitches them together. Neither GND nor the analog rail is routed as a
-net on the halves — see below.
+Every component on the halves sits on the back. The completed signal routing
+uses both external copper layers. **+3V3A is explicit routed copper**, while GND
+is poured on both F.Cu and B.Cu. The compact daughterboard deliberately remains
+mixed-side to minimize its outline; it also uses explicit power routing and GND
+pours on both external layers. There are no internal copper layers.
 
 | | Left | Right | Daughterboard |
 |---|---|---|---|
-| Connections routed | **74** of 82 | **76** of 88 | **27** of 36 |
-| Segments | 646 | 747 | 178 |
-| Vias | 127 | 146 | 28 |
-| … of those, plane taps | 66 | 71 | 6 |
-| Signals on | B.Cu | B.Cu | F.Cu |
-| F.Cu pour | +3V3A | +3V3A | GND |
+| Connections | fully connected | fully connected | fully connected |
+| Segments | 1070 | 1241 | 405 |
+| Vias | 98 | 132 | 37 |
+| Signal copper | F.Cu + B.Cu | F.Cu + B.Cu | F.Cu + B.Cu |
+| F.Cu pour | GND | GND | GND |
 | B.Cu pour | GND | GND | GND |
 
-### Why the analog rail is a pour, not a net
+### Explicit analog rail and dual GND pours
 
-The rail reaches 75 pads on the left half. Routed as traces it is a spanning
-tree across the whole board, and it gets there first and walls off the three
-mux select lines, which have one shape that works and no slack. Routing the bus
-first instead just moves the failure onto the rail.
-
-So the rail stops being a net. **F.Cu is a +3V3A pour** — the halves carry no
-components on the front, so it is very nearly solid — and every rail pad is tied
-down to it by a via of its own, dropped just past the pad on its escape axis and
-joined by a stub. FN40HE does the same thing with a `+3.3VA` zone of its own
-alongside GND; it just puts it on the back, because its board is populated the
-other way up. **B.Cu is the GND pour**, filling around the signals, and every
-sensor and mux ground pin sits straight on it, so GND is never routed either.
-
-That is not free: 66 vias through the sensor field block both layers, and they
-cost almost exactly as much room as the traces they replaced. What it buys is a
-real supply plane instead of a tree of 0.2 mm traces feeding 33 sensors, and it
-is the arrangement the reference design uses.
+The current manufacturing design uses routed +3V3A rather than treating an
+entire copper side as the analog supply. This leaves both sides available for
+GND pours around the two-layer signal routing and makes the power path explicit
+in the board connectivity. Existing stitching vias join the two ground layers
+and isolated regions. KiCad refills the pours during DRC and release generation.
 
 ### Three things in the router that were bugs first
 
@@ -184,75 +278,117 @@ receptacle. Three changes made it routable at all:
 
 - **The pin assignment is FN40HE's**, read off its board — not invented here.
   See `NOTICE.md`.
-- **The board grew from 56 × 26 mm to 62 × 32 mm.** The case pocket is derived
-  from this outline, so the pocket grew with it; the back solid has the depth.
+- **The board is a compact 57 × 28 mm.** It includes two M2 NPTH mounting holes
+  so a small bracket can attach it to the plate without hard-mounting either
+  keyboard half.
 - **The USB-C receptacle moved off the centre line**, 10.5 mm right, to sit
   beside the MCU's USB pins rather than diagonally across the board from them.
   The case cutout follows the same offset — both come from `USB_X_OFF` in
   `tools/outline.py`.
 
-What is left unrouted there is mostly the ribbon connectors' inner pins, where
-twelve nets at 1.0 mm pitch have to escape inwards under the connector body.
+The daughterboard is fully connected. Its two 12-way ribbon connectors remain
+the densest part of the layout because their contacts escape inward beneath the
+connector bodies. A no-reroute outline search found 57 × 28 mm clean;
+shrinking the existing outline produced copper-to-edge violations.
+Going smaller therefore requires moving parts and rerouting, with no guarantee
+that the existing two-sided density can be retained.
 
 ## Building and checking
 
 ```sh
-./build.sh          # regenerate everything from the KLE geometry
+./build.sh          # rebuild panel, Fusion references, release and all checks
 tools/verify.py     # just the checks
 ```
 
 `verify.py` exits non-zero on any failure, so it works in CI.
 
+Native KiCad connectivity-capture schematics sit beside all three boards. They
+were generated from every connected PCB pad, and `tools/schematic_parity.py`
+checks each reference/pad/net tuple before ERC. The custom symbol pins are
+passive because this board-first reconstruction does not invent electrical pin
+types; ERC therefore proves schematic connectivity integrity, while the parity
+and net checks prove agreement with the routed boards.
+
+## Firmware
+
+`firmware/libhmk/keyboards/symm60he/keyboard.json` is the Symm60HE target. It
+maps all 63 logical channels through AML1-AML4 and AMR1-AMR4, exposes all 69
+physical switch positions with split-backspace and WKL/arrows options, and
+retains libhmk's rapid trigger, adjustable actuation, SOCD/advanced keys, four
+profiles, calibration and web-configurator support.
+
+The checked release binary is `firmware/build/firmware.bin`. To rebuild, install
+the root requirements, run `python setup.py -k symm60he` in `firmware/libhmk`,
+then `pio run -e symm60he`. A path without spaces is currently required by the
+upstream link-map build step. Put the board in DFU mode with BOOT held while
+resetting, install `dfu-util`, and run `pio run -e symm60he -t upload`.
+
+## Manufacturing release
+
+`release/jlcpcb/` contains two manufacturing orders:
+
+- `Symm60HE-Half-Panel-Gerbers.zip`: both keyboard halves in one connected
+  175.32 × 233.91 mm stacked panel, with thirteen five-hole mouse-bite rows at
+  0.75 mm pitch, three B.Cu global fiducials, four 2 mm tooling holes, and all
+  SMT parts on B.Cu
+- `Symm60HE-Daughterboard-Gerbers.zip`: the separate compact, mixed-side
+  daughterboard order, with three local fiducials on each assembly side
+
+Both are 2-layer, 1.2 mm designs. The generated BOMs contain only fitted SMT
+parts and every line has an exact LCSC assignment; plated mounting holes and
+other board-only features are omitted. The universal half-panel has four
+matched, mutually exclusive BOM/CPL pairs under
+`release/jlcpcb/Symm60HE-Half-Panel/layouts/`; choose exactly one layout and do
+not create an all-positions placement list. Inspect both ZIPs in JLC's Gerber
+viewer before payment.
+
 ## What has been checked, and what has not
 
-Checked here, by script, against the generated files:
+Checked against the current files:
 
-- all three boards parse as KiCad 10 s-expressions
-- every board outline is a closed loop
-- no footprint falls outside its board outline
-- **zero pad-level conflicts** on all three boards, ignoring the pairs that are
-  mutually exclusive by design
+- KiCad 10.0.5 refilled every zone, then reported **zero DRC violations and
+  zero unconnected items** on all three source boards and the two-half panel
 - net audit clean: every channel reaches exactly one mux input, one sensor and
   its decoupling; the address lines reach all four muxes and the ribbon; each
   ADC net reaches the MCU and one ribbon
-- routing clean, against the real geometry rather than the router's own grid:
-  every segment and via on-board and out of the USB-C keep-out, nothing within
-  0.15 mm of a **pad, drill, trace or via belonging to another net**, no loose
-  trace ends, both pours inside the outline. The trace-to-trace half of that is
-  what catches two diagonal runs crossing through the same gap, which is a short
-  no amount of cell bookkeeping will notice
-- the mux and sensor nets on the halves follow FN40HE's architecture rather than
-  memory: 8:1 muxes into 8 ADC inputs, inhibit tied locally
+- every board declares only `F.Cu` and `B.Cu`; +3V3A is routed and GND is
+  poured on both sides
+- all plate and gasket DXFs parse with zero `ezdxf` audit errors
+- the Fusion reference assembly contains nine finite, separately named bodies
+- all three native schematics pass KiCad ERC with zero messages, and their 786
+  connected reference/pad/net assignments match the PCBs exactly
+- the Symm60HE libhmk firmware compiles successfully for AT32F405RCT7; the
+  current image uses 33,500 bytes of flash and 13,884 bytes of RAM
+- both fabrication ZIPs pass archive integrity checks and include both
+  copper layers, masks, clipped silkscreens, Edge.Cuts, PTH and NPTH drills
+- every normally ignored DRC rule was re-enabled in temporary projects; see
+  `release/reports/ignored-drc-audit.md` and its raw reports
 
-**Not** checked, because this environment has no KiCad, no OpenSCAD and no CAD
-kernel:
+Still required before committing to a production quantity:
 
-- KiCad DRC and ERC have not been run
-- there are no schematics yet — the boards carry their nets directly, which is
-  valid and gives you a full ratsnest, but you will want to capture schematics
-  before a production run. Symbol libraries are not vendored here for that
-  reason; use KiCad's stock ones when you capture
-- the pours are defined but not filled — KiCad fills them on open (press B)
-- routing is partial — 74 of 82 on the left, 76 of 88 on the right, 27 of 36 on
-  the daughterboard. Nothing unclean was written, but the remainder is yours
-- the USB-C receptacle is the one footprint not generated. Its keep-out is now a
-  real rectangle on `Dwgs.User` in the daughterboard file, which both the pad
-  check and the router honour, and the BOM names the stock KiCad footprint to
-  drop in
-- the mux is SOIC-16 rather than FN40HE's TSSOP-16 — same chip, different
-  package, for the reason given in `NOTICE.md`
-- the case has not been rendered or printed; the SCAD is balanced and its
-  modules resolve, but only OpenSCAD can confirm the booleans
+- confirm the right board's one tangent pair of NPTH holes in JLC's Gerber
+  viewer. They belong to mutually exclusive up-arrow and 2.25u-shift/stabilizer
+  positions on the universal PCB; use a layout-specific PCB if JLC rejects the
+  resulting merged/tangent drill geometry
+- print or machine a fit-check prototype for the case, split plates,
+  daughterboard bracket, USB opening, gaskets, ribbon bends and fasteners
+- electrically prototype the Hall-sensor noise margin and ribbon-link behavior;
+  CAD connectivity and DRC cannot prove analog performance
+
+The mux intentionally uses SOIC-16 rather than FN40HE's TSSOP-16 — the same
+chip in a larger package, for the routing-clearance reason given in `NOTICE.md`.
 
 ## Files
 
-- `Symm60HE-switch-map.csv` — every switch position, mm, rotation, which layouts use it
+- `Symm60HE-switch-map.csv` — every logical-layout switch position, mm, rotation, and build
+- `Symm60HE-sensor-aliases.csv` — close alternate positions that use a shared midpoint sensor
 - `Symm60HE-channel-map.csv` — sensor → mux → channel, per half
 - `Symm60HE-ribbon-pinout.csv` — the 12-way link
+- `pcb/variants/pogo/Symm60HE-pogo16-pinout.csv` — the proposed 16-contact
+  power-off-only compression link
 - `Symm60HE-BOM.csv` — both halves and the daughterboard
-- `docs/img/` — rendered images: `01-assembly`, `02-left`, `03-right`,
-  `04-daughterboard` (all three with their copper drawn), `05-plate`,
-  `06-case-section` and `07-case-iso`
+- `docs/img/` — PCB, split-plate, two-half-panel and compact-daughterboard
+  renders
 - `tools/` — generators and checkers; `build.sh` runs them in order
 - `Symm60HE_Project.pretty/` — the footprint library, local and portable
 
@@ -282,8 +418,8 @@ field with a 2 mm rim instead:
 
 | | Before | Now | |
 |---|---|---|---|
-| Left | 163.5 × 115.8 mm, 183.7 cm² | **157.9 × 105.9 mm, 156.2 cm²** | 15% less |
-| Right | 161.1 × 115.8 mm, 181.0 cm² | **155.5 × 106.4 mm, 155.5 cm²** | 14% less |
+| Left | 163.5 × 115.8 mm, 183.7 cm² | **158.9 × 107.7 mm** | symmetric compact envelope |
+| Right | 161.1 × 115.8 mm, 181.0 cm² | **158.9 × 107.7 mm** | mirrored symmetric envelope |
 
 The outline is the convex hull of that half's key cells plus a 2 mm rim, unioned
 with the stabiliser holes and their own rim — the spacebar's lower stabiliser

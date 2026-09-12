@@ -1,0 +1,156 @@
+** Drc report for Symm60HE-Left-PogoTarget.kicad_pcb **
+** Created on 2026-09-11T14:13:57 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 33 DRC violations **
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(145.8098 mm, 51.8992 mm): Track [ADC_L3] on B.Cu, length 0.5646 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 51.5550 mm): Track [ADC_L4] on B.Cu, length 6.5594 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 52.8250 mm): Track [ADC_L3] on B.Cu, length 6.6082 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 54.0950 mm): Track [ADC_L2] on B.Cu, length 6.5013 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 55.3650 mm): Track [ADC_L1] on B.Cu, length 6.4754 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 56.6350 mm): Track [MUX_A2] on B.Cu, length 6.5315 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 57.9050 mm): Track [MUX_A1] on B.Cu, length 6.5013 mm
+[track_dangling]: Track has unconnected end
+    Local override; error
+    @(140.6350 mm, 59.1750 mm): Track [MUX_A0] on B.Cu, length 6.4822 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(140.6350 mm, 52.8250 mm): Track [ADC_L3] on B.Cu, length 6.6082 mm
+    @(145.2908 mm, 50.5000 mm): Track [ADC_L4] on B.Cu, length 5.6989 mm
+[shorting_items]: Items shorting two nets (nets ADC_L4 and ADC_L2)
+    Local override; error
+    @(141.2611 mm, 54.5297 mm): Track [ADC_L4] on B.Cu, length 1.9214 mm
+    @(140.6350 mm, 54.0950 mm): Pad 5 [ADC_L2] of PTL1 on B.Cu
+[shorting_items]: Items shorting two nets (nets GND and ADC_L4)
+    Local override; error
+    @(138.2150 mm, 55.3650 mm): Via [GND] on F.Cu - B.Cu
+    @(139.3397 mm, 54.5297 mm): Track [ADC_L4] on B.Cu, length 18.2695 mm
+[shorting_items]: Items shorting two nets (nets GND and ADC_L3)
+    Local override; error
+    @(138.2150 mm, 51.5550 mm): Track [GND] on F.Cu, length 9.6902 mm
+    @(144.9033 mm, 51.8992 mm): Via [ADC_L3] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(138.2150 mm, 51.5550 mm): Track [GND] on F.Cu, length 9.6902 mm
+    @(111.7594 mm, 51.8992 mm): Track [ADC_L3] on F.Cu, length 33.1439 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(138.2150 mm, 52.8250 mm): Track [GND] on F.Cu, length 9.7884 mm
+    @(110.8954 mm, 53.8992 mm): Track [ADC_L2] on F.Cu, length 33.9882 mm
+[shorting_items]: Items shorting two nets (nets GND and ADC_L2)
+    Local override; error
+    @(138.2150 mm, 52.8250 mm): Track [GND] on F.Cu, length 9.7884 mm
+    @(144.8836 mm, 53.8992 mm): Via [ADC_L2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(145.5535 mm, 57.2150 mm): Track [ADC_L1] on F.Cu, length 2.5381 mm
+    @(138.2150 mm, 55.3650 mm): Track [GND] on F.Cu, length 10.9259 mm
+[shorting_items]: Items shorting two nets (nets ADC_L1 and GND)
+    Local override; error
+    @(145.1238 mm, 60.1828 mm): Track [ADC_L1] on F.Cu, length 22.8887 mm
+    @(138.2150 mm, 59.1750 mm): Track [GND] on F.Cu, length 9.7346 mm
+[shorting_items]: Items shorting two nets (nets GND and ADC_L1)
+    Local override; error
+    @(138.2150 mm, 56.6350 mm): Track [GND] on F.Cu, length 10.3897 mm
+    @(145.5535 mm, 59.7531 mm): Track [ADC_L1] on F.Cu, length 0.6077 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(144.9040 mm, 57.7009 mm): Track [MUX_A2] on F.Cu, length 24.7624 mm
+    @(138.2150 mm, 55.3650 mm): Track [GND] on F.Cu, length 10.9259 mm
+[shorting_items]: Items shorting two nets (nets MUX_A0 and GND)
+    Local override; error
+    @(144.8995 mm, 59.5000 mm): Track [MUX_A0] on F.Cu, length 24.5021 mm
+    @(138.2150 mm, 56.6350 mm): Track [GND] on F.Cu, length 10.3897 mm
+[clearance]: Clearance violation ( clearance 0.1500 mm; actual 0.1182 mm)
+    Local override; error
+    @(144.8995 mm, 59.5000 mm): Via [MUX_A0] on F.Cu - B.Cu
+    @(138.2150 mm, 55.3650 mm): Track [GND] on F.Cu, length 10.9259 mm
+[shorting_items]: Items shorting two nets (nets GND and MUX_A1)
+    Local override; error
+    @(138.2150 mm, 55.3650 mm): Track [GND] on F.Cu, length 10.9259 mm
+    @(144.3615 mm, 58.8980 mm): Via [MUX_A1] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.1500 mm; actual 0.0397 mm)
+    Local override; error
+    @(120.1322 mm, 58.8980 mm): Track [MUX_A1] on F.Cu, length 24.2293 mm
+    @(138.2150 mm, 55.3650 mm): Track [GND] on F.Cu, length 10.9259 mm
+[clearance]: Clearance violation ( clearance 0.1500 mm; actual 0.0735 mm)
+    Local override; error
+    @(140.6350 mm, 59.1750 mm): Track [MUX_A0] on B.Cu, length 6.4822 mm
+    @(144.3615 mm, 58.8980 mm): Via [MUX_A1] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(147.8590 mm, 60.5000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; warning
+    @(141.2611 mm, 54.5297 mm): Track [ADC_L4] on B.Cu, length 1.9214 mm
+    @(140.6350 mm, 54.0950 mm): Pad 5 [ADC_L2] of PTL1 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; warning
+    @(141.2611 mm, 54.5297 mm): Track [ADC_L4] on B.Cu, length 1.9214 mm
+    @(139.3650 mm, 54.0950 mm): Pad 6 [GND] of PTL1 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; warning
+    @(139.3397 mm, 54.5297 mm): Track [ADC_L4] on B.Cu, length 18.2695 mm
+    @(139.3650 mm, 54.0950 mm): Pad 6 [GND] of PTL1 on B.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Hole clearance violation
+    - Drilled hole too close to other hole
+    - Annular width
+    - Courtyards overlap
+    - Footprint has no courtyard defined
+    - Footprint has malformed courtyard
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Silkscreen clearance
+    - Silkscreen clipped by solder mask
+    - Silkscreen clipped by board edge
+    - Text height out of range
+    - Text thickness out of range
+    - Mirrored text on front layer
+    - Non-Mirrored text on back layer
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

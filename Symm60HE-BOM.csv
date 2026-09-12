@@ -3,7 +3,7 @@
 2,SN74LV4051A,SOIC-16_3.9x9.9mm_P1.27mm,Texas Instruments,SN74LV4051AD,4,4,C7792,"8:1 analog mux; INH (pin 6) tied to GND. SOIC rather than FN40HE's TSSOP: 1.27 mm pitch leaves 0.67 mm between pads, which a 0.2 mm trace clears, so the fan-out is routable on two layers"
 3,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,37,40,C1525,One per sensor (VCC) plus one per mux
 4,4.7n,C_0402_1005Metric,Murata,GRM1555C1H472JE01D,33,36,C1518204,One per sensor output
-5,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,generic,--,1,1,--,"Ribbon link to the daughterboard; 1.0 mm pitch, 12 way"
+5,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,1,1,C20111,"Exact locked connector: top-contact, right-angle, 12P, 1.0 mm pitch, 0.3 mm FFC"
 6,Cherry PCB-mount stabiliser,STABILIZER_MX_2U,--,--,2,3,--,2.25u shift + 2.25u spacebar per half; right also has the 2u backspace
 7,M2 mounting hole,MountingHole_2.2mm_M2_Pad,--,--,4,4,--,To the case standoffs
 
@@ -15,7 +15,16 @@
 5,X322512MSB4SI,Crystal_SMD_3225-4Pin,Yangxing,X322512MSB4SI,1,C9002,12 MHz
 6,BSMD0805-050-24V,Fuse_0805_2012Metric,BHFUSE,BSMD0805-050-24V,1,C910822,0.5 A resettable
 7,TS-1187A-B-A-B,SW_Push_1P1T_XKB,XKB,TS-1187A-B-A-B,2,C318884,BOOT0 and NRST
-8,12k,R_0402_1005Metric,UNI-ROYAL,0402WGF1202TCE,1,C25752,OTGHS1_R to GND
-9,10u / 1u,C_0603_1608Metric,--,--,2,--,VBUS and 3V3D bulk
-10,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,generic,--,2,--,One ribbon to each half
-11,USB-C receptacle,Connector:USB_C_Receptacle_HRO_TYPE-C-31-M-12,HRO,TYPE-C-31-M-12,1,--,NOT PLACED -- add from KiCad's stock library at the marked keep-out
+8,12k,R_0402_1005Metric,UNI-ROYAL,0402WGF1202TCE,2,C25752,"OTGHS1_R and BOOT0 pull-downs"
+9,5.1k,R_0402_1005Metric,UNI-ROYAL,0402WGF5101TCE,2,C25905,"USB-C CC1/CC2 Rd pull-downs; required for device-mode attach"
+10,10u,C_0603_1608Metric,CCTC,TCC0603X5R106M6R3CT,2,C380318,"VBUS and 3V3D bulk; X5R 6.3 V 20%; JLC-stocked selection"
+11,2.2u,C_0603_1608Metric,Samsung,CL10B225KP8NFNC,4,C3905270,"Input/output capacitors for both LDOs; X7R 10 V 10%"
+12,1u,C_0603_1608Metric,Murata,GRM188R71A105KA61D,2,C97888,"3V3D bulk and MCU analog bypass; X7R 10 V 10%"
+13,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,4,C1525,"Three digital MCU bypass capacitors plus one analog bypass"
+14,30p,C_0402_1005Metric,CCTC,TCC0402C0G300J500AT,2,C466228,"12 MHz crystal load capacitors; C0G 50 V 5%; confirm against selected crystal CL and measured stray capacitance"
+15,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,1,C1525,NRST filter
+16,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,2,C20111,"Exact locked connector: top-contact, right-angle, 12P, 1.0 mm pitch, 0.3 mm FFC"
+17,USB-C receptacle,USB_C_Receptacle_HRO_TYPE-C-31-M-12,HRO,TYPE-C-31-M-12,1,C165948,Placed at the daughterboard edge
+
+#,Off-board cable,Specification,Manufacturer,MPN,Qty_Set,LCSC,Notes
+1,FFC cable 12P 1.0mm same-side 10cm,0.3mm 12P 1.0mm Type-A same-side,JXTCONN,FC-1012P-100T3,2,C37635129,"Locked cable/contact configuration; continuity-check pin 1 through pin 12 before applying power"

@@ -1,0 +1,5 @@
+Panel,Designator,Manufacturer,MPN,Side,Rotation,Substitution,Inspection
+Centre-Family,LS-PS1,Mill-Max,854-22-012-30-004101,Top,180,Prohibited,Spring faces target; all 12 contacts coplanar
+Centre-Family,RS-PS1,Mill-Max,854-22-012-30-004101,Top,0,Prohibited,Spring faces target; all 12 contacts coplanar
+Hall-Family,LH-PTL1,Mill-Max,856-10-012-30-051000,Bottom,-90,Prohibited,Target face clean and parallel
+Hall-Family,RH-PTR1,Mill-Max,856-10-012-30-051000,Bottom,90,Prohibited,Target face clean and parallel

@@ -1,0 +1,4 @@
+cf4f053d2978871d6506660c84c5df77e45ac39bb2fc0992399a892c15346017  release/jlcpcb/Symm60HE-Half-Panel-Gerbers.zip
+693c69710f6726a977acbb87ae138f3d8951da71776d60456b9ee6cee6b24508  release/jlcpcb/Symm60HE-Daughterboard-Gerbers.zip
+246c5377ea64325a288cd7ca6aee1ea570b1368ed9ab4bf2e8408c9ba25dca5e  release/jlcpcb/README.md
+856639e04d1b6d8582e9d653f6a7f04aa83aea6be9b8a4f0ca60c88a5a7cde78  firmware/build/firmware.bin

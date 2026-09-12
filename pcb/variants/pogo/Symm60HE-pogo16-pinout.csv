@@ -1,0 +1,17 @@
+Pin,Net,Role,Mate-order policy
+1,GND,return,Power-off only
+2,+3V3A,analog supply,Power-off only
+3,GND,return,Power-off only
+4,+3V3A,analog supply redundant,Power-off only
+5,GND,return,Power-off only
+6,MUX_A0,mux select,Power-off only
+7,GND,return,Power-off only
+8,MUX_A1,mux select,Power-off only
+9,GND,return,Power-off only
+10,MUX_A2,mux select,Power-off only
+11,GND,ADC guard return,Power-off only
+12,ADC_1,analog return 1,Power-off only
+13,ADC_2,analog return 2,Power-off only
+14,ADC_3,analog return 3,Power-off only
+15,GND,ADC guard return,Power-off only
+16,ADC_4,analog return 4,Power-off only

@@ -87,9 +87,17 @@ class Grid:
         """A* over (layer, i, j).  Returns a path of (L, i, j)."""
         goalset = set(goals)
         if not starts or not goalset: return None
-        gx = sum(g[1] for g in goals) / len(goals)
-        gy = sum(g[2] for g in goals) / len(goals)
-        def h(c): return (abs(c[1]-gx) + abs(c[2]-gy)) * 0.9
+        gi0 = min(g[1] for g in goals)
+        gi1 = max(g[1] for g in goals)
+        gj0 = min(g[2] for g in goals)
+        gj1 = max(g[2] for g in goals)
+        def h(c):
+            # Distance to the goal set's bounding box is a cheap admissible
+            # lower bound.  Using the centroid makes a long routed tree look
+            # farther away than it is and badly misdirects the search.
+            di = gi0-c[1] if c[1] < gi0 else c[1]-gi1 if c[1] > gi1 else 0
+            dj = gj0-c[2] if c[2] < gj0 else c[2]-gj1 if c[2] > gj1 else 0
+            return (di + dj) * 0.9
         openq, came, best = [], {}, {}
         for s in starts:
             if not self.passable(s[1], s[2], s[0], net): continue

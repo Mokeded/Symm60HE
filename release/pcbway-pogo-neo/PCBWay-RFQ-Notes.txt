@@ -1,0 +1,14 @@
+Symm60HE Neo direct-target pogo PCBA quotation
+
+Quote two independent family-panel assemblies:
+1. Hall-Family: two different designs, bottom-side SMT assembly.
+2. Centre-Family: three different designs, both-side SMT assembly.
+
+Fabrication: 2 layers, 1.2 mm finished FR-4, 1 oz copper, IPC Class 2, 100% electrical test. ENIG is recommended for the prototype quotation.
+Do not alter panel outlines, tab routes, tooling holes, or fiducials without approval.
+
+NO SUBSTITUTION:
+Mill-Max 854-22-012-30-004101 spring connector, PS1 on both spring modules.
+Mill-Max 856-10-012-30-051000 target, PTL1/PTR1 on Hall PCBs.
+Manual SMT placement is acceptable. Confirm turnkey sourcing, packaging, soldering process, side, and rotation before order acceptance.
+The mating interface is mechanically critical; inspect all 12 contacts.

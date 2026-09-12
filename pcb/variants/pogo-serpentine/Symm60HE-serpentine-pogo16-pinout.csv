@@ -1,0 +1,17 @@
+Pin,Left net,Right net,Policy
+1,+3V3A,+3V3A,Power-off only
+2,+3V3A,+3V3A,Power-off only
+3,MUX_A0,MUX_A0,Power-off only
+4,GND,GND,Power-off only
+5,MUX_A2,MUX_A2,Power-off only
+6,MUX_A1,MUX_A1,Power-off only
+7,GND,GND,Power-off only
+8,GND,GND,Power-off only
+9,GND,GND,Power-off only
+10,ADC_L1,ADC_R1,Power-off only
+11,ADC_L2,ADC_R2,Power-off only
+12,GND,GND,Power-off only
+13,GND,GND,Power-off only
+14,GND,GND,Power-off only
+15,ADC_L4,ADC_R4,Power-off only
+16,ADC_L3,ADC_R3,Power-off only

@@ -1,0 +1,215 @@
+%PDF-1.5
+%ÄÅÇÉ
+5 0 obj
+<< /Length 6 0 R /Filter /FlateDecode >>
+stream
+x⁄ùêM
+Ä Ö˜ûbN 3˛é'Z÷Zëõ6]?•(Ïè»Ax˙{Q"zòÁê]Ç:Ìau`Í7—T¿RgÃ‚‚˝º—AjèîàD.Ë\$/`Âx?DA–Zÿ(´JsÌ∑§y√∏øéoQ¥Á¯s∑"ÍÌµ€ÖFê'—Vq˚ßJU\5
+endstream
+endobj
+6 0 obj
+135
+endobj
+9 0 obj
+[7 0 R 8 0 R]
+endobj
+10 0 obj
+<<
+/Type /Page
+/Parent 1 0 R
+/Resources <<
+    /ProcSet [/PDF /Text /ImageC /ImageB]
+    /Font 2 0 R
+    /XObject 3 0 R >>
+/MediaBox [0 0 841.896 595.296]
+/Contents 5 0 R
+/Annots 9 0 R>>
+endobj
+11 0 obj
+<</S /GoTo /D [10 0 R /Fit]
+>>
+endobj
+14 0 obj
+<</S /GoTo /D [10 0 R /FitR 867 575 759 523]
+>>
+endobj
+16 0 obj
+<</S /GoTo /D [10 0 R /FitR 859 597 767 564]
+>>
+endobj
+2 0 obj
+<<
+>>
+endobj
+3 0 obj
+<<
+
+>>
+endobj
+7 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [840.649 543.989 786.45 562.584]
+/Border [16 16 0]
+/A << /Type /Action /S /JavaScript /JS (ShM\([
+["Reference designator = JF1"],
+["Value = FFC_12P_1.00mm"],
+["Footprint = FFC_12P_1.00mm_TopContact"],
+]\);) >>
+>>
+endobj
+8 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [834.739 575.964 792.361 584.737]
+/Border [16 16 0]
+/A << /Type /Action /S /JavaScript /JS (ShM\([
+["Reference designator = PS1"],
+["Value = 854-22-012-30-004101"],
+["Footprint = MillMax_854-22-012-30-004101"],
+["Datasheet = https://www.mill-max.com/sites/default/files/external/assets/2023-12/pr709_-_low_profile_.050_spring-loaded_contacts_ms.pdf", "https://www.mill-max.com/sites/default/files/external/assets/2023-12/pr709_-_low_profile_.050_spring-loaded_contacts_ms.pdf"],
+["Description = 12-position single-row low-profile SMT spring connector; 1.27 mm pitch"],
+]\);) >>
+>>
+endobj
+4 0 obj
+<< /JavaScript
+ << /Names
+    [ (JSInit) << /Type /Action /S /JavaScript /JS (
+function ShM\(aEntries\) {
+    var aParams = [];
+    for \(var i = 0; i < aEntries.length; ++i\) {
+        aParams.push\({
+            cName: aEntries[i][0],
+            cReturn: aEntries[i].length > 1 ? aEntries[i][1] : ''
+        }\)
+    }
+
+    var cChoice = app.popUpMenuEx.apply\(app, aParams\);
+    if \(cChoice == null || cChoice == ''\) return;
+
+    if \(cChoice.substring\(0, 1\) == '#'\) {
+        this.pageNum = parseInt\(cChoice.slice\(1\)\);
+        return;
+    }
+
+    // Fallback: some viewers return cName instead of cReturn
+    var url = cChoice;
+    if \(url.substring\(0, 4\) != 'http' && url.substring\(0, 4\) != 'file'\) {
+        var idx = url.indexOf\('http'\);
+        if \(idx < 0\) idx = url.indexOf\('file:'\);
+        if \(idx >= 0\) url = url.substring\(idx\);
+        else return;
+    }
+
+    if \(url.substring\(0, 8\) == 'file:///'\) app.openDoc\(url.substring\(7\)\);
+    else if \(url.substring\(0, 7\) == 'file://'\) app.openDoc\('//' + url.substring\(7\)\);
+    else app.launchURL\(url\);
+}
+) >> ]
+ >>
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Kids [
+10 0 R
+]
+/Count 1
+>>
+endobj
+18 0 obj
+<<
+/Producer (KiCad PDF)
+/CreationDate (D:2026:09:12:13:41:20)
+/Creator (PCBNEW)
+/Title (Bottom-Assembly-Mirrored.pdf)
+/Author ()
+/Subject ()
+>>
+endobj
+15 0 obj
+<<
+/Title (JF1)
+/Parent 13 0 R
+/Next 17 0 R
+/A 14 0 R
+>>
+endobj
+17 0 obj
+<<
+/Title (PS1)
+/Parent 13 0 R
+/Prev 15 0 R
+/A 16 0 R
+>>
+endobj
+13 0 obj
+<<
+/Title (Footprints)
+/Parent 12 0 R
+/Count -2
+/First 15 0 R
+/Last 17 0 R
+/A 11 0 R
+>>
+endobj
+12 0 obj
+<<
+/Title (B.Fab \(Page 1\))
+/Parent 19 0 R
+/Count -1
+/First 13 0 R
+/Last 13 0 R
+/A 11 0 R
+>>
+endobj
+19 0 obj
+<< /Type /Outlines
+   /Count 4
+   /First 12 0 R
+   /Last 12 0 R
+>>
+endobj
+20 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/Version /1.5
+/PageMode /UseOutlines
+/Outlines 19 0 R
+/Names 4 0 R
+/PageLayout /SinglePage
+>>
+endobj
+xref
+0 21
+0000000000 65535 f 
+0000002723 00000 n 
+0000000650 00000 n 
+0000000671 00000 n 
+0000001591 00000 n 
+0000000015 00000 n 
+0000000224 00000 n 
+0000000693 00000 n 
+0000000958 00000 n 
+0000000243 00000 n 
+0000000272 00000 n 
+0000000475 00000 n 
+0000003194 00000 n 
+0000003090 00000 n 
+0000000522 00000 n 
+0000002944 00000 n 
+0000000586 00000 n 
+0000003017 00000 n 
+0000002783 00000 n 
+0000003304 00000 n 
+0000003387 00000 n 
+trailer
+<< /Size 21 /Root 20 0 R /Info 18 0 R >>
+startxref
+3528
+%%EOF

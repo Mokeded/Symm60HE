@@ -3,7 +3,10 @@ import json, csv, sys, os, shutil
 sys.path.insert(0, ".")
 from sexp import loads, find, first
 
-PRO = json.load(open("/home/user/FN40HE/FN40HE.kicad_pro"))
+TEMPLATE = "../pcb/Symm60HE-Left.kicad_pro"
+if not os.path.exists(TEMPLATE):
+    raise FileNotFoundError("missing committed KiCad project template: " + TEMPLATE)
+PRO = json.load(open(TEMPLATE))
 for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
     p = json.loads(json.dumps(PRO))
     p["meta"]["filename"] = name + ".kicad_pro"
@@ -11,8 +14,17 @@ for name in ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard"):
         p.pop(k, None)
     p["sheets"] = [["00000000-0000-0000-0000-000000000000", "Root"]]
     p["board"]["design_settings"]["defaults"] = p["board"]["design_settings"].get("defaults", {})
+    for cls in p["net_settings"]["classes"]:
+        if cls["name"] == "Default":
+            cls["track_width"] = 0.2
+            cls["diff_pair_width"] = 0.2
+            cls["clearance"] = 0.15
+            cls["via_diameter"] = 0.6
+            cls["via_drill"] = 0.3
     json.dump(p, open("../pcb/%s.kicad_pro" % name, "w"), indent=2)
 print("wrote 3 .kicad_pro files")
+shutil.copyfile("../fp-lib-table", "../pcb/fp-lib-table")
+print("wrote pcb/fp-lib-table")
 
 # channel map
 rows = []

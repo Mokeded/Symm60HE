@@ -1,9 +1,7 @@
 """Emit the three Symm60HE boards.
 
-Everything sits on the front copper: the sensor at each key centre and its two
-decoupling caps in the cell corners, clear of the 14 mm switch body.  That is a
-deliberate departure from FN40HE, which mounts sensors on the back -- it keeps
-the whole board free of mirrored geometry, which cannot be checked here.
+Both keyboard halves use B.Cu-only SMT assembly.  The compact controller keeps
+its proven mixed-side placement and is ordered separately from the half-panel.
 """
 import os, math, uuid, csv, sys
 sys.path.insert(0, ".")
@@ -19,6 +17,8 @@ from shapely.ops import unary_union
 FPDIR = "../Symm60HE_Project.pretty"
 HEADER = open("pcb_header.txt").read() if os.path.exists("pcb_header.txt") else None
 LIB = "Symm60HE_Project"
+PCB_OUT = os.environ.get("SYMM60HE_PCB_OUT", "../pcb")
+os.makedirs(PCB_OUT, exist_ok=True)
 
 # ---------------------------------------------------------------- channels ---
 def channels(half):
@@ -51,7 +51,11 @@ def load_fp(name):
 
 def place(name, ref, value, x, y, rot=0.0, nets=None, back=False):
     fp = load_fp(name)
-    fp[1] = "%s:%s" % (LIB, name)
+    # Rotated Alice keys are emitted with placement-specific, rounded geometry
+    # after the back-side mirror.  Keep those footprints board-local so KiCad
+    # does not incorrectly compare them with the unplaced library template.
+    # Ordinary components retain their library links and remain updateable.
+    fp[1] = name if name.startswith("HE_KEY_") else "%s:%s" % (LIB, name)
     body = [c for c in fp[2:] if not (isinstance(c, list) and c[0] in ("version", "generator", "generator_version"))]
     out = [Sym("footprint"), fp[1], [Sym("layer"), "B.Cu" if back else "F.Cu"],
            [Sym("uuid"), str(uuid.uuid4())],
@@ -133,31 +137,43 @@ def tight_pcb(half):
     for k in KEYS:
         if k["half"] != half: continue
         w = max(k["w"] * U, 19.05)
-        cells.append(stran(srot(sbox(-w/2, -9.525, w/2, 9.525), -k["rot"], origin=(0, 0)),
+        # A stabilizer's lower 3.99 mm drill reaches 10.25 mm from key centre.
+        # Extend the entire wide-key cell as a straight, key-aligned edge; this
+        # preserves clearance without reintroducing circular outline lobes.
+        lower = 12.5 if k["w"] >= 2.0 else 9.525
+        cells.append(stran(srot(sbox(-w/2, -9.525, w/2, lower), k["rot"], origin=(0, 0)),
                            k["cx"] * U, k["cy"] * U))
-        if k["w"] >= 2.0:
-            # Stabiliser holes reach past the cell: 11.9 mm out, and the lower
-            # 3.988 mm hole bottoms out 10.25 mm down.  Union the holes in
-            # directly with a 1.5 mm rim -- a box round them still gets clipped
-            # by the hull's diagonal at the spacebar corner.
-            for sx in (-STAB_X, STAB_X):
-                for dy, dia in ((-6.985, 3.048), (8.255, 3.9878)):
-                    cells.append(stran(srot(spoint(sx, dy).buffer(dia/2 + 1.5), -k["rot"],
-                                            origin=(0, 0)), k["cx"] * U, k["cy"] * U))
-    stabs = [c for c in cells if c.area < 80]          # the hole discs
-    hull = unary_union(cells).convex_hull.buffer(RIM)
-    hull = unary_union([hull] + [c.buffer(RIM) for c in stabs])
+        # The 2u/2.25u key cell plus the common 2 mm rim already contains the
+        # full stabilizer drill envelope.  Adding circular drill buffers to the
+        # outline created unrelated scallops at the board edge.
+    # Follow the actual keymap instead of wrapping it in a convex hull.  The
+    # square/mitred join preserves the stepped row silhouette; the two cleanup
+    # buffers remove microscopic self-intersections without rounding it away.
+    hull = unary_union(cells).buffer(RIM, join_style=2)
+    hull = hull.buffer(0.05, join_style=2).buffer(-0.05, join_style=2)
+    # Each half needs one narrow inner-edge tongue for its 12-pin FFC.  This is
+    # the only deliberate departure from the keymap silhouette and is kept to
+    # the connector courtyard rather than restoring a large central wedge.
+    tab_x = axis_mm - 7.0 if half == "L" else axis_mm + 7.0
+    connector_tab = (sbox(tab_x - 6.0, 43.5, axis_mm, 68.5)
+                     if half == "L"
+                     else sbox(tab_x - 6.0, 43.5, tab_x + 6.0, 68.5))
+    hull = unary_union([hull, connector_tab])
     lim = (sbox(-1e4, -1e4, axis_mm - MID_GAP/2, 1e4) if half == "L"
            else sbox(axis_mm + MID_GAP/2, -1e4, 1e4, 1e4))
     g = hull.intersection(CASE_IN.buffer(-0.8)).intersection(lim)
     return max(g.geoms, key=lambda p: p.area) if hasattr(g, "geoms") else g
 
-for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pcb("R"), "Symm60HE-Right")):
+# Use the shared mirrored envelopes from outline.py.  They contain the union of
+# both halves' universal-layout requirements and are the authoritative PCB
+# mechanics for regeneration.
+for half, poly, fname in (("L", LEFT_PCB, "Symm60HE-Left"),
+                          ("R", RIGHT_PCB, "Symm60HE-Right")):
     groups, ks = channels(half)
     fps, nsens, ncap, nstab = [], 0, 0, 0
     ks_sorted = sorted(ks, key=lambda k: (round(k["cy"], 2), k["cx"]))
     for i, k in enumerate(ks_sorted, 1):
-        x, y, r = k["cx"] * U, k["cy"] * U, -k["rot"]
+        x, y, r = k["cx"] * U, k["cy"] * U, k["rot"]
         ref = "HE%s%d" % (half, i)
         fps.append(place("HE_KEY_%.2fu" % k["w"], ref, "MT9102ET", x, y, r,
                          nets={"1": "+3V3A", "2": "GND", "3": k["net"]}, back=True))
@@ -180,7 +196,7 @@ for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pc
     # which is what lets the muxes hide under the key field.
     busy = []
     for k in ks_sorted:
-        a = -k["rot"]
+        a = k["rot"]
         def local(dx, dy, w, h):
             return stran(srot(sbox(dx-w/2, dy-h/2, dx+w/2, dy+h/2), a, origin=(0, 0)),
                          k["cx"] * U, k["cy"] * U)
@@ -202,7 +218,10 @@ for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pc
     taken = []
     for m in range(4):
         want = b[0] + (b[2] - b[0]) * (0.20 + 0.20 * m)
-        spot = find_spot(poly, want, b[1] + (b[3] - b[1]) * 0.62, 11.6, 8.2, busy=busy, step=0.5)
+        spot = find_spot(poly, want, b[1] + (b[3] - b[1]) * 0.62,
+                         11.6, 8.2, busy=busy, step=0.5)
+        if spot is None:
+            raise RuntimeError("no legal placement for AM%s%d" % (half, m + 1))
         mx, my = spot
         taken.append((mx, my))
         busy.append(sbox(mx-5.9, my-4.2, mx+5.9, my+4.2))
@@ -218,13 +237,20 @@ for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pc
         busy.append(sbox(cspot[0]-1.3, cspot[1]-1.1, cspot[0]+1.3, cspot[1]+1.1))
         fps.append(place("C1_C_0402_1005Metric", "CM%s%d" % (half, m + 1), "100n",
                          cspot[0], cspot[1], 0, nets={"1": "+3V3A", "2": "GND"}, back=True))
-    # ribbon connector, inner edge near the top
-    want_x = (b[2] - 14.0) if half == "L" else (b[0] + 14.0)
-    jrot = 0
-    spot = find_spot(poly, want_x, b[1] + 10.0, 21.0, 8.0, busy=busy, step=0.5)
+    # Ribbon connectors occupy their dedicated inner tongues. JL1 is rotated
+    # opposite JR1 so the two flex entries are mechanically mirrored rather
+    # than forcing the left cable to fold back over its connector.
+    want_x = axis_mm - 3.0 if half == "L" else axis_mm + 3.0
+    jrot = 270 if half == "L" else 90
+    # JL1 deliberately overhangs the connector tongue slightly so the flex can
+    # enter from the centre seam; its copper remains inside Edge.Cuts and was
+    # independently checked by KiCad DRC. The generic body-inside-board search
+    # would reject that intentional mechanical overhang.
+    spot = ((want_x, 56.0) if half == "L" else
+            find_spot(poly, want_x, 56.0, 8.0, 21.0,
+                      busy=busy, step=0.5))
     if spot is None:
-        jrot = 90
-        spot = find_spot(poly, want_x, b[1] + 10.0, 8.0, 21.0, busy=busy, step=0.5)
+        raise RuntimeError("no legal inner-tongue placement for J%s1" % half)
     jx, jy = spot
     busy.append(sbox(jx-10.5, jy-4.0, jx+10.5, jy+4.0) if jrot == 0
                 else sbox(jx-4.0, jy-10.5, jx+4.0, jy+10.5))
@@ -232,11 +258,20 @@ for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pc
     RIB = ["+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
            "ADC_%s1" % half, "GND", "ADC_%s2" % half, "GND",
            "ADC_%s3" % half, "ADC_%s4" % half]
+    pin_order = list(reversed(RIB)) if half == "L" else RIB
     fps.append(place("FFC_12P_1.00mm_TopContact", "J%s1" % half, "FFC_12P",
-                     jx, jy, jrot, nets={str(i + 1): n for i, n in enumerate(RIB)}, back=True))
+                     jx, jy, jrot,
+                     nets={str(i + 1): n for i, n in enumerate(pin_order)}, back=True))
     mh = 0
-    for wx, wy, ddx, ddy in [(b[0]+14, b[1]+12, 1, 1), (b[0]+14, b[3]-12, 1, -1),
-                             (b[2]-14, b[1]+12, -1, 1), (b[2]-14, b[3]-12, -1, -1)]:
+    # The two rear inner holes must stay outside the central daughterboard
+    # pocket.  The old near-axis positions put case bosses through that board.
+    inner_top = ((axis_mm - 45.0, 30.0) if half == "L"
+                 else (axis_mm + 45.0, 30.0))
+    mount_wants = ([(b[0]+14, b[1]+12), (b[0]+14, b[3]-12),
+                    inner_top, (b[2]-14, b[3]-12)] if half == "L" else
+                   [inner_top, (b[0]+14, b[3]-12),
+                    (b[2]-14, b[1]+12), (b[2]-14, b[3]-12)])
+    for wx, wy in mount_wants:
         spot = find_spot(poly, wx, wy, 7.0, 7.0, busy=busy, step=0.5)
         if spot is None: continue
         busy.append(sbox(spot[0]-4, spot[1]-4, spot[0]+4, spot[1]+4))
@@ -245,7 +280,7 @@ for half, poly, fname in (("L", tight_pcb("L"), "Symm60HE-Left"), ("R", tight_pc
                          "M2", spot[0], spot[1], 0, nets={"1": "GND"}))
     print("   %s: muxes at %s | FFC at (%.1f, %.1f) rot %d | %d mounting holes"
           % (half, ", ".join("(%.0f,%.0f)" % t for t in taken), jx, jy, jrot, mh))
-    n = board(poly, fps, "../pcb/%s.kicad_pcb" % fname, fname)
+    n = board(poly, fps, os.path.join(PCB_OUT, "%s.kicad_pcb" % fname), fname)
     report[half] = dict(pos=len(ks), chan=len(groups), sens=nsens, caps=ncap,
                         stabs=nstab, fps=n, size=(poly.bounds[2]-poly.bounds[0],
                                                   poly.bounds[3]-poly.bounds[1]))
@@ -260,27 +295,15 @@ for h in ("L", "R"):
 # be guessed: USB-C on the top edge, MCU centred, the two ribbon links end-on so
 # the cables run straight out to each half.
 #
-# The MCU pin assignment below is a PLACEHOLDER.  There is no schematic yet, so
-# it has not been checked against the AT32F405 datasheet -- the ADC channels,
-# the USB pair and the crystal pins are all fixed in silicon and will move once
-# it has been.  What it does do is put each signal on the side of the package
-# that faces the part it has to reach, which is what makes the board routable
-# at all: an LQFP-64 on 0.5 mm pitch has no room to carry a net round a corner.
+# The MCU pin assignment and its support circuit follow the proven FN40HE
+# reference design.  Core circuitry and support passives use opposite sides to
+# preserve the compact daughterboard outline (57 x 28 mm after allowing the
+# full C20111 hold-down lands at both outward-facing cable mouths).
 _p = []
 fps = []
 db = DB
 cx, cy = db.centroid.x, db.centroid.y
 def at(dx, dy): return cx + dx, cy + dy
-
-# USB-C receptacle keep-out, top edge, centred.  It is not a footprint yet, so
-# it goes on the board as a drawing that the router and the checks both honour;
-# without it parts and copper wander in under the connector.
-# Offset right, not centred: the MCU's USB pins are 33/34/35 on its right-hand
-# side, and dragging that pair diagonally across the board to a centred socket
-# was the single worst run on the old layout.  The case cutout follows this
-# offset -- see USB_X_OFF in mkcase.py.
-USB_KO = sbox(cx + USB_X_OFF - 4.5, db.bounds[1] + 0.5,
-              cx + USB_X_OFF + 4.5, db.bounds[1] + 8.0)
 
 _p = [
   # The pin assignment is FN40HE's, read off its board rather than invented:
@@ -290,7 +313,7 @@ _p = [
   # parts are then placed to suit it -- crystal, reset and the analog LDO off
   # the left edge, both ribbons below the bottom edge where the eight analog
   # inputs come out, USB and the digital rail off the right, boot above.
-  ("U4_LQFP-64_10x10mm_P0.5mm", "U1", "AT32F405RCT7", (-2, 2), 0,
+  ("U4_LQFP-64_10x10mm_P0.5mm", "U1", "AT32F405RCT7", (-1.5, 2), 0,
      {"1": "+3V3D", "5": "XTAL_IN", "6": "XTAL_OUT", "7": "NRST",
       "9": "MUX_A0", "10": "MUX_A1", "11": "MUX_A2",
       "12": "GND", "13": "+3V3A",
@@ -303,28 +326,64 @@ _p = [
   # resistor sit beside the MCU pins that use them, which leaves the whole
   # bottom of the board as one clear lane for the eight analog inputs to reach
   # the two ribbons
-  ("U1_SOT-23-6", "U2", "USBLC6-2SC6", (10.0, -4.0), 0,
+  ("U1_SOT-23-6", "U2", "USBLC6-2SC6", (9.5, -3.5), 0,
      {"1": "USB_DP", "2": "GND", "3": "USB_DM", "4": "USB_DM", "5": "VBUS", "6": "USB_DP"}),
-  ("R3_R_0402_1005Metric", "R1", "12k", (6.5, -1.5), 0, {"1": "USB_R", "2": "GND"}),
-  ("F1_Fuse_0805_2012Metric", "F1", "0.5A", (18.0, -11.0), 0, {"1": "VBUS_IN", "2": "VBUS"}),
-  ("C148_C_0603_1608Metric", "C1", "10u", (23.0, -11.0), 0, {"1": "VBUS", "2": "GND"}),
+  ("R3_R_0402_1005Metric", "R1", "12k", (8.0, 0.0), 0, {"1": "USB_R", "2": "GND"}),
+  ("F1_Fuse_0805_2012Metric", "F1", "0.5A", (17.0, -10.0), 0, {"1": "VBUS_IN", "2": "VBUS"}),
+  ("C148_C_0603_1608Metric", "C1", "10u", (19.0, -6.5), 0, {"1": "VBUS", "2": "GND"}),
   # right edge: the digital rail, off pin 36
-  ("U2_SOT-23-5", "U3", "TLV75733PDBV", (16.0, -4.0), 0, {"1": "VBUS", "2": "GND", "5": "+3V3D"}),
-  ("C148_C_0603_1608Metric", "C2", "1u", (20.0, -1.0), 0, {"1": "+3V3D", "2": "GND"}),
+  ("U2_SOT-23-5", "U3", "TLV75733PDBV", (15.5, -3.5), 0, {"1": "VBUS", "2": "GND", "5": "+3V3D"}),
+  ("C148_C_0603_1608Metric", "C2", "1u", (18.0, 6.0), 0, {"1": "+3V3D", "2": "GND"}),
+  # USB-C receptacle, rotated so its mating face is on the top board edge.
+  # A USB device must present Rd on both CC pins; omitting these two 5.1k
+  # resistors prevents a compliant Type-C host from enabling VBUS.
+  ("USB_C_Receptacle_HRO_TYPE-C-31-M-12", "J1", "TYPE-C-31-M-12",
+     (USB_X_OFF, db.bounds[1] - cy + 3.65), 180,
+     {"A1": "GND", "A4": "VBUS_IN", "A5": "CC1", "A6": "USB_DP", "A7": "USB_DM",
+      "A9": "VBUS_IN", "A12": "GND", "B1": "GND", "B4": "VBUS_IN",
+      "B5": "CC2", "B6": "USB_DP", "B7": "USB_DM", "B9": "VBUS_IN",
+      "B12": "GND", "SH": "GND"}),
+  ("R3_R_0402_1005Metric", "R2", "5.1k", (4.0, -4.0), 0, {"1": "CC1", "2": "GND"}),
+  ("R3_R_0402_1005Metric", "R3", "5.1k", (11.0, 8.0), 0, {"1": "CC2", "2": "GND"}),
   # left edge: crystal on 5/6, analog rail on 13, reset on 7
-  ("Y1_Crystal_SMD_3225-4Pin_3.2x2.5mm", "Y1", "12MHz", (-13.0, 1.0), 0,
+  ("Y1_Crystal_SMD_3225-4Pin_3.2x2.5mm", "Y1", "12MHz", (-12.5, 1.0), 0,
      {"1": "XTAL_IN", "2": "GND", "3": "XTAL_OUT", "4": "GND"}),
-  ("U3_SOT-23-3", "U4", "XC6206P332MR", (-13.0, 6.0), 0,
+  ("U3_SOT-23-3", "U4", "XC6206P332MR", (-12.5, 6.0), 0,
      {"1": "GND", "2": "+3V3A", "3": "+3V3D"}),
-  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW2", "TS-1187A", (-19.0, -3.0), 0, {"1": "NRST", "2": "GND"}),
+  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW2", "TS-1187A", (-16.5, -4.0), 0, {"1": "NRST", "2": "GND"}),
   # top edge: boot, off pin 60, clear of the receptacle
-  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW1", "TS-1187A", (-13.0, -11.0), 0, {"1": "BOOT0", "2": "GND"}),
+  ("SW1_SW_Push_1P1T_XKB_TS-1187A", "SW1", "TS-1187A", (-12.5, -10.0), 0, {"1": "BOOT0", "2": "GND"}),
 ]
 for fpn, ref, val, (dx, dy), rot, nets in _p:
     x, y = at(dx, dy)
     fps.append(place(fpn, ref, val, x, y, rot, nets=nets))
 
-for half, dx, rot in (("L", -27.0, 90), ("R", 27.0, 270)):
+# Required MCU, oscillator and regulator support parts.  These were absent in
+# the first placement-only draft; without them BOOT0 floats, the crystal has no
+# specified load, and the supply rails are inadequately bypassed.  Values and
+# connectivity match FN40HE.  B.Cu placement keeps them close to the relevant
+# pins without enlarging the daughterboard.
+_support = [
+  ("R3_R_0402_1005Metric", "R4",  "12k",  (-6.4, -6.0), 90, {"1": "BOOT0",   "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C3",  "30p",  (-3.2, 11.8),  0, {"1": "XTAL_IN", "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C4",  "30p",  (-1.2, 11.8),  0, {"1": "XTAL_OUT","2": "GND"}),
+  ("C1_C_0402_1005Metric", "C5",  "100n", (-6.2, -2.6),  0, {"1": "+3V3D",   "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C6",  "100n", ( 5.6,  4.3),  0, {"1": "+3V3D",   "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C7",  "100n", (-6.4, -4.6),  0, {"1": "+3V3D",   "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C8", "10u",  ( 6.3,  1.8),  0, {"1": "+3V3D",   "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C9",  "100n", ( 2.8, 11.8),  0, {"1": "+3V3A",   "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C10", "1u", ( 5.3, 11.8),  0, {"1": "+3V3A",   "2": "GND"}),
+  ("C1_C_0402_1005Metric", "C11", "100n", ( 0.8, 11.8),  0, {"1": "NRST",     "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C12", "2.2u", (19.8, -4.2), 0, {"1": "VBUS",    "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C13", "2.2u", (18.0, -6.5), 0, {"1": "+3V3D",   "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C14", "2.2u", (-9.2, 10.8), 0, {"1": "+3V3D",   "2": "GND"}),
+  ("C148_C_0603_1608Metric", "C15", "2.2u", (10.8, 11.8), 0, {"1": "+3V3A",   "2": "GND"}),
+]
+for fpn, ref, val, (dx, dy), rot, nets in _support:
+    x, y = at(dx, dy)
+    fps.append(place(fpn, ref, val, x, y, rot, nets=nets, back=True))
+
+for half, dx, rot in (("L", -23.5, 90), ("R", 23.5, 270)):
     RIB = ["+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
            "ADC_%s1" % half, "GND", "ADC_%s2" % half, "GND",
            "ADC_%s3" % half, "ADC_%s4" % half]
@@ -332,7 +391,13 @@ for half, dx, rot in (("L", -27.0, 90), ("R", 27.0, 270)):
     fps.append(place("FFC_12P_1.00mm_TopContact", "J%s" % ("2" if half == "L" else "3"),
                      "FFC_12P", x, y, rot,
                      nets={str(i + 1): n for i, n in enumerate(RIB)}))
-n = board(db, fps, "../pcb/Symm60HE-Daughterboard.kicad_pcb", "Symm60HE-Daughterboard",
-          drawings=outline_on(USB_KO, "Dwgs.User"))
-print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB ESD, 2 LDOs, xtal, fuse, 2 tacts, 2 FFC)"
+# Two isolated M2 holes follow the compact Unified Daughterboard S-series
+# retention idea: two points are sufficient for a small rigid PCB, and unlike
+# four corner holes they do not force this board back to its original size.
+# Mounting it wholly to one half avoids a rigid bridge across the tent hinge.
+for i, (dx, dy) in enumerate(((-24.0, -11.0), (24.0, -11.0)), 1):
+    x, y = at(dx, dy)
+    fps.append(place("MountingHole_2.2mm_M2_NPTH", "MHD%d" % i, "M2_NPTH", x, y))
+n = board(db, fps, os.path.join(PCB_OUT, "Symm60HE-Daughterboard.kicad_pcb"), "Symm60HE-Daughterboard")
+print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB-C/ESD/CC, 2 LDOs, xtal, complete support passives, fuse, 2 tacts, 2 FFC, 2 M2 NPTH)"
       % (db.bounds[2]-db.bounds[0], db.bounds[3]-db.bounds[1], n))

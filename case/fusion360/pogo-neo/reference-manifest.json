@@ -1,0 +1,21 @@
+{
+  "body_count": 35,
+  "keyboard_reference_bodies": 8,
+  "kernel_bodies": 27,
+  "pogo_spring_mpn": "854-22-012-30-004101",
+  "pogo_target_mpn": "856-10-012-30-051000",
+  "pogo_contacts_per_interface": 12,
+  "pogo_pitch_mm": 1.27,
+  "pogo_spring_initial_height_mm": 4.216,
+  "pogo_spring_stroke_mm": 1.016,
+  "pogo_spring_working_height_mm": 3.79,
+  "pogo_target_projection_mm": 2.21,
+  "pogo_model_note": "dimensioned case-design reference, not vendor-certified CAD",
+  "controller_orientation": "lengthwise on centreline; flat across lateral tent; common 11 degree typing plane",
+  "target_retention": "12-contact targets mounted directly on Hall PCBs",
+  "keyboard_suspension": "eight side gaskets on plates only",
+  "files": [
+    "Symm60HE-Neo-Pogo-Reference.step",
+    "Symm60HE-Neo-Pogo-Reference.FCStd"
+  ]
+}

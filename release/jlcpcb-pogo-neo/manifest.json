@@ -1,0 +1,29 @@
+{
+  "variant": "Neo-style 12-contact direct-target pogo",
+  "layouts": {
+    "doe-wkl": {
+      "Left": 30,
+      "Right": 30
+    },
+    "doe-wklarrows": {
+      "Left": 31,
+      "Right": 32
+    },
+    "doe-wklbs2": {
+      "Left": 30,
+      "Right": 29
+    },
+    "doe-wklbs2arrows": {
+      "Left": 31,
+      "Right": 31
+    }
+  },
+  "common_boards": [
+    "Symm60HE-Neo-Controller",
+    "Symm60HE-Neo-Left-SpringModule",
+    "Symm60HE-Neo-Right-SpringModule"
+  ],
+  "coordinate_source": "KiCad 10 position exporter, millimetres",
+  "mill_max_policy": "included in JLC upload BOM/CPL by exact MPN; blank LCSC requires manual sourcing match",
+  "cpl_rotation_gate": "Confirm every orientation in the JLCPCB placement viewer"
+}
