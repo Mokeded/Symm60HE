@@ -6,4 +6,4 @@ Item,Quantity,Reference Designators,Description,Package,Assembly Type,Manufactur
 5,3,"HEL8,HEL30,HEL32",Hall-effect keyboard sensor,HE_KEY_1.50u,SMT,NOVOSENSE,MT9102ET,LCSC,C5447698,Written approval only,Alignment-sensitive Hall sensor; no substitution without written approval
 6,2,"HEL21,HEL33",Hall-effect keyboard sensor,HE_KEY_2.25u,SMT,NOVOSENSE,MT9102ET,LCSC,C5447698,Written approval only,Alignment-sensitive Hall sensor; no substitution without written approval
 7,2,"HEL15,HEL27",Hall-effect keyboard sensor,HE_SHARED_MIDPOINT,SMT,NOVOSENSE,MT9102ET,LCSC,C5447698,Written approval only,Alignment-sensitive Hall sensor; no substitution without written approval
-8,4,"AML1,AML2,AML3,AML4",8-channel analog multiplexer,AM1_SOIC-16_3.9x9.9mm_P1.27mm,SMT,Texas Instruments,SN74LV4051AD,LCSC,C7792,Written approval only,Substitution only with written approval
+8,4,"AML1,AML2,AML3,AML4",8-channel analog multiplexer,AM1_SOIC-16_3.9x9.9mm_P1.27mm,SMT,Texas Instruments,SN74LV4051ADR,LCSC,C128414,Written approval only,Substitution only with written approval

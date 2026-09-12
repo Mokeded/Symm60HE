@@ -1,0 +1,10 @@
+{
+    "autodeskProduct": "Fusion",
+    "type": "script",
+    "author": "Symm60HE",
+    "description": {
+        "": "Builds the Symm60HE case-design project from the generated reference STEP bodies."
+    },
+    "supportedOS": "windows|mac",
+    "editEnabled": true
+}

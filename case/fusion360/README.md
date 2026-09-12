@@ -2,7 +2,9 @@
 
 `Symm60HE-reference-assembly.step` is the primary Fusion 360 handoff. Import
 it with **File > Open > Upload** and save the imported design as a Fusion
-project. It contains nine separately named reference bodies:
+project, or run the `fusion-setup/Symm60HECaseSetup` script (see
+`fusion-setup/README.md`) to build a named component tree from the individual
+STEP files in one step. It contains nine separately named reference bodies:
 
 - Left PCB
 - Right PCB

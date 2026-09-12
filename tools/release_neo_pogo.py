@@ -53,7 +53,7 @@ HALF_BOARDS = {
 # extended classification must still be refreshed in the assembly portal.
 PARTS = {
     "MT9102ET": ("NOVOSENSE", "MT9102ET", "C5447698", "JLCPCB SMT"),
-    "SN74LV4051A": ("Texas Instruments", "SN74LV4051AD", "C7792", "JLCPCB SMT"),
+    "SN74LV4051A": ("Texas Instruments", "SN74LV4051ADR", "C128414", "JLCPCB SMT"),
     "100n": ("Samsung", "CL05B104KO5NNNC", "C1525", "JLCPCB SMT"),
     "4.7n": ("Murata", "GRM1555C1H472JE01D", "C1518204", "JLCPCB SMT"),
     "AT32F405RCT7": ("Artery", "AT32F405RCT7", "C47090415", "JLCPCB SMT"),

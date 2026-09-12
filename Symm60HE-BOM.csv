@@ -1,6 +1,6 @@
 #,Value,Package,Manufacturer,MPN,Qty_Left,Qty_Right,LCSC,Notes
 1,MT9102ET,SOT-23-3 (key centre),NOVOSENSE,MT9102ET,33,36,C5447698,"Linear Hall sensor, one per switch position; populate only the positions your layout uses"
-2,SN74LV4051A,SOIC-16_3.9x9.9mm_P1.27mm,Texas Instruments,SN74LV4051AD,4,4,C7792,"8:1 analog mux; INH (pin 6) tied to GND. SOIC rather than FN40HE's TSSOP: 1.27 mm pitch leaves 0.67 mm between pads, which a 0.2 mm trace clears, so the fan-out is routable on two layers"
+2,SN74LV4051A,SOIC-16_3.9x9.9mm_P1.27mm,Texas Instruments,SN74LV4051ADR,4,4,C128414,"8:1 analog mux; INH (pin 6) tied to GND. SOIC rather than FN40HE's TSSOP: 1.27 mm pitch leaves 0.67 mm between pads, which a 0.2 mm trace clears, so the fan-out is routable on two layers"
 3,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,37,40,C1525,One per sensor (VCC) plus one per mux
 4,4.7n,C_0402_1005Metric,Murata,GRM1555C1H472JE01D,33,36,C1518204,One per sensor output
 5,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,1,1,C20111,"Exact locked connector: top-contact, right-angle, 12P, 1.0 mm pitch, 0.3 mm FFC"
