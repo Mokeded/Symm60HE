@@ -4,10 +4,12 @@
 Neo-style pogo assembly. Install the folder under Fusion's API `Scripts`
 directory, press **Shift+S**, select `Symm60HECaseSetup`, and click **Run**.
 
-The script imports `Symm60HE-case-reference-assembly.step` exactly once and
-grounds it. It then reads `generated/usb-placement.json` to apply the checked
-J1 rotation and translation to the separately imported valid vendor USB-C
-body. All mechanical positioning is already resolved in those references:
+The script imports the globally positioned component STEP files into a native
+Fusion component tree and grounds that reference tree. It then imports the
+untouched vendor USB-C model, applies the checked J1 rotation, measures its
+bounding box in Fusion, and translates that measured body onto J1. This avoids
+the vendor STEP's nonstandard internal origin shifting the connector. All
+other mechanical positioning is already resolved in the component references:
 
 - each 1.2 mm Hall PCB is aligned below its matching split gasket plate;
 - switches and keycaps occupy their assembled plate positions;
@@ -20,6 +22,11 @@ body. All mechanical positioning is already resolved in those references:
   USB-C and its plug keepout aimed through the rear case wall; and
 - flexible FFC solids show route and bend-clearance envelopes between each
   floating head and the controller.
+
+The nonphysical USB-plug, pogo-travel and FFC clearance envelopes are retained
+under `Cable and movement keepouts` but are hidden when the design first opens.
+Turn that component on only while designing the surrounding clearances; the
+rectangular USB envelope is not a manufactured part.
 
 The script creates empty `Left top`, `Left bottom`, `Right top`, `Right bottom`
 and `Centre blocker and controller housing` components. Build the case only in

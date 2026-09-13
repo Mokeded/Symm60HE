@@ -201,6 +201,26 @@ def add_reference(doc, root, internal, label, shape, role, colour,
     return obj
 
 
+def export_absolute_step(obj, path):
+    """Export the visible assembly position baked into the STEP geometry.
+
+    FreeCAD normally writes ``TopoShape.Placement`` as a STEP assembly
+    transform. Fusion discards or reinterprets that transform when the STEP is
+    imported into an already-created target component, which sent the small
+    pogo boards and connector blocks back to their local origins. Apply the
+    placement to the underlying geometry and reset it before export so every
+    imported component has unambiguous world-space coordinates.
+    """
+    shape = obj.Shape.copy()
+    placement = shape.Placement
+    shape.Placement = App.Placement()
+    # ``transformShape`` preserves exact analytic geometry under this rigid
+    # rotation/translation and, unlike ``transformGeometry``, reproduces the
+    # source bounding box exactly for tented plates and connector compounds.
+    shape.transformShape(placement.toMatrix(), True)
+    shape.exportStep(str(path))
+
+
 def controller_point(source, layout):
     mech = layout["mechanism"]
     sx, sy = mech["controller_source_centre"]
@@ -463,6 +483,16 @@ def main():
         objects.append(cable_obj)
 
     doc.recompute()
+    # Fusion independently reads this manifest after importing the component
+    # files.  A mismatch stops the setup instead of leaving a plausible-looking
+    # project with a daughterboard or pogo block at a STEP-local origin.
+    placement_manifest = {}
+    for obj in objects:
+        bb = obj.Shape.BoundBox
+        placement_manifest[obj.Name] = [
+            bb.XMin, bb.YMin, bb.ZMin, bb.XMax, bb.YMax, bb.ZMax]
+    (GEN / "component-placement.json").write_text(
+        json.dumps(placement_manifest, indent=2) + "\n")
     # Meshes are generated solely for the checked documentation preview. STEP
     # and FCStd remain the authoritative Fusion handoff formats.
     for obj in objects:
@@ -473,7 +503,8 @@ def main():
         # monolithic occurrence.  Keep the exact HRO receptacle on its vendor
         # STEP path; it is the one object that FreeCAD cannot round-trip safely.
         if obj is not usb_obj:
-            Import.export([obj], str(OUT / ("Symm60HE-" + obj.Name + ".step")))
+            export_absolute_step(
+                obj, OUT / ("Symm60HE-" + obj.Name + ".step"))
     master = OUT / "Symm60HE-case-reference-assembly.step"
     legacy = OUT / "Symm60HE-reference-assembly.step"
     # Keep the exact HRO body in the editable FCStd, but import its untouched

@@ -136,6 +136,44 @@ def main():
         assert objects[side + "SpringPCB"].Shape.common(
             objects["DaughterboardPCB"].Shape).Volume < 1e-5
 
+    # Fusion imports these files into pre-created child components. Their
+    # assembly placements must therefore be baked into the STEP geometry
+    # instead of being left as optional STEP occurrence transforms.
+    component_steps = (
+        "LeftPlate", "LeftSwitches", "LeftKeycaps",
+        "RightPlate", "RightSwitches", "RightKeycaps",
+        "LeftPCB", "LeftTargetConnector",
+        "RightPCB", "RightTargetConnector",
+        "DaughterboardPCB", "LeftControllerFFC", "RightControllerFFC",
+        "LeftSpringPCB", "LeftSpringConnector", "LeftSpringFFCConnector",
+        "RightSpringPCB", "RightSpringConnector", "RightSpringFFCConnector",
+        "ControllerUSBPlugEnvelope", "LeftPogoTravelEnvelope",
+        "RightPogoTravelEnvelope", "LeftFFCEnvelope", "RightFFCEnvelope",
+    )
+    for name in component_steps:
+        component_doc = App.newDocument("ComponentStep_" + name)
+        Import.insert(str(FUSION / ("Symm60HE-" + name + ".step")),
+                      component_doc.Name)
+        shapes = [candidate.Shape for candidate in component_doc.Objects
+                  if (hasattr(candidate, "Shape") and
+                      not candidate.Shape.isNull() and candidate.Shape.Solids)]
+        assert shapes, name
+        bounds = (
+            min(shape.BoundBox.XMin for shape in shapes),
+            min(shape.BoundBox.YMin for shape in shapes),
+            min(shape.BoundBox.ZMin for shape in shapes),
+            max(shape.BoundBox.XMax for shape in shapes),
+            max(shape.BoundBox.YMax for shape in shapes),
+            max(shape.BoundBox.ZMax for shape in shapes),
+        )
+        expected = objects[name].Shape.BoundBox
+        expected_bounds = (expected.XMin, expected.YMin, expected.ZMin,
+                           expected.XMax, expected.YMax, expected.ZMax)
+        assert all(close(actual, wanted, 0.02)
+                   for actual, wanted in zip(bounds, expected_bounds)), (
+                       name, bounds, expected_bounds)
+        App.closeDocument(component_doc.Name)
+
     roundtrip = App.newDocument("FusionReferenceRoundTrip")
     Import.insert(str(master), roundtrip.Name)
     imported = [obj.Shape for obj in roundtrip.Objects
@@ -180,6 +218,8 @@ def main():
           (usb.XLength, usb.YLength, usb.ZLength))
     print("USB-C shell overhangs its local PCB edge by %.3f mm" %
           actual_overhang)
+    print("all %d component STEP files preserve absolute assembly placement" %
+          len(component_steps))
     print("STEP round-trip: %d objects, %d valid solids" %
           (len(imported), solids))
 

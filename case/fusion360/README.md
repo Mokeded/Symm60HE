@@ -17,7 +17,13 @@ components:
   the actual placed HRO USB-C receptacle
 - left floating pogo daughterboard, spring block and ZIF body
 - right floating pogo daughterboard, spring block and ZIF body
-- one separately hideable cable-and-movement-keepout component
+- one cable-and-movement-keepout component, hidden by default
+
+Every individual STEP has its checked assembly transform baked into the B-rep
+geometry. Do not regenerate these files by exporting the FCStd objects without
+the project exporter: ordinary FreeCAD STEP occurrence transforms are not
+preserved when Fusion imports a STEP into an existing child component, which
+would return the small boards and pogo blocks to their local origins.
 
 `Case - model here` remains a separate empty component and is activated at the
 end of setup. Fusion therefore ghosts the grounded reference tree while case
@@ -63,6 +69,11 @@ unorientable during a write/read round trip. The Fusion add-in therefore
 imports the original valid solid directly from
 `models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP`, preserving its exact CAD
 geometry and checked position without passing it through FreeCAD's writer.
+Because Fusion and FreeCAD interpret the vendor STEP's private origin
+differently, the add-in rotates the imported connector first, measures the
+resulting Fusion bounding box, and translates that measured body onto the
+verified J1 envelope. It also checks every imported component against
+`generated/component-placement.json` before setup completes.
 The legacy `Symm60HE-reference-assembly.step` and `.FCStd` names are updated to
 the same integrated geometry for compatibility. Individual globally positioned
 STEP files are also supplied for the major boards, plates, switches and
