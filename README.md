@@ -184,14 +184,18 @@ case around its nine separately named reference bodies:
 - left PCB and left universal plate
 - right PCB and right universal plate
 - compact daughterboard PCB
-- simplified left/right switch banks
-- simplified left/right keycap banks for the primary 60-key `doe-wkl` layout
+- XVX Whisper EC/HE-specific left/right switch clearance banks
+- row-specific Cherry-profile keycap banks for the primary 60-key `doe-wkl`
+  layout
 
 The two plate/PCB pairs are positioned at 3° lateral tent and 7° front-to-back
 typing angle, with each PCB 5 mm below its plate. No case solid is included by
-design. The switch and keycap bodies are simplified visualization/clearance
-envelopes and can be hidden independently; they are not vendor-specific
-production models. Individual STEP files make it easy to import each reference
+design. The switch and keycap bodies are visualization/clearance envelopes and
+can be hidden independently. XVX does not publish mechanical CAD for the
+Whisper, so that body records the named product's published features but is not
+manufacturer CAD. The keycaps follow the open KeyV2 Cherry R1-R4 dimensions;
+they are not exact kit/manufacturer production models. Individual STEP files
+make it easy to import each reference
 as its own Fusion component; `Symm60HE-reference-assembly.FCStd` is the editable
 source assembly. See `case/fusion360/README.md`.
 

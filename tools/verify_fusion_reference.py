@@ -25,11 +25,15 @@ def main():
     master = FUSION / "Symm60HE-case-reference-assembly.step"
     vendor_usb = (FUSION / "models" /
                   "USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
+    vendor_ffc = (FUSION / "models" /
+                  "FFC_BOOMELE_1.0-12P_C20111.step")
     doc = App.openDocument(str(source))
     objects = {obj.Name: obj for obj in doc.Objects
                if hasattr(obj, "Shape") and not obj.Shape.isNull()}
     required = {
         "LeftPCB", "RightPCB", "DaughterboardPCB",
+        "LeftPCBComponents", "RightPCBComponents",
+        "DaughterboardComponents",
         "LeftSpringPCB", "RightSpringPCB",
         "LeftTargetConnector", "RightTargetConnector",
         "LeftSpringConnector", "RightSpringConnector",
@@ -67,6 +71,26 @@ def main():
         assert abs(typing - layout["typing_deg"]) < 1e-5, (side, typing)
         assert abs(tent - layout["tent_deg"]) < 1e-5, (side, tent)
         assert normal.x * expected_x_sign > 0, (side, normal.x)
+        package_centre = objects[side + "PCBComponents"].Shape.BoundBox.Center
+        pcb_centre = objects[side + "PCB"].Shape.BoundBox.Center
+        package_offset = package_centre.sub(pcb_centre)
+        assert package_offset.dot(normal) < 0, (
+            side, "Hall components are not on the B.Cu side")
+        board_box = objects[side + "PCB"].Shape.BoundBox
+        package_box = objects[side + "PCBComponents"].Shape.BoundBox
+        assert (board_box.XMin < package_centre.x < board_box.XMax and
+                board_box.YMin < package_centre.y < board_box.YMax), (
+                    side, "Hall components do not share the PCB XY datum")
+        # All component mounting faces lie in the B.Cu plane. Comparing plane
+        # projections is both exact and much faster than a compound-to-board
+        # B-rep distance calculation across hundreds of package solids.
+        board_bottom = min(vertex.Point.dot(normal)
+                           for vertex in objects[side + "PCB"].Shape.Vertexes)
+        package_top = max(vertex.Point.dot(normal) for vertex in
+                          objects[side + "PCBComponents"].Shape.Vertexes)
+        package_gap = board_bottom - package_top
+        assert abs(package_gap) < 1e-5, (
+            side, "Hall components are not seated on B.Cu", package_gap)
         recovered.append((tent, typing))
 
     controller = objects["DaughterboardPCB"].Shape.BoundBox
@@ -87,8 +111,10 @@ def main():
     left_ffc = objects["LeftControllerFFC"].Shape.BoundBox
     right_ffc = objects["RightControllerFFC"].Shape.BoundBox
     assert left_ffc.Center.x < controller.Center.x < right_ffc.Center.x
-    assert close(left_ffc.XLength, 5.0) and close(left_ffc.YLength, 14.0)
-    assert close(right_ffc.XLength, 5.0) and close(right_ffc.YLength, 14.0)
+    # These are the exact 19.0 x 6.75 x 2.51 mm C20111 distributor models,
+    # rotated 90 degrees at J2/J3—not the old undersized ZIF boxes.
+    assert close(left_ffc.XLength, 6.75) and close(left_ffc.YLength, 19.0)
+    assert close(right_ffc.XLength, 6.75) and close(right_ffc.YLength, 19.0)
     assert objects["LeftControllerFFC"].Shape.common(
         objects["DaughterboardPCB"].Shape).Volume < 1e-5
     assert objects["RightControllerFFC"].Shape.common(
@@ -133,6 +159,9 @@ def main():
         # after the entire half is translated outward.
         assert target.distToShape(hall_pcb)[0] < 1e-5
         assert spring.distToShape(spring_pcb)[0] < 1e-5
+        spring_ffc = objects[side + "SpringFFCConnector"].Shape
+        assert spring_ffc.distToShape(spring_pcb)[0] < 1e-5
+        assert spring_ffc.common(spring_pcb).Volume < 1e-5
         assert objects[side + "SpringPCB"].Shape.common(
             objects["DaughterboardPCB"].Shape).Volume < 1e-5
 
@@ -142,9 +171,11 @@ def main():
     component_steps = (
         "LeftPlate", "LeftSwitches", "LeftKeycaps",
         "RightPlate", "RightSwitches", "RightKeycaps",
-        "LeftPCB", "LeftTargetConnector",
-        "RightPCB", "RightTargetConnector",
-        "DaughterboardPCB", "LeftControllerFFC", "RightControllerFFC",
+        "LeftPCB", "LeftPCBComponents", "LeftTargetConnector",
+        "RightPCB", "RightPCBComponents", "RightTargetConnector",
+        "DaughterboardPCB", "DaughterboardComponents",
+        "ControllerUSBConnector",
+        "LeftControllerFFC", "RightControllerFFC",
         "LeftSpringPCB", "LeftSpringConnector", "LeftSpringFFCConnector",
         "RightSpringPCB", "RightSpringConnector", "RightSpringFFCConnector",
         "ControllerUSBPlugEnvelope", "LeftPogoTravelEnvelope",
@@ -184,7 +215,9 @@ def main():
     vendor_doc = App.newDocument("VendorUSBRoundTrip")
     Import.insert(str(vendor_usb), vendor_doc.Name)
     vendor_shapes = [obj.Shape for obj in vendor_doc.Objects
-                     if hasattr(obj, "Shape") and not obj.Shape.isNull()]
+                     if (hasattr(obj, "Shape") and not obj.Shape.isNull() and
+                         obj.Shape.Solids and
+                         1e-6 < abs(obj.Shape.Volume) < 1e12)]
     assert vendor_shapes and all(shape.isValid() for shape in vendor_shapes)
     vendor = max(vendor_shapes, key=lambda shape: abs(shape.Volume)).copy()
     mech = layout["mechanism"]
@@ -192,7 +225,7 @@ def main():
                   mech["controller_usb"][0] -
                   mech["controller_source_centre"][0])
     vendor.rotate(App.Vector(), App.Vector(0, 0, 1),
-                  mech["controller_usb_rotation_deg"])
+                  mech["controller_usb_model_rotation_deg"])
     vendor_box = vendor.BoundBox
     vendor.translate(App.Vector(
         expected_x - vendor_box.Center.x,
@@ -203,6 +236,18 @@ def main():
     # been exchanged by a 180-degree rotation.
     overlap = objects["ControllerUSBConnector"].Shape.common(vendor).Volume
     assert overlap > 0.9999 * vendor.Volume, (overlap, vendor.Volume)
+    ffc_doc = App.newDocument("VendorFFCRoundTrip")
+    Import.insert(str(vendor_ffc), ffc_doc.Name)
+    ffc_shapes = [obj.Shape for obj in ffc_doc.Objects
+                  if (hasattr(obj, "Shape") and not obj.Shape.isNull() and
+                      obj.Shape.Solids and
+                      1e-6 < abs(obj.Shape.Volume) < 1e12)]
+    assert ffc_shapes and all(shape.isValid() for shape in ffc_shapes)
+    ffc_vendor = max(ffc_shapes, key=lambda shape: abs(shape.Volume))
+    for name in ("LeftControllerFFC", "RightControllerFFC",
+                 "LeftSpringFFCConnector", "RightSpringFFCConnector"):
+        assert close(objects[name].Shape.Volume, ffc_vendor.Volume, 0.01), (
+            name, objects[name].Shape.Volume, ffc_vendor.Volume)
     print("Fusion reference verification: PASS")
     print("controller %.3f x %.3f mm; USB-C exits rear; J2/J3 face left/right" %
           (controller.XLength, controller.YLength))
@@ -216,6 +261,8 @@ def main():
     print("inner plate/gasket mounts clear by %.3f mm" % plate_gap)
     print("actual HRO USB-C envelope %.3f x %.3f x %.3f mm" %
           (usb.XLength, usb.YLength, usb.ZLength))
+    print("all four exact C20111 FFC bodies use the 19.000 x 6.750 x "
+          "2.510 mm distributor envelope")
     print("USB-C shell overhangs its local PCB edge by %.3f mm" %
           actual_overhang)
     print("all %d component STEP files preserve absolute assembly placement" %

@@ -15,6 +15,7 @@ from shapely.ops import unary_union
 from geom import BUILDS
 from outline import (LEFT_PCB, RIGHT_PCB, DB, LEFT_PLATE, RIGHT_PLATE,
                      axis_mm, HALF_SPREAD, DB_USB_OVERHANG)
+from sexp import find, loads
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "case/fusion360/generated"
@@ -35,6 +36,21 @@ def find_cli():
 
 def centre(poly):
     return [poly.centroid.x, poly.centroid.y]
+
+
+def modeled_references(board_path, excluded=()):
+    """Return fitted references that have a real KiCad 3D model assignment."""
+    board = loads(board_path.read_text())
+    refs = []
+    for footprint in find(board, "footprint"):
+        if not find(footprint, "model"):
+            continue
+        properties = {item[1]: item[2] for item in find(footprint, "property")
+                      if len(item) > 2}
+        reference = properties.get("Reference")
+        if reference and reference not in excluded:
+            refs.append(reference)
+    return sorted(refs)
 
 
 def fused_plate_polygon(dxf):
@@ -120,6 +136,30 @@ def main():
                         "--force", "-o", str(OUT / f"{name}.step"),
                         str(source)], check=True)
 
+    # Bring the real package bodies into the enclosure reference as separate
+    # component groups. Exact enclosure-critical connectors remain separate
+    # editable components below; the remaining assigned models are KiCad's
+    # maintained package references and must not be described as manufacturer
+    # CAD. Spring boards have no additional modeled parts once their FFC and
+    # pogo connectors are handled explicitly.
+    component_exports = (
+        ("LeftPCBComponents", dict(board_sources)["LeftPCB"], ()),
+        ("RightPCBComponents", dict(board_sources)["RightPCB"], ()),
+        ("DaughterboardComponents", dict(board_sources)["DaughterboardPCB"],
+         ("J1", "J2", "J3")),
+    )
+    model_dir = ROOT / "case/fusion360/models"
+    for name, source, excluded in component_exports:
+        references = modeled_references(source, excluded)
+        if not references:
+            raise RuntimeError(f"{source.name}: no component models to export")
+        subprocess.run([
+            cli, "pcb", "export", "step", "--no-board-body", "--no-dnp",
+            "--component-filter", ",".join(references), "--force",
+            "-D", f"SYMM60HE_3DMODEL_DIR={model_dir}",
+            "-o", str(OUT / f"{name}.step"), str(source),
+        ], check=True)
+
     # Export the actual HRO TYPE-C-31-M-12 receptacle separately from the PCB.
     # Keeping the rigid board and connector as separate solids lets Fusion use
     # the exact board datum while exposing the real shell/mouth geometry for
@@ -127,7 +167,6 @@ def main():
     # macOS package does not install this legacy HRO STEP globally.
     controller_source = dict((name, source) for name, source in board_sources)[
         "DaughterboardPCB"]
-    model_dir = ROOT / "case/fusion360/models"
     subprocess.run([
         cli, "pcb", "export", "step", "--no-board-body",
         "--component-filter", "J1", "--force",
@@ -159,6 +198,11 @@ def main():
         "controller_right_ffc_rotation_deg": 90.0,
         "controller_usb": [192.209, -4.1133],
         "controller_usb_rotation_deg": 180.0,
+        # The HRO distributor STEP's mating mouth already faces +Y.  This is
+        # deliberately separate from J1's KiCad footprint angle: applying the
+        # footprint's 180-degree value to the vendor B-rep exchanges its mouth
+        # and solder-tail ends in the enclosure reference.
+        "controller_usb_model_rotation_deg": 0.0,
         "controller_usb_overhang": DB_USB_OVERHANG,
     }
     # Rewrite after adding the mechanism datums.

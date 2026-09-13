@@ -7,7 +7,6 @@ models follow their owning PCB; nonphysical travel/FFC volumes live in a
 separate reference group.
 """
 import json
-import math
 import os
 import traceback
 
@@ -16,12 +15,9 @@ import adsk.fusion
 
 REFERENCE_DIR = r"E:\Symm60HE-GitHub-Upload\Symm60HE\case\fusion360"
 REFERENCE_FILE = "Symm60HE-case-reference-assembly.step"
-USB_MODEL_FILE = os.path.join(
-    "models", "USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
-USB_PLACEMENT_FILE = os.path.join("generated", "usb-placement.json")
 COMPONENT_PLACEMENT_FILE = os.path.join(
     "generated", "component-placement.json")
-DESIGN_NAME = "Symm60HE Case - Componentized v3"
+DESIGN_NAME = "Symm60HE Case - Componentized v5 exact connectors"
 SAVE_DESIGN = True
 CASE_COMPONENTS = ["Left top", "Left bottom", "Right top", "Right bottom",
                    "Centre blocker and controller housing"]
@@ -87,7 +83,13 @@ def validate_component_placements(registry, manifest_path, tolerance_mm=0.10):
         if name not in expected:
             problems.append(name + ": missing placement manifest entry")
             continue
-        box = occurrence.boundingBox
+        # preciseBoundingBox evaluates the imported B-rep rather than the
+        # looser display/cache bounds. It is available in current Fusion; keep
+        # the older property only as a compatibility fallback.
+        try:
+            box = occurrence.preciseBoundingBox
+        except Exception:
+            box = occurrence.boundingBox
         # Fusion API geometry uses centimetres; the generated manifest is mm.
         actual = [box.minPoint.x * 10.0, box.minPoint.y * 10.0,
                   box.minPoint.z * 10.0, box.maxPoint.x * 10.0,
@@ -98,57 +100,6 @@ def validate_component_placements(registry, manifest_path, tolerance_mm=0.10):
     if problems:
         raise RuntimeError(
             "Component placement verification failed:\n" + "\n".join(problems))
-
-
-def place_actual_usb(app, parent, path, placement_path, expected_bounds):
-    """Import and align the untouched HRO body to J1 using Fusion geometry.
-
-    The vendor STEP's internal component origin is not the origin FreeCAD sees
-    when it calculates the assembly transform.  Rotate the imported occurrence
-    first, ask Fusion for its resulting bounding box, and then translate that
-    measured box onto the checked J1 envelope.  This avoids any dependency on
-    the vendor STEP's private origin hierarchy.
-    """
-    occurrence = import_part(
-        app, parent, path, "Actual HRO TYPE-C-31-M-12 USB-C receptacle")
-    with open(placement_path, "r", encoding="utf-8") as stream:
-        placement = json.load(stream)
-    # First apply only the checked footprint rotation.
-    rotation = adsk.core.Matrix3D.create()
-    rotation.setToRotation(
-        math.radians(placement["rotation_degrees"]),
-        adsk.core.Vector3D.create(0, 0, 1),
-        adsk.core.Point3D.create(0, 0, 0))
-    try:
-        occurrence.transform2 = rotation
-    except Exception:
-        occurrence.transform = rotation
-    adsk.doEvents()
-
-    # Fusion API distances are centimetres; the placement manifest is mm.
-    box = occurrence.boundingBox
-    actual_centre = adsk.core.Point3D.create(
-        (box.minPoint.x + box.maxPoint.x) / 2.0,
-        (box.minPoint.y + box.maxPoint.y) / 2.0,
-        (box.minPoint.z + box.maxPoint.z) / 2.0)
-    expected_centre = adsk.core.Point3D.create(
-        (expected_bounds[0] + expected_bounds[3]) / 20.0,
-        (expected_bounds[1] + expected_bounds[4]) / 20.0,
-        (expected_bounds[2] + expected_bounds[5]) / 20.0)
-    # Matrix3D.transformBy ordering is easy to misread and previously caused
-    # Fusion to rotate this translation around the vendor model's private
-    # origin.  The measured delta is already in assembly coordinates, so put
-    # it directly into the same rigid transform that carries the rotation.
-    rotation.translation = adsk.core.Vector3D.create(
-        expected_centre.x - actual_centre.x,
-        expected_centre.y - actual_centre.y,
-        expected_centre.z - actual_centre.z)
-    try:
-        occurrence.transform2 = rotation
-    except Exception:
-        occurrence.transform = rotation
-    adsk.doEvents()
-    return occurrence
 
 
 def run(context):
@@ -186,10 +137,12 @@ def run(context):
         # follows it into the same component.
         import_group(app, reference, "Left Hall-effect PCB", ref_dir, (
             ("Symm60HE-LeftPCB.step", "Left 1.2 mm Hall PCB"),
+            ("Symm60HE-LeftPCBComponents.step", "Left fitted components"),
             ("Symm60HE-LeftTargetConnector.step", "Left pogo target"),
         ), imported)
         import_group(app, reference, "Right Hall-effect PCB", ref_dir, (
             ("Symm60HE-RightPCB.step", "Right 1.2 mm Hall PCB"),
+            ("Symm60HE-RightPCBComponents.step", "Right fitted components"),
             ("Symm60HE-RightTargetConnector.step", "Right pogo target"),
         ), imported)
 
@@ -206,14 +159,18 @@ def run(context):
             ("Symm60HE-RightSpringFFCConnector.step", "Right FFC connector"),
         ), imported)
 
-        # The flat controller is also independent.  Its exact USB receptacle is
-        # inserted below from the untouched vendor model because FreeCAD cannot
-        # safely round-trip that one B-rep through the master STEP.
+        # The flat controller is also independent.  The exact HRO receptacle's
+        # checked world transform is baked into its standalone STEP so Fusion
+        # never needs to reinterpret the vendor model's private origin.
         controller = import_group(
             app, reference, "Central controller daughterboard", ref_dir, (
                 ("Symm60HE-DaughterboardPCB.step", "Controller PCB"),
+                ("Symm60HE-DaughterboardComponents.step",
+                 "Controller fitted components"),
                 ("Symm60HE-LeftControllerFFC.step", "Left controller FFC"),
                 ("Symm60HE-RightControllerFFC.step", "Right controller FFC"),
+                ("Symm60HE-ControllerUSBConnector.step",
+                 "Actual HRO TYPE-C-31-M-12 USB-C receptacle"),
             ), imported)
 
         # Keep nonphysical design volumes out of the board components so they
@@ -232,22 +189,10 @@ def run(context):
             keepouts.isLightBulbOn = False
         except Exception:
             pass
-        usb_path = os.path.join(ref_dir, USB_MODEL_FILE)
-        usb_placement_path = os.path.join(ref_dir, USB_PLACEMENT_FILE)
-        if not os.path.isfile(usb_path):
-            raise RuntimeError("Cannot find exact USB-C model: " + usb_path)
-        if not os.path.isfile(usb_placement_path):
-            raise RuntimeError("Cannot find USB-C placement: " +
-                               usb_placement_path)
         placement_manifest = os.path.join(ref_dir, COMPONENT_PLACEMENT_FILE)
         if not os.path.isfile(placement_manifest):
             raise RuntimeError("Cannot find component placement manifest: " +
                                placement_manifest)
-        with open(placement_manifest, "r", encoding="utf-8") as stream:
-            expected_placements = json.load(stream)
-        imported["ControllerUSBConnector"] = place_actual_usb(
-            app, controller, usb_path, usb_placement_path,
-            expected_placements["ControllerUSBConnector"])
         adsk.doEvents()
         validate_component_placements(imported, placement_manifest)
 

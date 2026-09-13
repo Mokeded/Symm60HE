@@ -1,6 +1,8 @@
 $fn=36;
 color([0.06,0.28,0.12,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftPCB.stl");
 color([0.06,0.28,0.12,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-RightPCB.stl");
+color([0.22,0.23,0.25,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftPCBComponents.stl");
+color([0.22,0.23,0.25,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-RightPCBComponents.stl");
 color([0.58,0.62,0.68,0.48]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftPlate.stl");
 color([0.58,0.62,0.68,0.48]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-RightPlate.stl");
 color([0.10,0.10,0.12,0.85]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftSwitches.stl");
@@ -8,6 +10,7 @@ color([0.10,0.10,0.12,0.85]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/S
 color([0.78,0.83,0.88,0.75]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftKeycaps.stl");
 color([0.78,0.83,0.88,0.75]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-RightKeycaps.stl");
 color([0.04,0.22,0.09,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-DaughterboardPCB.stl");
+color([0.22,0.23,0.25,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-DaughterboardComponents.stl");
 color([0.62,0.64,0.67,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-ControllerUSBConnector.stl");
 color([0.62,0.72,0.82,0.35]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-ControllerUSBPlugEnvelope.stl");
 color([0.10,0.42,0.18,1]) import("/Volumes/T7 Shield/Symm60HE-GitHub-Upload/Symm60HE/case/fusion360/generated/CaseRef-LeftSpringPCB.stl");

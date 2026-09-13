@@ -114,6 +114,7 @@
       -4.1133
     ],
     "controller_usb_rotation_deg": 180.0,
+    "controller_usb_model_rotation_deg": 0.0,
     "controller_usb_overhang": 1.0
   }
 }

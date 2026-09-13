@@ -71,8 +71,12 @@ def align_xy(shape, desired_centre, mirror_y=False, bottom_z=None):
 def mirror_y_preserve_z(shape):
     """Convert KiCad STEP Y-up coordinates without flipping component height."""
     result = shape.copy()
-    result.mirror(App.Vector(), App.Vector(0, 1, 0))
-    return result
+    # Unlike TopoShape.rotate/translate, TopoShape.mirror returns the mirrored
+    # B-rep instead of mutating the receiver.  Ignoring that return value left
+    # the Hall packages at negative KiCad Y while their boards were converted
+    # to positive assembly Y, making the parts appear suspended below the
+    # keyboard in the preview.
+    return result.mirror(App.Vector(), App.Vector(0, 1, 0))
 
 
 def exact_board_thickness(shape, bottom_z, thickness):
@@ -132,6 +136,30 @@ def centred_box(width, depth, height, z):
                         App.Vector(-width / 2, -depth / 2, z))
 
 
+def place_smt_model(path, centre, angle, mounting_z, underside=False):
+    """Place an exact, footprint-centred SMT STEP on a board surface.
+
+    The vendored EasyEDA/LCSC connector models use the footprint origin in XY
+    but not a guaranteed zero Z datum.  Normalizing their lower face before
+    applying the real footprint rotation avoids depending on exporter-specific
+    STEP assembly placements.  An underside part is reflected only through the
+    board plane so its cable-entry direction remains tied to the footprint.
+    """
+    result = import_step_shape(path)
+    bb = result.BoundBox
+    result.translate(App.Vector(-bb.Center.x, -bb.Center.y, -bb.ZMin))
+    if underside:
+        # A rigid 180 degree Y rotation puts the component below the mounting
+        # plane while preserving its cable-entry direction. It also reverses
+        # the contact order, matching KiCad's physical B.Cu footprint view.
+        # A B-rep mirror left some imported C20111 sub-solids on the wrong side
+        # of the board plane in FreeCAD 1.1.3.
+        result.rotate(App.Vector(), App.Vector(0, 1, 0), 180)
+    result.rotate(App.Vector(), App.Vector(0, 0, 1), angle)
+    result.translate(App.Vector(centre[0], centre[1], mounting_z))
+    return result
+
+
 def at_key(shape, key):
     result = shape.copy()
     result.rotate(App.Vector(), App.Vector(0, 0, 1), key["rot"])
@@ -140,25 +168,71 @@ def at_key(shape, key):
 
 
 def switch_shape(key):
-    housing = centred_box(13.8, 13.8, 5.8, -2.2)
-    stem_a = centred_box(4.2, 1.3, 4.2, 3.6)
-    stem_b = centred_box(1.3, 4.2, 4.2, 3.6)
-    return at_key(Part.makeCompound([housing, stem_a, stem_b]), key)
+    """Product-specific XVX Whisper EC/HE clearance reference.
+
+    XVX does not publish a mechanical CAD file or dimensioned housing drawing.
+    Keep the standard 13.8 mm plate-opening body as the controlling envelope,
+    then represent the Whisper's visible translucent upper housing, MX stem,
+    rubber-dome shoulder and centre magnetic plunger separately.  This is an
+    enclosure/visualisation model, not manufacturer CAD.
+    """
+    lower = centred_box(13.8, 13.8, 3.6, -2.2)
+    upper = centred_box(15.6, 15.6, 2.1, 1.5)
+    dome = Part.makeCylinder(6.4, 1.5, App.Vector(0, 0, 3.6))
+    stem_a = centred_box(4.1, 1.25, 3.8, 5.1)
+    stem_b = centred_box(1.25, 4.1, 3.8, 5.1)
+    magnet = Part.makeCylinder(2.0, 2.4, App.Vector(0, 0, -4.6))
+    return at_key(Part.makeCompound(
+        [lower, upper, dome, stem_a, stem_b, magnet]), key)
 
 
-def rectangle_wire(width, depth, z):
-    pts = [App.Vector(-width/2, -depth/2, z),
-           App.Vector(width/2, -depth/2, z),
-           App.Vector(width/2, depth/2, z),
-           App.Vector(-width/2, depth/2, z)]
+def rectangle_wire(width, depth, z, tilt_deg=0.0, y_offset=0.0):
+    slope = math.tan(math.radians(tilt_deg))
+    pts = [App.Vector(-width/2, -depth/2 + y_offset,
+                      z - depth/2 * slope),
+           App.Vector(width/2, -depth/2 + y_offset,
+                      z - depth/2 * slope),
+           App.Vector(width/2, depth/2 + y_offset,
+                      z + depth/2 * slope),
+           App.Vector(-width/2, depth/2 + y_offset,
+                      z + depth/2 * slope)]
     return Part.makePolygon(pts + [pts[0]])
 
 
+def cherry_row(key):
+    """Return the KeyV2 Cherry row index for this compact five-row layout."""
+    # KLE Y is mildly perturbed by the Doe column rotations, so round to the
+    # nearest logical keyboard row rather than comparing exact coordinates.
+    logical = max(0, min(4, int(round(key["cy"] - 0.5))))
+    # Number, Q, A, Z and modifier rows correspond to Cherry rows 1..4, with
+    # the two bottom rows sharing R4 as in common 60% kits.
+    return (1, 2, 3, 4, 4)[logical]
+
+
 def keycap_shape(key):
-    lower_w = max(12.0, key["w"] * U - 1.0)
-    cap = Part.makeLoft([rectangle_wire(lower_w, U - 1.0, 6.4),
-                         rectangle_wire(max(10.0, lower_w - 3.0),
-                                        U - 4.0, 15.4)], True)
+    """Nominal row-specific Cherry-profile clearance body.
+
+    Dimensions follow the open KeyV2 Cherry profile: 18.16 mm base,
+    11.85 x 14.64 mm 1u top, and row depth/tilt of 9.8/0, 7.45/2.5,
+    6.55/5 and 7.35/11.5 degrees for R1..R4.  The exact user's keycap kit is
+    not yet selected, so this intentionally remains a conservative outer
+    reference rather than an injection-moulded production model.
+    """
+    row = cherry_row(key)
+    height, tilt = {
+        1: (9.80, 0.0),
+        2: (7.45, 2.5),
+        3: (6.55, 5.0),
+        4: (7.35, 11.5),
+    }[row]
+    lower_w = max(12.0, key["w"] * U - 0.89)
+    upper_w = max(10.0, lower_w - 6.31)
+    base_z = 8.2
+    cap = Part.makeLoft([
+        rectangle_wire(lower_w, 18.16, base_z),
+        rectangle_wire(upper_w, 14.64, base_z + height,
+                       tilt_deg=tilt, y_offset=0.25),
+    ], True)
     return at_key(cap, key)
 
 
@@ -268,14 +342,40 @@ def main():
         objects.append(obj)
         Import.export([obj], str(OUT / f"Symm60HE-{internal}.step"))
 
+    # Include the actual fitted package envelopes from KiCad. These are kept
+    # separate from the board solids so Fusion users can hide them while
+    # sketching, and so the exact USB/FFC/pogo components remain independently
+    # selectable. The Hall assemblies are B.Cu-populated; reflecting only Y
+    # preserves their correct below-board Z relationship.
+    for side in ("left", "right"):
+        cap = side.title()
+        components = import_step_shape(GEN / f"{cap}PCBComponents.step")
+        components = mirror_y_preserve_z(components)
+        # All Hall-half SMT is on B.Cu.  Seat the highest component face on
+        # the finished PCB bottom rather than translating from the raw KiCad
+        # board Z minimum.  The raw STEP datum reflects its export thickness,
+        # while the reference board is subsequently re-extruded to 1.2 mm;
+        # mixing those datums left an approximately 0.39 mm visual air gap.
+        components.translate(App.Vector(
+            half_spread_x(layout, side), 0,
+            layout["pcb_z"] - components.BoundBox.ZMax))
+        component_obj = add_reference(
+            doc, root, cap + "PCBComponents", cap + " Hall PCB components",
+            place_wing(components, layout, side),
+            "fitted KiCad package models; package CAD, not manufacturer CAD",
+            (0.20, 0.22, 0.24))
+        objects.append(component_obj)
+
     selected = [key for key in KEYS if layout["visual_layout"] in key["builds"]]
     for side_name, side_code in (("Left", "L"), ("Right", "R")):
         keys = [key for key in selected if key["half"] == side_code]
         for kind, shape, role, colour, alpha in (
             ("Switches", Part.makeCompound([switch_shape(k) for k in keys]),
-             "simplified switch envelopes", (0.18, 0.18, 0.20), 15),
+             "XVX Whisper EC/HE product-specific clearance references; "
+             "not manufacturer CAD", (0.88, 0.91, 0.88), 15),
             ("Keycaps", Part.makeCompound([keycap_shape(k) for k in keys]),
-             "simplified keycap envelopes", (0.83, 0.84, 0.80), 25),
+             "row-specific nominal Cherry-profile clearance references; "
+             "not manufacturer CAD", (0.83, 0.84, 0.80), 10),
         ):
             shape.translate(App.Vector(
                 half_spread_x(layout, side_name.lower()), 0, 0))
@@ -307,6 +407,36 @@ def main():
     objects.append(controller_obj)
     Import.export([controller_obj], str(OUT / "Symm60HE-DaughterboardPCB.step"))
 
+    raw_controller_board = import_step_shape(GEN / "DaughterboardPCB.step")
+    controller_components = import_step_shape(
+        GEN / "DaughterboardComponents.step")
+    # KiCad 10.0.4 does not ship the TS-1187A package model referenced by the
+    # legacy footprint. Add the exact C318884 distributor model at both real
+    # F.Cu footprint datums before applying the controller assembly transform.
+    button_path = OUT / "models/Button_XKB_TS-1187A-B-A-B_C318884.step"
+    button_shapes = [
+        place_smt_model(button_path, (x, -y), 0,
+                        raw_controller_board.BoundBox.ZMax)
+        for x, y in ((170.709, -2.7633), (166.709, 3.2367))
+    ]
+    controller_components = Part.makeCompound(
+        [controller_components] + button_shapes)
+    controller_components.translate(App.Vector(
+        0, 0, mech["controller_bottom_z"] - raw_controller_board.BoundBox.ZMin))
+    controller_components = rotate_xy(
+        controller_components, controller_source_raw,
+        mech["controller_rotation_deg"])
+    controller_components.translate(App.Vector(
+        cc[0]-sc[0], cc[1]-sc[1], 0))
+    controller_components_obj = add_reference(
+        doc, root, "DaughterboardComponents",
+        "Controller fitted components (excluding exact connectors)",
+        controller_components,
+        "fitted package models including exact C318884 buttons; exact USB "
+        "and FFC modeled separately",
+        (0.22, 0.24, 0.27))
+    objects.append(controller_components_obj)
+
     # Include the actual HRO TYPE-C-31-M-12 model and a conservative external
     # plug/cable keepout.  The model is exported by KiCad at its real footprint
     # placement, so apply exactly the controller PCB's XY placement while
@@ -324,12 +454,12 @@ def main():
     # datum for this 1.2 mm finished controller board.
     usb_shell = import_step_shape(
         OUT / "models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
-    # The vendor body's native mating mouth is at negative Y. Rotate it through
-    # J1's real 180-degree footprint angle so the mouth points toward the
-    # controller's maximum-Y rear edge. Align that mouth to the unrecessed rear
-    # datum; the PCB edge directly beneath it is recessed by 1.0 mm.
+    # The vendor body's native mating mouth is at positive Y.  Do not reuse
+    # J1's 180-degree KiCad footprint angle here: the vendor B-rep is already
+    # authored in the required assembly direction. Align its mouth to the
+    # unrecessed rear datum; the PCB edge beneath it is recessed by 1.0 mm.
     usb_shell.rotate(App.Vector(), App.Vector(0, 0, 1),
-                     mech["controller_usb_rotation_deg"])
+                     mech["controller_usb_model_rotation_deg"])
     usb_box = usb_shell.BoundBox
     controller_box = controller.BoundBox
     usb_translation = App.Vector(
@@ -338,7 +468,7 @@ def main():
         mech["controller_bottom_z"] + 1.195)
     usb_shell.translate(usb_translation)
     (GEN / "usb-placement.json").write_text(json.dumps({
-        "rotation_degrees": mech["controller_usb_rotation_deg"],
+        "rotation_degrees": mech["controller_usb_model_rotation_deg"],
         "translation_mm": [usb_translation.x, usb_translation.y,
                            usb_translation.z],
         "overhang_mm": mech["controller_usb_overhang"],
@@ -349,7 +479,13 @@ def main():
         usb_shell, "actual USB-C receptacle model and case-opening datum",
         (0.62, 0.64, 0.67))
     objects.append(usb_obj)
-    Import.export([usb_obj], str(OUT / "Symm60HE-ControllerUSBConnector.step"))
+    # Bake the verified world placement into this standalone component STEP.
+    # Importing the untouched vendor hierarchy and then moving its nested
+    # occurrence in Fusion proved origin-dependent.  A direct TopoShape export
+    # gives Fusion one already-positioned B-rep with no assembly transform to
+    # reinterpret.
+    export_absolute_step(
+        usb_obj, OUT / "Symm60HE-ControllerUSBConnector.step")
 
     rear_source = [mech["controller_usb"][0],
                    layout["DaughterboardPCB"]["bounds"][1]]
@@ -430,14 +566,15 @@ def main():
 
         # JF1 is directly behind PS1 on B.Cu. Include its physical connector
         # body explicitly and begin the flexible-cable envelope at its mouth.
-        spring_ffc = centred_box(14.1, 4.9, 2.0, spring_bottom - 2.0)
-        spring_ffc.rotate(App.Vector(), App.Vector(0, 0, 1), board_angle)
-        spring_ffc.translate(App.Vector(target[0], target[1], 0))
+        spring_ffc = place_smt_model(
+            OUT / "models/FFC_BOOMELE_1.0-12P_C20111.step",
+            target, board_angle, spring_bottom, underside=True)
         spring_ffc_obj = add_reference(
             doc, root, cap + "SpringFFCConnector",
             cap + " floating-head FFC connector",
             place_wing(spring_ffc, layout, side),
-            "B.Cu 12-way ZIF connector envelope", (0.12, 0.12, 0.14))
+            "exact BOOMELE 1.0-12P / LCSC C20111 B.Cu connector model",
+            (0.12, 0.12, 0.14))
         objects.append(spring_ffc_obj)
 
         rad = math.radians(board_angle)
@@ -455,16 +592,17 @@ def main():
         start, end = cable_endpoints[side], controller_point(source, layout)
         # J2/J3 are F.Cu parts, so the envelope begins at the controller's
         # finished top surface.  Do not bury half the connector in the PCB.
-        mouth = centred_box(14.0, 5.0, 2.0, end.z)
         # Use the real J2/J3 footprint angle plus the controller transform.
         # The previous fixed 90 degree angle disagreed with the rotated PCB.
         mouth_angle = (mech[f"controller_{side}_ffc_rotation_deg"] +
                        mech["controller_rotation_deg"])
-        mouth.rotate(App.Vector(), App.Vector(0, 0, 1), mouth_angle)
-        mouth.translate(App.Vector(end.x, end.y, 0))
+        mouth = place_smt_model(
+            OUT / "models/FFC_BOOMELE_1.0-12P_C20111.step",
+            (end.x, end.y), mouth_angle, end.z)
         mouth_obj = add_reference(doc, root, side.title()+"ControllerFFC",
                                   side.title()+" controller FFC connector",
-                                  mouth, "controller ZIF envelope",
+                                  mouth,
+                                  "exact BOOMELE 1.0-12P / LCSC C20111 connector model",
                                   (0.15, 0.15, 0.16))
         objects.append(mouth_obj)
         # With the controller restored left-to-right, route each illustrative

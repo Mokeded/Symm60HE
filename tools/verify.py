@@ -461,7 +461,8 @@ def reference_assembly_audit():
     }
     for name in ("LeftPCB", "RightPCB", "DaughterboardPCB", "LeftPlate",
                  "RightPlate", "LeftSwitches", "RightSwitches",
-                 "LeftKeycaps", "RightKeycaps"):
+                 "LeftKeycaps", "RightKeycaps", "LeftPCBComponents",
+                 "RightPCBComponents", "DaughterboardComponents"):
         path = fusion / f"Symm60HE-{name}.step"
         checks[f"separate {name} body"] = path.is_file() and path.stat().st_size > 1_000
     for label, good in checks.items():
@@ -484,6 +485,7 @@ def main():
         release_check(),
         split_plate_audit(),
         manufacturing_audit(),
+        run_project_check("3D model provenance", "verify_model_provenance.py"),
         reference_assembly_audit(),
     ]
     return 0 if all(checks) else 1

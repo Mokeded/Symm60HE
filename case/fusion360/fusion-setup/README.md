@@ -4,22 +4,31 @@
 Neo-style pogo assembly. Install the folder under Fusion's API `Scripts`
 directory, press **Shift+S**, select `Symm60HECaseSetup`, and click **Run**.
 
-The script imports the globally positioned component STEP files into a native
-Fusion component tree and grounds that reference tree. It then imports the
-untouched vendor USB-C model, applies the checked J1 rotation, measures its
-bounding box in Fusion, and translates that measured body onto J1. This avoids
-the vendor STEP's nonstandard internal origin shifting the connector. All
-other mechanical positioning is already resolved in the component references:
+The script imports globally positioned component STEP files into a native
+Fusion component tree and grounds that reference tree. The exact HRO USB-C
+solid is included as its own component STEP with the checked J1 rotation and
+world position baked directly into the B-rep geometry. Fusion therefore does
+not apply any placement transform to the vendor model and cannot shift it via
+the vendor STEP's unusual internal origin. All mechanical positioning is
+already resolved in the component references:
 
 - each 1.2 mm Hall PCB is aligned below its matching split gasket plate;
-- switches and keycaps occupy their assembled plate positions;
+- Hall-sensor, capacitor and mux package bodies are imported with each Hall PCB;
+- XVX Whisper EC/HE clearance switches and row-specific Cherry-profile
+  keycaps occupy their assembled plate positions;
 - left and right stacks have mirrored 3 degree tenting and a 7 degree typing
   angle;
 - Mill-Max target connectors are directly mounted under the Hall PCBs;
 - the two 20 x 6 mm floating spring PCBs and their spring blocks are mated to
-  those targets at the 6 mm board-to-board datum;
+  those targets at the 6 mm nominal working board-to-board datum;
+- all four ZIF bodies use the exact BOOMELE 1.0-12P / LCSC C20111 distributor
+  STEP envelope rather than the former simplified boxes;
+- the controller carries its fitted package bodies and exact C318884 reset/boot
+  button bodies as a separately hideable reference;
 - the controller is flat and left-to-right beneath the centre blocker, with
-  USB-C and its plug keepout aimed through the rear case wall; and
+  the HRO USB-C mating mouth and its plug keepout aimed through the rear case
+  wall (the vendor model direction is checked independently of J1's footprint
+  angle); and
 - flexible FFC solids show route and bend-clearance envelopes between each
   floating head and the controller.
 
@@ -27,6 +36,11 @@ The nonphysical USB-plug, pogo-travel and FFC clearance envelopes are retained
 under `Cable and movement keepouts` but are hidden when the design first opens.
 Turn that component on only while designing the surrounding clearances; the
 rectangular USB envelope is not a manufactured part.
+
+The design created by the current script is named
+`Symm60HE Case - Componentized v5 exact connectors`. Model provenance and the
+two authenticated Mill-Max download gaps are documented in
+`../models/model-provenance.json`.
 
 The script creates empty `Left top`, `Left bottom`, `Right top`, `Right bottom`
 and `Centre blocker and controller housing` components. Build the case only in

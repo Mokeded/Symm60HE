@@ -11,14 +11,20 @@ DETAIL_OUT = ROOT / "docs/img/18-fusion-pogo-underside.png"
 TOP_OUT = ROOT / "docs/img/20-fusion-daughterboards-top.png"
 USB_OUT = ROOT / "docs/img/31-fusion-controller-usb-closeup.png"
 GASKET_OUT = ROOT / "docs/img/32-fusion-interior-gasket-mounts.png"
+PROFILE_OUT = ROOT / "docs/img/33-xvx-whisper-cherry-profile.png"
+HALL_UNDERSIDE_OUT = ROOT / "docs/img/34-hall-components-seated.png"
 SCAD = GEN / "populated-reference-preview.scad"
 DETAIL_SCAD = GEN / "pogo-mechanism-preview.scad"
 USB_SCAD = GEN / "controller-usb-closeup.scad"
 GASKET_SCAD = GEN / "interior-gasket-mounts.scad"
+PROFILE_SCAD = GEN / "xvx-whisper-cherry-profile.scad"
+HALL_UNDERSIDE_SCAD = GEN / "hall-components-seated.scad"
 
 PARTS = (
     ("LeftPCB", "[0.06,0.28,0.12,1]"),
     ("RightPCB", "[0.06,0.28,0.12,1]"),
+    ("LeftPCBComponents", "[0.22,0.23,0.25,1]"),
+    ("RightPCBComponents", "[0.22,0.23,0.25,1]"),
     ("LeftPlate", "[0.58,0.62,0.68,0.48]"),
     ("RightPlate", "[0.58,0.62,0.68,0.48]"),
     ("LeftSwitches", "[0.10,0.10,0.12,0.85]"),
@@ -26,6 +32,7 @@ PARTS = (
     ("LeftKeycaps", "[0.78,0.83,0.88,0.75]"),
     ("RightKeycaps", "[0.78,0.83,0.88,0.75]"),
     ("DaughterboardPCB", "[0.04,0.22,0.09,1]"),
+    ("DaughterboardComponents", "[0.22,0.23,0.25,1]"),
     ("ControllerUSBConnector", "[0.62,0.64,0.67,1]"),
     ("ControllerUSBPlugEnvelope", "[0.62,0.72,0.82,0.35]"),
     ("LeftSpringPCB", "[0.10,0.42,0.18,1]"),
@@ -63,6 +70,7 @@ def main():
     ], check=True)
     detail_names = {
         "DaughterboardPCB", "ControllerUSBConnector",
+        "DaughterboardComponents",
         "ControllerUSBPlugEnvelope", "LeftSpringPCB", "RightSpringPCB",
         "LeftTargetConnector", "RightTargetConnector",
         "LeftSpringConnector", "RightSpringConnector",
@@ -87,7 +95,8 @@ def main():
         "--camera=0,0,0,0,0,180,0", str(DETAIL_SCAD)
     ], check=True)
     usb_names = {
-        "DaughterboardPCB", "ControllerUSBConnector",
+        "DaughterboardPCB", "DaughterboardComponents",
+        "ControllerUSBConnector",
         "LeftControllerFFC", "RightControllerFFC",
     }
     USB_SCAD.write_text("$fn=48;\n" + "\n".join(
@@ -97,8 +106,8 @@ def main():
     subprocess.run([
         openscad, "-o", str(USB_OUT), "--imgsize=1800,1200",
         "--projection=ortho", "--autocenter", "--viewall",
-        # Look inward from negative Y at the rear case wall so the actual USB-C
-        # mating mouth, rather than the connector's solder-tail side, is visible.
+        # View the exterior rear edge so the actual USB-C mating mouth, rather
+        # than the connector's solder-tail side, is visible.
         "--camera=0,0,0,58,0,18,0", str(USB_SCAD)
     ], check=True)
     # Crop the two placed/tented plates to the centre kernel so the four inner
@@ -117,11 +126,35 @@ def main():
         "--projection=ortho", "--autocenter", "--viewall",
         "--camera=0,0,0,0,0,180,0", str(GASKET_SCAD)
     ], check=True)
+    profile_names = {"LeftPlate", "LeftSwitches", "LeftKeycaps"}
+    PROFILE_SCAD.write_text("$fn=48;\n" + "\n".join(
+        'color(%s) import("%s");' % (colour, path.as_posix())
+        for (name, colour), (path, _) in zip(PARTS, paths)
+        if name in profile_names) + "\n")
+    subprocess.run([
+        openscad, "-o", str(PROFILE_OUT), "--imgsize=1800,1000",
+        "--projection=ortho", "--autocenter", "--viewall",
+        "--camera=0,0,0,88,0,2,0", str(PROFILE_SCAD)
+    ], check=True)
+    hall_names = {
+        "LeftPCB", "RightPCB", "LeftPCBComponents", "RightPCBComponents",
+    }
+    HALL_UNDERSIDE_SCAD.write_text("$fn=48;\n" + "\n".join(
+        'color(%s) import("%s");' % (colour, path.as_posix())
+        for (name, colour), (path, _) in zip(PARTS, paths)
+        if name in hall_names) + "\n")
+    subprocess.run([
+        openscad, "-o", str(HALL_UNDERSIDE_OUT), "--imgsize=2000,1200",
+        "--projection=ortho", "--autocenter", "--viewall",
+        "--camera=0,0,0,248,0,205,0", str(HALL_UNDERSIDE_SCAD)
+    ], check=True)
     print("rendered", OUT.relative_to(ROOT))
     print("rendered", DETAIL_OUT.relative_to(ROOT))
     print("rendered", TOP_OUT.relative_to(ROOT))
     print("rendered", USB_OUT.relative_to(ROOT))
     print("rendered", GASKET_OUT.relative_to(ROOT))
+    print("rendered", PROFILE_OUT.relative_to(ROOT))
+    print("rendered", HALL_UNDERSIDE_OUT.relative_to(ROOT))
 
 
 if __name__ == "__main__":
