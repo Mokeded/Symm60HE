@@ -5,7 +5,9 @@ Neo-style pogo assembly. Install the folder under Fusion's API `Scripts`
 directory, press **Shift+S**, select `Symm60HECaseSetup`, and click **Run**.
 
 The script imports `Symm60HE-case-reference-assembly.step` exactly once and
-grounds it. All mechanical positioning is already resolved in that STEP:
+grounds it. It then reads `generated/usb-placement.json` to apply the checked
+J1 rotation and translation to the separately imported valid vendor USB-C
+body. All mechanical positioning is already resolved in those references:
 
 - each 1.2 mm Hall PCB is aligned below its matching split gasket plate;
 - switches and keycaps occupy their assembled plate positions;

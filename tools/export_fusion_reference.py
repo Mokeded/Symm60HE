@@ -68,17 +68,33 @@ def align_xy(shape, desired_centre, mirror_y=False, bottom_z=None):
     return result
 
 
-def exact_board_thickness(shape, bottom_z, thickness):
-    """Normalize KiCad's board-only solid to the specified finished thickness."""
+def mirror_y_preserve_z(shape):
+    """Convert KiCad STEP Y-up coordinates without flipping component height."""
     result = shape.copy()
-    current = result.BoundBox.ZLength
-    if current <= 0:
-        raise RuntimeError("board STEP has no measurable thickness")
-    result.translate(App.Vector(0, 0, -bottom_z))
-    matrix = App.Matrix()
-    matrix.A33 = thickness / current
-    result = result.transformGeometry(matrix)
-    result.translate(App.Vector(0, 0, bottom_z))
+    result.mirror(App.Vector(), App.Vector(0, 1, 0))
+    return result
+
+
+def exact_board_thickness(shape, bottom_z, thickness):
+    """Re-extrude KiCad's board face to the specified finished thickness.
+
+    A non-uniform B-rep transform silently bridged concave Edge.Cuts features,
+    including the USB-C setback.  Extruding the broad planar board face keeps
+    every perimeter recess and drilled opening while producing an exact 1.2 mm
+    mechanical reference.
+    """
+    planar = []
+    for face in shape.Faces:
+        try:
+            if abs(face.normalAt(0, 0).z) > 0.99:
+                planar.append(face)
+        except Exception:
+            pass
+    if not planar:
+        raise RuntimeError("board STEP has no broad planar face")
+    face = max(planar, key=lambda candidate: candidate.Area).copy()
+    face.translate(App.Vector(0, 0, bottom_z - face.BoundBox.ZMin))
+    result = face.extrude(App.Vector(0, 0, thickness))
     if not result.isValid():
         raise RuntimeError("board thickness normalization produced invalid geometry")
     return result
@@ -94,6 +110,11 @@ def place_wing(shape, layout, side):
                   -layout["tent_deg"] if side == "left"
                   else layout["tent_deg"])
     return result
+
+
+def half_spread_x(layout, side):
+    spread = layout["half_spread_mm"]
+    return -spread if side == "left" else spread
 
 
 def transform_wing_point(point, layout, side):
@@ -183,7 +204,11 @@ def add_reference(doc, root, internal, label, shape, role, colour,
 def controller_point(source, layout):
     mech = layout["mechanism"]
     sx, sy = mech["controller_source_centre"]
-    dx, dy = source[0] - sx, source[1] - sy
+    # KiCad STEP exports board Y with the opposite sign from the PCB editor.
+    # Keep the controller STEP in that native orientation so J1's model and
+    # footprint remain on the same physical edge, and convert source datums
+    # through the same Y inversion here.
+    dx, dy = source[0] - sx, -(source[1] - sy)
     angle = math.radians(mech["controller_rotation_deg"])
     return App.Vector(
         mech["controller_centre"][0] + dx*math.cos(angle) - dy*math.sin(angle),
@@ -211,6 +236,10 @@ def main():
         if is_step:
             aligned = exact_board_thickness(
                 aligned, bottom, mech["board_thickness"])
+            # Plate source geometry is already spread in outline.py.  The
+            # existing routed Hall PCBs remain unchanged manufacturing files,
+            # so apply the same rigid-half offset only in the assembly.
+            aligned.translate(App.Vector(half_spread_x(layout, side), 0, 0))
         obj = add_reference(doc, root, internal, label,
                             place_wing(aligned, layout, side),
                             "moving Hall PCB" if is_step else "plate datum",
@@ -228,6 +257,8 @@ def main():
             ("Keycaps", Part.makeCompound([keycap_shape(k) for k in keys]),
              "simplified keycap envelopes", (0.83, 0.84, 0.80), 25),
         ):
+            shape.translate(App.Vector(
+                half_spread_x(layout, side_name.lower()), 0, 0))
             shape.translate(App.Vector(0, 0, layout["plate_z"]))
             obj = add_reference(doc, root, side_name + kind,
                                 side_name + " " + kind.lower(),
@@ -240,13 +271,15 @@ def main():
     # native 57 mm axis runs left-to-right so J1 faces the rear case wall and
     # J2/J3 face their respective keyboard halves.
     controller = align_xy(import_step_shape(GEN / "DaughterboardPCB.step"),
-                          mech["controller_source_centre"], mirror_y=True,
+                          mech["controller_source_centre"], mirror_y=False,
                           bottom_z=mech["controller_bottom_z"])
     controller = exact_board_thickness(
         controller, mech["controller_bottom_z"], mech["board_thickness"])
-    controller = rotate_xy(controller, mech["controller_source_centre"],
+    controller_source_raw = (mech["controller_source_centre"][0],
+                             -mech["controller_source_centre"][1])
+    controller = rotate_xy(controller, controller_source_raw,
                            mech["controller_rotation_deg"])
-    cc, sc = mech["controller_centre"], mech["controller_source_centre"]
+    cc, sc = mech["controller_centre"], controller_source_raw
     controller.translate(App.Vector(cc[0]-sc[0], cc[1]-sc[1], 0))
     controller_obj = add_reference(
         doc, root, "DaughterboardPCB", "Flat central controller daughterboard",
@@ -254,20 +287,49 @@ def main():
     objects.append(controller_obj)
     Import.export([controller_obj], str(OUT / "Symm60HE-DaughterboardPCB.step"))
 
-    # Include the USB-C shell and a conservative external plug/cable keepout.
-    # The source PCB's rear edge is the minimum-Y edge.  Transform both the
+    # Include the actual HRO TYPE-C-31-M-12 model and a conservative external
+    # plug/cable keepout.  The model is exported by KiCad at its real footprint
+    # placement, so apply exactly the controller PCB's XY placement while
+    # preserving the model's component-side Z height.
+    # The source PCB's rear edge becomes the maximum-Y edge in KiCad's STEP
+    # coordinate convention.  Transform both the
     # receptacle and edge datum through the same controller placement instead
     # of guessing an assembly-space direction.
     usb_point = controller_point(mech["controller_usb"], layout)
-    usb_angle = (mech["controller_usb_rotation_deg"] +
-                 mech["controller_rotation_deg"])
-    usb_shell = centred_box(9.4, 7.3, 3.3, usb_point.z)
-    usb_shell.rotate(App.Vector(), App.Vector(0, 0, 1), usb_angle)
-    usb_shell.translate(App.Vector(usb_point.x, usb_point.y, 0))
+    # Import the vendor HRO solid directly.  KiCad's component-only STEP
+    # wrapper reproduces the placement correctly but turns this otherwise
+    # valid vendor solid into an invalid compound in FreeCAD.  Applying the
+    # footprint transform here preserves the exact body and keeps the Fusion
+    # reference B-rep valid.  The 1.195 mm Z placement is KiCad's F.Cu model
+    # datum for this 1.2 mm finished controller board.
+    usb_shell = import_step_shape(
+        OUT / "models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
+    # The vendor body's native mating mouth is at negative Y. Rotate it through
+    # J1's real 180-degree footprint angle so the mouth points toward the
+    # controller's maximum-Y rear edge. Align that mouth to the unrecessed rear
+    # datum; the PCB edge directly beneath it is recessed by 1.0 mm.
+    usb_shell.rotate(App.Vector(), App.Vector(0, 0, 1),
+                     mech["controller_usb_rotation_deg"])
+    usb_box = usb_shell.BoundBox
+    controller_box = controller.BoundBox
+    usb_translation = App.Vector(
+        usb_point.x - usb_box.Center.x,
+        controller_box.YMax - usb_box.YMax,
+        mech["controller_bottom_z"] + 1.195)
+    usb_shell.translate(usb_translation)
+    (GEN / "usb-placement.json").write_text(json.dumps({
+        "rotation_degrees": mech["controller_usb_rotation_deg"],
+        "translation_mm": [usb_translation.x, usb_translation.y,
+                           usb_translation.z],
+        "overhang_mm": mech["controller_usb_overhang"],
+    }, indent=2) + "\n")
     usb_obj = add_reference(
-        doc, root, "ControllerUSBConnector", "Rear-facing USB-C connector",
-        usb_shell, "USB-C receptacle case-opening datum", (0.62, 0.64, 0.67))
+        doc, root, "ControllerUSBConnector",
+        "HRO TYPE-C-31-M-12 USB-C receptacle",
+        usb_shell, "actual USB-C receptacle model and case-opening datum",
+        (0.62, 0.64, 0.67))
     objects.append(usb_obj)
+    Import.export([usb_obj], str(OUT / "Symm60HE-ControllerUSBConnector.step"))
 
     rear_source = [mech["controller_usb"][0],
                    layout["DaughterboardPCB"]["bounds"][1]]
@@ -295,7 +357,8 @@ def main():
     cable_endpoints = {}
     for side in ("left", "right"):
         cap = side.title()
-        target = mech[side + "_target"]
+        target = list(mech[side + "_target"])
+        target[0] += half_spread_x(layout, side)
         angle = mech[side + "_target_rotation_deg"]
         board_angle = mech["spring_board_rotation_deg"]
         board_centre = target
@@ -404,10 +467,24 @@ def main():
     # and FCStd remain the authoritative Fusion handoff formats.
     for obj in objects:
         Mesh.export([obj], str(GEN / ("CaseRef-" + obj.Name + ".stl")))
+        # Export every reference object independently as well.  The Fusion
+        # setup uses these globally positioned files to build a useful native
+        # component hierarchy instead of importing the master STEP as one
+        # monolithic occurrence.  Keep the exact HRO receptacle on its vendor
+        # STEP path; it is the one object that FreeCAD cannot round-trip safely.
+        if obj is not usb_obj:
+            Import.export([obj], str(OUT / ("Symm60HE-" + obj.Name + ".step")))
     master = OUT / "Symm60HE-case-reference-assembly.step"
     legacy = OUT / "Symm60HE-reference-assembly.step"
-    Import.export(objects, str(master))
-    Import.export(objects, str(legacy))
+    # Keep the exact HRO body in the editable FCStd, but import its untouched
+    # vendor STEP separately in the Fusion setup add-in.  FreeCAD's STEP
+    # writer makes this particular valid vendor solid "unorientable" on
+    # round-trip, even without transforming it.  Excluding only that one body
+    # keeps the master assembly STEP fully valid; Fusion then adds the original
+    # exact solid at the same checked placement.
+    step_objects = [obj for obj in objects if obj is not usb_obj]
+    Import.export(step_objects, str(master))
+    Import.export(step_objects, str(legacy))
     source = OUT / "Symm60HE-case-reference-assembly.FCStd"
     legacy_source = OUT / "Symm60HE-reference-assembly.FCStd"
     for path in (source, legacy_source):

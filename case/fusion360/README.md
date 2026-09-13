@@ -1,11 +1,31 @@
 # Symm60HE Fusion 360 case-design reference
 
-Open `Symm60HE-case-reference-assembly.step`, or run the add-in under
-`fusion-setup/`, to start the case around the real assembled geometry. The
-master STEP is a reference mechanism rather than a finished case.
+Run the add-in under `fusion-setup/` to start the case around the complete
+assembled geometry. The setup now imports the globally positioned individual
+STEP files into a native Fusion component hierarchy, then places the untouched
+vendor HRO USB-C STEP at J1. The master STEP remains a convenient single-file
+reference mechanism rather than the componentized import source.
 
-It contains separately named solids for the split plates, 1.2 mm Neo Hall
-PCBs, switches, keycaps, flat controller daughterboard, both 20 x 6 mm
+The generated Fusion browser tree has these independent top-level reference
+components:
+
+- left plate + switches + keycaps
+- right plate + switches + keycaps
+- left Hall-effect PCB, including its directly mounted pogo target
+- right Hall-effect PCB, including its directly mounted pogo target
+- central controller daughterboard, including both controller ZIF bodies and
+  the actual placed HRO USB-C receptacle
+- left floating pogo daughterboard, spring block and ZIF body
+- right floating pogo daughterboard, spring block and ZIF body
+- one separately hideable cable-and-movement-keepout component
+
+`Case - model here` remains a separate empty component and is activated at the
+end of setup. Fusion therefore ghosts the grounded reference tree while case
+geometry is being authored; activate the root to inspect everything opaque.
+
+The Fusion setup contains separately named solids for the split plates, 1.2 mm
+Neo Hall PCBs, switches, keycaps, flat controller daughterboard, the actual
+HRO TYPE-C-31-M-12 USB-C receptacle, both 20 x 6 mm
 floating FFC-to-pogo PCBs, both Mill-Max 854 spring blocks, both directly
 mounted 856 targets, spring-travel keepouts, controller ZIF envelopes and two
 flexible FFC route envelopes. The controller is oriented left-to-right: its
@@ -14,13 +34,35 @@ while J2 and J3 face the left and right interconnects.
 
 The plate is the mechanical datum. Each plate, its Hall PCB, and its floating
 pogo head move together on a mirrored 3 degree tent and 7 degree typing-angle
-plane. The plate bottom is 6.5 mm above the Hall-PCB bottom. The target/spring
+plane. To accommodate equal-size opposing centre gasket mounts, the complete
+left and right moving assemblies are translated 2.75 mm outward per side
+(5.50 mm additional split width); the controller remains centred and fixed.
+The plate bottom is 6.5 mm above the Hall-PCB bottom. The target/spring
 boards are 6.0 mm apart, which places the selected spring model within its
 published stroke and makes its tips meet the target faces. The controller is
 rigid and flat beneath the centre blocker; the cyan ribbon solids reserve
 clearance and slack for independent gasket movement.
 
-`Symm60HE-case-reference-assembly.FCStd` is the editable generated source.
+All eight integral plate gasket tongues now use a Neo-Ergo-inspired long
+side-bearing geometry adapted to the plate: 24.0 mm overall edgewise length,
+a 20.0 x 4.0 mm gasket-bearing area, 4.0 mm exposed projection and 0.6 mm root
+inset. Broad 2.0 mm end transitions eliminate abrupt shoulders. The opposed
+centre tongues retain a 0.50 mm flat-layout gap and clearance in the assembled
+tented model.
+
+The controller PCB has a 14 mm-wide, 1 mm-deep rear-edge setback beneath J1.
+The actual HRO TYPE-C-31-M-12 shell remains on J1's footprint datum and
+therefore overhangs the local PCB edge by exactly 1.0 mm. This setback is in
+the KiCad Edge.Cuts geometry and is present in the manufacturing board, not
+only in the Fusion visualization.
+
+`Symm60HE-case-reference-assembly.FCStd` is the editable generated source and
+also contains the placed HRO receptacle. The assembly STEP intentionally omits
+only that connector: FreeCAD's STEP writer makes this particular vendor solid
+unorientable during a write/read round trip. The Fusion add-in therefore
+imports the original valid solid directly from
+`models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP`, preserving its exact CAD
+geometry and checked position without passing it through FreeCAD's writer.
 The legacy `Symm60HE-reference-assembly.step` and `.FCStd` names are updated to
 the same integrated geometry for compatibility. Individual globally positioned
 STEP files are also supplied for the major boards, plates, switches and

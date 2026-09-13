@@ -147,13 +147,23 @@ halves retain the key-field shape along their top and bottom edges, but use
 continuous straight walls on both the outside and centre-facing sides. Those
 walls stop at the real sloped top/bottom contours rather than extending into
 rectangular end tabs, and every gasket tongue is the outermost feature on its
-side. The completed plate exterior, including the centre-wall corners and
+side. All eight tongues now use a Neo-Ergo-inspired long side-bearing profile:
+24.0 mm overall length, a 20.0 x 4.0 mm Poron bearing area, 2.0 mm smooth end
+transitions and 4.0 mm exposed projection. Two pads fit end-to-end in one of
+the user's 80 x 4 x 3 mm gasket strips. The complete left and right moving
+assemblies are spread 2.75 mm outward per side so the equal-size inner tongues
+retain clearance without changing the pogo connection geometry. The
+completed plate exterior, including the centre-wall corners and
 integral gasket tongues, uses a 1.0 mm material-side radius. Switch and
 stabilizer openings remain dimensionally unchanged. Only the selected
 bottom-row U recess on each
 half is structurally filled. Its visual shape remains in the removable case
 top, which overlaps the plate by 3.0 mm around the recess. The obsolete right
 plate daughterboard carrier and its two holes have been removed.
+
+The controller daughterboard's rear edge is locally set back 1.0 mm beneath
+J1 across a 14 mm-wide opening, so the actual USB-C shell overhangs the PCB
+while retaining its routed footprint position.
 
 The fabrication names end in `-left.dxf` and `-right.dxf`; both files are needed
 for one keyboard. Files without a side suffix are obsolete one-piece previews
@@ -162,8 +172,8 @@ and must not be sent for fabrication.
 `plate/Symm60HE-gasket-pads.dxf` contains eight discrete side pads: four
 outer/corner positions and four beside the centre kernel. They attach only
 to integral plate tabs with curved, tapered roots; there are no square shoulder
-steps, top/bottom gasket tabs, or gasket
-features on either Hall PCB. Cut an upper and lower set from 1.5 mm Poron.
+steps, top/bottom gasket tabs, or gasket features on either Hall PCB. Use
+20 mm lengths cut from the 80 x 4 x 3 mm gasket strips.
 
 ## Fusion 360 case-design reference
 

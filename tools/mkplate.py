@@ -12,7 +12,7 @@ from shapely.affinity import rotate, translate
 
 from geom import KEYS, U, BUILDS
 from outline import (LEFT_PLATE, RIGHT_PLATE, LEFT_GASKET_TABS,
-                     RIGHT_GASKET_TABS)
+                     RIGHT_GASKET_TABS, half_spread)
 
 SW_CUT = 14.0
 STEPPED_CAPS_OFFSET = 19.05 / 4.0
@@ -22,7 +22,7 @@ TABS = {"L": LEFT_GASKET_TABS, "R": RIGHT_GASKET_TABS}
 
 def placed(k, shape):
     return translate(rotate(shape, k["rot"], origin=(0, 0)),
-                     k["cx"] * U, k["cy"] * U)
+                     k["cx"] * U + half_spread(k["half"]), k["cy"] * U)
 
 def cutouts(keys):
     cuts, stabs = [], []

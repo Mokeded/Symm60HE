@@ -14,7 +14,7 @@ from shapely.ops import unary_union
 
 from geom import BUILDS
 from outline import (LEFT_PCB, RIGHT_PCB, DB, LEFT_PLATE, RIGHT_PLATE,
-                     axis_mm)
+                     axis_mm, HALF_SPREAD, DB_USB_OVERHANG)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "case/fusion360/generated"
@@ -96,6 +96,7 @@ def main():
         raise ValueError("SYMM60HE_VISUAL_LAYOUT must be one of: %s" %
                          ", ".join(BUILDS))
     layout.update({"axis_x": axis_mm, "front_y": 100.0,
+                   "half_spread_mm": HALF_SPREAD,
                    # Mechanical datums supplied by the project owner:
                    # DOE-style lateral tent is 3 degrees per half and the
                    # FN40 front-to-back typing angle is 7 degrees.
@@ -118,6 +119,22 @@ def main():
         subprocess.run([cli, "pcb", "export", "step", "--board-only",
                         "--force", "-o", str(OUT / f"{name}.step"),
                         str(source)], check=True)
+
+    # Export the actual HRO TYPE-C-31-M-12 receptacle separately from the PCB.
+    # Keeping the rigid board and connector as separate solids lets Fusion use
+    # the exact board datum while exposing the real shell/mouth geometry for
+    # the rear case opening.  The model is vendored because the standard KiCad
+    # macOS package does not install this legacy HRO STEP globally.
+    controller_source = dict((name, source) for name, source in board_sources)[
+        "DaughterboardPCB"]
+    model_dir = ROOT / "case/fusion360/models"
+    subprocess.run([
+        cli, "pcb", "export", "step", "--no-board-body",
+        "--component-filter", "J1", "--force",
+        "-D", f"SYMM60HE_3DMODEL_DIR={model_dir}",
+        "-o", str(OUT / "ControllerUSBConnector.step"),
+        str(controller_source),
+    ], check=True)
 
     layout["mechanism"] = {
         "board_thickness": 1.2,
@@ -142,6 +159,7 @@ def main():
         "controller_right_ffc_rotation_deg": 90.0,
         "controller_usb": [192.209, -4.1133],
         "controller_usb_rotation_deg": 180.0,
+        "controller_usb_overhang": DB_USB_OVERHANG,
     }
     # Rewrite after adding the mechanism datums.
     (OUT / "reference-layout.json").write_text(

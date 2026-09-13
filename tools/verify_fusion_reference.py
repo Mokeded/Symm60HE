@@ -6,6 +6,7 @@ import math
 
 import FreeCAD as App
 import Import
+import Part
 
 ROOT = Path(__file__).resolve().parent.parent
 FUSION = ROOT / "case/fusion360"
@@ -19,8 +20,11 @@ def main():
     layout = json.loads((FUSION / "generated/reference-layout.json").read_text())
     assert layout["tent_deg"] == 3.0
     assert layout["typing_deg"] == 7.0
+    assert layout["half_spread_mm"] == 2.75
     source = FUSION / "Symm60HE-case-reference-assembly.FCStd"
     master = FUSION / "Symm60HE-case-reference-assembly.step"
+    vendor_usb = (FUSION / "models" /
+                  "USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
     doc = App.openDocument(str(source))
     objects = {obj.Name: obj for obj in doc.Objects
                if hasattr(obj, "Shape") and not obj.Shape.isNull()}
@@ -35,6 +39,11 @@ def main():
     }
     assert required.issubset(objects), sorted(required - objects.keys())
     assert all(obj.Shape.isValid() for obj in objects.values())
+    assert objects["LeftPlate"].Shape.common(
+        objects["RightPlate"].Shape).Volume < 1e-5
+    plate_gap = objects["LeftPlate"].Shape.distToShape(
+        objects["RightPlate"].Shape)[0]
+    assert plate_gap > 0.40, plate_gap
 
     # Measure the broad top-face normal of each Hall PCB rather than trusting
     # labels or generated metadata.  With the exporter's X-then-Y rotation,
@@ -68,6 +77,13 @@ def main():
     assert objects["DaughterboardPCB"].Shape.common(
         objects["RightPCB"].Shape).Volume < 1e-5
 
+    # Switch housings pass through the regenerated plate apertures.  Any
+    # disagreement between the shifted plate cutouts and shifted PCB/key stack
+    # produces a non-zero collision here.
+    for side in ("Left", "Right"):
+        assert objects[side + "Switches"].Shape.common(
+            objects[side + "Plate"].Shape).Volume < 1e-5
+
     left_ffc = objects["LeftControllerFFC"].Shape.BoundBox
     right_ffc = objects["RightControllerFFC"].Shape.BoundBox
     assert left_ffc.Center.x < controller.Center.x < right_ffc.Center.x
@@ -80,15 +96,43 @@ def main():
 
     usb = objects["ControllerUSBConnector"].Shape.BoundBox
     plug = objects["ControllerUSBPlugEnvelope"].Shape.BoundBox
-    assert usb.Center.y < controller.Center.y
-    assert plug.Center.y < usb.Center.y
-    assert plug.YMin < controller.YMin
+    assert usb.Center.y > controller.Center.y
+    # The actual receptacle mouth remains on the controller's original rear
+    # datum while the local PCB edge beneath it is set back 1.0 mm.  This
+    # produces a real shell overhang rather than moving only a preview body.
+    assert close(usb.YMax, controller.YMax, 0.05), (
+        usb.YMax, controller.YMax)
+    assert close(layout["mechanism"]["controller_usb_overhang"], 1.0)
+    usb_probe = Part.makeBox(
+        0.10, controller.YLength + 4.0, controller.ZLength + 2.0,
+        App.Vector(usb.Center.x - 0.05, controller.YMin - 2.0,
+                   controller.ZMin - 1.0))
+    local_board = objects["DaughterboardPCB"].Shape.common(usb_probe)
+    assert not local_board.isNull() and local_board.Volume > 1e-5
+    actual_overhang = usb.YMax - local_board.BoundBox.YMax
+    assert close(actual_overhang,
+                 layout["mechanism"]["controller_usb_overhang"], 0.05), (
+                     actual_overhang, local_board.BoundBox.YMax, usb.YMax)
+    assert usb.YMin > controller.Center.y
+    assert plug.Center.y > usb.Center.y
+    assert plug.YMax > controller.YMax
+    # Actual HRO model envelope; this prevents a simplified placeholder box
+    # from silently returning to the case-design reference.
+    assert close(usb.XLength, 9.104, 0.05), usb.XLength
+    assert close(usb.YLength, 7.900, 0.05), usb.YLength
+    assert close(usb.ZLength, 4.215, 0.05), usb.ZLength
 
     for side in ("Left", "Right"):
         spring = objects[side + "SpringConnector"].Shape
         target = objects[side + "TargetConnector"].Shape
+        hall_pcb = objects[side + "PCB"].Shape
+        spring_pcb = objects[side + "SpringPCB"].Shape
         assert spring.distToShape(target)[0] < 1e-5
         assert spring.common(target).Volume < 1e-5
+        # Both connector bodies must remain seated on their respective PCBs
+        # after the entire half is translated outward.
+        assert target.distToShape(hall_pcb)[0] < 1e-5
+        assert spring.distToShape(spring_pcb)[0] < 1e-5
         assert objects[side + "SpringPCB"].Shape.common(
             objects["DaughterboardPCB"].Shape).Volume < 1e-5
 
@@ -99,6 +143,28 @@ def main():
     assert imported and all(shape.isValid() for shape in imported)
     solids = sum(len(shape.Solids) for shape in imported)
     assert solids > 100
+    vendor_doc = App.newDocument("VendorUSBRoundTrip")
+    Import.insert(str(vendor_usb), vendor_doc.Name)
+    vendor_shapes = [obj.Shape for obj in vendor_doc.Objects
+                     if hasattr(obj, "Shape") and not obj.Shape.isNull()]
+    assert vendor_shapes and all(shape.isValid() for shape in vendor_shapes)
+    vendor = max(vendor_shapes, key=lambda shape: abs(shape.Volume)).copy()
+    mech = layout["mechanism"]
+    expected_x = (mech["controller_centre"][0] +
+                  mech["controller_usb"][0] -
+                  mech["controller_source_centre"][0])
+    vendor.rotate(App.Vector(), App.Vector(0, 0, 1),
+                  mech["controller_usb_rotation_deg"])
+    vendor_box = vendor.BoundBox
+    vendor.translate(App.Vector(
+        expected_x - vendor_box.Center.x,
+        controller.YMax - vendor_box.YMax,
+        mech["controller_bottom_z"] + 1.195))
+    # Compare the full asymmetric vendor geometry.  This catches a connector
+    # whose envelope is at the rear edge but whose mouth and solder tails have
+    # been exchanged by a 180-degree rotation.
+    overlap = objects["ControllerUSBConnector"].Shape.common(vendor).Volume
+    assert overlap > 0.9999 * vendor.Volume, (overlap, vendor.Volume)
     print("Fusion reference verification: PASS")
     print("controller %.3f x %.3f mm; USB-C exits rear; J2/J3 face left/right" %
           (controller.XLength, controller.YLength))
@@ -107,6 +173,13 @@ def main():
           (recovered[0][0], recovered[1][0],
            recovered[0][1], recovered[1][1]))
     print("both pogo spring/target interfaces are face-mated")
+    print("both Hall/plate/pogo assemblies use %.3f mm symmetric half spread" %
+          layout["half_spread_mm"])
+    print("inner plate/gasket mounts clear by %.3f mm" % plate_gap)
+    print("actual HRO USB-C envelope %.3f x %.3f x %.3f mm" %
+          (usb.XLength, usb.YLength, usb.ZLength))
+    print("USB-C shell overhangs its local PCB edge by %.3f mm" %
+          actual_overhang)
     print("STEP round-trip: %d objects, %d valid solids" %
           (len(imported), solids))
 

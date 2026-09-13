@@ -1,7 +1,7 @@
 """Board and plate outlines, in millimetres, KiCad orientation (y down)."""
 import math, json
 from shapely.geometry import Polygon, box, MultiPolygon, LineString
-from shapely.affinity import scale
+from shapely.affinity import scale, translate
 from shapely.ops import unary_union
 from geom import KEYS, U, AXIS
 
@@ -9,7 +9,22 @@ WALL      = 6.0     # room for the gasket ledge and M2 frame fasteners
 BEZEL     = 0.46 * U   # key field -> case inner edge, as the renders use
 PCB_GAP   = 2.0     # clearance between the two half PCBs
 PCB_INSET = 1.2     # PCB edge inside the case inner wall
-PLATE_OVERHANG = 2.0  # nominal plate rim before discrete FN40-style tabs
+PLATE_OVERHANG = 2.0  # nominal plate rim before discrete Neo-style tabs
+# Neo-Ergo-inspired side suspension, adapted to this split plate rather than
+# copied onto the Hall PCB.  Each station has a long, straight 20 x 4 mm Poron
+# bearing area and a 2 mm smooth shoulder at either end.  This makes two pads
+# fit end-to-end in one 80 x 4 mm strip.  The tongue projects 4 mm from the
+# continuous plate wall; opposing centre tongues retain 0.5 mm clearance when
+# each complete moving half is spread 2.75 mm from the original datum.
+NEO_GASKET_LENGTH = 24.0
+NEO_GASKET_BEARING = 20.0
+NEO_GASKET_PROJECTION = 4.0
+GASKET_ROOT_INSET = 0.6
+HALF_SPREAD = 2.75
+
+
+def half_spread(half):
+    return -HALF_SPREAD if half in ("L", "left") else HALF_SPREAD
 
 def cap(k, grow=0.0):
     # DOE60 reference direction: the left rows descend toward the centre and
@@ -74,13 +89,17 @@ def edge_x(poly, y, left=True):
     return min(xs) if left else max(xs)
 
 
-def smooth_side_tab(x, y, left=True, dx_dy=0.0):
+def smooth_side_tab(x, y, left=True, dx_dy=0.0,
+                    projection=NEO_GASKET_PROJECTION,
+                    root_inset=GASKET_ROOT_INSET,
+                    length=NEO_GASKET_LENGTH,
+                    bearing=NEO_GASKET_BEARING):
     """Create a side tongue with curved, tapered roots.
 
     The two cubic shoulders leave a continuous vertical plate edge tangentially,
-    ease out to the 4 mm projection, and meet its support face tangentially.
-    This removes both the square outer corners and the small 90-degree steps at
-    the root while preserving a 10 mm-long parallel Poron-bearing section.
+    ease out to the 4.0 mm projection, and meet the straight support face
+    tangentially.  The complete tongue is 24.0 mm long, with a 20.0 mm bearing
+    face sized for the user's 4 mm-wide Neo-style Poron strips.
     """
     direction = -1.0 if left else 1.0
     # Follow the local plate-edge tangent. This matters on the sloped centre
@@ -107,14 +126,23 @@ def smooth_side_tab(x, y, left=True, dx_dy=0.0):
             ))
         return points
 
-    # Sink the root 0.5 mm into the plate so tangent approximation and floating
-    # point tolerances cannot leave a detached island.
-    top = bezier(local(-0.5, -7.0), local(-0.5, -6.0),
-                 local(4.0, -6.0), local(4.0, -5.0))
-    bottom = bezier(local(4.0, 5.0), local(4.0, 6.0),
-                    local(-0.5, 6.0), local(-0.5, 7.0))
-    return Polygon(top + [local(4.0, 5.0)] + bottom +
-                   [local(-0.5, -7.0)])
+    # Sink the root into the plate so tangent approximation and floating-point
+    # tolerances cannot leave a detached island.  The 2 mm end transitions are
+    # deliberately broad enough to avoid the jagged rectangular shoulders of
+    # the earlier plate previews.
+    root_half = length / 2.0
+    bearing_half = bearing / 2.0
+    transition = root_half - bearing_half
+    top = bezier(local(-root_inset, -root_half),
+                 local(-root_inset, -root_half + transition / 2.0),
+                 local(projection, -bearing_half - transition / 2.0),
+                 local(projection, -bearing_half))
+    bottom = bezier(local(projection, bearing_half),
+                    local(projection, bearing_half + transition / 2.0),
+                    local(-root_inset, root_half - transition / 2.0),
+                    local(-root_inset, root_half))
+    return Polygon(top + [local(projection, bearing_half)] + bottom +
+                   [local(-root_inset, -root_half)])
 
 
 def gasket_tabs(poly, half):
@@ -130,7 +158,7 @@ def gasket_tabs(poly, half):
     outer_left = half == "L"
     inner_left = not outer_left
     tabs = []
-    # Keep the full 14 mm tongue on uninterrupted vertical portions of the
+    # Keep the full Neo-style tongue on uninterrupted vertical portions of the
     # sculpted keymap edge.  Placing a tongue across a row-to-row outline step
     # makes the union look jagged even when the tongue itself is rounded.
     for fraction in (0.27, 0.66):
@@ -146,6 +174,9 @@ def gasket_tabs(poly, half):
         sample = 2.0
         slope = ((edge_x(poly, y + sample, left=inner_left) -
                   edge_x(poly, y - sample, left=inner_left)) / (2.0 * sample))
+        # The two complete moving halves are spread symmetrically below.  This
+        # lets the centre tongues use the same 4.0 mm projection and 0.6 mm
+        # root inset as the outer tongues while retaining a 0.5 mm split.
         tabs.append(smooth_side_tab(x, y, left=inner_left, dx_dy=slope))
     return tabs
 
@@ -166,6 +197,15 @@ LEFT_BLOCKER_FILL = Polygon([(59.1980, 98.2500), (59.1980, 79.2016),
 RIGHT_BLOCKER_FILL = Polygon([(232.6408, 98.1456), (232.0529, 79.2062),
                               (240.8395, 79.2016), (240.8395, 98.2500)]).buffer(
                                   0.02, join_style=2)
+# Move the entire plate source for each half, not merely the gasket tongues.
+# Switch openings and all other moving-half members receive this same datum in
+# their generators so their local alignment is unchanged.
+LEFT_KEYMAP_PROFILE = translate(
+    LEFT_KEYMAP_PROFILE, xoff=half_spread("L"))
+RIGHT_KEYMAP_PROFILE = translate(
+    RIGHT_KEYMAP_PROFILE, xoff=half_spread("R"))
+LEFT_BLOCKER_FILL = translate(LEFT_BLOCKER_FILL, xoff=half_spread("L"))
+RIGHT_BLOCKER_FILL = translate(RIGHT_BLOCKER_FILL, xoff=half_spread("R"))
 LEFT_PLATE_BODY = unary_union([LEFT_KEYMAP_PROFILE, LEFT_BLOCKER_FILL])
 RIGHT_PLATE_BODY = unary_union([RIGHT_KEYMAP_PROFILE, RIGHT_BLOCKER_FILL])
 
@@ -214,6 +254,10 @@ LEFT_KEYCAP_ENVELOPE = unary_union(
 RIGHT_KEYCAP_ENVELOPE = unary_union(
     [key_cell_mm(k) for k in KEYS if k["half"] == "R"]).buffer(
         KEYCAP_CLEARANCE, join_style=2)
+LEFT_KEYCAP_ENVELOPE = translate(
+    LEFT_KEYCAP_ENVELOPE, xoff=half_spread("L"))
+RIGHT_KEYCAP_ENVELOPE = translate(
+    RIGHT_KEYCAP_ENVELOPE, xoff=half_spread("R"))
 LEFT_GASKET_TABS = gasket_tabs(LEFT_PLATE_BODY, "L")
 RIGHT_GASKET_TABS = gasket_tabs(RIGHT_PLATE_BODY, "R")
 
@@ -240,6 +284,13 @@ LEFT_PLATE = round_plate_edges(
     unary_union([LEFT_PLATE_BODY] + LEFT_GASKET_TABS))
 RIGHT_PLATE = round_plate_edges(
     unary_union([RIGHT_PLATE_BODY] + RIGHT_GASKET_TABS))
+
+# The split plates are independently gasket-mounted and must never become a
+# rigid bridge at their symmetric inner suspension tongues.
+if LEFT_PLATE.intersects(RIGHT_PLATE):
+    raise RuntimeError("left/right plate outlines intersect at inner gasket mounts")
+if LEFT_PLATE.distance(RIGHT_PLATE) < 0.45:
+    raise RuntimeError("inner gasket mount clearance is below 0.45 mm")
 
 # Recovered keymap-following PCB contours from the final routed two-layer
 # candidate.  Keep these explicit: rebuilding from CASE_IN's convex hull is
@@ -328,8 +379,19 @@ DB_W, DB_H = 57.0, 28.0
 top = CASE_IN.bounds[1]
 # Keep the complete controller on the right side of the hinge so its two plate
 # screws cannot turn the split plates into a rigid bridge.
-DB = round_pcb_outer_corners(
-    box(axis_mm + 3.5, top + 1.0, axis_mm + 3.5 + DB_W, top + 1.0 + DB_H))
+DB_REAR_Y = top + 1.0
+DB_USB_OVERHANG = 1.0
+DB_USB_CENTRE_X = axis_mm + 3.5 + 37.5
+DB_USB_NOTCH_HALF_WIDTH = 7.0
+DB_BASE = box(axis_mm + 3.5, DB_REAR_Y,
+              axis_mm + 3.5 + DB_W, DB_REAR_Y + DB_H)
+# Set back only the edge underneath the 9.1 mm-wide USB-C shell.  The 14 mm
+# opening leaves generous side clearance while allowing the connector mouth to
+# project 1.0 mm beyond its local PCB edge, like the unified daughterboard.
+DB_USB_NOTCH = box(DB_USB_CENTRE_X - DB_USB_NOTCH_HALF_WIDTH, DB_REAR_Y,
+                   DB_USB_CENTRE_X + DB_USB_NOTCH_HALF_WIDTH,
+                   DB_REAR_Y + DB_USB_OVERHANG)
+DB = round_pcb_outer_corners(DB_BASE.difference(DB_USB_NOTCH))
 
 # The USB-C receptacle does not sit on the board's centre line: it goes beside
 # the MCU's USB pins, which are on that package's right-hand side.  Both the

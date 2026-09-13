@@ -9,8 +9,12 @@ GEN = ROOT / "case/fusion360/generated"
 OUT = ROOT / "docs/img/17-fusion-populated-reference.png"
 DETAIL_OUT = ROOT / "docs/img/18-fusion-pogo-underside.png"
 TOP_OUT = ROOT / "docs/img/20-fusion-daughterboards-top.png"
+USB_OUT = ROOT / "docs/img/31-fusion-controller-usb-closeup.png"
+GASKET_OUT = ROOT / "docs/img/32-fusion-interior-gasket-mounts.png"
 SCAD = GEN / "populated-reference-preview.scad"
 DETAIL_SCAD = GEN / "pogo-mechanism-preview.scad"
+USB_SCAD = GEN / "controller-usb-closeup.scad"
+GASKET_SCAD = GEN / "interior-gasket-mounts.scad"
 
 PARTS = (
     ("LeftPCB", "[0.06,0.28,0.12,1]"),
@@ -82,9 +86,42 @@ def main():
         # the documentation image, matching the normal keyboard convention.
         "--camera=0,0,0,0,0,180,0", str(DETAIL_SCAD)
     ], check=True)
+    usb_names = {
+        "DaughterboardPCB", "ControllerUSBConnector",
+        "LeftControllerFFC", "RightControllerFFC",
+    }
+    USB_SCAD.write_text("$fn=48;\n" + "\n".join(
+        'color(%s) import("%s");' % (colour, path.as_posix())
+        for (name, colour), (path, _) in zip(PARTS, paths)
+        if name in usb_names) + "\n")
+    subprocess.run([
+        openscad, "-o", str(USB_OUT), "--imgsize=1800,1200",
+        "--projection=ortho", "--autocenter", "--viewall",
+        # Look inward from negative Y at the rear case wall so the actual USB-C
+        # mating mouth, rather than the connector's solder-tail side, is visible.
+        "--camera=0,0,0,58,0,18,0", str(USB_SCAD)
+    ], check=True)
+    # Crop the two placed/tented plates to the centre kernel so the four inner
+    # suspension tongues can be inspected without switches, PCBs or keycaps.
+    left_plate = (GEN / "CaseRef-LeftPlate.stl").as_posix()
+    right_plate = (GEN / "CaseRef-RightPlate.stl").as_posix()
+    clip = "translate([128,-8,-20]) cube([47,122,70])"
+    GASKET_SCAD.write_text(
+        "$fn=48;\n"
+        "color([0.45,0.62,0.82,1]) intersection() { "
+        f'import("{left_plate}"); {clip}; }}\n'
+        "color([0.78,0.82,0.88,1]) intersection() { "
+        f'import("{right_plate}"); {clip}; }}\n')
+    subprocess.run([
+        openscad, "-o", str(GASKET_OUT), "--imgsize=1600,1800",
+        "--projection=ortho", "--autocenter", "--viewall",
+        "--camera=0,0,0,0,0,180,0", str(GASKET_SCAD)
+    ], check=True)
     print("rendered", OUT.relative_to(ROOT))
     print("rendered", DETAIL_OUT.relative_to(ROOT))
     print("rendered", TOP_OUT.relative_to(ROOT))
+    print("rendered", USB_OUT.relative_to(ROOT))
+    print("rendered", GASKET_OUT.relative_to(ROOT))
 
 
 if __name__ == "__main__":
