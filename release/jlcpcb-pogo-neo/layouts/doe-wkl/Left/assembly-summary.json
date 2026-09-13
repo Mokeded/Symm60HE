@@ -1,10 +1,10 @@
 {
-  "source_board": "pcb/variants/pogo-neo/Symm60HE-Neo-Left-Half.kicad_pcb",
+  "source_board": "pcb\\variants\\pogo-neo\\Symm60HE-Neo-Left-Half.kicad_pcb",
   "selected_smt_placements": 99,
   "jlcpcb_smt_placements": 99,
   "unmatched_lcsc_placements": 1,
   "hand_or_consigned_placements": 1,
-  "source_sha256": "6e0fa3c7044b4c7d1b4cde8f39f159ff2bb887530a9a79475ca0f323bff905d7",
+  "source_sha256": "00bb837b7733de96b15c8a7cbd579886d5f08d2391b2a65575bdbe9a0641fad0",
   "files": [
     "Symm60HE-Neo-Left-Half-BOM.csv",
     "Symm60HE-Neo-Left-Half-CPL.csv",

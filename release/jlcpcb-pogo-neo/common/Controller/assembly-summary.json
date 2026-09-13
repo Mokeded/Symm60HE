@@ -1,10 +1,10 @@
 {
-  "source_board": "pcb/variants/pogo-neo/Symm60HE-Neo-Controller.kicad_pcb",
+  "source_board": "pcb\\variants\\pogo-neo\\Symm60HE-Neo-Controller.kicad_pcb",
   "selected_smt_placements": 30,
   "jlcpcb_smt_placements": 30,
   "unmatched_lcsc_placements": 0,
   "hand_or_consigned_placements": 0,
-  "source_sha256": "ae1b86b82054f5f4696628e99e176813d070b57b5f5249edfd86c5cd2dd27040",
+  "source_sha256": "4e6bc92ac81c0ee42c61f172e5324e920b57021b3d88e30846cc68dd00f701d5",
   "files": [
     "Symm60HE-Neo-Controller-BOM.csv",
     "Symm60HE-Neo-Controller-CPL.csv",
