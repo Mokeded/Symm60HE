@@ -65,16 +65,17 @@ the orderable Mill-Max `854-22-012-30-004101` single-row SMT spring connector
 and matching `856-10-012-30-051000` gold target. Twelve contacts carry every
 existing FFC conductor without unused or redundant positions.
 
-The 57 x 28 mm controller remains flat and rigid, oriented lengthwise on the
-centreline. Each side uses a separate 20 x 20 mm replaceable spring head in a
-captured but floating 6 degree kernel aperture. One short 12-way FFC connects
+The 57 x 28 mm controller remains flat and rigid, oriented left-to-right under
+the centre blocker so USB-C faces the rear wall. Each side uses a separate
+20 x 6 mm replaceable spring head in a
+captured but floating 3 degree kernel aperture. One short 12-way FFC connects
 each head to the controller. The matching target is mounted directly on its
 Hall PCB; there is no target module or second FFC. The plates carry only the
 eight side gasket tabs. Magnets
 remain retention-only and DNP until an assembled Hall offset/noise test passes.
 
 The detailed fixed-angle mechanism is in `case/fusion360/tenting-solution/`.
-It adds a 1.2 mm-floor central controller tray, mirrored 6 degree spring trays,
+It adds a 1.2 mm-floor central controller tray, mirrored 3 degree spring trays,
 direct Hall-PCB target references, 0.4 mm-per-side floating apertures, capture
 lips, asymmetric perimeter keys, compression stops, short-FFC envelopes, and
 optional DNP magnet envelopes. Both assembled and exploded renders are under
@@ -134,7 +135,7 @@ Left needs 31 channels, right 32; four muxes give 32 each.
 
 `plate/` holds an **independent left/right DXF pair** for every layout plus an
 independent universal pair. There is no rigid centre bridge: each plate half
-follows its PCB and its own 6° tent plane. Mutually exclusive switch positions
+follows its PCB and its own 3° tent plane. Mutually exclusive switch positions
 overlap, so a fixed-layout pair picks one layout while the universal pair merges
 the overlapping openings into durable slots. Every switch opening remains
 inside its plate half; the narrowest edge web is 2.75 mm on the right half and
@@ -176,7 +177,7 @@ case around its nine separately named reference bodies:
 - simplified left/right switch banks
 - simplified left/right keycap banks for the primary 60-key `doe-wkl` layout
 
-The two plate/PCB pairs are positioned at 6° lateral tent and 11° front-to-back
+The two plate/PCB pairs are positioned at 3° lateral tent and 7° front-to-back
 typing angle, with each PCB 5 mm below its plate. No case solid is included by
 design. The switch and keycap bodies are simplified visualization/clearance
 envelopes and can be hidden independently; they are not vendor-specific

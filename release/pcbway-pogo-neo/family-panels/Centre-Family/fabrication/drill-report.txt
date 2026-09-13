@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Neo-Centre-Family-Panel.kicad_pcb
-Created on 2026-09-12T13:41:44
+Created on 2026-09-12T17:12:49
 
 Copper Layer Stackup:
     =============================================================
@@ -10,10 +10,10 @@ Copper Layer Stackup:
 Drill file 'Symm60HE-Neo-Centre-Family-Panel-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (79 holes))
+    T1  0.300mm  0.0118"  (61 holes))
     T2  0.600mm  0.0236"  (4 holes)  (with 4 slots)
 
-    Total plated holes count 83
+    Total plated holes count 65
 
 
 Drill file 'Symm60HE-Neo-Centre-Family-Panel-NPTH.drl' contains

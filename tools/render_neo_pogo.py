@@ -16,7 +16,7 @@ def render_board(path, output):
     # All four module generators use the same exact rectangular Edge.Cuts.
     # Use that controlled outline directly because KiCad may reorder its four
     # gr_line records when saving, while the legacy image helper assumes order.
-    outline = box(0, 0, 20, 20)
+    outline = box(0, 0, 20, 6)
     canvas = Canvas(outline.bounds, 720, pad=30, foot=0)
     canvas.poly(outline, fill=(29, 90, 70), outline=(87, 211, 154), w=1.1)
     draw_copper(canvas, str(path), alpha=235)

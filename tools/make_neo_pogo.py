@@ -26,9 +26,9 @@ TRACE_W = 0.20
 VIA_SIZE = 0.60
 VIA_DRILL = 0.30
 MODULE_W = 20.0
-MODULE_H = 20.0
-CONTACT_Y = 5.0
-FFC_Y = 15.0
+MODULE_H = 6.0
+CONTACT_Y = 3.0
+FFC_Y = 3.0
 
 FFC_NETS = ["+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
             "ADC_1", "GND", "ADC_2", "GND", "ADC_3", "ADC_4"]
@@ -266,8 +266,22 @@ def build_module(side, contact_map):
     ffc_map = {pin: name for pin, name in enumerate(ffc_sequence, 1)}
     ffc = place_footprint(board, "FFC_12P_1.00mm_TopContact.kicad_mod",
                           "JF1", 10, FFC_Y, ffc_map)
+    # The compact head puts the ZIF directly behind the pogo row.  It is a
+    # genuine two-sided assembly: pogo springs face the Hall PCB and the FFC
+    # exits from the underside.  Both FFC footprints retain their native order;
+    # the existing left spring-footprint rotation already makes the physical
+    # left-to-right net sequences agree without crossovers.
+    swap_front_back(ffc)
+    # The stock footprint's fabrication label and rear silkscreen extend beyond
+    # this deliberately shallow carrier. They are not assembly-critical; hide
+    # fields and remove those graphics instead of accepting edge/text warnings.
+    ffc[:] = [item for item in ffc if not (
+        isinstance(item, list) and item and item[0] == "fp_text")]
+    ffc[:] = [item for item in ffc if not (
+        isinstance(item, list) and item and item[0] == "fp_line" and
+        first(item, "layer") and first(item, "layer")[1] == "B.SilkS")]
     for item in find(ffc, "property"):
-        if item[1] == "Reference" and first(item, "hide") is None:
+        if first(item, "hide") is None:
             item.append([Sym("hide"), Sym("yes")])
     contact_file = "MillMax_854-22-012-30-004101.kicad_mod"
     contact_ref = "PS1"
@@ -291,52 +305,46 @@ def build_module(side, contact_map):
     for pin, name in enumerate(ffc_sequence, 1):
         ffc_by_net.setdefault(name, []).append(ffc_pads[pin])
 
-    # Non-ground conductors escape above the spring connector, cross the
-    # module on B.Cu, and return to F.Cu immediately before the FFC.  This
-    # avoids passing through the ground pad in the other connector row.
+    # Pair same-net signal pads from left to right. Each transfer sits on its
+    # FFC pad's X coordinate in a clear row below both connector pad banks. The
+    # B.Cu fanout then converges monotonically from 1.27 to 1.00 mm pitch.
     for name in names:
         if name == "GND":
             continue
-        starts = by_net[name]
-        ends = ffc_by_net[name]
-        anchor_x = sum(point[0] for point in starts) / len(starts)
-        anchor = (anchor_x, 2.6)
-        for start in starts:
-            polyline(board, [start, (start[0], 2.6), anchor], name)
-        board.append(via(anchor, name))
-        end = ends[0]
-        landing = (end[0], 10.3)
-        polyline(board, [anchor, landing], name, "B.Cu")
-        board.append(via(landing, name))
-        polyline(board, [landing, end], name)
+        starts = sorted(by_net[name])
+        ends = sorted(ffc_by_net[name])
+        if len(starts) != len(ends):
+            raise RuntimeError((side, name, len(starts), len(ends)))
+        for start, end in zip(starts, ends):
+            # Put the via on the narrower-pitch FFC pad centreline. This gives
+            # the two outer transfers ample clearance from the connector's
+            # large mechanical mounting pads and keeps B.Cu drops vertical.
+            # Signal transfers use the lower edge; GND uses the upper edge.
+            # Splitting the escape directions prevents the duplicate ground
+            # pads from crossing the ordered signal fanout on the left head.
+            transfer = (end[0], 0.8)
+            polyline(board, [start, transfer], name, "F.Cu")
+            board.append(via(transfer, name))
+            polyline(board, [transfer, end], name, "B.Cu")
+    # Ground is intentionally not paired one-for-one: on the right module its
+    # duplicate positions differ between the interfaces. Bring every pogo GND
+    # directly to the F.Cu bus, and bring every underside FFC GND up through a
+    # local via. This avoids crossing intervening signal escapes.
+    ground_bus = []
+    for start in sorted(by_net["GND"]):
+        bus = (start[0], 5.4)
+        polyline(board, [start, bus], "GND", "F.Cu")
+        ground_bus.append(bus)
+    for end in sorted(ffc_by_net["GND"]):
+        transfer = (end[0], 4.4)
+        polyline(board, [transfer, end], "GND", "B.Cu")
+        board.append(via(transfer, "GND"))
+        bus = (end[0], 5.4)
+        polyline(board, [transfer, bus], "GND", "F.Cu")
+        ground_bus.append(bus)
+    ground_bus = sorted(set(ground_bus))
+    polyline(board, ground_bus, "GND", "F.Cu")
 
-    # GND leaves the spring pads on a lower F.Cu bus and leaves the FFC pads
-    # through an upper B.Cu bus.  A single edge spine joins those buses, safely
-    # outside the ordered B.Cu signal fanout.
-    ground_id = "GND"
-    lower = []
-    for pad in by_net["GND"]:
-        escape = (pad[0], 8.0)
-        polyline(board, [pad, escape], ground_id)
-        lower.append(escape)
-    upper = []
-    for pad in ffc_by_net["GND"]:
-        escape = (pad[0], 11.8)
-        polyline(board, [pad, escape], ground_id)
-        board.append(via(escape, ground_id))
-        upper.append(escape)
-    lower = sorted(lower)
-    upper = sorted(upper)
-    polyline(board, lower, ground_id, "F.Cu")
-    polyline(board, upper, ground_id, "B.Cu")
-    edge_low = (1.5, 8.0)
-    edge_high = (1.5, 11.8)
-    polyline(board, [lower[0], edge_low], ground_id)
-    board.append(via(edge_low, ground_id))
-    polyline(board, [edge_low, edge_high], ground_id, "B.Cu")
-    polyline(board, [edge_high, upper[0]], ground_id, "B.Cu")
-
-    add_note(board, f"{side.upper()} {kind.upper()}", (5.0, 1.0))
     path = OUT / f"Symm60HE-Neo-{side}-{kind}Module.kicad_pcb"
     path.write_text(dumps(board) + "\n")
     return path

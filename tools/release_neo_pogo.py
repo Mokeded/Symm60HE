@@ -90,6 +90,11 @@ def find_cli():
     return str(candidates[0])
 
 
+def is_release_file(path):
+    """Skip macOS metadata (AppleDouble ._*, .DS_Store) that a Mac copy leaves."""
+    return path.is_file() and not path.name.startswith("._") and path.name != ".DS_Store"
+
+
 def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -345,13 +350,13 @@ def main():
         "from the same board revisions before ordering. The pogo interface still "
         "requires connector-fit, Hall-noise, compression and endurance prototypes.\n")
 
-    outputs = sorted(path for path in OUT.rglob("*") if path.is_file() and
+    outputs = sorted(path for path in OUT.rglob("*") if is_release_file(path) and
                      path.name != "SHA256SUMS.txt")
     (OUT / "SHA256SUMS.txt").write_text("".join(
         f"{sha256(path)}  {path.relative_to(OUT)}\n" for path in outputs))
     archive = ROOT / "release/Symm60HE-Neo-Pogo-BOM-CPL.zip"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zipped:
-        for path in sorted(item for item in OUT.rglob("*") if item.is_file()):
+        for path in sorted(filter(is_release_file, OUT.rglob("*"))):
             zipped.write(path, Path(OUT.name) / path.relative_to(OUT))
     archive_hash = ROOT / "release/Symm60HE-Neo-Pogo-BOM-CPL.zip.sha256"
     archive_hash.write_text(f"{sha256(archive)}  {archive.name}\n")

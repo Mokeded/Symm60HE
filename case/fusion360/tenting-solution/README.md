@@ -1,7 +1,7 @@
 # Symm60HE fixed-tent pogo/controller module
 
 This is the recommended first-prototype tenting mechanism for the 12-contact
-pogo alternate. It is a fixed 6 degree design matching the keyboard reference
+pogo alternate. It is a fixed 3 degree design matching the keyboard reference
 assembly; it does not try to use the pogo connector as a hinge.
 
 ## Architecture
@@ -9,7 +9,7 @@ assembly; it does not try to use the pogo connector as a hinge.
 - The 57 x 28 mm MCU daughterboard is held lengthwise in the central 61 x 32 mm
   printed tray.
 - Separate 20 x 20 mm spring-head PCBs float in left and right kernel apertures tilted so
-  both centre-facing edges are raised: -6 degrees on the left and +6 degrees
+  both centre-facing edges are raised: -3 degrees on the left and +3 degrees
   on the right when viewed from the front. Each spring connector is therefore
   parallel to the direct target on its Hall PCB.
 - Two printed ribs per side join the central tray to each fixed-angle connector pocket.

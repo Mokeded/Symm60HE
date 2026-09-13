@@ -3,7 +3,7 @@
     "type": "script",
     "author": "Symm60HE",
     "description": {
-        "": "Builds the Symm60HE case-design project from the generated reference STEP bodies."
+        "": "Imports the complete tented Symm60HE in-case reference assembly for enclosure design."
     },
     "supportedOS": "windows|mac",
     "editEnabled": true

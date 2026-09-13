@@ -12,14 +12,14 @@
         "doe-wklbs2arrows": 204
       },
       "fabrication_zip": "Hall-Family-Panel-Gerbers-and-Drills.zip",
-      "source_sha256": "3f6161add80a8a018a204865c95b8167942592214ad69cef4a22e1b1a7808e99"
+      "source_sha256": "924bf3f31205ae9fe203ae5d13b1a08f04fda2ba58bb0b1cdee86906e89501a8"
     },
     "Centre-Family": {
       "different_designs": 3,
       "assembly_sides": "Both",
       "placements": 34,
       "fabrication_zip": "Centre-Family-Panel-Gerbers-and-Drills.zip",
-      "source_sha256": "4d2dbde969ec4cd5990978e8d8a04ed4ee826c4c708f44a016908fbc1e16b75f"
+      "source_sha256": "ecb84955f1374271f14c0f03f818cddae6f4a9cd1051d9600bba40bd34c7b8ae"
     }
   },
   "individual_boards": {
@@ -31,12 +31,12 @@
     "Left-SpringModule": {
       "placements": 2,
       "fabrication_zip": "Left-SpringModule-Gerbers-and-Drills.zip",
-      "source_sha256": "ea2952261fb227370fa0d69614a1105d671ec19f2ac694b1d9175afd9aa1cfb1"
+      "source_sha256": "f91b3dcc7349692b99b8d8a6544293f05750f38fce9cbd0cdfea449cf46a9f8f"
     },
     "Right-SpringModule": {
       "placements": 2,
       "fabrication_zip": "Right-SpringModule-Gerbers-and-Drills.zip",
-      "source_sha256": "f8e77a9697610b8820acb449b6e098979f36aac5c56be0dffd36fde58f17fa61"
+      "source_sha256": "8c26b92eadc2e5f4521523b5a68577e0227ac21bdd76375b956c07bf256445f9"
     },
     "Left-Half": {
       "placements_by_layout": {
@@ -46,7 +46,7 @@
         "doe-wklbs2arrows": 102
       },
       "fabrication_zip": "Left-Half-Gerbers-and-Drills.zip",
-      "source_sha256": "1079c69d7f8bac5d10e11c0cf880f3d6d54fa706213abf864cafa306e0afb632"
+      "source_sha256": "6e0fa3c7044b4c7d1b4cde8f39f159ff2bb887530a9a79475ca0f323bff905d7"
     },
     "Right-Half": {
       "placements_by_layout": {
@@ -56,7 +56,7 @@
         "doe-wklbs2arrows": 102
       },
       "fabrication_zip": "Right-Half-Gerbers-and-Drills.zip",
-      "source_sha256": "960d7f3b235ff9abec47bd2c32ca0d43447a56dd34ef267afee8d59ee406f3ce"
+      "source_sha256": "5a8718117688bb035a1834e5d47f680511e18c33f2a2647fb05cd8a22aa94b40"
     }
   },
   "layouts": [

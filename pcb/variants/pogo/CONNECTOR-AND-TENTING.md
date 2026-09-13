@@ -25,7 +25,7 @@ hot-plug-detect contact because hot plugging is not a requirement.
 ## Tented mechanical architecture
 
 A single flat controller PCB cannot mate normally to two keyboard PCBs on
-opposite 6 degree tent planes. The rebuilt `pogo-neo` architecture therefore
+opposite 3 degree tent planes. The rebuilt `pogo-neo` architecture therefore
 uses two independently angled 20 x 20 mm replaceable spring heads. Each is parallel to
 its keyboard half and retained by the central controller cradle. A short,
 strain-relieved 12-way FFC connects each spring module to the flat controller.

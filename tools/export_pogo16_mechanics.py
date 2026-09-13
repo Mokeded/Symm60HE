@@ -10,7 +10,7 @@ import Part
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "case/fusion360/pogo-variant"
 
-TENT_DEG = 6.0
+TENT_DEG = 3.0
 BOARD_SPACING = 6.0
 WING_W = 18.0
 WING_D = 28.0

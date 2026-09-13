@@ -76,7 +76,7 @@ def main():
         "pogo_spring_working_height_mm": 3.79,
         "pogo_target_projection_mm": 2.21,
         "pogo_model_note": "dimensioned case-design reference, not vendor-certified CAD",
-        "controller_orientation": "lengthwise on centreline; flat across lateral tent; common 11 degree typing plane",
+        "controller_orientation": "lengthwise on centreline; flat across lateral tent; common 7 degree typing plane",
         "target_retention": "12-contact targets mounted directly on Hall PCBs",
         "keyboard_suspension": "eight side gaskets on plates only",
         "files": [step.name, source.name],

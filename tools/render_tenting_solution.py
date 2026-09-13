@@ -33,7 +33,11 @@ def main():
     openscad = shutil.which("openscad")
     if not openscad:
         raise RuntimeError("OpenSCAD not found")
-    meshes = sorted(GEN.glob("*.stl"))
+    # FAT/exFAT volumes create AppleDouble ``._*`` sidecar files.  They match
+    # ``*.stl`` but are metadata, not meshes, and OpenSCAD reports them as
+    # corrupt STL files.  Render only the actual exported bodies.
+    meshes = sorted(path for path in GEN.glob("*.stl")
+                    if not path.name.startswith("._"))
     if not meshes:
         raise RuntimeError("run export_tenting_solution.py with freecadcmd first")
     scad = GEN / "preview.scad"

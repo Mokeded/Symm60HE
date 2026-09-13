@@ -1,27 +1,28 @@
-# Fusion 360 project setup
+# Fusion 360 in-case reference setup
 
-`Symm60HECaseSetup/` is a Fusion 360 script that builds the case-design
-project from the generated reference bodies in this directory, so the case
-work starts from a consistent, named component tree instead of a manual
-STEP import.
+`Symm60HECaseSetup/` creates a fresh Fusion design around the complete
+Neo-style pogo assembly. Install the folder under Fusion's API `Scripts`
+directory, press **Shift+S**, select `Symm60HECaseSetup`, and click **Run**.
 
-Install once by copying the `Symm60HECaseSetup` folder to
-`%APPDATA%\Autodesk\Autodesk Fusion 360\API\Scripts\`, then in Fusion press
-**Shift+S** (UTILITIES > ADD-INS > Scripts and Add-Ins), select
-`Symm60HECaseSetup` and click **Run**. The script:
+The script imports `Symm60HE-case-reference-assembly.step` exactly once and
+grounds it. All mechanical positioning is already resolved in that STEP:
 
-1. creates a new millimetre design named `Symm60HE Case`;
-2. imports the nine placed `Symm60HE-*.step` bodies into
-   `Reference (do not edit)`, grouped as PCBs, Plates, Switches and Keycaps
-   (switch and keycap banks are semi-transparent and every reference is
-   grounded);
-3. imports the Neo pogo and mounting references into a hidden
-   `Pogo references (optional)` component, controlled by the flags at the top
-   of the script;
-4. creates empty `Case` components (`Left top`, `Left bottom`, `Right top`,
-   `Right bottom`, `Controller housing`) and activates `Case`;
-5. saves the design into a `Symm60HE Case` folder of the active Fusion
-   project when Fusion is signed in.
+- each 1.2 mm Hall PCB is aligned below its matching split gasket plate;
+- switches and keycaps occupy their assembled plate positions;
+- left and right stacks have mirrored 3 degree tenting and a 7 degree typing
+  angle;
+- Mill-Max target connectors are directly mounted under the Hall PCBs;
+- the two 20 x 6 mm floating spring PCBs and their spring blocks are mated to
+  those targets at the 6 mm board-to-board datum;
+- the controller is flat and left-to-right beneath the centre blocker, with
+  USB-C and its plug keepout aimed through the rear case wall; and
+- flexible FFC solids show route and bend-clearance envelopes between each
+  floating head and the controller.
 
-`REFERENCE_DIR` at the top of the script points at this directory; change it if
-the repository is moved. The script only reads the STEP files.
+The script creates empty `Left top`, `Left bottom`, `Right top`, `Right bottom`
+and `Centre blocker and controller housing` components. Build the case only in
+those components and leave the grounded reference untouched.
+
+The default Windows path is
+`E:\Symm60HE-GitHub-Upload\Symm60HE\case\fusion360`. Change `REFERENCE_DIR`
+near the top of the Python script if the repository is elsewhere.

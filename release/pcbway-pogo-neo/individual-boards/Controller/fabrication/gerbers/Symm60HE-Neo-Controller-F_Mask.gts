@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.5*%
-%TF.CreationDate,2026-09-12T13:41:16-04:00*%
+%TF.CreationDate,2026-09-12T17:12:20-04:00*%
 %TF.ProjectId,Symm60HE-Neo-Controller,53796d6d-3630-4484-952d-4e656f2d436f,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-12 13:41:16*
+G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-12 17:12:20*
 %MOMM*%
 %LPD*%
 G01*

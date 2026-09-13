@@ -1,6 +1,6 @@
 {
   "status": "case-design reference; prototype before production",
-  "tent_angle_deg": 6.0,
+  "tent_angle_deg": 3.0,
   "controller_pcb_mm": [
     28.0,
     57.0,

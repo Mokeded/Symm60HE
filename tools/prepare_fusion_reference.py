@@ -96,17 +96,56 @@ def main():
         raise ValueError("SYMM60HE_VISUAL_LAYOUT must be one of: %s" %
                          ", ".join(BUILDS))
     layout.update({"axis_x": axis_mm, "front_y": 100.0,
-                   "tent_deg": 6.0, "typing_deg": 11.0,
+                   # Mechanical datums supplied by the project owner:
+                   # DOE-style lateral tent is 3 degrees per half and the
+                   # FN40 front-to-back typing angle is 7 degrees.
+                   "tent_deg": 3.0, "typing_deg": 7.0,
                    "plate_z": 10.0, "pcb_z": 3.5,
                    "visual_layout": visual_layout})
     (OUT / "reference-layout.json").write_text(json.dumps(layout, indent=2) + "\n")
 
-    for name, stem in (("LeftPCB", "Symm60HE-Left"),
-                       ("RightPCB", "Symm60HE-Right"),
-                       ("DaughterboardPCB", "Symm60HE-Daughterboard")):
+    # The case reference uses the active Neo-style pogo architecture. Export
+    # all five rigid boards so the downstream assembly has their real outlines.
+    neo = ROOT / "pcb" / "variants" / "pogo-neo"
+    board_sources = (
+        ("LeftPCB", neo / "Symm60HE-Neo-Left-Half.kicad_pcb"),
+        ("RightPCB", neo / "Symm60HE-Neo-Right-Half.kicad_pcb"),
+        ("DaughterboardPCB", neo / "Symm60HE-Neo-Controller.kicad_pcb"),
+        ("LeftSpringPCB", neo / "Symm60HE-Neo-Left-SpringModule.kicad_pcb"),
+        ("RightSpringPCB", neo / "Symm60HE-Neo-Right-SpringModule.kicad_pcb"),
+    )
+    for name, source in board_sources:
         subprocess.run([cli, "pcb", "export", "step", "--board-only",
                         "--force", "-o", str(OUT / f"{name}.step"),
-                        str(ROOT / "pcb" / f"{stem}.kicad_pcb")], check=True)
+                        str(source)], check=True)
+
+    layout["mechanism"] = {
+        "board_thickness": 1.2,
+        "board_to_board": 6.0,
+        "controller_centre": [axis_mm, 56.0],
+        # Keep the controller in its native left-to-right orientation.  J1 is
+        # authored on the rear edge of the PCB; rotating the board 90 degrees
+        # incorrectly aimed USB-C into the right keyboard half.
+        "controller_rotation_deg": 0.0,
+        "controller_bottom_z": -6.5,
+        "left_target": [148.0, 56.0],
+        "right_target": [154.418, 56.0],
+        "left_target_rotation_deg": -90.0,
+        "right_target_rotation_deg": 90.0,
+        "spring_board_size": [20.0, 6.0],
+        "spring_board_source_centre": [10.0, 3.0],
+        "spring_board_rotation_deg": 90.0,
+        "controller_source_centre": centre(DB),
+        "controller_left_ffc": [157.509, 9.2367],
+        "controller_right_ffc": [208.909, 9.2367],
+        "controller_left_ffc_rotation_deg": -90.0,
+        "controller_right_ffc_rotation_deg": 90.0,
+        "controller_usb": [192.209, -4.1133],
+        "controller_usb_rotation_deg": 180.0,
+    }
+    # Rewrite after adding the mechanism datums.
+    (OUT / "reference-layout.json").write_text(
+        json.dumps(layout, indent=2) + "\n")
 
     for name, side in (("LeftPlate", "left"), ("RightPlate", "right")):
         dxf = ROOT / "plate" / f"Symm60HE-plate-universal-{side}.dxf"

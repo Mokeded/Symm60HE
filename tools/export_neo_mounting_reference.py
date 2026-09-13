@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "case/fusion360/pogo-neo-mounting-reference"
 GEN = OUT / "generated"
 
-TENT_DEG = 6.0
+TENT_DEG = 3.0
 CONTROLLER = (28.0, 57.0, 1.2)
 SPRING_BOARD = (20.0, 20.0, 1.2)
 HALL_DATUM = (32.0, 32.0, 1.2)

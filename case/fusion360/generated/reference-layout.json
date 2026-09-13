@@ -61,9 +61,57 @@
   },
   "axis_x": 151.209,
   "front_y": 100.0,
-  "tent_deg": 6.0,
-  "typing_deg": 11.0,
+  "tent_deg": 3.0,
+  "typing_deg": 7.0,
   "plate_z": 10.0,
   "pcb_z": 3.5,
-  "visual_layout": "doe-wkl"
+  "visual_layout": "doe-wkl",
+  "mechanism": {
+    "board_thickness": 1.2,
+    "board_to_board": 6.0,
+    "controller_centre": [
+      151.209,
+      56.0
+    ],
+    "controller_rotation_deg": 0.0,
+    "controller_bottom_z": -6.5,
+    "left_target": [
+      148.0,
+      56.0
+    ],
+    "right_target": [
+      154.418,
+      56.0
+    ],
+    "left_target_rotation_deg": -90.0,
+    "right_target_rotation_deg": 90.0,
+    "spring_board_size": [
+      20.0,
+      6.0
+    ],
+    "spring_board_source_centre": [
+      10.0,
+      3.0
+    ],
+    "spring_board_rotation_deg": 90.0,
+    "controller_source_centre": [
+      183.2090000000001,
+      6.236740009565949
+    ],
+    "controller_left_ffc": [
+      157.509,
+      9.2367
+    ],
+    "controller_right_ffc": [
+      208.909,
+      9.2367
+    ],
+    "controller_left_ffc_rotation_deg": -90.0,
+    "controller_right_ffc_rotation_deg": 90.0,
+    "controller_usb": [
+      192.209,
+      -4.1133
+    ],
+    "controller_usb_rotation_deg": 180.0
+  }
 }

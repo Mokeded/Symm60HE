@@ -47,6 +47,11 @@ DESCRIPTIONS = {
 }
 
 
+def is_release_file(path):
+    """Skip macOS metadata (AppleDouble ._*, .DS_Store) that a Mac copy leaves."""
+    return path.is_file() and not path.name.startswith("._") and path.name != ".DS_Store"
+
+
 def sha256(path):
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -181,7 +186,7 @@ def export_fabrication(cli, board, output, source_label):
 
     archive = fabrication / f"{source_label}-Gerbers-and-Drills.zip"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zipped:
-        for path in sorted(gerbers.iterdir()):
+        for path in sorted(filter(is_release_file, gerbers.iterdir())):
             zipped.write(path, path.name)
     with zipfile.ZipFile(archive) as zipped:
         if zipped.testzip():
@@ -352,11 +357,11 @@ def main():
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     checksummed = sorted(path for path in OUT.rglob("*")
-                         if path.is_file() and path.name != "SHA256SUMS.txt")
+                         if is_release_file(path) and path.name != "SHA256SUMS.txt")
     (OUT / "SHA256SUMS.txt").write_text("".join(
         f"{sha256(path)}  {path.relative_to(OUT)}\n" for path in checksummed))
     with zipfile.ZipFile(ARCHIVE, "w", zipfile.ZIP_DEFLATED) as zipped:
-        for path in sorted(item for item in OUT.rglob("*") if item.is_file()):
+        for path in sorted(filter(is_release_file, OUT.rglob("*"))):
             zipped.write(path, OUT.name / path.relative_to(OUT))
     with zipfile.ZipFile(ARCHIVE) as zipped:
         if zipped.testzip():

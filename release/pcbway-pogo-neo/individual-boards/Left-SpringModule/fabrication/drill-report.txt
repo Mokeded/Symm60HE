@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Neo-Left-SpringModule.kicad_pcb
-Created on 2026-09-12T13:41:19
+Created on 2026-09-12T17:12:23
 
 Copper Layer Stackup:
     =============================================================
@@ -10,9 +10,9 @@ Copper Layer Stackup:
 Drill file 'Symm60HE-Neo-Left-SpringModule-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (21 holes))
+    T1  0.300mm  0.0118"  (12 holes))
 
-    Total plated holes count 21
+    Total plated holes count 12
 
 
 Drill file 'Symm60HE-Neo-Left-SpringModule-NPTH.drl' contains

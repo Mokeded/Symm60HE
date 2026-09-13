@@ -1,43 +1,41 @@
-# Symm60HE Fusion 360 case-design references
+# Symm60HE Fusion 360 case-design reference
 
-`Symm60HE-reference-assembly.step` is the primary Fusion 360 handoff. Import
-it with **File > Open > Upload** and save the imported design as a Fusion
-project, or run the `fusion-setup/Symm60HECaseSetup` script (see
-`fusion-setup/README.md`) to build a named component tree from the individual
-STEP files in one step. It contains nine separately named reference bodies:
+Open `Symm60HE-case-reference-assembly.step`, or run the add-in under
+`fusion-setup/`, to start the case around the real assembled geometry. The
+master STEP is a reference mechanism rather than a finished case.
 
-- Left PCB
-- Right PCB
-- Daughterboard PCB
-- Left universal plate
-- Right universal plate
-- Left switches
-- Right switches
-- Left keycaps
-- Right keycaps
+It contains separately named solids for the split plates, 1.2 mm Neo Hall
+PCBs, switches, keycaps, flat controller daughterboard, both 20 x 6 mm
+floating FFC-to-pogo PCBs, both Mill-Max 854 spring blocks, both directly
+mounted 856 targets, spring-travel keepouts, controller ZIF envelopes and two
+flexible FFC route envelopes. The controller is oriented left-to-right: its
+USB-C receptacle and plug keepout pass directly through the rear case wall,
+while J2 and J3 face the left and right interconnects.
 
-The two keyboard halves are shown at 6 degrees of tent and 11 degrees of
-typing angle. Each PCB is 5 mm below its plate. There is deliberately no case
-solid: build new top and bottom components around these reference bodies.
+The plate is the mechanical datum. Each plate, its Hall PCB, and its floating
+pogo head move together on a mirrored 3 degree tent and 7 degree typing-angle
+plane. The plate bottom is 6.5 mm above the Hall-PCB bottom. The target/spring
+boards are 6.0 mm apart, which places the selected spring model within its
+published stroke and makes its tips meet the target faces. The controller is
+rigid and flat beneath the centre blocker; the cyan ribbon solids reserve
+clearance and slack for independent gasket movement.
 
-The switches and keycaps show the primary 60-key `doe-wkl` configuration, with
-30 populated positions on each half. They are simplified mechanical envelopes,
-not vendor-specific production models: switches use a 13.8 mm housing and MX
-stem, while the keycaps use a tapered 1 mm-spacing envelope. Hide them for PCB
-or plate work and show them to judge case-wall, blocker and typing clearances.
+`Symm60HE-case-reference-assembly.FCStd` is the editable generated source.
+The legacy `Symm60HE-reference-assembly.step` and `.FCStd` names are updated to
+the same integrated geometry for compatibility. Individual globally positioned
+STEP files are also supplied for the major boards, plates, switches and
+keycaps.
+
 Set `SYMM60HE_VISUAL_LAYOUT` to `doe-wkl`, `doe-wklbs2`, `doe-wklarrows`, or
-`doe-wklbs2arrows` before running `build.sh` to regenerate another populated
-layout.
+`doe-wklbs2arrows` before regeneration to preview another supported layout.
+The simplified switch/keycap solids are clearance references, not vendor CAD.
 
-`Symm60HE-reference-assembly.FCStd` is the editable source assembly used to
-create the STEP file. The individual STEP files are provided when importing
-each reference as a separate Fusion component is preferable.
+This reference does not establish a finished enclosure or physical fit. Pogo
+compression, retention clearances, FFC bend life, Hall noise, gasket motion,
+keycap-wall clearance and controller service access still require a prototype.
 
-The previous case was removed from this directory. A hash-verified recovery
-copy is retained under `work/recovery-case-20260911-0837/`.
-
-`tenting-solution/` contains a separate editable 27-body fixed 6 degree
-pogo/controller mechanism. It is intentionally independent from the empty
-case-design reference assembly so it can be inserted, repositioned, or omitted
-as one subsystem while the enclosure is modeled around the real PCBs and
-plates.
+The original 20 x 20 mm floating-head interference has been removed. The two
+20 x 6 mm heads keep the target rows in their electrically correct positions
+and retain approximately 0.418 mm projected clearance at the centre seam.
+Their F.Cu spring blocks and B.Cu FFC connectors are included as explicit case
+reference solids.

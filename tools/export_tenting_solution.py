@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the fixed 6-degree pogo/controller tenting module for Fusion 360."""
+"""Generate the fixed 3-degree pogo/controller tenting module for Fusion 360."""
 from pathlib import Path
 import json
 import hashlib
@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "case/fusion360/tenting-solution"
 GEN = OUT / "generated"
 
-TENT_DEG = 6.0
+TENT_DEG = 3.0
 PCB_T = 1.2
 FLOOR_T = 1.2
 BOARD_SPACING = 6.0
@@ -107,7 +107,7 @@ def main():
         stale_mesh.unlink()
     doc = App.newDocument("Symm60HE_Fixed_Tent_Pogo_Module")
     root = doc.addObject("App::Part", "FixedTentPogoModule")
-    root.Label = "Symm60HE fixed 6 degree tenting and pogo module"
+    root.Label = "Symm60HE fixed 3 degree tenting and pogo module"
     objects = []
 
     centre_group = doc.addObject("App::Part", "CentralControllerCradle")
@@ -155,7 +155,7 @@ def main():
         raw_carrier = raw_carrier.cut(moved(cbox(3.0, 10.0, 2.5), x=10.5, z=1.0))
         carrier = side_place(raw_carrier, side)
         objects.append(add(doc, group, side + "WingCarrier", side + " wing carrier",
-                           carrier, "Captured 6 degree floating-head aperture", "PA12-CF or PETG"))
+                           carrier, "Captured 3 degree floating-head aperture", "PA12-CF or PETG"))
         wing = side_place(moved(cbox(*WING_PCB, PCB_T), z=FLOOR_T + 0.2), side)
         objects.append(add(doc, group, side + "WingPCB", side + " spring wing PCB",
                            wing, "Floating 1.2 mm FFC-to-spring module PCB", "FR4"))

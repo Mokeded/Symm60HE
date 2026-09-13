@@ -23,11 +23,10 @@ if [ ! -x "$FREECADCMD" ]; then
     exit 2
 fi
 "$FREECADCMD" export_fusion_reference.py
+"$FREECADCMD" verify_fusion_reference.py
 "$FREECADCMD" export_pogo16_mechanics.py
 "$FREECADCMD" export_tenting_solution.py
 "$FREECADCMD" verify_tenting_solution.py
-"$FREECADCMD" export_neo_fusion_reference.py
-"$FREECADCMD" export_neo_mounting_reference.py
 "$PYTHON" render_fusion_reference.py
 "$PYTHON" release.py
 "$PYTHON" verify.py
@@ -39,6 +38,5 @@ fi
 "$PYTHON" release_neo_pogo.py
 "$PYTHON" release_pcbway_neo_pogo.py
 "$PYTHON" render_neo_pogo.py
-"$PYTHON" render_neo_mounting_reference.py
 "$PYTHON" render_current_pcbs.py
 "$PYTHON" render_gallery.py

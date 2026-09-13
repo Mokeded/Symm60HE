@@ -56,12 +56,24 @@ def main():
         if name in MODULES:
             footprints = {reference(fp): fp for fp in find(board, "footprint")}
             assert set(footprints) == {"JF1", "PS1"}, footprints.keys()
+            assert first(footprints["JF1"], "layer")[1] == "B.Cu"
+            assert first(footprints["PS1"], "layer")[1] == "F.Cu"
             contact_pads = [pad for pad in find(footprints["PS1"], "pad")
                             if str(pad[1]).isdigit()]
             ffc_pads = [pad for pad in find(footprints["JF1"], "pad")
                         if str(pad[1]).isdigit()]
             assert len(contact_pads) == 12
             assert len(ffc_pads) == 12
+            edge_points = []
+            for line in find(board, "gr_line"):
+                if first(line, "layer")[1] != "Edge.Cuts":
+                    continue
+                edge_points.extend((first(line, "start")[1:3],
+                                    first(line, "end")[1:3]))
+            xs = [float(point[0]) for point in edge_points]
+            ys = [float(point[1]) for point in edge_points]
+            assert (min(xs), max(xs), min(ys), max(ys)) == (0.0, 20.0, 0.0, 6.0)
+            print(f"{name}: 20 x 6 mm, F.Cu spring / B.Cu FFC")
         elif name in HALVES:
             footprints = {reference(fp): fp for fp in find(board, "footprint")}
             side = "Left" if "Left" in name else "Right"
