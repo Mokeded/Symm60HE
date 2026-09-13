@@ -19,8 +19,9 @@ already resolved in the component references:
 - left and right stacks have mirrored 3 degree tenting and a 7 degree typing
   angle;
 - Mill-Max target connectors are directly mounted under the Hall PCBs;
-- the two 20 x 6 mm floating spring PCBs and their spring blocks are mated to
-  those targets at the 6 mm nominal working board-to-board datum;
+- the two 20 x 6 mm floating spring PCBs and their exact Mill-Max 854 spring
+  blocks are mated to the exact 856 targets at a checked 5.0 mm board-surface
+  separation, with 0.2578 mm preload and 0.7582 mm remaining spring travel;
 - all four ZIF bodies use the exact BOOMELE 1.0-12P / LCSC C20111 distributor
   STEP envelope rather than the former simplified boxes;
 - the controller carries its fitted package bodies and exact C318884 reset/boot
@@ -38,8 +39,8 @@ Turn that component on only while designing the surrounding clearances; the
 rectangular USB envelope is not a manufactured part.
 
 The design created by the current script is named
-`Symm60HE Case - Componentized v5 exact connectors`. Model provenance and the
-two authenticated Mill-Max download gaps are documented in
+`Symm60HE Case - Componentized v6 exact vendor pogo`. The exact configured
+12-position Mill-Max models and their source hashes are documented in
 `../models/model-provenance.json`.
 
 The script creates empty `Left top`, `Left bottom`, `Right top`, `Right bottom`

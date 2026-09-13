@@ -17,7 +17,7 @@ REFERENCE_DIR = r"E:\Symm60HE-GitHub-Upload\Symm60HE\case\fusion360"
 REFERENCE_FILE = "Symm60HE-case-reference-assembly.step"
 COMPONENT_PLACEMENT_FILE = os.path.join(
     "generated", "component-placement.json")
-DESIGN_NAME = "Symm60HE Case - Componentized v5 exact connectors"
+DESIGN_NAME = "Symm60HE Case - Componentized v6 exact vendor pogo"
 SAVE_DESIGN = True
 CASE_COMPONENTS = ["Left top", "Left bottom", "Right top", "Right bottom",
                    "Centre blocker and controller housing"]

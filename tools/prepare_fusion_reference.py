@@ -177,7 +177,10 @@ def main():
 
     layout["mechanism"] = {
         "board_thickness": 1.2,
-        "board_to_board": 6.0,
+        # Exact 854/856 supplier geometry provides 5.2578 mm of free reach.
+        # Use a 5.0 mm working separation for 0.2578 mm contact preload and
+        # 0.7582 mm remaining spring travel.
+        "board_to_board": 5.0,
         "controller_centre": [axis_mm, 56.0],
         # Keep the controller in its native left-to-right orientation.  J1 is
         # authored on the rear edge of the PCB; rotating the board 90 degrees
@@ -198,11 +201,10 @@ def main():
         "controller_right_ffc_rotation_deg": 90.0,
         "controller_usb": [192.209, -4.1133],
         "controller_usb_rotation_deg": 180.0,
-        # The HRO distributor STEP's mating mouth already faces +Y.  This is
-        # deliberately separate from J1's KiCad footprint angle: applying the
-        # footprint's 180-degree value to the vendor B-rep exchanges its mouth
-        # and solder-tail ends in the enclosure reference.
-        "controller_usb_model_rotation_deg": 0.0,
+        # The HRO distributor STEP's native mating mouth faces +Y. The keyboard
+        # rear is minimum Y, so rotate only the vendor B-rep 180 degrees and
+        # align its mouth to the minimum-Y rear edge.
+        "controller_usb_model_rotation_deg": 180.0,
         "controller_usb_overhang": DB_USB_OVERHANG,
     }
     # Rewrite after adding the mechanism datums.

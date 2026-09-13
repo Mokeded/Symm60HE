@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Read-only mechanical sanity checks for the generated Fusion reference."""
 from pathlib import Path
+import hashlib
 import json
 import math
 
@@ -27,6 +28,16 @@ def main():
                   "USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
     vendor_ffc = (FUSION / "models" /
                   "FFC_BOOMELE_1.0-12P_C20111.step")
+    vendor_spring = (FUSION / "models" / "vendor" /
+                     "Mill-Max_854-22-012-30-004101.step")
+    vendor_target = (FUSION / "models" / "vendor" /
+                     "Mill-Max_856-10-012-30-051000.step")
+    expected_hashes = {
+        vendor_spring: "13bba116749c329df6a491aa5ec57a3bdeaa1cbe453fd5ad21363497886376cd",
+        vendor_target: "2436584a35d7b4dace4d154a5ab15c9538083755c03c8613585b12eb164dc912",
+    }
+    for path, expected_hash in expected_hashes.items():
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == expected_hash
     doc = App.openDocument(str(source))
     objects = {obj.Name: obj for obj in doc.Objects
                if hasattr(obj, "Shape") and not obj.Shape.isNull()}
@@ -122,12 +133,12 @@ def main():
 
     usb = objects["ControllerUSBConnector"].Shape.BoundBox
     plug = objects["ControllerUSBPlugEnvelope"].Shape.BoundBox
-    assert usb.Center.y > controller.Center.y
+    assert usb.Center.y < controller.Center.y
     # The actual receptacle mouth remains on the controller's original rear
     # datum while the local PCB edge beneath it is set back 1.0 mm.  This
     # produces a real shell overhang rather than moving only a preview body.
-    assert close(usb.YMax, controller.YMax, 0.05), (
-        usb.YMax, controller.YMax)
+    assert close(usb.YMin, controller.YMin, 0.05), (
+        usb.YMin, controller.YMin)
     assert close(layout["mechanism"]["controller_usb_overhang"], 1.0)
     usb_probe = Part.makeBox(
         0.10, controller.YLength + 4.0, controller.ZLength + 2.0,
@@ -135,13 +146,13 @@ def main():
                    controller.ZMin - 1.0))
     local_board = objects["DaughterboardPCB"].Shape.common(usb_probe)
     assert not local_board.isNull() and local_board.Volume > 1e-5
-    actual_overhang = usb.YMax - local_board.BoundBox.YMax
+    actual_overhang = local_board.BoundBox.YMin - usb.YMin
     assert close(actual_overhang,
                  layout["mechanism"]["controller_usb_overhang"], 0.05), (
-                     actual_overhang, local_board.BoundBox.YMax, usb.YMax)
-    assert usb.YMin > controller.Center.y
-    assert plug.Center.y > usb.Center.y
-    assert plug.YMax > controller.YMax
+                     actual_overhang, local_board.BoundBox.YMin, usb.YMin)
+    assert usb.YMax < controller.Center.y
+    assert plug.Center.y < usb.Center.y
+    assert plug.YMin < controller.YMin
     # Actual HRO model envelope; this prevents a simplified placeholder box
     # from silently returning to the case-design reference.
     assert close(usb.XLength, 9.104, 0.05), usb.XLength
@@ -164,6 +175,31 @@ def main():
         assert spring_ffc.common(spring_pcb).Volume < 1e-5
         assert objects[side + "SpringPCB"].Shape.common(
             objects["DaughterboardPCB"].Shape).Volume < 1e-5
+
+    assert close(layout["mechanism"]["board_to_board"], 5.0, 1e-6)
+
+    # Independently load both exact 12-position supplier files. The selected
+    # 3D ContentCentral exports contain 13 solids (housing plus 12 contacts)
+    # and their configured 15.621 mm row length; a generic 2-position file or
+    # the earlier procedural boxes cannot pass these checks.
+    for path, expected_size in (
+            (vendor_spring, (15.6210, 4.2164, 2.2098)),
+            (vendor_target, (15.6210, 2.4638, 2.2098))):
+        vendor_pogo_doc = App.newDocument("VendorPogoRoundTrip")
+        Import.insert(str(path), vendor_pogo_doc.Name)
+        vendor_pogo_shapes = [candidate.Shape for candidate in
+                              vendor_pogo_doc.Objects
+                              if (hasattr(candidate, "Shape") and
+                                  not candidate.Shape.isNull() and
+                                  len(candidate.Shape.Solids) == 13)]
+        assert vendor_pogo_shapes, path
+        pogo = max(vendor_pogo_shapes, key=lambda shape: abs(shape.Volume))
+        actual_size = (pogo.BoundBox.XLength, pogo.BoundBox.YLength,
+                       pogo.BoundBox.ZLength)
+        assert all(close(actual, expected, 0.001)
+                   for actual, expected in zip(actual_size, expected_size)), (
+                       path, actual_size)
+        App.closeDocument(vendor_pogo_doc.Name)
 
     # Fusion imports these files into pre-created child components. Their
     # assembly placements must therefore be baked into the STEP geometry
@@ -229,7 +265,7 @@ def main():
     vendor_box = vendor.BoundBox
     vendor.translate(App.Vector(
         expected_x - vendor_box.Center.x,
-        controller.YMax - vendor_box.YMax,
+        controller.YMin - vendor_box.YMin,
         mech["controller_bottom_z"] + 1.195))
     # Compare the full asymmetric vendor geometry.  This catches a connector
     # whose envelope is at the rear edge but whose mouth and solder tails have
@@ -256,6 +292,7 @@ def main():
           (recovered[0][0], recovered[1][0],
            recovered[0][1], recovered[1][1]))
     print("both pogo spring/target interfaces are face-mated")
+    print("both exact 12-position Mill-Max supplier STEP files are hash-verified")
     print("both Hall/plate/pogo assemblies use %.3f mm symmetric half spread" %
           layout["half_spread_mm"])
     print("inner plate/gasket mounts clear by %.3f mm" % plate_gap)

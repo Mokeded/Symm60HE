@@ -1,8 +1,8 @@
 {
-  "rotation_degrees": 0.0,
+  "rotation_degrees": 180.0,
   "translation_mm": [
     160.29116949503396,
-    67.52336964347619,
+    44.47663035652382,
     -5.305
   ],
   "overhang_mm": 1.0

@@ -298,11 +298,11 @@ def export_absolute_step(obj, path):
 def controller_point(source, layout):
     mech = layout["mechanism"]
     sx, sy = mech["controller_source_centre"]
-    # KiCad STEP exports board Y with the opposite sign from the PCB editor.
-    # Keep the controller STEP in that native orientation so J1's model and
-    # footprint remain on the same physical edge, and convert source datums
-    # through the same Y inversion here.
-    dx, dy = source[0] - sx, -(source[1] - sy)
+    # The controller STEP is converted from KiCad's inverted raw Y coordinates
+    # into the same Y-forward assembly coordinates as the Hall PCBs.  Source
+    # datums can therefore be transformed directly: J1's minimum-Y edge is the
+    # keyboard rear, while J2/J3 retain their left/right positions.
+    dx, dy = source[0] - sx, source[1] - sy
     angle = math.radians(mech["controller_rotation_deg"])
     return App.Vector(
         mech["controller_centre"][0] + dx*math.cos(angle) - dy*math.sin(angle),
@@ -390,13 +390,14 @@ def main():
     # The controller is rigidly case-mounted and flat under the blocker.  Its
     # native 57 mm axis runs left-to-right so J1 faces the rear case wall and
     # J2/J3 face their respective keyboard halves.
-    controller = align_xy(import_step_shape(GEN / "DaughterboardPCB.step"),
-                          mech["controller_source_centre"], mirror_y=False,
+    controller = mirror_y_preserve_z(
+        import_step_shape(GEN / "DaughterboardPCB.step"))
+    controller = align_xy(controller, mech["controller_source_centre"],
+                          mirror_y=False,
                           bottom_z=mech["controller_bottom_z"])
     controller = exact_board_thickness(
         controller, mech["controller_bottom_z"], mech["board_thickness"])
-    controller_source_raw = (mech["controller_source_centre"][0],
-                             -mech["controller_source_centre"][1])
+    controller_source_raw = tuple(mech["controller_source_centre"])
     controller = rotate_xy(controller, controller_source_raw,
                            mech["controller_rotation_deg"])
     cc, sc = mech["controller_centre"], controller_source_raw
@@ -407,15 +408,16 @@ def main():
     objects.append(controller_obj)
     Import.export([controller_obj], str(OUT / "Symm60HE-DaughterboardPCB.step"))
 
-    raw_controller_board = import_step_shape(GEN / "DaughterboardPCB.step")
-    controller_components = import_step_shape(
-        GEN / "DaughterboardComponents.step")
+    raw_controller_board = mirror_y_preserve_z(
+        import_step_shape(GEN / "DaughterboardPCB.step"))
+    controller_components = mirror_y_preserve_z(import_step_shape(
+        GEN / "DaughterboardComponents.step"))
     # KiCad 10.0.4 does not ship the TS-1187A package model referenced by the
     # legacy footprint. Add the exact C318884 distributor model at both real
     # F.Cu footprint datums before applying the controller assembly transform.
     button_path = OUT / "models/Button_XKB_TS-1187A-B-A-B_C318884.step"
     button_shapes = [
-        place_smt_model(button_path, (x, -y), 0,
+        place_smt_model(button_path, (x, y), 0,
                         raw_controller_board.BoundBox.ZMax)
         for x, y in ((170.709, -2.7633), (166.709, 3.2367))
     ]
@@ -441,10 +443,9 @@ def main():
     # plug/cable keepout.  The model is exported by KiCad at its real footprint
     # placement, so apply exactly the controller PCB's XY placement while
     # preserving the model's component-side Z height.
-    # The source PCB's rear edge becomes the maximum-Y edge in KiCad's STEP
-    # coordinate convention.  Transform both the
-    # receptacle and edge datum through the same controller placement instead
-    # of guessing an assembly-space direction.
+    # The source PCB's minimum-Y edge is the keyboard rear after converting
+    # KiCad's raw STEP Y convention. Transform both the receptacle and edge
+    # datum through the same controller placement.
     usb_point = controller_point(mech["controller_usb"], layout)
     # Import the vendor HRO solid directly.  KiCad's component-only STEP
     # wrapper reproduces the placement correctly but turns this otherwise
@@ -454,17 +455,17 @@ def main():
     # datum for this 1.2 mm finished controller board.
     usb_shell = import_step_shape(
         OUT / "models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
-    # The vendor body's native mating mouth is at positive Y.  Do not reuse
-    # J1's 180-degree KiCad footprint angle here: the vendor B-rep is already
-    # authored in the required assembly direction. Align its mouth to the
-    # unrecessed rear datum; the PCB edge beneath it is recessed by 1.0 mm.
+    # The vendor body's native mating mouth is at positive Y. Rotate it 180
+    # degrees so the mouth faces the keyboard rear at minimum Y, then align
+    # that mouth to the unrecessed rear datum. The PCB edge beneath it is
+    # recessed by 1.0 mm.
     usb_shell.rotate(App.Vector(), App.Vector(0, 0, 1),
                      mech["controller_usb_model_rotation_deg"])
     usb_box = usb_shell.BoundBox
     controller_box = controller.BoundBox
     usb_translation = App.Vector(
         usb_point.x - usb_box.Center.x,
-        controller_box.YMax - usb_box.YMax,
+        controller_box.YMin - usb_box.YMin,
         mech["controller_bottom_z"] + 1.195)
     usb_shell.translate(usb_translation)
     (GEN / "usb-placement.json").write_text(json.dumps({

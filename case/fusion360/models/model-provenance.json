@@ -39,18 +39,23 @@
       "manufacturer": "Mill-Max",
       "mpn": "854-22-012-30-004101",
       "file": "vendor/Mill-Max_854-22-012-30-004101.step",
-      "status": "verified-supplier STEP available but not installed; account download required",
+      "status": "exact configured 12-position verified-supplier STEP installed; visible seated pose translates only the exposed plungers without scaling the housing",
       "source": "https://www.3dcontentcentral.com/download-model.aspx?catalogid=1136&id=2277529",
-      "fallback": "tools/pogo_connector_models.py published-dimension working-position model"
+      "source_format": "STEP AP214",
+      "sha256": "13bba116749c329df6a491aa5ec57a3bdeaa1cbe453fd5ad21363497886376cd",
+      "measured_envelope_mm": "15.6210 x 4.2164 x 2.2098; 13 solids in the assembled model",
+      "working_pose": "5.0000 mm board separation; 0.2578 mm preload; 0.7582 mm remaining travel"
     },
     {
       "assembly_item": "two target pogo connectors PTL1/PTR1",
       "manufacturer": "Mill-Max",
       "mpn": "856-10-012-30-051000",
       "file": "vendor/Mill-Max_856-10-012-30-051000.step",
-      "status": "verified-supplier STEP available but not installed; account download required",
-      "source": "https://www.3dcontentcentral.com/parts/supplier/Mill-Max-Mfg-Corp/25/13/13/Models.aspx?isredirect=true&page=4&title=Spring+Loaded+Connector+Assemblies",
-      "fallback": "tools/pogo_connector_models.py published-dimension target model"
+      "status": "exact configured 12-position verified-supplier STEP installed",
+      "source": "https://www.3dcontentcentral.com/secure/download-model.aspx?catalogid=1136&id=206502",
+      "source_format": "STEP AP214",
+      "sha256": "2436584a35d7b4dace4d154a5ab15c9538083755c03c8613585b12eb164dc912",
+      "measured_envelope_mm": "15.6210 x 2.4638 x 2.2098; 13 solids in the assembled model"
     },
     {
       "assembly_item": "magnetic switches",

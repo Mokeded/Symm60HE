@@ -69,7 +69,7 @@
   "visual_layout": "doe-wkl",
   "mechanism": {
     "board_thickness": 1.2,
-    "board_to_board": 6.0,
+    "board_to_board": 5.0,
     "controller_centre": [
       151.209,
       56.0
@@ -114,7 +114,7 @@
       -4.1133
     ],
     "controller_usb_rotation_deg": 180.0,
-    "controller_usb_model_rotation_deg": 0.0,
+    "controller_usb_model_rotation_deg": 180.0,
     "controller_usb_overhang": 1.0
   }
 }

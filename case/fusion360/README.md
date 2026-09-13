@@ -48,8 +48,10 @@ plane. To accommodate equal-size opposing centre gasket mounts, the complete
 left and right moving assemblies are translated 2.75 mm outward per side
 (5.50 mm additional split width); the controller remains centred and fixed.
 The plate bottom is 6.5 mm above the Hall-PCB bottom. The target/spring
-boards are 6.0 mm apart, which places the selected spring model within its
-published stroke and makes its tips meet the target faces. The controller is
+board surfaces are 5.0 mm apart. With the exact configured Mill-Max models,
+that applies 0.2578 mm of spring preload, leaves 0.7582 mm of travel, and makes
+the spring tips meet the target faces. The former 6.0 mm placeholder datum
+would leave a 0.7422 mm electrical gap. The controller is
 rigid and flat beneath the centre blocker; the cyan ribbon solids reserve
 clearance and slack for independent gasket movement.
 
@@ -99,11 +101,13 @@ digests are recorded in `models/model-provenance.json`; run
 These are exact distributor EDA models, which is stronger than a generic
 package but is not mislabeled as manufacturer-certified CAD.
 
-Exact Mill-Max 854/856 CAD is published through Mill-Max's verified supplier
-catalog, but downloading it requires a 3D ContentCentral account. Until those
-two files are supplied, the assembly deliberately retains the dimensioned
-published-envelope models and identifies them as fallbacks. See
-`models/vendor/README.md` for the exact filenames and configuration rules.
+The exact configured 12-position Mill-Max 854/856 AP214 models are installed
+from Mill-Max's verified 3D ContentCentral supplier catalog and locked by
+SHA-256 in `models/model-provenance.json`. The 856 target is used unchanged.
+For the seated 854 pose, the exact housing and board-side contact geometry are
+unchanged and only the exposed plunger ends are translated by the 0.2578 mm
+working preload; the model is never globally scaled. See
+`models/vendor/README.md` for filenames, envelopes and hashes.
 
 This reference does not establish a finished enclosure or physical fit. Pogo
 compression, retention clearances, FFC bend life, Hall noise, gasket motion,
