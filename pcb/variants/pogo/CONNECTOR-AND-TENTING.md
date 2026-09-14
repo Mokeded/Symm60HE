@@ -98,9 +98,11 @@ at each end of every module and has no Hall sensors to disturb.
 
 The topology therefore matches row for row; the differences are the connector
 family (custom magnetic OEM pair versus catalogue Mill-Max pair) and the
-magnet policy. The Neo Ergo's PCB-side half has not been confirmed from a
-part drawing, only from product photographs showing a connector body rather
-than bare pads, which is consistent with how magnetic pogo pairs are supplied.
+magnet policy. The Neo Ergo's PCB-side half is confirmed from a build-stream
+photograph of a bare right-half PCB: a black oval housing soldered at the
+centre-facing edge, a 2 × 7 gold contact array, and a round magnet at each
+end, matching the outline of the kernel-side modules. No part drawing or
+manufacturer part number is published for either half.
 
 A bare hard-gold pad field on the Hall PCB in place of the 856 would be a
 further simplification (Mill-Max 854 plungers are rated to mate against flat
