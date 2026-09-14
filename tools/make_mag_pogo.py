@@ -37,11 +37,12 @@ LIB = ROOT / "Symm60HE_Project.pretty"
 # --- interface control drawing MAGPOGO-2x6-P254 -----------------------------
 PITCH = 2.54          # along a row
 ROW_GAP = 2.54        # between the two rows
-PER_ROW = 6
-BODY = (25.0, 9.0)    # connector housing envelope
+PER_ROW = 6           # contacts per row; 6 gives the 12 the link needs, 8
+                      # gives four spare grounds if the wider part is chosen
+BODY = (PER_ROW * PITCH + 9.8, 9.0)   # connector housing envelope
 
 # --- module -----------------------------------------------------------------
-MODULE_W = 32.0
+MODULE_W = BODY[0] + 7.0
 MODULE_H = 18.0
 CONTACT_X = MODULE_W / 2
 CONTACT_Y = 5.6       # connector centre; rows land at +/- 1.27 of this
@@ -50,8 +51,8 @@ ESCAPE_Y = 9.6        # single row of escape vias below the connector
 HANDOFF_VIA_SETBACK = 0.3  # keep layer changes off the crowded anchor line
 OUTER_TURN = 2.5           # where the far column turns toward its anchor
 
-SPRING_FP = "MagPogo_2x6_P254_Spring.kicad_mod"
-TARGET_FP = "MagPogo_2x6_P254_Target.kicad_mod"
+SPRING_FP = f"MagPogo_2x{PER_ROW}_P{int(PITCH * 100):03d}_Spring.kicad_mod"
+TARGET_FP = f"MagPogo_2x{PER_ROW}_P{int(PITCH * 100):03d}_Target.kicad_mod"
 
 # Footprint pins 1-6 are the far row (away from the ZIF), 7-12 the near row.
 # Each far-row contact escapes through the gap between two near-row pads, one

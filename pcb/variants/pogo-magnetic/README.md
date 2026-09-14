@@ -50,6 +50,34 @@ The last row is the one to buy for a first prototype: it is the right
 geometry family and it ships tomorrow. Measure what arrives before trusting
 any dimension in the ICD below.
 
+### Twelve contacts and up: what is actually stocked
+
+Everything here is the AliExpress/ODM market; no manufacturer catalogue
+publishes a magnetic part above eight contacts. Contact span is what decides
+whether a part fits the kernel, so it is the column that matters.
+
+| Family | Positions offered | Contact span at 12 | at 14 | at 16 |
+|---|---|---|---|---|
+| Single row, 2.54 mm, 2 A, screw holes | 13-20 | 27.94 | 33.02 | 38.10 |
+| Single row, 2.54 mm, 10 A/36 V, "with ears" | 12-20 | 27.94 | 33.02 | 38.10 |
+| Single row, 2.54 mm, ribbon cable attached | 7-20 | 27.94 | 33.02 | 38.10 |
+| Single row, 2.8 mm | 2-14 | 30.80 | 36.40 | -- |
+| **Dual row, 2.54 mm** | 8, 10, 12, 14, 20 | **12.70** | **15.24** | -- |
+| Dual row, 2.0 mm | 4, 6, 8, 10 | -- | -- | -- |
+| Neo Ergo's own part (measured, not sold) | 2 x 8 on ~2.0 mm | -- | -- | 14.00 |
+
+Add roughly 12 mm to a contact span for the magnets at each end to get the
+housing. A single-row 12-contact part is therefore a ~40 mm housing needing a
+~47 mm module; the 2 x 6 dual row is a 25 mm housing on the 32 mm module this
+variant builds. That is why the dual row wins here even though the single row
+is the easier fanout and maps one-for-one onto the Mill-Max routing.
+
+Sixteen contacts was tried and rejected: `PER_ROW = 8` generates and routes,
+but it does not fix the left half's crossing (three clearance flags instead of
+two -- the crossing comes from the anchor geometry, not from a shortage of
+slots) and it costs 5 mm of module length for four spare grounds. If spare
+grounds are wanted later, 2 x 7 is in the same stocked family and costs 2.5 mm.
+
 ### ICD MAGPOGO-2x6-P254
 
 | | |

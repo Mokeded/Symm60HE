@@ -182,7 +182,8 @@ def main():
         assert set(nets) == {"+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2",
                              f"ADC_{letter}1", f"ADC_{letter}2",
                              f"ADC_{letter}3", f"ADC_{letter}4"}, nets
-        assert nets.count("GND") == 4, nets
+        # Eight signals; every contact the solver did not need is a ground.
+        assert nets.count("GND") == len(rows) - 8, nets
     print("\n%s" % ("GEOMETRY CLEAN (KiCad DRC still required)" if not bad
                     else "%d geometry problems" % bad))
     return 1 if bad else 0
