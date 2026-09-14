@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.5*%
-%TF.CreationDate,2026-09-13T13:36:30-04:00*%
+%TF.CreationDate,2026-09-13T20:07:26-04:00*%
 %TF.ProjectId,Symm60HE-Neo-Right-Half,53796d6d-3630-4484-952d-4e656f2d5269,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-13 13:36:30*
+G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-13 20:07:26*
 %MOMM*%
 %LPD*%
 G01*

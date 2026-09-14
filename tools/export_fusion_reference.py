@@ -2,7 +2,7 @@
 """Build the complete Symm60HE in-case mechanical reference assembly.
 
 The plate is the datum for each gasket-mounted half. Its Hall PCB, switches,
-keycaps, direct target connector and floating FFC-to-pogo head all receive the
+keycaps, direct target connector and floating FPC-to-pogo head all receive the
 same mirrored tent/typing transform. The controller remains flat beneath the
 centre blocker. Fusion therefore imports one coherent mechanism.
 """
@@ -344,7 +344,7 @@ def main():
 
     # Include the actual fitted package envelopes from KiCad. These are kept
     # separate from the board solids so Fusion users can hide them while
-    # sketching, and so the exact USB/FFC/pogo components remain independently
+    # sketching, and so the exact USB/FPC/pogo components remain independently
     # selectable. The Hall assemblies are B.Cu-populated; reflecting only Y
     # preserves their correct below-board Z relationship.
     for side in ("left", "right"):
@@ -435,7 +435,7 @@ def main():
         "Controller fitted components (excluding exact connectors)",
         controller_components,
         "fitted package models including exact C318884 buttons; exact USB "
-        "and FFC modeled separately",
+        "and FPC modeled separately",
         (0.22, 0.24, 0.27))
     objects.append(controller_components_obj)
 
@@ -456,16 +456,16 @@ def main():
     usb_shell = import_step_shape(
         OUT / "models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP")
     # The vendor body's native mating mouth is at positive Y. Rotate it 180
-    # degrees so the mouth faces the keyboard rear at minimum Y, then align
-    # that mouth to the unrecessed rear datum. The PCB edge beneath it is
-    # recessed by 1.0 mm.
+    # degrees so the mouth faces the keyboard rear at minimum Y.  The actual
+    # PCB now has one straight rear wall, so place the mouth exactly 1.0 mm
+    # beyond that wall instead of relying on a local Edge.Cuts notch.
     usb_shell.rotate(App.Vector(), App.Vector(0, 0, 1),
                      mech["controller_usb_model_rotation_deg"])
     usb_box = usb_shell.BoundBox
     controller_box = controller.BoundBox
     usb_translation = App.Vector(
         usb_point.x - usb_box.Center.x,
-        controller_box.YMin - usb_box.YMin,
+        controller_box.YMin - mech["controller_usb_overhang"] - usb_box.YMin,
         mech["controller_bottom_z"] + 1.195)
     usb_shell.translate(usb_translation)
     (GEN / "usb-placement.json").write_text(json.dumps({
@@ -529,7 +529,7 @@ def main():
                                    board_centre[1]-source_centre[1], 0))
         board = place_wing(board, layout, side)
         board_obj = add_reference(doc, root, cap + "SpringPCB",
-                                  cap + " floating FFC-to-pogo PCB",
+                                  cap + " floating FPC-to-pogo PCB",
                                   board, "loosely captured floating pogo head",
                                   (0.12, 0.42, 0.20))
         objects.append(board_obj)
@@ -572,7 +572,7 @@ def main():
             target, board_angle, spring_bottom, underside=True)
         spring_ffc_obj = add_reference(
             doc, root, cap + "SpringFFCConnector",
-            cap + " floating-head FFC connector",
+            cap + " floating-head FPC connector",
             place_wing(spring_ffc, layout, side),
             "exact BOOMELE 1.0-12P / LCSC C20111 B.Cu connector model",
             (0.12, 0.12, 0.14))
@@ -587,7 +587,7 @@ def main():
                                spring_bottom - 1.0)
         cable_endpoints[side] = transform_wing_point(ffc_local, layout, side)
 
-    # Model the controller ZIF envelopes and flexible FFC reserved volumes.
+    # Model the controller ZIF envelopes and flexible FPC reserved volumes.
     for side, source in (("left", mech["controller_left_ffc"]),
                          ("right", mech["controller_right_ffc"])):
         start, end = cable_endpoints[side], controller_point(source, layout)
@@ -601,7 +601,7 @@ def main():
             OUT / "models/FFC_BOOMELE_1.0-12P_C20111.step",
             (end.x, end.y), mouth_angle, end.z)
         mouth_obj = add_reference(doc, root, side.title()+"ControllerFFC",
-                                  side.title()+" controller FFC connector",
+                                  side.title()+" controller FPC connector",
                                   mouth,
                                   "exact BOOMELE 1.0-12P / LCSC C20111 connector model",
                                   (0.15, 0.15, 0.16))
@@ -615,9 +615,9 @@ def main():
                           end.z + 1.0)
         cable_obj = add_reference(
             doc, root, side.title()+"FFCEnvelope",
-            side.title()+" flexible FFC route",
+            side.title()+" flexible FPC route",
             ribbon_path([start, mid1, mid2, end]),
-            "12-way FFC bend and clearance reference",
+            "12-way FPC bend and clearance reference",
             (0.15, 0.72, 0.82), 30)
         objects.append(cable_obj)
 

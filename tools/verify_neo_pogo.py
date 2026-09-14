@@ -73,7 +73,7 @@ def main():
             xs = [float(point[0]) for point in edge_points]
             ys = [float(point[1]) for point in edge_points]
             assert (min(xs), max(xs), min(ys), max(ys)) == (0.0, 20.0, 0.0, 6.0)
-            print(f"{name}: 20 x 6 mm, F.Cu spring / B.Cu FFC")
+            print(f"{name}: 20 x 6 mm, F.Cu spring / B.Cu FPC-compatible ZIF")
         elif name in HALVES:
             footprints = {reference(fp): fp for fp in find(board, "footprint")}
             side = "Left" if "Left" in name else "Right"

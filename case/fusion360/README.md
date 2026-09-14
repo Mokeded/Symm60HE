@@ -36,9 +36,9 @@ The Fusion setup contains separately named solids for the split plates, 1.2 mm
 Neo Hall PCBs, their fitted KiCad package models, switches, keycaps, flat
 controller daughterboard and its fitted package models, the actual
 HRO TYPE-C-31-M-12 USB-C receptacle, both 20 x 6 mm
-floating FFC-to-pogo PCBs, both Mill-Max 854 spring blocks, both directly
+floating FPC-to-pogo PCBs, both Mill-Max 854 spring blocks, both directly
 mounted 856 targets, spring-travel keepouts, four exact C20111 ZIF bodies and two
-flexible FFC route envelopes. The controller is oriented left-to-right: its
+flexible FPC route envelopes. The controller is oriented left-to-right: its
 USB-C receptacle and plug keepout pass directly through the rear case wall,
 while J2 and J3 face the left and right interconnects.
 
@@ -52,7 +52,7 @@ board surfaces are 5.0 mm apart. With the exact configured Mill-Max models,
 that applies 0.2578 mm of spring preload, leaves 0.7582 mm of travel, and makes
 the spring tips meet the target faces. The former 6.0 mm placeholder datum
 would leave a 0.7422 mm electrical gap. The controller is
-rigid and flat beneath the centre blocker; the cyan ribbon solids reserve
+rigid and flat beneath the centre blocker; the cyan FPC solids reserve
 clearance and slack for independent gasket movement.
 
 All eight integral plate gasket tongues now use a Neo-Ergo-inspired long
@@ -62,11 +62,10 @@ inset. Broad 2.0 mm end transitions eliminate abrupt shoulders. The opposed
 centre tongues retain a 0.50 mm flat-layout gap and clearance in the assembled
 tented model.
 
-The controller PCB has a 14 mm-wide, 1 mm-deep rear-edge setback beneath J1.
-The actual HRO TYPE-C-31-M-12 shell remains on J1's footprint datum and
-therefore overhangs the local PCB edge by exactly 1.0 mm. This setback is in
-the KiCad Edge.Cuts geometry and is present in the manufacturing board, not
-only in the Fusion visualization.
+The controller PCB has one continuous straight rear edge. The actual HRO
+TYPE-C-31-M-12 shell remains on J1's routed footprint datum and projects beyond
+that complete wall by exactly 1.0 mm, providing a real case-opening engagement
+datum rather than a preview-only body or a local PCB notch.
 
 `Symm60HE-case-reference-assembly.FCStd` is the editable generated source and
 contains the placed HRO receptacle. The combined assembly STEP intentionally
@@ -93,7 +92,7 @@ The keycap bank uses row-specific Cherry R1-R4 depth and tilt from the open
 KeyV2 Cherry profile. An exact keycap-kit CAD model can only replace it after a
 specific keycap manufacturer and kit are selected.
 
-The USB-C, both tactile buttons and all four FFC connector bodies are now exact,
+The USB-C, both tactile buttons and all four FPC-compatible ZIF bodies are exact,
 source-locked LCSC/EasyEDA models for C165948, C318884 and C20111. Their URLs,
 model UUIDs and SHA-256
 digests are recorded in `models/model-provenance.json`; run
@@ -110,11 +109,11 @@ working preload; the model is never globally scaled. See
 `models/vendor/README.md` for filenames, envelopes and hashes.
 
 This reference does not establish a finished enclosure or physical fit. Pogo
-compression, retention clearances, FFC bend life, Hall noise, gasket motion,
+compression, retention clearances, FPC bend life, Hall noise, gasket motion,
 keycap-wall clearance and controller service access still require a prototype.
 
 The original 20 x 20 mm floating-head interference has been removed. The two
 20 x 6 mm heads keep the target rows in their electrically correct positions
 and retain approximately 0.418 mm projected clearance at the centre seam.
-Their F.Cu spring blocks and B.Cu FFC connectors are included as explicit case
+Their F.Cu spring blocks and B.Cu FPC-compatible connectors are included as explicit case
 reference solids.

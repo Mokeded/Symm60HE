@@ -11,7 +11,7 @@ Item,Quantity,Reference Designators,Description,Package,Assembly Type,Manufactur
 10,2,"LS-PS1,RS-PS1",12-position 1.27 mm SMT spring-loaded connector,MillMax_854-22-012-30-004101,SMT,Mill-Max,854-22-012-30-004101,PCBWay turnkey quote or customer consigned,,No,NO SUBSTITUTE; mechanically critical; manual SMT placement acceptable; spring contacts face Hall-PCB target
 11,1,CTL-U1,ARM microcontroller,U4_LQFP-64_10x10mm_P0.5mm,SMT,Artery,AT32F405RCT7,LCSC,C47090415,Written approval only,Substitution only with written approval
 12,2,"CTL-J2,CTL-J3",FFC_12P,FFC_12P_1.00mm_TopContact,SMT,BOOMELE,1.0-12P,LCSC,C20111,Written approval only,Top-contact orientation; verify cable-entry direction in assembly drawing
-13,2,"LS-JF1,RS-JF1",12-position 1.00 mm top-contact FFC connector,FFC_12P_1.00mm_TopContact,SMT,BOOMELE,1.0-12P,LCSC,C20111,Written approval only,Top-contact orientation; verify cable-entry direction in assembly drawing
+13,2,"LS-JF1,RS-JF1",12-position 1.00 mm top-contact FPC/FFC ZIF connector,FFC_12P_1.00mm_TopContact,SMT,BOOMELE,1.0-12P,LCSC,C20111,Written approval only,Top-contact orientation; verify cable-entry direction in assembly drawing
 14,1,CTL-U3,TLV75733PDBV,U2_SOT-23-5,SMT,Texas Instruments,TLV75733PDBVR,LCSC,C485517,Written approval only,Substitution only with written approval
 15,2,"CTL-SW1,CTL-SW2",TS-1187A,SW1_SW_Push_1P1T_XKB_TS-1187A,SMT,XKB,TS-1187A-B-A-B,LCSC,C318884,Written approval only,Substitution only with written approval
 16,1,CTL-J1,USB Type-C receptacle,USB_C_Receptacle_HRO_TYPE-C-31-M-12,SMT,HRO,TYPE-C-31-M-12,LCSC,C165948,Written approval only,"Verify shell stakes, pin 1, and connector mouth direction"

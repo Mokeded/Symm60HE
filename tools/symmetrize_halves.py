@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Give the two keyboard halves mirrored outlines and FFC locations."""
+"""Give the two keyboard halves mirrored outlines and FPC-connector locations."""
 from pathlib import Path
 import argparse
 import math
@@ -108,7 +108,7 @@ def main():
     left_out.write_text(dumps(left_board) + "\n")
     right_out.write_text(dumps(right_board) + "\n")
     print("axis", axis_mm, "source-outline seam", 0.0)
-    print("FFC centres", round(LEFT_FFC_X, 4), round(RIGHT_FFC_X, 4))
+    print("FPC connector centres", round(LEFT_FFC_X, 4), round(RIGHT_FFC_X, 4))
     print("left outline", tuple(round(v, 4) for v in shared_left.bounds),
           "bridges", left_bridges)
     print("right outline", tuple(round(v, 4) for v in shared_right.bounds),

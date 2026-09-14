@@ -311,9 +311,9 @@ def main():
         writer.writerow(["12-contact target", "Mill-Max",
                          "856-10-012-30-051000", 2, "PTL1 and PTR1 on Hall PCBs",
                          "Hand/consigned; targets face the floating spring heads"])
-        writer.writerow(["12-way 1.0 mm same-side FFC", "JXTCONN",
-                         "FC-1012P-100T3", 2, "Controller to spring modules",
-                         "100 mm reference cable; confirm routing and bend radius in final case"])
+        writer.writerow(["12-way 1.0 mm same-side FPC", "Custom flex PCB",
+                         "TBD-after-case-route", 2, "Controller to spring modules",
+                         "0.3 mm reinforced contact tails; finalize length, service loop and bend radius in case CAD"])
 
     manifest = {
         "variant": "Neo-style 12-contact direct-target pogo",

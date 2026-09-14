@@ -39,7 +39,7 @@ FAMILY_PANELS = {
 DESCRIPTIONS = {
     "854-22-012-30-004101": "12-position 1.27 mm SMT spring-loaded connector",
     "856-10-012-30-051000": "12-position 1.27 mm SMT mating target connector",
-    "FFC_12P_1.00mm": "12-position 1.00 mm top-contact FFC connector",
+    "FFC_12P_1.00mm": "12-position 1.00 mm top-contact FPC/FFC ZIF connector",
     "MT9102ET": "Hall-effect keyboard sensor",
     "SN74LV4051A": "8-channel analog multiplexer",
     "AT32F405RCT7": "ARM microcontroller",

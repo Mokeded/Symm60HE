@@ -67,4 +67,4 @@ with open("../Symm60HE-ribbon-pinout.csv", "w", newline="") as f:
                 "analog rail, from the XC6206" if n == "+3V3A" else
                 "mux address, shared by both halves" if n.startswith("MUX") else "")
         w.writerow([i, n, d, note])
-print("wrote Symm60HE-ribbon-pinout.csv (12 way, 1.0 mm FFC)")
+print("wrote Symm60HE-ribbon-pinout.csv (12 way, 1.0 mm FPC)")

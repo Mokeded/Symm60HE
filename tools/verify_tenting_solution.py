@@ -22,7 +22,7 @@ def main():
     assert dimensions["target_retention"] == \
         "12-contact targets mounted directly on Hall PCBs"
     assert dimensions["interconnect"] == \
-        "one short 12-way controller-to-floating-spring FFC per side"
+        "one short 12-way controller-to-floating-spring FPC per side"
 
     doc = App.openDocument(str(OUT / "Symm60HE-fixed-tent-pogo-module.FCStd"))
     features = [obj for obj in doc.Objects if obj.TypeId == "PartDesign::Feature"]
@@ -72,7 +72,7 @@ def main():
     zmax = max(obj.Shape.BoundBox.ZMax for obj in features)
     print(f"27 valid separate bodies; envelope {xmax-xmin:.2f} x {ymax-ymin:.2f} x {zmax-zmin:.2f} mm")
     print("centre-high 3 degree tent direction verified")
-    print("6.0 mm stack; direct Hall-PCB targets; two floating FFC spring heads; plate-only side gaskets")
+    print("6.0 mm stack; direct Hall-PCB targets; two floating FPC spring heads; plate-only side gaskets")
     App.closeDocument(doc.Name)
 
 

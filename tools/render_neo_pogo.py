@@ -47,7 +47,7 @@ def main():
         draw.text((24, 18), "Symm60HE Neo-style floating pogo spring heads",
                   fill=(232, 238, 242), font=font)
         draw.text((24, 38),
-                  "12 contacts; one short FFC per head; targets mount directly on the Hall PCBs",
+                  "12 contacts; one short FPC per head; targets mount directly on the Hall PCBs",
                   fill=(155, 175, 188), font=font)
         for index, (side, kind, image) in enumerate(images):
             x = index * cell_w

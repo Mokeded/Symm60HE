@@ -356,7 +356,7 @@ def manufacturing_audit():
         scale(left_outline, xfact=-1, yfact=1,
               origin=(axis_mm, 0)).symmetric_difference(right_outline).area <
         0.01)
-    checks["half FFC locations are symmetric"] = abs(
+    checks["half FPC connector locations are symmetric"] = abs(
         connector_centres["Left"] + connector_centres["Right"] -
         2 * axis_mm) < 1e-6
     panel = loads((ROOT / "pcb/Symm60HE-Panel.kicad_pcb").read_text())
@@ -395,9 +395,9 @@ def manufacturing_audit():
     _, _, daughter_outline, _ = read(
         str(ROOT / "pcb/Symm60HE-Daughterboard.kicad_pcb"))
     dx0, dy0, dx1, dy1 = daughter_outline.bounds
-    checks["daughterboard outline is 57 x 28 mm"] = (
+    checks["daughterboard outline is 57 x 27 mm"] = (
         abs((dx1 - dx0) - 57.0) < 0.01 and
-        abs((dy1 - dy0) - 28.0) < 0.01)
+        abs((dy1 - dy0) - 27.0) < 0.01)
     daughter_zones = {(first(z, "net")[1],
                        (first(z, "layer") or first(z, "layers"))[1])
                       for z in find(daughter, "zone")}
@@ -434,7 +434,7 @@ def manufacturing_audit():
                     and abs(abs(float(first(pad, "at")[1])) - 7.8) < 1e-6
                     and abs(abs(float(first(pad, "at")[2])) - 1.1) < 1e-6
                     for pad in mounts))
-    checks["four FFC connectors use the locked footprint"] = ffc_count == 4
+    checks["four FPC-compatible ZIF connectors use the locked footprint"] = ffc_count == 4
     for label, good in checks.items():
         print(f"{label}: {'ok' if good else 'FAILED'}")
     ok = all(checks.values())

@@ -151,7 +151,7 @@ def tight_pcb(half):
     # buffers remove microscopic self-intersections without rounding it away.
     hull = unary_union(cells).buffer(RIM, join_style=2)
     hull = hull.buffer(0.05, join_style=2).buffer(-0.05, join_style=2)
-    # Each half needs one narrow inner-edge tongue for its 12-pin FFC.  This is
+    # Each half needs one narrow inner-edge tongue for its 12-pin FPC connector. This is
     # the only deliberate departure from the keymap silhouette and is kept to
     # the connector courtyard rather than restoring a large central wedge.
     tab_x = axis_mm - 7.0 if half == "L" else axis_mm + 7.0
@@ -278,7 +278,7 @@ for half, poly, fname in (("L", LEFT_PCB, "Symm60HE-Left"),
         mh += 1
         fps.append(place("MountingHole_2.2mm_M2_Pad", "MH%s%d" % (half, mh),
                          "M2", spot[0], spot[1], 0, nets={"1": "GND"}))
-    print("   %s: muxes at %s | FFC at (%.1f, %.1f) rot %d | %d mounting holes"
+    print("   %s: muxes at %s | FPC connector at (%.1f, %.1f) rot %d | %d mounting holes"
           % (half, ", ".join("(%.0f,%.0f)" % t for t in taken), jx, jy, jrot, mh))
     n = board(poly, fps, os.path.join(PCB_OUT, "%s.kicad_pcb" % fname), fname)
     report[half] = dict(pos=len(ks), chan=len(groups), sens=nsens, caps=ncap,
@@ -297,7 +297,7 @@ for h in ("L", "R"):
 #
 # The MCU pin assignment and its support circuit follow the proven FN40HE
 # reference design.  Core circuitry and support passives use opposite sides to
-# preserve the compact daughterboard outline (57 x 28 mm after allowing the
+# preserve the compact daughterboard outline (57 x 27 mm after allowing the
 # full C20111 hold-down lands at both outward-facing cable mouths).
 _p = []
 fps = []
@@ -399,5 +399,5 @@ for i, (dx, dy) in enumerate(((-24.0, -11.0), (24.0, -11.0)), 1):
     x, y = at(dx, dy)
     fps.append(place("MountingHole_2.2mm_M2_NPTH", "MHD%d" % i, "M2_NPTH", x, y))
 n = board(db, fps, os.path.join(PCB_OUT, "Symm60HE-Daughterboard.kicad_pcb"), "Symm60HE-Daughterboard")
-print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB-C/ESD/CC, 2 LDOs, xtal, complete support passives, fuse, 2 tacts, 2 FFC, 2 M2 NPTH)"
+print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB-C/ESD/CC, 2 LDOs, xtal, complete support passives, fuse, 2 tacts, 2 FPC-compatible ZIFs, 2 M2 NPTH)"
       % (db.bounds[2]-db.bounds[0], db.bounds[3]-db.bounds[1], n))

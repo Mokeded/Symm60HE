@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Neo-Right-SpringModule.kicad_pcb
-Created on 2026-09-13T13:35:59
+Created on 2026-09-13T20:07:16
 
 Copper Layer Stackup:
     =============================================================

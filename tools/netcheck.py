@@ -48,7 +48,7 @@ for half in ("L", "R"):
         n = "ADC_%s%d" % (half, i)
         pins = D.get(n, [])
         if len(pins) != 2 or not any(x.startswith("U1.") for x in pins):
-            print("   !! %s should reach the MCU and one FFC, got %s" % (n, pins)); bad += 1
+            print("   !! %s should reach the MCU and one FPC connector, got %s" % (n, pins)); bad += 1
 missing = [n for n in ("MUX_A0","MUX_A1","MUX_A2","+3V3A") if len(D.get(n,[])) < 3]
 if missing: print("   !! not bussed to both halves on the daughterboard: %s" % missing); bad += 1
 

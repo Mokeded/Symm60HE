@@ -160,20 +160,13 @@ def main():
             "-o", str(OUT / f"{name}.step"), str(source),
         ], check=True)
 
-    # Export the actual HRO TYPE-C-31-M-12 receptacle separately from the PCB.
-    # Keeping the rigid board and connector as separate solids lets Fusion use
-    # the exact board datum while exposing the real shell/mouth geometry for
-    # the rear case opening.  The model is vendored because the standard KiCad
-    # macOS package does not install this legacy HRO STEP globally.
+    # The actual HRO TYPE-C-31-M-12 receptacle is imported directly from the
+    # source-locked vendor STEP by export_fusion_reference.py.  Do not ask
+    # KiCad for a component-only wrapper here: routed board saves can omit the
+    # optional footprint-model record, and the wrapper is unnecessary because
+    # the downstream exporter applies and verifies the exact J1 datum itself.
     controller_source = dict((name, source) for name, source in board_sources)[
         "DaughterboardPCB"]
-    subprocess.run([
-        cli, "pcb", "export", "step", "--no-board-body",
-        "--component-filter", "J1", "--force",
-        "-D", f"SYMM60HE_3DMODEL_DIR={model_dir}",
-        "-o", str(OUT / "ControllerUSBConnector.step"),
-        str(controller_source),
-    ], check=True)
 
     layout["mechanism"] = {
         "board_thickness": 1.2,

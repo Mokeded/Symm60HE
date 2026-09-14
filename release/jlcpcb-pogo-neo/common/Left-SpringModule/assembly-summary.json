@@ -1,10 +1,10 @@
 {
-  "source_board": "pcb\\variants\\pogo-neo\\Symm60HE-Neo-Left-SpringModule.kicad_pcb",
+  "source_board": "pcb/variants/pogo-neo/Symm60HE-Neo-Left-SpringModule.kicad_pcb",
   "selected_smt_placements": 2,
   "jlcpcb_smt_placements": 2,
   "unmatched_lcsc_placements": 1,
   "hand_or_consigned_placements": 1,
-  "source_sha256": "215deb58f373d04c8155cd5e4c40f2d52d09f4fbb9acc56d6e55de506e2624fe",
+  "source_sha256": "5b5ce96c7cca96fb567a43ab6acacd001c0232e82aa6e0dfb04ff501d692eab9",
   "files": [
     "Symm60HE-Neo-Left-SpringModule-BOM.csv",
     "Symm60HE-Neo-Left-SpringModule-CPL.csv",

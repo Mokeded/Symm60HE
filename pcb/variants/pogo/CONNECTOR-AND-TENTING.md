@@ -28,9 +28,9 @@ A single flat controller PCB cannot mate normally to two keyboard PCBs on
 opposite 3 degree tent planes. The rebuilt `pogo-neo` architecture therefore
 uses two independently angled 20 x 20 mm replaceable spring heads. Each is parallel to
 its keyboard half and retained by the central controller cradle. A short,
-strain-relieved 12-way FFC connects each spring module to the flat controller.
+strain-relieved 12-way FPC connects each spring module to the flat controller.
 A matching 20 x 20 mm target head travels with the Hall-PCB assembly and
-connects through another short 12-way FFC. This follows the Neo-style mating
+connects through another short 12-way FPC. This follows the Neo-style mating
 topology while keeping the target interface replaceable.
 
 Each interface has:

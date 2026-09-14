@@ -372,26 +372,23 @@ RIGHT_PCB_UNROUNDED = scale(
     LEFT_PCB_UNROUNDED, xfact=-1, yfact=1, origin=(axis_mm, 0))
 
 # Compact mixed-side controller daughterboard. The routed core fits in
-# 55 x 28 mm. An extra 1.0 mm at each short side lets the two C20111 cable
+# 55 x 27 mm. An extra 1.0 mm at each short side lets the two C20111 cable
 # mouths face outward while retaining the full hold-down lands and 0.25 mm
 # copper-edge clearance.
-DB_W, DB_H = 57.0, 28.0
+DB_W, DB_H = 57.0, 27.0
 top = CASE_IN.bounds[1]
 # Keep the complete controller on the right side of the hinge so its two plate
 # screws cannot turn the split plates into a rigid bridge.
-DB_REAR_Y = top + 1.0
 DB_USB_OVERHANG = 1.0
-DB_USB_CENTRE_X = axis_mm + 3.5 + 37.5
-DB_USB_NOTCH_HALF_WIDTH = 7.0
+# The former outline started at top + 1 mm, then cut a 14 x 1 mm local notch
+# beneath J1.  Extend that local wall datum across the complete board instead:
+# one straight rear edge, with the already-routed receptacle projecting 1 mm
+# beyond it.  The front edge remains fixed, so this also removes 57 mm2 of
+# unnecessary FR-4 without moving any footprint or copper.
+DB_REAR_Y = top + 1.0 + DB_USB_OVERHANG
 DB_BASE = box(axis_mm + 3.5, DB_REAR_Y,
               axis_mm + 3.5 + DB_W, DB_REAR_Y + DB_H)
-# Set back only the edge underneath the 9.1 mm-wide USB-C shell.  The 14 mm
-# opening leaves generous side clearance while allowing the connector mouth to
-# project 1.0 mm beyond its local PCB edge, like the unified daughterboard.
-DB_USB_NOTCH = box(DB_USB_CENTRE_X - DB_USB_NOTCH_HALF_WIDTH, DB_REAR_Y,
-                   DB_USB_CENTRE_X + DB_USB_NOTCH_HALF_WIDTH,
-                   DB_REAR_Y + DB_USB_OVERHANG)
-DB = round_pcb_outer_corners(DB_BASE.difference(DB_USB_NOTCH))
+DB = round_pcb_outer_corners(DB_BASE)
 
 # The USB-C receptacle does not sit on the board's centre line: it goes beside
 # the MCU's USB pins, which are on that package's right-hand side.  Both the

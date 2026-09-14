@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mirror the left-half FFC entry while preserving straight cable conductors.
+"""Mirror the left-half FPC entry while preserving straight cable conductors.
 
 JL1 originally had the same orientation as JR1.  Rotating JL1 by 180 degrees
 makes the two half-board cable entries face opposite directions.  The numbered

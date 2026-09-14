@@ -30,10 +30,10 @@ already resolved in the component references:
   the HRO USB-C mating mouth and its plug keepout aimed through the rear case
   wall (the vendor model direction is checked independently of J1's footprint
   angle); and
-- flexible FFC solids show route and bend-clearance envelopes between each
+- flexible FPC solids show route and bend-clearance envelopes between each
   floating head and the controller.
 
-The nonphysical USB-plug, pogo-travel and FFC clearance envelopes are retained
+The nonphysical USB-plug, pogo-travel and FPC clearance envelopes are retained
 under `Cable and movement keepouts` but are hidden when the design first opens.
 Turn that component on only while designing the surrounding clearances; the
 rectangular USB envelope is not a manufactured part.

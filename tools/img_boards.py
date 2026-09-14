@@ -20,7 +20,7 @@ for pcb in ("../pcb/Symm60HE-Left.kicad_pcb", "../pcb/Symm60HE-Right.kicad_pcb")
         for s in shapes: c.poly(s, fill=col+(230,))
 fy = c.im.height/SS - 34
 c.raw_text((16, fy), "Symm60HE  —  key field reference  |  left PCB 157.9 x 107.8  |  right PCB 155.5 x 107.8  |  69 switch positions", INK, 11)
-c.raw_text((16, fy+15), "all components on the underside, shown through the board   |   orange = MT9102ET   blue = decoupling   red = SN74LV4051A   purple = 12-way FFC   grey = stabiliser   white = M2", DIM, 9.5)
+c.raw_text((16, fy+15), "all components on the underside, shown through the board   |   orange = MT9102ET   blue = decoupling   red = SN74LV4051A   purple = 12-way FPC ZIF   grey = stabiliser   white = M2", DIM, 9.5)
 print("assembly", c.save("01-assembly.png"))
 
 # ------------------------------------------------------------ 2 & 3. halves
@@ -40,7 +40,7 @@ for nm, pcb, title in (("02-left.png", "../pcb/Symm60HE-Left.kicad_pcb", "Symm60
             c.text((at[0], at[1]-6.5), ref, INK, 8, anchor="ma")
     fy = c.im.height/SS - 34
     c.raw_text((16, fy), title, INK, 11)
-    c.raw_text((16, fy+15), "everything on B.Cu, under the switches   |   4x SN74LV4051A   |   one 12-way FFC to the daughterboard   |   4x M2", DIM, 9.5)
+    c.raw_text((16, fy+15), "everything on B.Cu, under the switches   |   4x SN74LV4051A   |   one 12-way FPC to the daughterboard   |   4x M2", DIM, 9.5)
     c.raw_text((16, fy+29), "routing: %d segments, %d vias   |   orange = B.Cu, blue = F.Cu, white = via   |   explicit +3V3A, dual GND pours" % (ns, nv), (240,176,96), 9.5)
     print(nm, c.save(nm))
 
@@ -63,7 +63,7 @@ if ko is not None:
     c.poly(ko, outline=(176,108,214), w=1.0)
     c.text((ko.centroid.x, ko.centroid.y), "USB-C keep-out", (176,108,214), 8, anchor="mm")
 fy = c.im.height/SS - 60
-c.raw_text((20, fy), "Symm60HE-Daughterboard   57 x 28 mm   |   FFC cable mouths face outward", INK, 12)
+c.raw_text((20, fy), "Symm60HE-Daughterboard   57 x 27 mm   |   FPC exits face outward", INK, 12)
 c.raw_text((20, fy+16), "U1 AT32F405RCT7  |  U2 USBLC6  |  U3/U4 3V3 digital + analog LDOs  |  Y1 12 MHz  |  J2/J3 ribbon to each half", DIM, 9.5)
 c.raw_text((20, fy+30), "routing: %d segments, %d vias — fully connected; the LQFP-64 pin assignment follows FN40HE" % (dns, dnv), (240,176,96), 9.5)
 c.raw_text((20, fy+44), "USB-C receptacle and two M2 daughterboard mounting holes are included", (224,164,88), 9.5)

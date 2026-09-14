@@ -3,7 +3,7 @@
 
 Run with FreeCAD's bundled ``freecadcmd``.  The STEP output contains separate
 named solids for the rigid controller, floating spring heads, direct target
-datums, FFC route envelopes, tray, capture lips, compliant supports and hard
+datums, FPC route envelopes, tray, capture lips, compliant supports and hard
 stops.  It is a case-design reference, not a printable finished enclosure.
 """
 from pathlib import Path
@@ -27,7 +27,7 @@ OUT = ROOT / "case/fusion360/pogo-neo-mounting-reference"
 GEN = OUT / "generated"
 
 TENT_DEG = 3.0
-CONTROLLER = (28.0, 57.0, 1.2)
+CONTROLLER = (27.0, 57.0, 1.2)
 SPRING_BOARD = (20.0, 20.0, 1.2)
 HALL_DATUM = (32.0, 32.0, 1.2)
 TRAY_FLOOR = 1.2
@@ -168,7 +168,7 @@ def main():
         "Example 1.2 mm floor with 0.4 mm XY PCB clearance",
         "PA12-CF, PETG, or machined polymer", (0.28, 0.46, 0.66)))
     objects.append(add(
-        doc, controller_group, "ControllerPCB", "57 x 28 mm controller PCB",
+        doc, controller_group, "ControllerPCB", "57 x 27 mm controller PCB",
         moved(controller_board_shape(), z=controller_z),
         "Rigid MCU daughterboard reference; 57 mm dimension runs fore-aft",
         "1.2 mm FR-4", (0.05, 0.34, 0.18)))
@@ -226,7 +226,7 @@ def main():
         objects.append(add(
             doc, group, side + "SpringPCB", side + " 20 x 20 mm spring PCB",
             side_place(spring_pcb_raw, side),
-            "Floating FFC-to-pogo PCB; retained without rigid clamping",
+            "Floating FPC-to-pogo PCB; retained without rigid clamping",
             "1.2 mm FR-4", (0.05, 0.34, 0.18)))
 
         spring_raw = moved(spring_connector(
@@ -304,12 +304,12 @@ def main():
             "Optional 2.4 mm diameter stops defining 6.0 mm PCB spacing",
             "POM or printed polymer", (0.85, 0.86, 0.88)))
 
-        # Connector envelope on the spring PCB and the illustrative FFC route.
+        # Connector envelope on the spring PCB and the illustrative FPC route.
         ffc_connector_raw = moved(cbox(14.1, 4.9, 2.8), y=5.5,
                                   z=spring_surface)
         objects.append(add(
             doc, group, side + "SpringFFCConnector",
-            side + " spring-board FFC connector",
+            side + " spring-board FPC connector",
             side_place(ffc_connector_raw, side),
             "12-way 1.0 mm top-contact connector envelope",
             "LCP and copper", (0.18, 0.44, 0.72)))
@@ -333,10 +333,10 @@ def main():
 
     for side, points in ffc_paths:
         objects.append(add(
-            doc, root, side + "FFCEnvelope", side + " flexible FFC route envelope",
+            doc, root, side + "FFCEnvelope", side + " flexible FPC route envelope",
             cable_path(points),
             "Illustrative slack route only; preserve bend radius and service loop",
-            "0.3 mm 12-way FFC", (0.20, 0.55, 0.90), transparency=25))
+            "0.3 mm 12-way FPC", (0.20, 0.55, 0.90), transparency=25))
 
     doc.recompute()
     for obj in objects:
@@ -420,7 +420,7 @@ def main():
         "only to make the stack and retention order easier to inspect.\n\n"
         "This is an example electronics carrier, not a finished or printable "
         "case. Build the enclosure around the green PCB references and keep the "
-        "blue carrier, pale hard-stop, black Poron and cyan FFC envelopes as "
+        "blue carrier, pale hard-stop, black Poron and cyan FPC envelopes as "
         "reserved volumes. The translucent 32 mm Hall-PCB squares are local "
         "target datums; replace them with the full left/right PCB references.\n\n"
         "The spring and target connector bodies include all twelve contacts at "
@@ -436,7 +436,7 @@ def main():
         "travels with the gasket-mounted Hall PCB. Four small optional stops "
         "protect the pogo contacts from bottoming; relocate their contact patches "
         "as needed to avoid sensors, traces and components.\n\n"
-        "The FFC solids are route/clearance examples, not formed-cable drawings. "
+        "The FPC solids are route/clearance examples, not formed-cable drawings. "
         "Keep a service loop, respect the cable supplier's dynamic bend guidance, "
         "and verify the final path at both gasket travel limits. Magnets are not "
         "part of this reference and remain DNP until Hall-offset/noise testing.\n")

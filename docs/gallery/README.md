@@ -21,7 +21,7 @@ and OpenSCAD case. They are not conceptual renders.
 - `pogo-right-spring-module-bottom.png`
 
 The KiCad top/bottom labels describe the physical side being viewed. The Hall
-sensors, muxes, and FFC connectors are on the bottom of the two keyboard
+sensors, muxes, and FPC-compatible ZIF connectors are on the bottom of the two keyboard
 halves; the daughterboard's MCU and support components are on its top.
 
 On the daughterboard, J2's cable opening faces the left outside edge and J3's

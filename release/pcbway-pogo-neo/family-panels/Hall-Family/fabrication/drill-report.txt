@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Neo-Hall-Family-Panel.kicad_pcb
-Created on 2026-09-13T13:36:46
+Created on 2026-09-13T20:07:33
 
 Copper Layer Stackup:
     =============================================================

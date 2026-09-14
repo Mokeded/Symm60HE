@@ -13,7 +13,7 @@
       "sha256": "b083e67ce4d06850a2c3835a6366f4012b2def64f8f2781636381ebcaa33e9a0"
     },
     {
-      "assembly_item": "four 12-way FFC connectors J2/J3/JF1",
+      "assembly_item": "four 12-way FPC/FFC ZIF connectors J2/J3/JF1",
       "manufacturer": "BOOMELE (Boom Precision Elec)",
       "mpn": "1.0-12P",
       "distributor_id": "LCSC C20111",
@@ -77,7 +77,7 @@
     {
       "assembly_item": "standard SMT packages on the controller and Hall PCBs",
       "status": "official KiCad package-library models are assigned and imported where available; these are package references, not manufacturer-certified component CAD",
-      "note": "They are separate fitted-component groups in Fusion. Exact enclosure-critical USB, FFC and pogo bodies are modeled separately."
+      "note": "They are separate fitted-component groups in Fusion. Exact enclosure-critical USB, FPC-compatible ZIF and pogo bodies are modeled separately."
     }
   ]
 }

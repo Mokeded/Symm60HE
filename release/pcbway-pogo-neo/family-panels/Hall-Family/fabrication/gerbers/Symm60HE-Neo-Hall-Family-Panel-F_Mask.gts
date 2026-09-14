@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.5*%
-%TF.CreationDate,2026-09-13T13:36:46-04:00*%
+%TF.CreationDate,2026-09-13T20:07:32-04:00*%
 %TF.ProjectId,Symm60HE-Neo-Hall-Family-Panel,53796d6d-3630-4484-952d-4e656f2d4861,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-13 13:36:46*
+G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-13 20:07:32*
 %MOMM*%
 %LPD*%
 G01*

@@ -27,6 +27,6 @@ active tree and retained under `.recovery/pogo12-superseded-*`.
 
 The routed Neo-style rebuild is now under `../pogo-neo/`. It replaces each
 half's FFC with a direct 12-contact target and uses only two floating spring
-heads, each joined to the controller by one short 12-way FFC. This is
+heads, each joined to the controller by one short 12-way FPC. This is
 electrically complete and DRC-clean, but it remains a prototype until the coupon,
 connector-stack, and Hall-noise gates pass.

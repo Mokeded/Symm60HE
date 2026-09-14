@@ -3,7 +3,7 @@
 Every imported STEP is already in its checked global assembly position.  The
 script groups the plate, switches and keycaps for each half, but keeps every
 Hall PCB and daughterboard as a separate Fusion component.  Mounted connector
-models follow their owning PCB; nonphysical travel/FFC volumes live in a
+models follow their owning PCB; nonphysical travel/FPC volumes live in a
 separate reference group.
 """
 import json
@@ -151,12 +151,12 @@ def run(context):
         import_group(app, reference, "Left pogo daughterboard", ref_dir, (
             ("Symm60HE-LeftSpringPCB.step", "Left floating pogo PCB"),
             ("Symm60HE-LeftSpringConnector.step", "Left spring pogo block"),
-            ("Symm60HE-LeftSpringFFCConnector.step", "Left FFC connector"),
+            ("Symm60HE-LeftSpringFFCConnector.step", "Left FPC connector"),
         ), imported)
         import_group(app, reference, "Right pogo daughterboard", ref_dir, (
             ("Symm60HE-RightSpringPCB.step", "Right floating pogo PCB"),
             ("Symm60HE-RightSpringConnector.step", "Right spring pogo block"),
-            ("Symm60HE-RightSpringFFCConnector.step", "Right FFC connector"),
+            ("Symm60HE-RightSpringFFCConnector.step", "Right FPC connector"),
         ), imported)
 
         # The flat controller is also independent.  The exact HRO receptacle's
@@ -167,8 +167,8 @@ def run(context):
                 ("Symm60HE-DaughterboardPCB.step", "Controller PCB"),
                 ("Symm60HE-DaughterboardComponents.step",
                  "Controller fitted components"),
-                ("Symm60HE-LeftControllerFFC.step", "Left controller FFC"),
-                ("Symm60HE-RightControllerFFC.step", "Right controller FFC"),
+                ("Symm60HE-LeftControllerFFC.step", "Left controller FPC"),
+                ("Symm60HE-RightControllerFFC.step", "Right controller FPC"),
                 ("Symm60HE-ControllerUSBConnector.step",
                  "Actual HRO TYPE-C-31-M-12 USB-C receptacle"),
             ), imported)
@@ -179,8 +179,8 @@ def run(context):
             ("Symm60HE-ControllerUSBPlugEnvelope.step", "USB plug keepout"),
             ("Symm60HE-LeftPogoTravelEnvelope.step", "Left pogo travel"),
             ("Symm60HE-RightPogoTravelEnvelope.step", "Right pogo travel"),
-            ("Symm60HE-LeftFFCEnvelope.step", "Left flexible FFC route"),
-            ("Symm60HE-RightFFCEnvelope.step", "Right flexible FFC route"),
+            ("Symm60HE-LeftFFCEnvelope.step", "Left flexible FPC route"),
+            ("Symm60HE-RightFFCEnvelope.step", "Right flexible FPC route"),
         ), imported)
         # These are nonphysical clearance volumes. Keep them in the project for
         # enclosure design, but do not let the USB plug box obscure the actual
@@ -240,7 +240,7 @@ def run(context):
             "- direct target connectors and mated floating pogo heads\n"
             "- flat left-to-right controller with rear-facing USB-C keepout\n"
             "- exact HRO TYPE-C-31-M-12 USB-C receptacle at J1\n"
-            "- footprint-aligned FFC bodies and flexible route envelopes\n\n"
+            "- footprint-aligned FPC-compatible ZIF bodies and flexible route envelopes\n\n"
             "All imported component bounds passed the placement manifest.\n\n"
             "The compact 20 x 6 mm floating heads clear one another while "
             "their spring and target contacts remain mated.\n\n"

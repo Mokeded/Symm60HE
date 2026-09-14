@@ -12,31 +12,31 @@
         "doe-wklbs2arrows": 204
       },
       "fabrication_zip": "Hall-Family-Panel-Gerbers-and-Drills.zip",
-      "source_sha256": "b7a1122558a650b75de5b64fb6a76ce383c6628b4b2115497312079fbdbe9a84"
+      "source_sha256": "37935a60a4f7fd1a13d1198ba98c5acfd663774e0aa05ceb011ae29b4c92ef1d"
     },
     "Centre-Family": {
       "different_designs": 3,
       "assembly_sides": "Both",
       "placements": 34,
       "fabrication_zip": "Centre-Family-Panel-Gerbers-and-Drills.zip",
-      "source_sha256": "bae3c7777b1b0fbe91a43b9d5d350280af6593da108e0f8e740329f6da33d275"
+      "source_sha256": "78ea52190eabd791d53bfdc368a4bf526684a3e3a19c7e4f0db6cfe7e29748e4"
     }
   },
   "individual_boards": {
     "Controller": {
       "placements": 30,
       "fabrication_zip": "Controller-Gerbers-and-Drills.zip",
-      "source_sha256": "4e6bc92ac81c0ee42c61f172e5324e920b57021b3d88e30846cc68dd00f701d5"
+      "source_sha256": "cc00c91b80809582a377322969ee62aa0fffa7c6e9b70081379109b37ff88f51"
     },
     "Left-SpringModule": {
       "placements": 2,
       "fabrication_zip": "Left-SpringModule-Gerbers-and-Drills.zip",
-      "source_sha256": "215deb58f373d04c8155cd5e4c40f2d52d09f4fbb9acc56d6e55de506e2624fe"
+      "source_sha256": "e69a8802bb42bb430a2efac9853fa73dbf6e26d0c3d92cf40d4b49e1085ff85f"
     },
     "Right-SpringModule": {
       "placements": 2,
       "fabrication_zip": "Right-SpringModule-Gerbers-and-Drills.zip",
-      "source_sha256": "a2409f9da563528506d8d767881b9fd8c66c81e4d1d34cfe90b94d6fc9f38b8f"
+      "source_sha256": "f65a100829ba084bc90c0de51c399753515320ba5d80c1fd338e20da05045038"
     },
     "Left-Half": {
       "placements_by_layout": {
@@ -46,7 +46,7 @@
         "doe-wklbs2arrows": 102
       },
       "fabrication_zip": "Left-Half-Gerbers-and-Drills.zip",
-      "source_sha256": "00bb837b7733de96b15c8a7cbd579886d5f08d2391b2a65575bdbe9a0641fad0"
+      "source_sha256": "6f191202137da3c63e3b708b12b6b4bc29b17816eee6ea7c028c554e497b7fc7"
     },
     "Right-Half": {
       "placements_by_layout": {
@@ -56,7 +56,7 @@
         "doe-wklbs2arrows": 102
       },
       "fabrication_zip": "Right-Half-Gerbers-and-Drills.zip",
-      "source_sha256": "7e872f85845db53edc1dc87916f2aaa32a77b6dde7e42519f84215efcd27b2e3"
+      "source_sha256": "1122ac9dedd5a89fac54c7848f8769363a80ed47cc84e30479694414b08d4168"
     }
   },
   "layouts": [

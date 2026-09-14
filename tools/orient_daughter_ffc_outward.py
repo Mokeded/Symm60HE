@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn both daughterboard FFC mouths toward their nearest outside edge.
+"""Turn both daughterboard FPC-connector mouths toward their nearest outside edge.
 
 The locked C20111 footprint uses local +Y as its cable-entry side.  J2 and J3
 were previously aimed toward the MCU. Rotating each connector 180 degrees and
@@ -90,7 +90,7 @@ def main():
             first(fp, "at")[2] = 19.2
 
     if not changed:
-        print("daughterboard FFC mouths already face outward")
+        print("daughterboard FPC connector mouths already face outward")
         return
     BOARD.write_text(dumps(board) + "\n")
     print("rotated", ", ".join(changed), "toward the daughterboard outside edges")

@@ -119,8 +119,8 @@ def main():
     root = doc.addObject("App::Part", "Pogo16TentCradle")
     root.Label = "Symm60HE 16-contact tented pogo reference"
     objects = []
-    centre = local_box(57, 28, 1.2, 0)
-    objects.append(add(doc, root, "ControllerPCBReference", "57x28 controller PCB reference",
+    centre = local_box(57, 27, 1.2, 0)
+    objects.append(add(doc, root, "ControllerPCBReference", "57x27 controller PCB reference",
                        centre, "Existing central controller envelope; fixed in case"))
     objects += side_objects(doc, root, "Left", -40.0, TENT_DEG)
     objects += side_objects(doc, root, "Right", 40.0, -TENT_DEG)

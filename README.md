@@ -1,7 +1,7 @@
 # Symm60HE
 
 Symmetrical Hall effect Alice keyboard based off of the Doe — split into three
-boards linked by ribbon cable.
+boards linked by flexible printed circuits.
 
 GPLv3. Derived from FN40HE; see `NOTICE.md` for what is taken and from where.
 The layout is a reconstruction of the DOE 60% by hare works, measured from
@@ -14,14 +14,14 @@ handoff is a nine-body Fusion-compatible reference assembly.
 
 The DOE 60% filled-WKL layout, built the way FN40HE is built (MT9102ET Hall
 sensors, 8:1 analog muxes into an AT32F405RCT7) but cut into three boards linked
-by ribbon cable:
+by FPC jumpers:
 
 | Board | Size | Carries |
 |---|---|---|
 | `pcb/Symm60HE-Left.kicad_pcb` | **158.9 × 107.7 mm** | 33 switch positions, 4 muxes, 1 ribbon link |
 | `pcb/Symm60HE-Right.kicad_pcb` | **158.9 × 107.7 mm** | 36 switch positions, 4 muxes, 1 ribbon link |
 | `pcb/Symm60HE-Panel.kicad_pcb` | **175.32 × 233.91 mm** | Stacked connected manufacturing panel containing both keyboard halves |
-| `pcb/Symm60HE-Daughterboard.kicad_pcb` | **57 × 28 mm** | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 outward-facing ribbon links |
+| `pcb/Symm60HE-Daughterboard.kicad_pcb` | **57 × 27 mm** | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 outward-facing FPC links |
 
 Open each `.kicad_pro` in KiCad 10.
 
@@ -38,17 +38,20 @@ The mux address lines are broadcast to both halves, so both scan in lockstep.
 The inhibit pin is tied to ground locally on each half, exactly as FN40HE does,
 which is why no enable line crosses the ribbon.
 
-The half-board FFC cable entries are mechanically mirrored: JL1 is at 270° and
+The half-board FPC entries are mechanically mirrored: JL1 is at 270° and
 JR1 is at 90°, so each flex can leave toward the centre without folding back
 over its connector. Rotating JL1 reverses its numbered pad order relative to
 the daughterboard; the left cable therefore maps daughter pin `N` to JL1 pin
 `13-N`. The right cable remains pin-for-pin. The authoritative mapping is
 `Symm60HE-ribbon-pinout.csv`.
 
-The four board connectors are locked to BOOMELE `1.0-12P` / LCSC `C20111`:
-12 positions, 1.0 mm pitch, top contact, right-angle SMD, for 0.3 mm FFC. Use
-two JXTCONN `FC-1012P-100T3` / LCSC `C37635129` 10 cm same-side cables. Confirm
-pin 1 through pin 12 with a continuity meter before the first powered assembly.
+The four board connectors are locked to BOOMELE `1.0-12P` / LCSC `C20111`.
+LCSC classifies this same part as an FFC/FPC connector: 12 positions, 1.0 mm
+pitch, slide lock, top contact, right-angle SMD, for a 0.3 mm flex tail. Use two
+same-side 12-conductor FPC jumpers with 0.3 mm reinforced contact ends. Their
+finished lengths remain TBD until the case establishes the service loop and
+bend path. Confirm pin 1 through pin 12 with a continuity meter before the
+first powered assembly.
 
 The two daughterboard cable mouths now face away from the MCU and toward their
 respective case sides. Their routed signal-pad centers did not move: each body
@@ -63,27 +66,27 @@ contain the complete manufacturer hold-down lands. This removes the avoidable
 power-off-only alternate using
 the orderable Mill-Max `854-22-012-30-004101` single-row SMT spring connector
 and matching `856-10-012-30-051000` gold target. Twelve contacts carry every
-existing FFC conductor without unused or redundant positions.
+existing FPC conductor without unused or redundant positions.
 
-The 57 x 28 mm controller remains flat and rigid, oriented left-to-right under
+The 57 x 27 mm controller remains flat and rigid, oriented left-to-right under
 the centre blocker so USB-C faces the rear wall. Each side uses a separate
 20 x 6 mm replaceable spring head in a
-captured but floating 3 degree kernel aperture. One short 12-way FFC connects
+captured but floating 3 degree kernel aperture. One short 12-way FPC connects
 each head to the controller. The matching target is mounted directly on its
-Hall PCB; there is no target module or second FFC. The plates carry only the
+Hall PCB; there is no target module or second flex cable. The plates carry only the
 eight side gasket tabs. Magnets
 remain retention-only and DNP until an assembled Hall offset/noise test passes.
 
 The detailed fixed-angle mechanism is in `case/fusion360/tenting-solution/`.
 It adds a 1.2 mm-floor central controller tray, mirrored 3 degree spring trays,
 direct Hall-PCB target references, 0.4 mm-per-side floating apertures, capture
-lips, asymmetric perimeter keys, compression stops, short-FFC envelopes, and
+lips, asymmetric perimeter keys, compression stops, short-FPC envelopes, and
 optional DNP magnet envelopes. Both assembled and exploded renders are under
 `docs/img/24-*` and `docs/img/25-*`; the routed modules are in `docs/img/28-*`.
 
 All five Neo-style boards report zero DRC violations and zero unconnected pads.
-The existing FFC keyboard remains the checked production candidate until the
-connector coupon, FFC motion, gasket motion, and Hall-noise tests pass. See
+The existing flexible-interconnect keyboard remains the checked production
+candidate until the connector coupon, FPC motion, gasket motion, and Hall-noise tests pass. See
 `pcb/variants/pogo-neo/README.md` and the coupon gate under
 `pcb/variants/pogo/CONNECTOR-AND-TENTING.md`.
 
@@ -293,7 +296,7 @@ receptacle. Three changes made it routable at all:
 
 - **The pin assignment is FN40HE's**, read off its board — not invented here.
   See `NOTICE.md`.
-- **The board is a compact 57 × 28 mm.** It includes two M2 NPTH mounting holes
+- **The board is a compact 57 × 27 mm.** It includes two M2 NPTH mounting holes
   so a small bracket can attach it to the plate without hard-mounting either
   keyboard half.
 - **The USB-C receptacle moved off the centre line**, 10.5 mm right, to sit
@@ -303,10 +306,11 @@ receptacle. Three changes made it routable at all:
 
 The daughterboard is fully connected. Its two 12-way ribbon connectors remain
 the densest part of the layout because their contacts escape inward beneath the
-connector bodies. A no-reroute outline search found 57 × 28 mm clean;
-shrinking the existing outline produced copper-to-edge violations.
-Going smaller therefore requires moving parts and rerouting, with no guarantee
-that the existing two-sided density can be retained.
+connector bodies. The rear edge is one continuous straight wall and the actual
+USB-C shell projects 1.0 mm beyond it. Extending the former local J1 setback
+across the complete rear removed an unnecessary 57 mm2 strip without moving
+any component or trace. Further reduction requires moving parts and rerouting,
+with no guarantee that the existing two-sided density can be retained.
 
 ## Building and checking
 

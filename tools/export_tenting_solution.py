@@ -24,7 +24,7 @@ TENT_DEG = 3.0
 PCB_T = 1.2
 FLOOR_T = 1.2
 BOARD_SPACING = 6.0
-CENTRE_PCB = (28.0, 57.0)
+CENTRE_PCB = (27.0, 57.0)
 WING_PCB = (20.0, 20.0)
 WING_X = 40.0
 
@@ -158,7 +158,7 @@ def main():
                            carrier, "Captured 3 degree floating-head aperture", "PA12-CF or PETG"))
         wing = side_place(moved(cbox(*WING_PCB, PCB_T), z=FLOOR_T + 0.2), side)
         objects.append(add(doc, group, side + "WingPCB", side + " spring wing PCB",
-                           wing, "Floating 1.2 mm FFC-to-spring module PCB", "FR4"))
+                           wing, "Floating 1.2 mm FPC-to-spring module PCB", "FR4"))
 
         spring_surface = FLOOR_T + 0.2 + PCB_T
         target_surface = spring_surface + BOARD_SPACING
@@ -178,7 +178,7 @@ def main():
         spring_ffc = side_place(moved(cbox(14.1, 4.9, 2.8), y=5.0,
                                       z=spring_surface), side)
         objects.append(add(doc, group, side + "SpringFFC",
-                           side + " controller-to-spring FFC connector",
+                           side + " controller-to-spring FPC connector",
                            spring_ffc, "12-way flexible link to rigid controller",
                            "LCP/copper"))
 
@@ -278,7 +278,7 @@ def main():
         "primary_retention": "0.4 mm-per-side floating apertures with capture lips",
         "keyboard_suspension": "eight plate-only side pads; no PCB gasket load",
         "target_retention": "12-contact targets mounted directly on Hall PCBs",
-        "interconnect": "one short 12-way controller-to-floating-spring FFC per side",
+        "interconnect": "one short 12-way controller-to-floating-spring FPC per side",
         "optional_magnets": "4x2 mm N35 axial, DNP until Hall test",
         "separate_bodies": [obj.Name for obj in objects],
     }

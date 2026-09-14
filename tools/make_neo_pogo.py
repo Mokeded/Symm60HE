@@ -2,9 +2,9 @@
 """Build the Neo-style separated pogo architecture.
 
 The production FFC design remains untouched.  This variant keeps the existing
-57 x 28 mm controller PCB rigid, adds one floating FFC-to-pogo spring board per
+57 x 27 mm controller PCB rigid, adds one floating FPC-to-pogo spring board per
 side, and substitutes 12-contact target connectors directly into copies of the
-two keyboard halves.  Short 12-way FFCs are the only compliant links.  No
+two keyboard halves.  Short 12-way FPCs are the only compliant links.  No
 target daughterboards and no flexures etched into FR-4 are used.
 """
 from copy import deepcopy
@@ -40,7 +40,7 @@ HALF_FFC_NETS = {
 }
 
 # Physical left-to-right assignment on the spring block.  Signals stay in the
-# same order as the 12-way FFC; the four extra positions reinforce power and
+# same order as the 12-way FPC; the four extra positions reinforce power and
 # ground rather than introduce another logical signal.
 DIRECT_TARGET = {
     "Left": {"old_ref": "JL1", "new_ref": "PTL1", "boundary": 144.0,
@@ -267,8 +267,8 @@ def build_module(side, contact_map):
     ffc = place_footprint(board, "FFC_12P_1.00mm_TopContact.kicad_mod",
                           "JF1", 10, FFC_Y, ffc_map)
     # The compact head puts the ZIF directly behind the pogo row.  It is a
-    # genuine two-sided assembly: pogo springs face the Hall PCB and the FFC
-    # exits from the underside.  Both FFC footprints retain their native order;
+    # genuine two-sided assembly: pogo springs face the Hall PCB and the FPC
+    # exits from the underside.  Both ZIF footprints retain their native order;
     # the existing left spring-footprint rotation already makes the physical
     # left-to-right net sequences agree without crossovers.
     swap_front_back(ffc)

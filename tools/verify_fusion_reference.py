@@ -106,7 +106,7 @@ def main():
 
     controller = objects["DaughterboardPCB"].Shape.BoundBox
     assert close(controller.XLength, 57.0)
-    assert close(controller.YLength, 28.0)
+    assert close(controller.YLength, 27.0)
     assert objects["DaughterboardPCB"].Shape.common(
         objects["LeftPCB"].Shape).Volume < 1e-5
     assert objects["DaughterboardPCB"].Shape.common(
@@ -134,10 +134,10 @@ def main():
     usb = objects["ControllerUSBConnector"].Shape.BoundBox
     plug = objects["ControllerUSBPlugEnvelope"].Shape.BoundBox
     assert usb.Center.y < controller.Center.y
-    # The actual receptacle mouth remains on the controller's original rear
-    # datum while the local PCB edge beneath it is set back 1.0 mm.  This
-    # produces a real shell overhang rather than moving only a preview body.
-    assert close(usb.YMin, controller.YMin, 0.05), (
+    # The actual receptacle mouth projects beyond one continuous rear PCB
+    # edge.  This is a real shell overhang, not a notched board outline or a
+    # preview-only displacement.
+    assert close(controller.YMin - usb.YMin, 1.0, 0.05), (
         usb.YMin, controller.YMin)
     assert close(layout["mechanism"]["controller_usb_overhang"], 1.0)
     usb_probe = Part.makeBox(
@@ -146,10 +146,10 @@ def main():
                    controller.ZMin - 1.0))
     local_board = objects["DaughterboardPCB"].Shape.common(usb_probe)
     assert not local_board.isNull() and local_board.Volume > 1e-5
-    actual_overhang = local_board.BoundBox.YMin - usb.YMin
+    actual_overhang = controller.YMin - usb.YMin
     assert close(actual_overhang,
                  layout["mechanism"]["controller_usb_overhang"], 0.05), (
-                     actual_overhang, local_board.BoundBox.YMin, usb.YMin)
+                     actual_overhang, controller.YMin, usb.YMin)
     assert usb.YMax < controller.Center.y
     assert plug.Center.y < usb.Center.y
     assert plug.YMin < controller.YMin
@@ -265,7 +265,7 @@ def main():
     vendor_box = vendor.BoundBox
     vendor.translate(App.Vector(
         expected_x - vendor_box.Center.x,
-        controller.YMin - vendor_box.YMin,
+        controller.YMin - mech["controller_usb_overhang"] - vendor_box.YMin,
         mech["controller_bottom_z"] + 1.195))
     # Compare the full asymmetric vendor geometry.  This catches a connector
     # whose envelope is at the rear edge but whose mouth and solder tails have
@@ -298,9 +298,9 @@ def main():
     print("inner plate/gasket mounts clear by %.3f mm" % plate_gap)
     print("actual HRO USB-C envelope %.3f x %.3f x %.3f mm" %
           (usb.XLength, usb.YLength, usb.ZLength))
-    print("all four exact C20111 FFC bodies use the 19.000 x 6.750 x "
+    print("all four exact C20111 FPC-compatible ZIF bodies use the 19.000 x 6.750 x "
           "2.510 mm distributor envelope")
-    print("USB-C shell overhangs its local PCB edge by %.3f mm" %
+    print("USB-C shell overhangs the straight rear PCB edge by %.3f mm" %
           actual_overhang)
     print("all %d component STEP files preserve absolute assembly placement" %
           len(component_steps))

@@ -170,6 +170,8 @@ def main():
         archive = release / f"{name}-Gerbers.zip"
         with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zipped:
             for path in sorted(gerber_dir.iterdir()):
+                if path.name.startswith("._") or path.name == ".DS_Store":
+                    continue  # macOS metadata from a Mac copy
                 zipped.write(path, path.name)
         archives.append(archive)
     readme = release / "README.md"
