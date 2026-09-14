@@ -1,0 +1,13 @@
+Contact,Row,Left net,Right net,Policy
+1,far,GND,+3V3A,Power-off only
+2,far,ADC_L2,GND,Power-off only
+3,far,GND,GND,Power-off only
+4,far,MUX_A2,ADC_R2,Power-off only
+5,far,MUX_A1,ADC_R3,Power-off only
+6,far,MUX_A0,ADC_R4,Power-off only
+7,near,ADC_L4,MUX_A0,Power-off only
+8,near,ADC_L3,MUX_A1,Power-off only
+9,near,ADC_L1,MUX_A2,Power-off only
+10,near,GND,ADC_R1,Power-off only
+11,near,GND,GND,Power-off only
+12,near,+3V3A,GND,Power-off only

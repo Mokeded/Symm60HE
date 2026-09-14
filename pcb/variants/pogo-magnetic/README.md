@@ -1,0 +1,113 @@
+# Magnetic-pogo variant
+
+Same architecture as `../pogo-neo/` — rigid controller, one floating module per
+side, target soldered straight to the Hall PCB, one 12-way FPC jumper per side
+— with the Mill-Max 854/856 pair replaced by a **12-contact magnetic pogo pair
+in two rows of six**. The magnets are in the connector housing and pull the
+joint into alignment. That is the entire point: the 854/856 pair butts flat and
+self-aligns only within 0.0596 mm radial (see
+[`../pogo/MATE-AND-ASSEMBLY.md`](../pogo/MATE-AND-ASSEMBLY.md)), while the
+kernel aperture lets the module float 0.4 mm per side.
+
+**This is a prototype stream, not a release.** `../pogo-neo/` remains the
+routed and released architecture. Read "Status" before ordering anything.
+
+## The connector
+
+No catalogue manufacturer publishes a datasheet for a 12-contact magnetic pogo
+pair in a keyboard-sized envelope. Mill-Max's own magnetic line, Maxnetic
+878/879, stops at six positions on a 4 mm pitch and stands 9.6 mm above the
+board. LCSC stocks single probes, not multi-contact magnetic pairs. What does
+exist is an ODM family — CFECONN, SUNMON, Promax, Johoty, KLS all build it —
+and the same family in stocked form on AliExpress as "dual row magnetic pogo
+pin connector, 8/10/12/14/20 pole, 2.54 mm". Qwertykeys' own Neo Ergo part is
+from the 2.0 mm branch of that family: measured off their build guide it is
+2 × 8 on ~2.0 mm with ~2.8 mm between rows and a magnet at each end.
+
+So these boards are cut to an interface control drawing rather than to a
+supplier part number, and the footprints carry the ICD name, not an MPN.
+
+### ICD MAGPOGO-2x6-P254
+
+| | |
+|---|---|
+| Contacts | 12, two rows of six |
+| Pitch along a row | 2.54 mm |
+| Row to row | 2.54 mm |
+| Contact field | 12.70 x 2.54 mm |
+| Land diameter | 1.50 mm, SMT |
+| Magnets | in the housing, one at each end, centres 21.0 mm apart |
+| Solder anchors | 3.2 mm square under each magnet boss, mechanical only |
+| Housing envelope | 25.0 x 9.0 mm max |
+| Courtyard | 26.0 x 10.0 mm |
+| Mating | spring half on the module, target half on the Hall PCB |
+| Plating | gold over nickel on both halves |
+| Policy | power-off only; no hot plug |
+
+Order to this drawing from any of the houses above and ask for the mating
+drawing back. **Every dimension here is a requirement I set, not a dimension
+read off a supplier drawing.** Confirm the housing envelope, the land pattern
+and the seated stack against the drawing that comes back, then regenerate:
+the footprints are written by `tools/make_mag_pogo.py`'s constants, so a
+changed dimension is a one-line edit and a re-run, not a re-layout.
+
+The 2.0 mm branch is the alternative: it matches the Neo Ergo's own tooling,
+which is the only magnetic pogo proven in this exact application, at the cost
+of a tighter land pattern. Change `PITCH` and `ROW_GAP` and re-run.
+
+## What changed on the boards
+
+| | `pogo-neo` | here |
+|---|---|---|
+| Contacts | 1 x 12 on 1.27 mm | 2 x 6 on 2.54 mm |
+| Spring module | 20 x 6 mm | 32 x 18 mm |
+| Contact escape | straight to the ZIF | far row steps half a pitch out through the near row's gaps |
+| Ground | paired to the ZIF | own F.Cu bus, kept out of the signal fan |
+| Target on the Hall PCB | 1 x 12, one column | 2 x 6, two columns, near column on B.Cu and far column hopping to F.Cu |
+| Alignment | case only, 0.0596 mm radial | magnets, plus the case |
+
+The contact map is not hand-written. `solve_contact_map` picks it, because two
+orderings have to hold at once and neither is ours to choose: the module's
+escape lanes must run in the ZIF's net order, and each contact column on the
+Hall PCB must reach its handoff anchors without crossing. See
+`Symm60HE-mag-pogo12-pinout.csv` for the map it found.
+
+## Status
+
+Verified by `tools/verify_mag_pogo.py`, which checks copper inside the
+outline, 0.15 mm clearance between nets per layer, dangling ends, and that
+every contact carries a net:
+
+| Board | Result |
+|---|---|
+| `Symm60HE-Mag-Left-SpringModule` | clean |
+| `Symm60HE-Mag-Right-SpringModule` | clean |
+| `Symm60HE-Mag-Right-Half` | clean |
+| `Symm60HE-Mag-Left-Half` | **2 clearance flags** |
+
+The two flags are one crossing: `MUX_A0` and `ADC_L1` have anchors 0.88 mm
+apart and arrive from opposite contact columns, so they meet on F.Cu in the
+last millimetre before the handoff. The solver prefers assignments that keep
+anchor-adjacent nets in one column and manages it on the right half; on the
+left the anchor order the inherited routing hands us does not allow it. Fix it
+by hand in the layout editor, or by moving one of those two anchors, before
+this half goes anywhere.
+
+**No KiCad DRC has been run on these boards.** KiCad 10 was not available in
+the environment that generated them, and `tools/verify_mag_pogo.py` does not
+refill zones, so pour clearance is unchecked. Run `tools/verify_neo_pogo.py`'s
+DRC step against these files before treating any of it as real.
+
+Also still open: the module grew from 20 x 6 mm to 32 x 18 mm, so the kernel
+aperture, capture lips, compression stops and the spring-travel keep-out in
+`case/fusion360/` are all stale for this variant. The seated stack is unknown
+until a supplier drawing arrives, so the 5.0 mm board-to-board figure does not
+carry over either.
+
+## Regenerate
+
+```sh
+./.venv/bin/python tools/make_mag_pogo.py
+./.venv/bin/python tools/verify_mag_pogo.py
+./.venv/bin/python tools/render_mag_pogo.py   # docs/img/42
+```
