@@ -55,9 +55,10 @@ any dimension in the ICD below.
 
 ### Twelve contacts and up: what is actually stocked
 
-Everything here is the AliExpress/ODM market; no manufacturer catalogue
-publishes a magnetic part above eight contacts. Contact span is what decides
-whether a part fits the kernel, so it is the column that matters.
+Contact span is what decides whether a part fits the kernel, so it is the
+column that matters. (An earlier revision of this file said no manufacturer
+catalogue published a magnetic part above eight contacts. That was wrong --
+see "Catalogue magnetic parts with nine contacts and up" below.)
 
 | Family | Positions offered | Contact span at 12 | at 14 | at 16 |
 |---|---|---|---|---|
@@ -139,13 +140,43 @@ actually builds, and it publishes a recommended layout:
 | Current / resistance | unknown | 2 A / 50 mOhm max |
 | Durability | unknown | 20,000 cycles |
 
+### Catalogue magnetic parts with nine contacts and up
+
+SUNMON publish magnetic connector families at **9, 10, 16, 18 and 42 pin**,
+with drawings, part numbers and a mating half named for each. These are not
+the magnet-compatible pogo blocks described in the next section: their bills of
+materials list N52 NdFeB magnets with Ni-Cu-Ni plating as line items.
+
+| Pair | Contacts | Layout | Body | Electrical | Mechanical |
+|---|---|---|---|---|---|
+| **`903-00081` / `904-00080`** (DIP PCB) | **9** | two staggered rows, 1.50 mm pitch, 6.00 mm field | **19.80 x 8.30 x 4.50 mm** | 12 V, 1 A, 50 mOhm max, 100% open/short tested | 30+/-10 gf at 0.50 mm working stroke, **0.70 mm full stroke**, 10,000 cycles, -30/+60 C |
+| `903-00082` / `904-00079` | 9 | same, wire-solderable instead of DIP | — | as above | as above |
+| `903-00018` / `904-00023` | **10** | `MC146-10R` | — | 12 V, **2 A**, 50 mOhm | 40+/-15 gf, 0.60 mm working stroke, **850 gf docking force**, 10,000 cycles, -25/+85 C |
+| `903-00015` / `904-00020` | 8 | single row, 2.00 mm pitch, 14.00 mm field | 32.51 x 7.41 x 3.90 mm | 12 V, 1 A, 50 mOhm | 35+/-10 gf, 1.00 mm full stroke, IP65 |
+| `903-00017` / `904-00022` | 9 | high current, waterproof | — | — | — |
+| `903-00044` / `904-00058` | 9 | round | — | — | — |
+| `903-00042` | 18 | male | — | — | — |
+
+`903-00081` is the one that matters for a nine-conductor-per-half link: nine
+contacts in a 19.80 x 8.30 mm body, polarity-keyed by an N and an S magnet at
+the ends so it can only mate one way, and a genuine PCB mount. Legacy number
+`MC142-09R-BM`.
+
+Two things to weigh against it. Its **0.70 mm full stroke** is well under the
+Mill-Max `854`'s 1.016 mm, so there is less compliance available to absorb
+gasket motion -- check that against the travel the module actually sees. And at
+1 A and 50 mOhm it is a signal connector; the `+3V3A` analog rail crossing one
+of those contacts is the thing to measure on a coupon.
+
 ### The magnets are probably not in the connector
 
-Three SUNMON drawings have now been read -- `906-00016`, `905-00030` and
-`905-00176` -- and every one has a bill of materials with exactly two lines:
-gold-plated pogo pins, and a black HTN UL94 V-0 housing. **No magnet, on any of
-them**, including `905-00176`, which their catalogue lists as "14PIN Male
-Connector (Magnetic Type)" and describes as "magnetic attraction compatible".
+This applies to the `905`/`906` pogo blocks, not to the `903`/`904` magnetic
+pairs above. Three `905`/`906` drawings have been read -- `906-00016`,
+`905-00030` and `905-00176` -- and every one has a bill of materials with
+exactly two lines: gold-plated pogo pins, and a black HTN UL94 V-0 housing.
+**No magnet, on any of them**, including `905-00176`, which their catalogue
+lists as "14PIN Male Connector (Magnetic Type)" and describes as "magnetic
+attraction compatible".
 
 That phrase is the tell. These are magnet-*compatible* pogo blocks: the
 magnets are meant to sit in the customer's housing around the connector, not
