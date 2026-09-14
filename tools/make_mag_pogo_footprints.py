@@ -12,7 +12,7 @@ from make_mag_pogo import BODY, PER_ROW, PITCH, ROW_GAP  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 LIB = ROOT / "Symm60HE_Project.pretty"
-PAD = 1.50
+PAD = 1.50          # SUNMON 905-00030 recommends 2.00; see README
 ANCHOR = 3.2
 CRTYD = (BODY[0] + 1.0, BODY[1] + 1.0)
 MAG_D = 4.0

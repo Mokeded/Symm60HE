@@ -40,6 +40,8 @@ two properties this design needs -- *rectangular multi-contact* and *magnetic*
 | CFECONN `BF302501-12200L0F` | 12-pin signal pogo connector | no magnets |
 | CFECONN `MFA038801` | magnetic pogo connector | round, low pin count |
 | KLS `KLS1-12PGC01B` | double row 12 pin pogo connector | no magnets; MOQ 1000; dimensions only on request |
+| SUNMON `906-00016` | 12 contact **female**, single row, 2.54 mm, IP65, 16 V/2 A, 30 mOhm, -40/+105 C, 3u" Au | no magnets in the drawing's bill of materials, screw-mounted, and 46.27 mm long overall |
+| SUNMON `905-00030` | 12 contact **male**, 2 x 6 on 2.54 x 2.54 mm, 12.70 mm field, 2 A, 50 mOhm, 40+/-15 gf at 1.0 mm stroke, 1.20 mm full stroke, 20,000 cycles | no magnets, but the right land pattern -- see below |
 | AliExpress "dual row magnetic pogo, 8/10/12/14/20 pole, 2.54 mm" | magnetic, double row, 12 pole, stocked | no part number, no datasheet, no model, seller can change it silently |
 
 CFE's magnetic range is round, 2-8 pin; their rectangular multi-pin range is
@@ -98,6 +100,50 @@ before ordering:
 
 None of these carries a part number or a datasheet. Buy one pair, measure it,
 and only then trust the ICD.
+
+### SUNMON 906-00016, and why the land pattern below is no longer invented
+
+`906-00016` is a real SUNMON part with a published drawing
+(`smeconn.com/wp-content/uploads/2026/04/906-00016.pdf`), but it is not the
+part for this design and it is not magnetic. The drawing shows a **single row**
+of twelve contacts on 2.54 mm, 27.94 mm of contact field inside a 46.27 mm
+body with screw ears on 39.48 mm centres, and a bill of materials with exactly
+two lines: twelve gold-plated pins and one black HTN housing. No magnet. The
+catalogue blurb calling it a "magnetic waterproof design" is not borne out by
+the drawing.
+
+Its male counterpart is not published. SUNMON's drawings carry legacy numbers
+in a readable scheme -- `PPF.` for the female half, `PPM.` for the male -- and
+`906-00016` is `PPF.12-1257-0302 / TC528-12D254-A`. The nearest published male,
+`905-00217` "12Pin IP65 Waterproof", is `PPM.12-505-0502 / PC719-12S300-A`:
+twelve contacts, but on **3.00 mm**, so it does not mate. SUNMON do publish
+pairs when they have them (`906-00005 / 905-00011`, `904-00020 with 903-00015`),
+so the mate exists internally -- ask them for the `PPM` half of
+`PPF.12-1257-0302`.
+
+The useful find in that catalogue is **`905-00030`**, a 12-contact male in
+**two rows of six on a 2.54 x 2.54 mm grid, 12.70 mm contact field** -- exactly
+the geometry this variant is cut to, with a real drawing behind it. It is not
+magnetic, but it confirms the contact block below is a shape the industry
+actually builds, and it publishes a recommended layout:
+
+| | ICD here | SUNMON `905-00030` |
+|---|---|---|
+| Array | 2 x 6 | 2 x 6 |
+| Pitch / row gap | 2.54 / 2.54 | 2.54 / 2.54 |
+| Contact field | 12.70 x 2.54 | 12.70 x 2.54 |
+| Land diameter | **1.50** | **2.00** |
+| Contact force | unknown | 40 +/- 15 gf at 1.0 mm working stroke |
+| Full stroke | unknown | 1.20 mm |
+| Current / resistance | unknown | 2 A / 50 mOhm max |
+| Durability | unknown | 20,000 cycles |
+
+The land is the one disagreement. Setting `PAD = 2.00` in
+`tools/make_mag_pogo_footprints.py` matches SUNMON's recommendation and was
+measured: it keeps both modules clean but takes the two halves from two
+clearance flags to nine, because the larger lands crowd the breakout. Left at
+1.50 here so the committed boards stay at their best verified state; move it
+to 2.00 and rework the halves once a real magnetic drawing fixes the number.
 
 ### ICD MAGPOGO-2x6-P254
 
