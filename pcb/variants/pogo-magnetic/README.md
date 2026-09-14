@@ -62,7 +62,7 @@ whether a part fits the kernel, so it is the column that matters.
 | Single row, 2.54 mm, 10 A/36 V, "with ears" | 12-20 | 27.94 | 33.02 | 38.10 |
 | Single row, 2.54 mm, ribbon cable attached | 7-20 | 27.94 | 33.02 | 38.10 |
 | Single row, 2.8 mm | 2-14 | 30.80 | 36.40 | -- |
-| **Dual row, 2.54 mm** | 8, 10, 12, 14, 20 | **12.70** | **15.24** | -- |
+| **Dual row, 2.54 mm** | 8, 10, 12, 14, 16, 20 | **12.70** | **15.24** | **17.78** |
 | Dual row, 2.0 mm | 4, 6, 8, 10 | -- | -- | -- |
 | Neo Ergo's own part (measured, not sold) | 2 x 8 on ~2.0 mm | -- | -- | 14.00 |
 
@@ -72,11 +72,32 @@ housing. A single-row 12-contact part is therefore a ~40 mm housing needing a
 variant builds. That is why the dual row wins here even though the single row
 is the easier fanout and maps one-for-one onto the Mill-Max routing.
 
-Sixteen contacts was tried and rejected: `PER_ROW = 8` generates and routes,
-but it does not fix the left half's crossing (three clearance flags instead of
-two -- the crossing comes from the anchor geometry, not from a shortage of
-slots) and it costs 5 mm of module length for four spare grounds. If spare
-grounds are wanted later, 2 x 7 is in the same stocked family and costs 2.5 mm.
+Sixteen contacts is available in the dual-row family and is a one-line change
+here (`PER_ROW = 8`, then re-run both generators). It was tried: it generates
+and routes, costs 5 mm of module length, and leaves three clearance flags on
+the left half instead of two -- so that crossing is the anchor geometry, not a
+shortage of slots. What the four spare contacts buy is worth having anyway:
+doubled grounds and a paralleled `+3V3A`, which matters more than usual across
+a 50 mOhm contact carrying an analog rail. Twelve is what is committed here
+because it is the smaller module; sixteen is the better electrical choice if
+the case can spare the width.
+
+### Where to buy
+
+Verified live at the time of writing:
+
+- [Dual row, 2.54 mm, 8/10/12/14/20 pole](https://www.aliexpress.com/item/3256804721860036.html)
+
+Found through search metadata but not fetched directly, so confirm the listing
+before ordering:
+
+- [Dual row, 2.54 mm, 8/10/12/14/16/20 pin](https://www.aliexpress.com/item/3256808221496755.html)
+- [Dual row, 2.54 mm, 8/10/12/14/16/20 positions](https://www.aliexpress.com/item/3256808648135588.html)
+- [Single row, 2.54 mm, 12-20 pin, 10 A, with ears](https://www.aliexpress.com/item/3256812836315769.html)
+- [Single row, 2.54 mm, 13-20 pin, 2 A](https://www.aliexpress.com/item/3256812629914566.html)
+
+None of these carries a part number or a datasheet. Buy one pair, measure it,
+and only then trust the ICD.
 
 ### ICD MAGPOGO-2x6-P254
 
