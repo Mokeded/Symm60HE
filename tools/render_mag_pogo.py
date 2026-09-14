@@ -44,19 +44,57 @@ def draw(ax, name, layer):
     ax.tick_params(labelsize=7)
 
 
+def draw_half(ax, name, window):
+    board = loads((OUT / f"{name}.kicad_pcb").read_text())
+    pads, copper = geometry(board)
+    x0, x1, y0, y1 = window
+    for geom, net, layers, _ in copper:
+        if not (x0 < geom.centroid.x < x1 and y0 < geom.centroid.y < y1):
+            continue
+        for layer in ("F.Cu", "B.Cu"):
+            if layer in layers:
+                xs, ys = geom.exterior.xy
+                ax.fill(xs, ys, color=COLOUR[layer], alpha=0.5, lw=0, zorder=2)
+    for pad in pads:
+        if not (x0 < pad["g"].centroid.x < x1 and y0 < pad["g"].centroid.y < y1):
+            continue
+        xs, ys = pad["g"].exterior.xy
+        ax.fill(xs, ys, color="#b7950b", alpha=0.95, lw=0, zorder=3)
+    ax.set_xlim(x0, x1)
+    ax.set_ylim(y1, y0)
+    ax.set_aspect("equal")
+    ax.set_title(f"{name.replace('Symm60HE-Mag-', '')} — target breakout",
+                 fontsize=10)
+    ax.set_xlabel("mm", fontsize=8)
+    ax.tick_params(labelsize=7)
+
+
 def main():
     IMG.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(2, 2, figsize=(13, 9))
+    fig, axes = plt.subplots(2, 2, figsize=(12.5, 9))
     for row, name in enumerate(("Symm60HE-Mag-Left-SpringModule",
                                 "Symm60HE-Mag-Right-SpringModule")):
         for col, layer in enumerate(("F.Cu", "B.Cu")):
             draw(axes[row][col], name, layer)
-    fig.suptitle("Magnetic-pogo spring modules, 32 x 18 mm\n"
-                 "F.Cu carries the 12 contacts and the ground bus; "
-                 "B.Cu carries the ZIF and the signal fan", fontsize=12)
+    fig.suptitle(f"Spring modules for SUNMON 903-00081, "
+                 f"{MODULE_W:.0f} x {MODULE_H:.0f} mm\n"
+                 "nine plated holes; the row facing the ZIF drops straight to "
+                 "B.Cu, the other takes F.Cu round the outside", fontsize=12)
     fig.tight_layout()
     path = IMG / "42-mag-pogo-spring-modules.png"
     fig.savefig(path, dpi=170)
+    plt.close(fig)
+    print("wrote", path.relative_to(ROOT))
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 6.4))
+    draw_half(axes[0], "Symm60HE-Mag-Left-Half", (138, 156, 42, 70))
+    draw_half(axes[1], "Symm60HE-Mag-Right-Half", (146, 164, 42, 70))
+    fig.suptitle("904-00080 target on the Hall PCBs, and its breakout",
+                 fontsize=12)
+    fig.tight_layout()
+    path = IMG / "43-mag-pogo-half-breakout.png"
+    fig.savefig(path, dpi=170)
+    plt.close(fig)
     print("wrote", path.relative_to(ROOT))
 
 

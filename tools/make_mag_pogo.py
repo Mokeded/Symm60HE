@@ -34,31 +34,37 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "pcb/variants/pogo-magnetic"
 LIB = ROOT / "Symm60HE_Project.pretty"
 
-# --- interface control drawing MAGPOGO-2x6-P254 -----------------------------
-PITCH = 2.54          # along a row
-ROW_GAP = 2.54        # between the two rows
-PER_ROW = 6           # contacts per row; 6 gives the 12 the link needs, 8
-                      # gives four spare grounds if the wider part is chosen
-BODY = (PER_ROW * PITCH + 9.8, 9.0)   # connector housing envelope
+# --- SUNMON MC142-09R, 903-00081 / 904-00080 --------------------------------
+# Nine contacts in two staggered rows. The stagger means nothing can be routed
+# between them: diagonal neighbours are 1.458 mm apart and the pads are 1.25,
+# so every run leaves the array at its perimeter.
+PITCH = 1.50
+ROW_GAP = 1.25
+LOWER = 5             # contacts 1-5
+UPPER = 4             # contacts 6-9, offset half a pitch
+CONTACTS = LOWER + UPPER
+BODY = (19.80, 8.30)
 
 # --- module -----------------------------------------------------------------
-MODULE_W = BODY[0] + 7.0
-MODULE_H = 18.0
+MODULE_W = 26.0
+MODULE_H = 16.0
 CONTACT_X = MODULE_W / 2
-CONTACT_Y = 5.6       # connector centre; rows land at +/- 1.27 of this
-FFC_Y = 15.0          # ZIF centre, on B.Cu behind the connector
-ESCAPE_Y = 9.6        # single row of escape vias below the connector
+CONTACT_Y = 10.8      # connector centre; rows land at +/- ROW_GAP/2 of this
+FFC_Y = 2.8           # ZIF centre, on B.Cu below the connector
+DETOUR_Y = 12.6       # where the far row turns out to the module sides
+INNER_X = 4.8         # innermost side corridor, clear of the contact array
+ENTRY_Y = 5.6         # where the far row comes back in above the ZIF
 HANDOFF_VIA_SETBACK = 0.3  # keep layer changes off the crowded anchor line
 OUTER_TURN = 2.5           # where the far column turns toward its anchor
 
-SPRING_FP = f"MagPogo_2x{PER_ROW}_P{int(PITCH * 100):03d}_Spring.kicad_mod"
-TARGET_FP = f"MagPogo_2x{PER_ROW}_P{int(PITCH * 100):03d}_Target.kicad_mod"
+SPRING_FP = "MagPogo_9_MC142_Spring.kicad_mod"
+TARGET_FP = "MagPogo_9_MC142_Target.kicad_mod"
 
 # Footprint pins 1-6 are the far row (away from the ZIF), 7-12 the near row.
 # Each far-row contact escapes through the gap between two near-row pads, one
 # half pitch further out, so the twelve escape vias land in a single row.
-FAR = tuple(range(1, PER_ROW + 1))
-NEAR = tuple(range(PER_ROW + 1, 2 * PER_ROW + 1))
+NEAR = tuple(range(1, LOWER + 1))              # lower row, faces the ZIF
+FAR = tuple(range(LOWER + 1, CONTACTS + 1))    # upper row, takes the long way
 
 # The eight signals in the order the controller's ZIF presents them. Ground is
 # not in this list: it has four contacts and four ZIF pads, and ground crossing
@@ -92,7 +98,7 @@ def solve_contact_map(column_of, half_y, anchor_rank, group_of):
 
     best = None
     for flip in (False, True):
-        pins = sorted(range(1, 2 * PER_ROW + 1),
+        pins = sorted(range(1, CONTACTS + 1),
                       key=lambda pin: escape_x(pin, flip))
         for order, chosen in product(orders, combinations(pins, len(SIGNAL_ORDER))):
             mapping = dict(zip(chosen, order))
@@ -124,7 +130,7 @@ def solve_contact_map(column_of, half_y, anchor_rank, group_of):
             cost = (layered, orders.index(order), swaps)
             if best is None or cost < best[0]:
                 best = (cost, {pin: mapping.get(pin, "GND")
-                               for pin in range(1, 2 * PER_ROW + 1)}, flip)
+                               for pin in range(1, CONTACTS + 1)}, flip)
     if best is None:
         raise RuntimeError("no contact assignment satisfies both orderings")
     return best[1], best[2]
@@ -141,27 +147,20 @@ def contact_map(base, side_letter):
     return {pin: renamed(net, side_letter) for pin, net in base.items()}
 
 
-def row_x(index):
-    return CONTACT_X + (index - (PER_ROW - 1) / 2) * PITCH
-
-
 def contact_point(pin, flip):
     """Where a contact pad lands on the module, for either spring orientation."""
-    index = (pin - 1) % PER_ROW
-    x, y = row_x(index), CONTACT_Y + (ROW_GAP / 2 if pin in NEAR else -ROW_GAP / 2)
+    if pin in NEAR:
+        index, count, side = pin - 1, LOWER, -ROW_GAP / 2
+    else:
+        index, count, side = pin - LOWER - 1, UPPER, ROW_GAP / 2
+    x = CONTACT_X + (index - (count - 1) / 2) * PITCH
+    y = CONTACT_Y + side
     return (2 * CONTACT_X - x, 2 * CONTACT_Y - y) if flip else (x, y)
 
 
 def escape_x(pin, flip=False):
-    """Where a contact drops to B.Cu: near row straight down, far row offset.
-
-    A far-row contact steps half a pitch outboard so it can pass through the
-    gap between two near-row pads; the near row goes straight down.
-    """
-    x, y = contact_point(pin, flip)
-    if y > CONTACT_Y:
-        return x
-    return x + (-PITCH / 2 if x < CONTACT_X else PITCH / 2)
+    """The x a contact presents to the fan below the array."""
+    return contact_point(pin, flip)[0]
 
 
 def add_outline(board, width, height):
@@ -195,7 +194,7 @@ def build_module(side, base_map, flip):
         # that lets one contact map satisfy the module and the half at once.
         first(contact, "at").append(180)
     add_outline(board, MODULE_W, MODULE_H)
-    add_note(board, "MAGPOGO-2x6-P254 spring half; magnets in housing",
+    add_note(board, "SUNMON 903-00081; magnets internal, N and S keyed",
              (CONTACT_X, MODULE_H - 1.0))
 
     contact_pads = {int(pad[1]): global_pad(contact, pad)
@@ -206,66 +205,72 @@ def build_module(side, base_map, flip):
     for pin, name in enumerate(ffc_sequence, 1):
         ffc_by_net.setdefault(name, []).append(ffc_pads[pin])
 
-    # Signals drop to B.Cu in one lane row and fan to the ZIF. Ground never
-    # joins that fan: it stays on F.Cu, meets a bus, and the ZIF's four ground
-    # pads come up to the same bus. Ground crossing ground is free; ground
-    # crossing the signal fan is not, and this keeps them apart.
-    BUS_Y = 12.0
-    lanes, ground = {}, []
-    for pin, point in sorted(contact_pads.items()):
-        net = pins[pin]
-        far = point[1] < CONTACT_Y
-        shift = (-PITCH / 2 if point[0] < CONTACT_X else PITCH / 2) if far else 0.0
-        lane_x = point[0] + shift
-        path = [point]
-        if far:
-            # Step sideways in the clear band between the two rows, then pass
-            # through the gap between two near-row pads.
-            path += [(point[0], point[1] + 0.55), (lane_x, point[1] + ROW_GAP / 2)]
+    # The contacts are plated through-holes, so both layers reach them and no
+    # escape via is needed. Nothing can cross the array, though: diagonal
+    # neighbours are 1.458 mm apart with 1.25 mm pads, so the row facing the
+    # ZIF takes B.Cu straight down and the other row takes F.Cu out over the
+    # top, down the module's side, and back in above the ZIF. Which row is
+    # which follows from where the pads actually landed, not from pin number:
+    # the spring is turned end for end on one side.
+    BUS_Y = FFC_Y + 1.4
+    near = sorted((pin for pin in contact_pads
+                   if contact_pads[pin][1] < CONTACT_Y),
+                  key=lambda pin: contact_pads[pin][0])
+    far = sorted((pin for pin in contact_pads
+                  if contact_pads[pin][1] > CONTACT_Y),
+                 key=lambda pin: contact_pads[pin][0])
+    ground = []
+    taken = {}
+
+    def zif_pad(net):
+        index = taken.setdefault(net, 0)
+        taken[net] += 1
+        return sorted(ffc_by_net[net])[index]
+
+    for pin in near:
+        net, point = pins[pin], contact_pads[pin]
         if net == "GND":
-            path.append((lane_x, BUS_Y))
-            polyline(board, path, net, "F.Cu")
-            ground.append((lane_x, BUS_Y))
-        else:
-            lane = (lane_x, ESCAPE_Y)
-            path.append(lane)
-            polyline(board, path, net, "F.Cu")
-            board.append(via(lane, net))
-            lanes[pin] = lane
+            polyline(board, [point, (point[0], BUS_Y)], net, "B.Cu")
+            board.append(via((point[0], BUS_Y), net))
+            ground.append((point[0], BUS_Y))
+            continue
+        end_pad = zif_pad(net)
+        polyline(board, [point, (end_pad[0], FFC_Y + 2.0), end_pad], net, "B.Cu")
 
-    signal_fan = sorted(lanes.items(), key=lambda item: item[1][0])
-    used = {}
-    runs = []
-    for pin, lane in signal_fan:
-        net = pins[pin]
-        index = used.setdefault(net, 0)
-        used[net] += 1
-        runs.append((lane, sorted(ffc_by_net[net])[index], net))
-    # If the solver had to swap one adjacent pair to satisfy the half, the two
-    # runs cross exactly once. Lift the left-hand one onto F.Cu for the middle
-    # of its run and drop it back; the ground bus sits below that band.
-    hop = {index for index in range(len(runs) - 1)
-           if runs[index][1][0] > runs[index + 1][1][0]}
-    for index, (lane, end, net) in enumerate(runs):
-        knee = (end[0], FFC_Y - 2.6)
-        if index in hop:
-            up = (lane[0] + (knee[0] - lane[0]) * 0.2, ESCAPE_Y + 0.5)
-            down = (lane[0] + (knee[0] - lane[0]) * 0.8, ESCAPE_Y + 1.9)
-            polyline(board, [lane, up], net, "B.Cu")
-            board.append(via(up, net))
-            polyline(board, [up, down], net, "F.Cu")
-            board.append(via(down, net))
-            polyline(board, [down, knee, end], net, "B.Cu")
-        else:
-            polyline(board, [lane, knee, end], net, "B.Cu")
+    # The far row splits left and right so neither corridor gets crowded, and
+    # each trace keeps its own lane over the top, down the side and back in.
+    half = len(far) // 2
+    for group, sign in ((far[:half], -1), (far[half:], 1)):
+        for order, pin in enumerate(group):
+            net, point = pins[pin], contact_pads[pin]
+            # The trace with the shortest way round takes the lowest lane and
+            # the innermost corridor; each one after it nests outside. Getting
+            # this order backwards makes every stub cross its neighbour's run.
+            rank = order if sign < 0 else (len(group) - 1 - order)
+            over = DETOUR_Y + rank * 0.8
+            corridor = CONTACT_X + sign * (INNER_X + rank * 0.8)
+            entry = ENTRY_Y + rank * 0.8
+            run = [point, (point[0], over), (corridor, over), (corridor, entry)]
+            if net == "GND":
+                polyline(board, run + [(point[0], entry)], net, "F.Cu")
+                ground.append((point[0], entry))
+                continue
+            end_pad = zif_pad(net)
+            polyline(board, run + [(end_pad[0], entry)], net, "F.Cu")
+            board.append(via((end_pad[0], entry), net))
+            polyline(board, [(end_pad[0], entry), end_pad], net, "B.Cu")
 
-    for end in sorted(ffc_by_net["GND"]):
-        transfer = (end[0], FFC_Y - 2.2)
-        polyline(board, [transfer, end], "GND", "B.Cu")
-        board.append(via(transfer, "GND"))
-        polyline(board, [transfer, (end[0], BUS_Y)], "GND", "F.Cu")
-        ground.append((end[0], BUS_Y))
-    polyline(board, sorted(set(ground)), "GND", "F.Cu")
+    # One contact carries ground and the ZIF's four ground pads all tie to it,
+    # on F.Cu so the bus never crosses the B.Cu fan.
+    bus = list(ground)
+    for end_pad in sorted(ffc_by_net["GND"]):
+        board.append(via((end_pad[0], BUS_Y), "GND"))
+        polyline(board, [(end_pad[0], BUS_Y), end_pad], "GND", "B.Cu")
+        bus.append((end_pad[0], BUS_Y))
+    bus = sorted(set((x, BUS_Y) for x, _ in bus))
+    polyline(board, bus, "GND", "F.Cu")
+    for point in ground:
+        polyline(board, [point, (point[0], BUS_Y)], "GND", "F.Cu")
 
     path = OUT / f"Symm60HE-Mag-{side}-SpringModule.kicad_pcb"
     path.write_text(dumps(board) + "\n")
@@ -465,7 +470,7 @@ def main():
     with (OUT / "Symm60HE-mag-pogo12-pinout.csv").open("w", newline="") as stream:
         writer = csv.writer(stream)
         writer.writerow(["Contact", "Row", "Left net", "Right net", "Policy"])
-        for pin in range(1, 2 * PER_ROW + 1):
+        for pin in range(1, CONTACTS + 1):
             writer.writerow([pin, "far" if pin in FAR else "near",
                              renamed(maps["Left"][0][pin], "L"),
                              renamed(maps["Right"][0][pin], "R"),

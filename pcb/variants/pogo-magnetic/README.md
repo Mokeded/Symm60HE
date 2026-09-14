@@ -1,31 +1,46 @@
 # Magnetic-pogo variant
 
-Same architecture as `../pogo-neo/` — rigid controller, one floating module per
-side, target soldered straight to the Hall PCB, one 12-way FPC jumper per side
-— with the Mill-Max 854/856 pair replaced by a **12-contact magnetic pogo pair
-in two rows of six**. The magnets are in the connector housing and pull the
-joint into alignment. That is the entire point: the 854/856 pair butts flat and
-self-aligns only within 0.0596 mm radial (see
-[`../pogo/MATE-AND-ASSEMBLY.md`](../pogo/MATE-AND-ASSEMBLY.md)), while the
-kernel aperture lets the module float 0.4 mm per side.
+Same architecture as `../pogo-neo/` -- rigid controller, one floating module
+per side, connector soldered straight to the Hall PCB, one 12-way FPC jumper
+per side -- built around **SUNMON `903-00081` / `904-00080`** (`MC142-09R`), a
+nine-contact magnetic pogo pair. The magnets are internal, N52 NdFeB, one N and
+one S at the ends so the mate is keyed and can only close one way. That is the
+point: the Mill-Max `854`/`856` pair butts flat and self-aligns only within
+0.0596 mm radial, while the kernel aperture lets the module float 0.4 mm per
+side.
 
 **This is a prototype stream, not a release.** `../pogo-neo/` remains the
 routed and released architecture. Read "Status" before ordering anything.
 
 ## The connector
 
-No catalogue manufacturer publishes a datasheet for a 12-contact magnetic pogo
-pair in a keyboard-sized envelope. Mill-Max's own magnetic line, Maxnetic
-878/879, stops at six positions on a 4 mm pitch and stands 9.6 mm above the
-board. LCSC stocks single probes, not multi-contact magnetic pairs. What does
-exist is an ODM family — CFECONN, SUNMON, Promax, Johoty, KLS all build it —
-and the same family in stocked form on AliExpress as "dual row magnetic pogo
-pin connector, 8/10/12/14/20 pole, 2.54 mm". Qwertykeys' own Neo Ergo part is
-from the 2.0 mm branch of that family: measured off their build guide it is
-2 × 8 on ~2.0 mm with ~2.8 mm between rows and a magnet at each end.
+| | `903-00081` spring | `904-00080` target |
+|---|---|---|
+| Contacts | 9, two staggered rows | 9, mirrored |
+| Pitch / row gap | 1.50 / 1.25 mm | same |
+| Contact field | 6.00 mm (5) and 4.50 mm (4) | same |
+| Contact / tail | 1.20 / 0.50 mm | same |
+| Body | 19.80 x 8.30 x 4.50 mm | 21.80 x 8.30 x 4.50 mm |
+| Mount | DIP, plated through-hole | DIP |
+| Magnets | N52 NdFeB, Ni-Cu-Ni, 2 off, keyed N/S | same, reversed |
 
-So these boards are cut to an interface control drawing rather than to a
-supplier part number, and the footprints carry the ICD name, not an MPN.
+Electrically: DC 12 V, 1 A, 50 mOhm max per pin, 100% open/short tested,
+30 +/- 10 gf at 0.50 mm working stroke, **0.70 mm full stroke**, 10,000 cycles,
+-30 to +60 C. Drawings at
+<https://smeconn.com/product/9-pin-double-row-magnetic-connector/>; a
+wire-solderable twin exists as `903-00082` / `904-00079`.
+
+Nine contacts is the link's functional minimum: four ADC channels, three mux
+selects, `+3V3A` and one ground. The four separate grounds of the twelve-way
+interface collapse to one, so return-path quality is worse than `pogo-neo` by
+construction. The module ties the controller ZIF's four ground pads together
+and brings them to that single contact.
+
+Two figures to weigh. **0.70 mm full stroke** against the Mill-Max `854`'s
+1.016 mm leaves less compliance for gasket motion, and `pogo-neo` currently
+banks 0.7582 mm of it. And at 1 A / 50 mOhm this is a signal connector: the
+`+3V3A` analog rail crossing one such contact is the thing to measure on a
+coupon rather than reason about.
 
 ### Parts surveyed
 
@@ -258,31 +273,39 @@ Verified by `tools/verify_mag_pogo.py`, which checks copper inside the
 outline, 0.15 mm clearance between nets per layer, dangling ends, and that
 every contact carries a net:
 
-| Board | Result |
+| Board | Clearance flags |
 |---|---|
-| `Symm60HE-Mag-Left-SpringModule` | clean |
-| `Symm60HE-Mag-Right-SpringModule` | clean |
-| `Symm60HE-Mag-Right-Half` | clean |
-| `Symm60HE-Mag-Left-Half` | **2 clearance flags** |
+| `Symm60HE-Mag-Left-SpringModule` | 6 |
+| `Symm60HE-Mag-Right-SpringModule` | 4 |
+| `Symm60HE-Mag-Left-Half` | 11 |
+| `Symm60HE-Mag-Right-Half` | 11 |
 
-The two flags are one crossing: `MUX_A0` and `ADC_L1` have anchors 0.88 mm
-apart and arrive from opposite contact columns, so they meet on F.Cu in the
-last millimetre before the handoff. The solver prefers assignments that keep
-anchor-adjacent nets in one column and manages it on the right half; on the
-left the anchor order the inherited routing hands us does not allow it. Fix it
-by hand in the layout editor, or by moving one of those two anchors, before
-this half goes anywhere.
+**The routing is not finished.** The footprints are faithful to the two
+drawings and the boards carry the right part, the right land pattern and a
+nine-conductor pinout, but the fanout needs another pass on every board.
+
+What makes it hard is worth recording, because it is a property of the part
+rather than of this attempt. The two rows are staggered, so diagonal
+neighbours sit 1.458 mm apart with 1.25 mm pads: **nothing can be routed
+between the contacts at all**, and 1.00 mm pads -- the largest that would let a
+trace through -- leave a 0.10 mm annular ring on a 0.80 mm drill, which is
+below what a fab will take. Every run therefore has to leave the array at its
+perimeter, which means one row goes straight to the ZIF and the other takes
+F.Cu out over the top, down the module's side and back in. On the Hall PCBs the
+same constraint meets anchors that are packed far tighter than the contacts.
+
+The earlier 2 x 6 on 2.54 mm reached two flags in total; this part is harder to
+break out and currently sits at 32. Fixing it is a routing problem, not a
+part-selection problem.
 
 **No KiCad DRC has been run on these boards.** KiCad 10 was not available in
 the environment that generated them, and `tools/verify_mag_pogo.py` does not
-refill zones, so pour clearance is unchecked. Run `tools/verify_neo_pogo.py`'s
-DRC step against these files before treating any of it as real.
+refill zones, so pour clearance is unchecked.
 
-Also still open: the module grew from 20 x 6 mm to 32 x 18 mm, so the kernel
-aperture, capture lips, compression stops and the spring-travel keep-out in
-`case/fusion360/` are all stale for this variant. The seated stack is unknown
-until a supplier drawing arrives, so the 5.0 mm board-to-board figure does not
-carry over either.
+Also still open: the module is 26 x 16 mm against `pogo-neo`'s 20 x 6, so the
+kernel aperture, capture lips, compression stops and the spring-travel keep-out
+in `case/fusion360/` are stale for this variant. The seated stack has not been
+recomputed for a 4.50 mm tall connector with 0.70 mm of stroke.
 
 ## Regenerate
 

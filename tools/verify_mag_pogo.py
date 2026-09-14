@@ -23,7 +23,7 @@ from shapely.geometry import LineString, Point, Polygon, box
 from shapely.strtree import STRtree
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from make_mag_pogo import OUT, PER_ROW  # noqa: E402
+from make_mag_pogo import CONTACTS, OUT  # noqa: E402
 from sexp import find, first, loads  # noqa: E402
 
 CLEAR = 0.15
@@ -176,7 +176,7 @@ def contact_map_from_csv():
 def main():
     bad = sum(check(name) for name in MODULES + HALVES)
     rows = contact_map_from_csv()
-    assert len(rows) == 2 * PER_ROW, len(rows)
+    assert len(rows) == CONTACTS, len(rows)
     for column, letter in (("Left net", "L"), ("Right net", "R")):
         nets = [row[column] for row in rows]
         assert set(nets) == {"+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2",
