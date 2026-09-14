@@ -67,6 +67,11 @@ Derived from the exact vendor models (`case/fusion360/models/vendor/README.md`):
   auxiliary references are regenerated.
 - The spring-travel keep-out bodies reserve the full initial-height envelope;
   do not build case features inside them.
+- [`MATE-AND-ASSEMBLY.md`](MATE-AND-ASSEMBLY.md) measures the seated pair off
+  the reference assembly and draws it. The 5.0000 mm separation and the
+  0.2569/0.7591 preload and travel check out; the finding that needs acting on
+  is that the pair self-aligns only within 0.0596 mm radial while the kernel
+  aperture allows 0.4 mm per side.
 - Mill-Max's published mid-stroke contact force must be confirmed on the
   current drawing; with the previously quoted 50 g per contact, twelve
   contacts oppose closure with roughly 600 gf (5.9 N) per interface before
