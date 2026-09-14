@@ -27,6 +27,29 @@ from the 2.0 mm branch of that family: measured off their build guide it is
 So these boards are cut to an interface control drawing rather than to a
 supplier part number, and the footprints carry the ICD name, not an MPN.
 
+### Parts surveyed
+
+Recorded so nobody repeats the search. Every catalogue reachable splits the
+two properties this design needs -- *rectangular multi-contact* and *magnetic*
+-- across separate product lines.
+
+| Part number | What it is | Why it is not the part |
+|---|---|---|
+| Mill-Max `878`/`879` Maxnetic | magnetic, full datasheet, 1,000,000 cycles, 25 mOhm, 7.2 A | 2-6 positions only, 4 mm pitch, 9.6 mm above board |
+| CFECONN `MP819-1133-G16100A` | 2.0 mm, 16 pin, double row, 1.40 mm stroke, 70+/-20 gf, 1 A, 50 mOhm, 100k cycles | no magnets, and DIP rather than SMT |
+| CFECONN `BF302501-12200L0F` | 12-pin signal pogo connector | no magnets |
+| CFECONN `MFA038801` | magnetic pogo connector | round, low pin count |
+| KLS `KLS1-12PGC01B` | double row 12 pin pogo connector | no magnets; MOQ 1000; dimensions only on request |
+| AliExpress "dual row magnetic pogo, 8/10/12/14/20 pole, 2.54 mm" | magnetic, double row, 12 pole, stocked | no part number, no datasheet, no model, seller can change it silently |
+
+CFE's magnetic range is round, 2-8 pin; their rectangular multi-pin range is
+not magnetic. Mill-Max's magnetic range stops at six positions. That is the
+whole market as far as published data goes.
+
+The last row is the one to buy for a first prototype: it is the right
+geometry family and it ships tomorrow. Measure what arrives before trusting
+any dimension in the ICD below.
+
 ### ICD MAGPOGO-2x6-P254
 
 | | |
