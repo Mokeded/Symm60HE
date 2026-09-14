@@ -93,16 +93,19 @@ at each end of every module and has no Hall sensors to disturb.
 | Module FPC pigtail into a ZIF on the daughterboard | 12P FPC jumper into the C20111 ZIF on the controller |
 | Modules located by a kernel pocket | Captured 3° apertures with keys and lips |
 | Main PCB drops onto the modules, no cable | Hall PCB mates directly through the 856 target |
-| Custom 2 × 7 OEM module, magnets at both ends | Catalogue 1 × 12 Mill-Max pair, magnets DNP |
+| Custom 2 × 8 OEM module, magnets at both ends | Catalogue 1 × 12 Mill-Max pair, magnets DNP |
 | PCB side is a soldered mating receptacle (housed flat contacts, magnets) | PCB side is a soldered 856 target |
 
 The topology therefore matches row for row; the differences are the connector
 family (custom magnetic OEM pair versus catalogue Mill-Max pair) and the
-magnet policy. The Neo Ergo's PCB-side half is confirmed from a build-stream
-photograph of a bare right-half PCB: a black oval housing soldered at the
-centre-facing edge, a 2 × 7 gold contact array, and a round magnet at each
-end, matching the outline of the kernel-side modules. No part drawing or
-manufacturer part number is published for either half.
+magnet policy. Both halves are now confirmed from the official Qwertykeys
+build guide rather than from a stream capture, and the contact count is
+**16 in a 2 × 8 array**, not the 2 × 7 recorded earlier. The kernel-side
+modules and the PCB-side receptacle are the same black oval housing with a
+round magnet at each end of the contact field. See
+[`NEO-ERGO-REFERENCE.md`](NEO-ERGO-REFERENCE.md) for the frame-by-frame
+reading and the source URLs. No part drawing or manufacturer part number is
+published for either half.
 
 A bare hard-gold pad field on the Hall PCB in place of the 856 would be a
 further simplification (Mill-Max 854 plungers are rated to mate against flat
