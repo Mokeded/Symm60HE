@@ -42,6 +42,7 @@ two properties this design needs -- *rectangular multi-contact* and *magnetic*
 | KLS `KLS1-12PGC01B` | double row 12 pin pogo connector | no magnets; MOQ 1000; dimensions only on request |
 | SUNMON `906-00016` | 12 contact **female**, single row, 2.54 mm, IP65, 16 V/2 A, 30 mOhm, -40/+105 C, 3u" Au | no magnets in the drawing's bill of materials, screw-mounted, and 46.27 mm long overall |
 | SUNMON `905-00030` | 12 contact **male**, 2 x 6 on 2.54 x 2.54 mm, 12.70 mm field, 2 A, 50 mOhm, 40+/-15 gf at 1.0 mm stroke, 1.20 mm full stroke, 20,000 cycles | no magnets, but the right land pattern -- see below |
+| SUNMON `905-00176` | 14 contact **male**, 2 x 7 on 3.60 x 3.60 mm, 21.60 mm field, 1 A, 50 mOhm, 50+/-10 gf, 1.70 mm full stroke, 10,000 cycles; catalogued as "Magnetic Type" | 3.60 mm pitch is too coarse, and the magnets are not in it -- see below |
 | AliExpress "dual row magnetic pogo, 8/10/12/14/20 pole, 2.54 mm" | magnetic, double row, 12 pole, stocked | no part number, no datasheet, no model, seller can change it silently |
 
 CFE's magnetic range is round, 2-8 pin; their rectangular multi-pin range is
@@ -138,6 +139,36 @@ actually builds, and it publishes a recommended layout:
 | Current / resistance | unknown | 2 A / 50 mOhm max |
 | Durability | unknown | 20,000 cycles |
 
+### The magnets are probably not in the connector
+
+Three SUNMON drawings have now been read -- `906-00016`, `905-00030` and
+`905-00176` -- and every one has a bill of materials with exactly two lines:
+gold-plated pogo pins, and a black HTN UL94 V-0 housing. **No magnet, on any of
+them**, including `905-00176`, which their catalogue lists as "14PIN Male
+Connector (Magnetic Type)" and describes as "magnetic attraction compatible".
+
+That phrase is the tell. These are magnet-*compatible* pogo blocks: the
+magnets are meant to sit in the customer's housing around the connector, not
+inside the part. Qwertykeys' own Neo Ergo connector does carry its magnets
+inside the moulding, but that is a custom part built on their volume; nothing
+in a public catalogue works that way above a handful of contacts.
+
+This reframes the sourcing problem, and it reopens an option dismissed earlier
+in favour of chasing an integral-magnet part:
+
+- a catalogue pogo pair carries the contacts -- `905-00030` for this land
+  pattern, or the Mill-Max `854`/`856` pair already routed in `../pogo-neo/`,
+  which is better on every electrical figure (20 mOhm against 50, 7 A against
+  2, 0.51 um gold, exact vendor STEP);
+- two catalogue magnets, a fully specified BOM line, sit in the module and the
+  kernel and do the aligning.
+
+That combination is orderable today, keeps the hash-locked vendor models, and
+still closes the 0.0596 mm alignment gap that motivated this variant. It should
+be costed against the ICD part before anyone pays for tooling.
+
+### Land pattern
+
 The land is the one disagreement. Setting `PAD = 2.00` in
 `tools/make_mag_pogo_footprints.py` matches SUNMON's recommendation and was
 measured: it keeps both modules clean but takes the two halves from two
@@ -154,7 +185,7 @@ to 2.00 and rework the halves once a real magnetic drawing fixes the number.
 | Row to row | 2.54 mm |
 | Contact field | 12.70 x 2.54 mm |
 | Land diameter | 1.50 mm, SMT |
-| Magnets | in the housing, one at each end, centres 21.0 mm apart |
+| Magnets | one at each end of the contact block, centres 21.0 mm apart. See the note below: on catalogue parts these are the customer's, not the connector's |
 | Solder anchors | 3.2 mm square under each magnet boss, mechanical only |
 | Housing envelope | 25.0 x 9.0 mm max |
 | Courtyard | 26.0 x 10.0 mm |
