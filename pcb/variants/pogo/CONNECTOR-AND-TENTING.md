@@ -94,13 +94,19 @@ at each end of every module and has no Hall sensors to disturb.
 | Modules located by a kernel pocket | Captured 3° apertures with keys and lips |
 | Main PCB drops onto the modules, no cable | Hall PCB mates directly through the 856 target |
 | Custom 2 × 7 OEM module, magnets at both ends | Catalogue 1 × 12 Mill-Max pair, magnets DNP |
-| PCB side is bare gold pads | PCB side is a soldered 856 target |
+| PCB side is a soldered mating receptacle (housed flat contacts, magnets) | PCB side is a soldered 856 target |
 
-The last row is the remaining structural difference. Mill-Max 854 plungers
-are rated to mate against flat gold pads, so a bare hard-gold pad field on the
-Hall PCB would remove two Mill-Max parts per keyboard, lower the stack and
-match the Neo Ergo exactly, at the cost of the 856's harder wear surface.
-That option is not in the routed boards; evaluate it on a coupon before
+The topology therefore matches row for row; the differences are the connector
+family (custom magnetic OEM pair versus catalogue Mill-Max pair) and the
+magnet policy. The Neo Ergo's PCB-side half has not been confirmed from a
+part drawing, only from product photographs showing a connector body rather
+than bare pads, which is consistent with how magnetic pogo pairs are supplied.
+
+A bare hard-gold pad field on the Hall PCB in place of the 856 would be a
+further simplification (Mill-Max 854 plungers are rated to mate against flat
+gold pads) and would remove two Mill-Max parts per keyboard, at the cost of
+the 856's harder wear surface and its alignment housing. It is not a Neo Ergo
+feature and is not in the routed boards; evaluate it on a coupon before
 changing them.
 
 ## Superseded 16-contact stream
