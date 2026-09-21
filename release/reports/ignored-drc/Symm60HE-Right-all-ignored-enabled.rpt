@@ -1,1162 +1,1060 @@
 ** Drc report for Symm60HE-Right.kicad_pcb **
-** Created on 2026-09-13T20:11:44 **
+** Created on 2026-09-21T10:24:37 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 361 DRC violations **
+** Found 304 DRC violations **
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(180.8559 mm, 92.9251 mm): Footprint SR3
 [missing_courtyard]: Footprint has no courtyard defined
     Local override; warning
     @(284.3210 mm, 66.6750 mm): Footprint SR2
 [missing_courtyard]: Footprint has no courtyard defined
     Local override; warning
-    @(176.9940 mm, 88.9580 mm): Footprint SR3
-[missing_courtyard]: Footprint has no courtyard defined
-    Local override; warning
     @(279.0830 mm, 9.5250 mm): Footprint SR1
-[missing_courtyard]: Footprint has no courtyard defined
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(221.0911 mm, 79.4330 mm): Footprint CRGBR28
+    @(227.0000 mm, 82.4250 mm): Footprint AMR4
+[npth_inside_courtyard]: NPTH inside courtyard
     Local override; warning
-    @(253.3650 mm, 85.7250 mm): Footprint KMR30N
-[missing_courtyard]: Footprint has no courtyard defined
+    @(253.3650 mm, 80.6450 mm): NPTH pad of HER30
+    @(255.7460 mm, 78.0000 mm): Footprint DR29
+[npth_inside_courtyard]: NPTH inside courtyard
     Local override; warning
-    @(258.1270 mm, 85.7250 mm): Footprint KMR30A
-[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2495 mm; actual 0.0000 mm)
-    Rule: board setup constraints; warning
-    @(272.4150 mm, 61.5950 mm): NPTH pad of HER24
-    @(272.4148 mm, 59.6900 mm): NPTH pad of SR2
+    @(258.1270 mm, 80.6450 mm): NPTH pad of HER31
+    @(255.7460 mm, 78.0000 mm): Footprint DR29
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(284.8650 mm, 77.0000 mm): Footprint CR34A
+    @(289.0840 mm, 78.0000 mm): Footprint DR31
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(164.2090 mm, 58.0000 mm): Footprint JR1
+    @(167.0000 mm, 49.0000 mm): Footprint MHR1
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(167.0000 mm, 49.0000 mm): NPTH pad of MHR1
+    @(164.2090 mm, 58.0000 mm): Footprint JR1
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(222.2634 mm, 86.9516 mm): NPTH pad of HER35
+    @(227.0000 mm, 82.4250 mm): Footprint AMR4
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(286.7030 mm, 80.6450 mm): NPTH pad of HER33
+    @(289.0840 mm, 78.0000 mm): Footprint DR31
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(291.4650 mm, 80.6450 mm): NPTH pad of HER34
+    @(289.0840 mm, 78.0000 mm): Footprint DR31
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(158.4558 mm, 29.4404 mm): Segment on Edge.Cuts
+    @(162.2386 mm, 29.5244 mm): Segment of DR14 on B.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(165.3879 mm, 28.3424 mm): Segment on Edge.Cuts
+    @(169.3353 mm, 27.6664 mm): Segment of DR14 on B.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(280.5830 mm, 4.1750 mm): Segment of DR33 on Edge.Cuts
+    @(281.6830 mm, 4.1750 mm): Reference field of DR33
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(240.8256 mm, 0.5000 mm): Segment on Edge.Cuts
+    @(277.2080 mm, 0.5250 mm): Segment of DR33 on B.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(240.8256 mm, 0.5000 mm): Segment on Edge.Cuts
+    @(280.9580 mm, 0.5250 mm): Segment of DR33 on B.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(240.8256 mm, 0.5000 mm): Segment on Edge.Cuts
+    @(280.9580 mm, 7.8250 mm): Segment of DR33 on B.Silkscreen
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(273.0000 mm, 21.0000 mm): Footprint MHR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(180.8559 mm, 92.9251 mm): Footprint SR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(299.0000 mm, 44.0000 mm): Footprint MHR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(204.0000 mm, 92.0000 mm): Footprint MHR2
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(284.3210 mm, 66.6750 mm): Footprint SR2
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(298.2090 mm, 87.9780 mm): Footprint MHR4
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(196.2090 mm, 30.0000 mm): Footprint MHR1
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(159.2090 mm, 95.4780 mm): Footprint MHR2
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(176.9940 mm, 88.9580 mm): Footprint SR3
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(297.2090 mm, 21.9780 mm): Footprint MHR3
+    @(167.0000 mm, 49.0000 mm): Footprint MHR1
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(279.0830 mm, 9.5250 mm): Footprint SR1
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(170.9061 mm, 44.4078 mm): Footprint CR21A
+    @(290.4500 mm, 23.9750 mm): Footprint CRGBR8
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(259.8000 mm, 87.0000 mm): Footprint CR30A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(276.1580 mm, 16.4250 mm): Footprint CR3B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(162.5893 mm, 7.2415 mm): Footprint CR8A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(208.0308 mm, 60.2874 mm): Footprint CR27A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(184.2742 mm, 95.1360 mm): Footprint CR36B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(256.2090 mm, 62.9780 mm): Footprint CMR3
+    @(174.7480 mm, 42.9831 mm): Footprint CR15B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(292.3500 mm, 35.4750 mm): Footprint CR11B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(165.6876 mm, 64.0405 mm): Footprint CR29A
+    @(216.3356 mm, 23.1595 mm): Footprint CR12A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(284.8650 mm, 78.8250 mm): Footprint CR34A
+    @(209.9261 mm, 81.3103 mm): Footprint CR35A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(272.4830 mm, 2.6250 mm): Footprint CR4A
+    @(266.6380 mm, 23.9750 mm): Footprint CRGBR9
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(224.8213 mm, 2.6591 mm): Footprint CR1A
+    @(251.1270 mm, 78.8250 mm): Footprint CR31A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(185.5339 mm, 56.6842 mm): Footprint CR21B
+    @(221.0911 mm, 79.4330 mm): Footprint CRGBR28
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(290.9210 mm, 54.5250 mm): Footprint CR18B
+    @(180.4544 mm, 85.3768 mm): Footprint DR32
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(186.8928 mm, 61.7674 mm): Footprint CR28A
+    @(255.7460 mm, 78.0000 mm): Footprint DR29
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(293.3030 mm, 92.6250 mm): Footprint CR33B
+    @(170.2771 mm, 68.3284 mm): Footprint CR29A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(192.2565 mm, 42.2441 mm): Footprint CR20A
+    @(230.9104 mm, 41.2926 mm): Footprint CR16A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(183.6704 mm, 4.9350 mm): Footprint CR7A
+    @(237.4647 mm, 40.2482 mm): Footprint DR16
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(280.1030 mm, 78.8250 mm): Footprint CR33A
+    @(288.8000 mm, 71.5000 mm): Footprint CR26A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(262.9580 mm, 2.6250 mm): Footprint CR3A
+    @(219.3137 mm, 17.6499 mm): Footprint CR6B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(154.2090 mm, 56.0000 mm): Footprint JR1
+    @(178.0845 mm, 9.4497 mm): Footprint CRGBR7
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(154.6853 mm, 27.1925 mm): Footprint CR15A
+    @(196.8884 mm, 6.4581 mm): Footprint CRGBR6
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(259.9650 mm, 73.5750 mm): Footprint CR23B
+    @(217.8644 mm, 41.3362 mm): Footprint DR15
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(268.5380 mm, 35.4750 mm): Footprint CR10B
+    @(173.7507 mm, 48.2924 mm): Footprint CR21A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(283.2090 mm, 55.9780 mm): Footprint CMR4
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(238.0507 mm, 16.4309 mm): Footprint CR1B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(183.2090 mm, 67.4780 mm): Footprint AMR1
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(169.7138 mm, 82.7800 mm): Footprint CR36A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(232.4780 mm, 40.7250 mm): Footprint CR16A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(198.0256 mm, 17.5290 mm): Footprint CR7B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(175.1240 mm, 24.8960 mm): Footprint CR14A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(287.2460 mm, 59.7750 mm): Footprint CR26A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(245.6780 mm, 54.5250 mm): Footprint CR16B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(204.9187 mm, 3.2906 mm): Footprint CR6A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(257.1080 mm, 16.4250 mm): Footprint CR2B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(285.6830 mm, 16.4250 mm): Footprint CR4B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(295.2080 mm, 16.4250 mm): Footprint CR5B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(212.2090 mm, 71.9780 mm): Footprint CMR2
+    @(284.8650 mm, 77.0000 mm): Footprint CR34A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(246.7650 mm, 59.7750 mm): Footprint CR23A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(282.0080 mm, 2.6250 mm): Footprint CR5A
+    @(178.3609 mm, 28.4302 mm): Footprint CR14A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(236.2880 mm, 21.6750 mm): Footprint CR9A
+    @(244.8145 mm, 54.3829 mm): Footprint CR16B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(240.9126 mm, 73.5765 mm): Footprint CR22B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(180.3584 mm, 76.2655 mm): Footprint CR29B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(265.8150 mm, 59.7750 mm): Footprint CR24A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(300.4460 mm, 73.5750 mm): Footprint CR26B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(189.6880 mm, 37.2480 mm): Footprint CR14B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(251.5270 mm, 40.7250 mm): Footprint CR17A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(244.2090 mm, 64.9780 mm): Footprint AMR3
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(230.4046 mm, 35.5079 mm): Footprint CR12B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(227.7054 mm, 59.7835 mm): Footprint CR22A
+    @(185.1483 mm, 85.6154 mm): Footprint CRGBR32
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(279.1500 mm, 21.6750 mm): Footprint CR11A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(205.7090 mm, 65.9780 mm): Footprint AMR2
+    @(164.2090 mm, 58.0000 mm): Footprint JR1
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(298.0650 mm, 92.6250 mm): Footprint CR34B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(226.5745 mm, 54.5778 mm): Footprint CR19B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(206.3575 mm, 55.1219 mm): Footprint CR20B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(279.0150 mm, 92.6250 mm): Footprint CR32B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(210.4875 mm, 35.8814 mm): Footprint CR13B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(264.7270 mm, 54.5250 mm): Footprint CR17B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(208.1621 mm, 79.4711 mm): Footprint CR35A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(290.9210 mm, 73.5750 mm): Footprint CR25B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(265.8150 mm, 78.8250 mm): Footprint CR32A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(191.2090 mm, 71.9780 mm): Footprint CMR1
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(277.7210 mm, 40.7250 mm): Footprint CR18A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(217.0454 mm, 21.8621 mm): Footprint CR12A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(218.6353 mm, 16.5774 mm): Footprint CR6B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(259.8000 mm, 83.0000 mm): Footprint CR30B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(177.2667 mm, 19.4585 mm): Footprint CR8B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(201.1532 mm, 74.4686 mm): Footprint CR28B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(275.2090 mm, 52.9780 mm): Footprint AMR4
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(221.7839 mm, 92.8549 mm): Footprint CR35B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(279.0150 mm, 73.5750 mm): Footprint CR24B
+    @(227.0000 mm, 82.4250 mm): Footprint AMR4
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(255.3380 mm, 21.6750 mm): Footprint CR10A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(243.9080 mm, 2.6250 mm): Footprint CR2A
+    @(269.5000 mm, 40.0000 mm): Footprint AMR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(187.0971 mm, 100.1513 mm): Footprint CR36B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(295.2080 mm, 16.4250 mm): Footprint CR5B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(251.5270 mm, 40.7250 mm): Footprint CR17A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(242.1582 mm, 40.0022 mm): Footprint CRGBR16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(289.0840 mm, 78.0000 mm): Footprint DR31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(283.3210 mm, 59.0750 mm): Footprint DR21
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(185.4734 mm, 79.8936 mm): Footprint CR29B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(265.8150 mm, 78.8250 mm): Footprint CR32A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(222.5387 mm, 40.8449 mm): Footprint CRGBR15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(215.9920 mm, 4.2235 mm): Footprint CRGBR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(195.5247 mm, 63.6200 mm): Footprint DR26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(207.9346 mm, 62.3653 mm): Footprint CR27A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(267.2150 mm, 59.0750 mm): Footprint DR22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(253.3650 mm, 59.0750 mm): Footprint DR23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(180.1599 mm, 46.5686 mm): Footprint DR20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(227.5005 mm, 21.2821 mm): Footprint CRGBR11
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(262.9473 mm, 43.6486 mm): Footprint CMR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(262.8270 mm, 40.0250 mm): Footprint CRGBR17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(255.2080 mm, 2.7250 mm): Footprint CRGBR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(189.4123 mm, 25.9711 mm): Footprint CRGBR13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(270.0000 mm, 48.0000 mm): Footprint AMR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(264.7270 mm, 54.5250 mm): Footprint CR17B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(264.1270 mm, 81.1250 mm): Footprint CRGBR29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(290.9460 mm, 59.0750 mm): Footprint DR34
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(272.5000 mm, 78.0000 mm): Footprint RBPR31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(258.1270 mm, 40.0250 mm): Footprint DR17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(197.3923 mm, 25.1439 mm): Footprint CR13A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(285.5807 mm, 7.0570 mm): Footprint CRGBR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(288.6080 mm, 14.0000 mm): Footprint CR5A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(249.4880 mm, 35.4750 mm): Footprint CR9B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(196.5145 mm, 22.8646 mm): Footprint CR13A
+    @(234.0720 mm, 59.5604 mm): Footprint DR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(280.1030 mm, 78.8250 mm): Footprint CR33A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(285.7500 mm, 23.9750 mm): Footprint DR8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(227.5177 mm, 60.6049 mm): Footprint CR22A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(263.4473 mm, 51.6486 mm): Footprint CMR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(259.9650 mm, 92.6250 mm): Footprint CR30B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(293.3030 mm, 92.6250 mm): Footprint CR33B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(250.5080 mm, 2.7250 mm): Footprint DR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(211.3737 mm, 42.7223 mm): Footprint CR19A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(241.0527 mm, 69.8514 mm): Footprint CMR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(204.3117 mm, 76.9090 mm): Footprint CR28B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(198.9631 mm, 43.5913 mm): Footprint DR19
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(296.5000 mm, 49.5000 mm): Footprint AMR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(214.4252 mm, 60.9792 mm): Footprint DR25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(272.0830 mm, 16.1750 mm): Footprint CRGBR33
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(233.5527 mm, 78.8514 mm): Footprint CMR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(257.1080 mm, 16.4250 mm): Footprint CR2B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(268.5380 mm, 35.4750 mm): Footprint CR10B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(277.1150 mm, 81.1250 mm): Footprint CRGBR36
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(216.4168 mm, 79.9244 mm): Footprint DR28
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(283.3210 mm, 62.6750 mm): Footprint CRGBR21
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(289.0210 mm, 40.0250 mm): Footprint CRGBR18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(247.5880 mm, 20.9750 mm): Footprint CRGBR10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(284.3210 mm, 40.0250 mm): Footprint DR18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(279.0150 mm, 92.6250 mm): Footprint CR32B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(192.2462 mm, 7.1934 mm): Footprint DR6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(189.1155 mm, 65.3438 mm): Footprint CR28A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(272.5853 mm, 2.6570 mm): Footprint DR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(222.5047 mm, 74.7099 mm): Footprint CR27B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(208.5572 mm, 23.2665 mm): Footprint CRGBR12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(238.3763 mm, 16.3133 mm): Footprint CR1B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(231.0684 mm, 2.9775 mm): Footprint DR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(290.9210 mm, 54.5250 mm): Footprint CR18B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(290.9210 mm, 73.5750 mm): Footprint CR25B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(267.2150 mm, 62.6750 mm): Footprint CRGBR22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(193.5572 mm, 39.9954 mm): Footprint CR14B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(200.1669 mm, 62.8848 mm): Footprint CRGBR26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(259.9650 mm, 73.5750 mm): Footprint CR23B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(200.9082 mm, 19.6922 mm): Footprint CR7B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(262.9580 mm, 2.6250 mm): Footprint CR3A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(236.2880 mm, 21.6750 mm): Footprint CR9A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(267.5000 mm, 71.5000 mm): Footprint CR24A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(289.9473 mm, 53.1486 mm): Footprint CMR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(188.9470 mm, 59.8577 mm): Footprint CR21B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(235.7619 mm, 2.7315 mm): Footprint CRGBR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(166.9080 mm, 11.1186 mm): Footprint CR8A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(279.0830 mm, 14.0000 mm): Footprint CR4A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(300.4460 mm, 73.5750 mm): Footprint CR26B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(170.6656 mm, 29.3540 mm): Footprint CRGBR14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(203.6053 mm, 42.8561 mm): Footprint CRGBR19
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(261.9380 mm, 23.9750 mm): Footprint DR9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(277.7210 mm, 40.7250 mm): Footprint CR18A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(222.8262 mm, 21.7734 mm): Footprint DR11
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(211.9625 mm, 37.4885 mm): Footprint CR13B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(272.5853 mm, 7.0570 mm): Footprint CRGBR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(246.7650 mm, 78.8250 mm): Footprint CR30A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(225.9439 mm, 55.0669 mm): Footprint CR19B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(176.6863 mm, 66.6046 mm): Footprint DR27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(241.4218 mm, 73.6951 mm): Footprint CR22B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(211.3177 mm, 4.7148 mm): Footprint DR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(204.7434 mm, 5.3052 mm): Footprint CR6A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(285.6830 mm, 16.4250 mm): Footprint CR4B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(181.3285 mm, 65.8694 mm): Footprint CRGBR27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(182.1044 mm, 22.6838 mm): Footprint CR8B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(159.5517 mm, 31.4180 mm): Footprint CR15A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(297.4650 mm, 81.1250 mm): Footprint CRGBR31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(166.0236 mm, 30.0893 mm): Footprint DR14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(174.6148 mm, 85.6989 mm): Footprint CR36A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(203.8830 mm, 23.7578 mm): Footprint DR12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(264.7270 mm, 92.6250 mm): Footprint CR31B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(219.0994 mm, 60.4880 mm): Footprint CRGBR25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(230.9057 mm, 35.5040 mm): Footprint CR12B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(184.8020 mm, 45.8334 mm): Footprint CRGBR20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(234.0000 mm, 62.5000 mm): Footprint RBPR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(185.7119 mm, 8.1271 mm): Footprint CR7A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(279.0830 mm, 4.1750 mm): Footprint DR33
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(243.9080 mm, 2.6250 mm): Footprint CR2A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(238.7656 mm, 59.3144 mm): Footprint CRGBR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(272.4150 mm, 81.1250 mm): Footprint DR36
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(276.1580 mm, 16.4250 mm): Footprint CR3B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(279.0150 mm, 73.5750 mm): Footprint CR24B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(207.7501 mm, 56.8803 mm): Footprint CR20B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(173.4425 mm, 10.1850 mm): Footprint DR7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(184.7701 mm, 26.7063 mm): Footprint DR13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(234.5000 mm, 73.5000 mm): Footprint AMR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(290.9460 mm, 62.6750 mm): Footprint CRGBR34
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(192.5539 mm, 45.3152 mm): Footprint CR20A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(275.5000 mm, 5.5000 mm): Footprint RBPR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(224.4721 mm, 3.2231 mm): Footprint CR1A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(242.8880 mm, 20.9750 mm): Footprint DR10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(285.5807 mm, 2.6570 mm): Footprint DR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(224.4964 mm, 93.6549 mm): Footprint CR35B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(277.7210 mm, 59.7750 mm): Footprint CR25A
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(221.6512 mm, 73.6726 mm): Footprint CR27B
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(213.1115 mm, 41.0342 mm): Footprint CR19A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(169.3627 mm, 39.4095 mm): Footprint CR15B
+    @(258.0650 mm, 59.0750 mm): Footprint CRGBR23
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(167.0000 mm, 49.0000 mm): Circle of MHR1 on F.Silkscreen
+    @(166.3590 mm, 64.7000 mm): Segment of JR1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(177.1426 mm, 87.7997 mm): Segment of DR32 on B.Silkscreen
+    @(180.8611 mm, 87.9448 mm): Reference field of DR32
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(195.9314 mm, 66.1880 mm): Reference field of DR26
+    @(192.2130 mm, 66.0429 mm): Segment of DR26 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(177.0930 mm, 69.1726 mm): Reference field of DR27
+    @(173.3746 mm, 69.0275 mm): Segment of DR27 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(237.6008 mm, 42.8446 mm): Reference field of DR16
+    @(233.9178 mm, 42.3117 mm): Segment of DR16 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(214.4304 mm, 43.5825 mm): Segment of DR15 on B.Silkscreen
+    @(218.1362 mm, 43.9220 mm): Reference field of DR15
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(230.5251 mm, 61.6239 mm): Segment of DR24 on B.Silkscreen
+    @(234.2081 mm, 62.1568 mm): Reference field of DR24
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(212.9828 mm, 82.1706 mm): Segment of DR28 on B.Silkscreen
+    @(216.6886 mm, 82.5101 mm): Reference field of DR28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(199.3698 mm, 46.1593 mm): Reference field of DR19
+    @(195.6514 mm, 46.0142 mm): Segment of DR19 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(214.6970 mm, 63.5650 mm): Reference field of DR25
+    @(210.9912 mm, 63.2255 mm): Segment of DR25 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(227.5215 mm, 5.0410 mm): Segment of DR2 on B.Silkscreen
+    @(231.2045 mm, 5.5739 mm): Reference field of DR2
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(223.0980 mm, 24.3592 mm): Reference field of DR11
+    @(219.3922 mm, 24.0197 mm): Segment of DR11 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(207.8837 mm, 6.9611 mm): Segment of DR1 on B.Silkscreen
+    @(211.5895 mm, 7.3006 mm): Reference field of DR1
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(200.4490 mm, 26.0041 mm): Segment of DR12 on B.Silkscreen
+    @(204.1548 mm, 26.3436 mm): Reference field of DR12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(176.8482 mm, 48.9915 mm): Segment of DR20 on B.Silkscreen
+    @(180.5666 mm, 49.1366 mm): Reference field of DR20
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(166.4303 mm, 32.6573 mm): Reference field of DR14
+    @(162.7119 mm, 32.5122 mm): Segment of DR14 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(181.4584 mm, 29.1292 mm): Segment of DR13 on B.Silkscreen
+    @(185.1768 mm, 29.2743 mm): Reference field of DR13
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(188.9345 mm, 9.6163 mm): Segment of DR6 on B.Silkscreen
+    @(192.6529 mm, 9.7614 mm): Reference field of DR6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(173.8492 mm, 12.7530 mm): Reference field of DR7
+    @(170.1308 mm, 12.6079 mm): Segment of DR7 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(261.7770 mm, 41.9000 mm): Segment of DR17 on B.Silkscreen
+    @(263.1000 mm, 40.0000 mm): Reference field of AMR2
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(287.2960 mm, 60.9500 mm): Segment of DR34 on B.Silkscreen
+    @(290.9460 mm, 61.6750 mm): Reference field of DR34
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(272.5853 mm, 5.2570 mm): Reference field of DR4
+    @(268.9353 mm, 4.5320 mm): Segment of DR4 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(280.9580 mm, 7.8250 mm): Segment of DR33 on B.Silkscreen
+    @(281.6830 mm, 4.1750 mm): Reference field of DR33
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(281.9307 mm, 1.5070 mm): Segment of DR5 on B.Silkscreen
+    @(281.6830 mm, 4.1750 mm): Reference field of DR33
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(281.9307 mm, 4.5320 mm): Segment of DR5 on B.Silkscreen
+    @(281.6830 mm, 4.1750 mm): Reference field of DR33
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(186.3840 mm, 65.0030 mm): Pad 15 [HE_R03] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(231.4450 mm, 79.9500 mm): Pad 16 [+3V3A] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(187.6540 mm, 65.0030 mm): Pad 16 [+3V3A] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(222.5550 mm, 79.9500 mm): Pad 9 [MUX_A2] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(183.8440 mm, 65.0030 mm): Pad 13 [HE_R01] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(223.8250 mm, 79.9500 mm): Pad 10 [MUX_A1] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(185.1140 mm, 65.0030 mm): Pad 14 [HE_R02] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(225.0950 mm, 79.9500 mm): Pad 11 [MUX_A0] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(178.7640 mm, 65.0030 mm): Pad 9 [MUX_A2] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(226.3650 mm, 79.9500 mm): Pad 12 [HE_R28] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(180.0340 mm, 65.0030 mm): Pad 10 [MUX_A1] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(227.6350 mm, 79.9500 mm): Pad 13 [HE_R25] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(181.3040 mm, 65.0030 mm): Pad 11 [MUX_A0] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(228.9050 mm, 79.9500 mm): Pad 14 [HE_R26] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 65.5280 mm): Segment of AMR1 on B.Silkscreen
-    @(182.5740 mm, 65.0030 mm): Pad 12 [HE_R04] of AMR1 on B.Cu
+    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
+    @(230.1750 mm, 79.9500 mm): Pad 15 [HE_R27] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(187.6540 mm, 69.9530 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(232.5950 mm, 71.0250 mm): Pad 11 [MUX_A0] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(186.3840 mm, 69.9530 mm): Pad 2 [HE_R07] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(233.8650 mm, 71.0250 mm): Pad 12 [HE_R20] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(185.1140 mm, 69.9530 mm): Pad 3 [ADC_R1] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(235.1350 mm, 71.0250 mm): Pad 13 [HE_R17] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(178.7640 mm, 69.9530 mm): Pad 8 [GND] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(236.4050 mm, 71.0250 mm): Pad 14 [HE_R18] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(183.8440 mm, 69.9530 mm): Pad 4 [HE_R08] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(237.6750 mm, 71.0250 mm): Pad 15 [HE_R19] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(182.5740 mm, 69.9530 mm): Pad 5 [HE_R06] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(238.9450 mm, 71.0250 mm): Pad 16 [+3V3A] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(181.3040 mm, 69.9530 mm): Pad 6 [GND] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(231.3250 mm, 71.0250 mm): Pad 10 [MUX_A1] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1590 mm, 69.4280 mm): Segment of AMR1 on B.Silkscreen
-    @(180.0340 mm, 69.9530 mm): Pad 7 [GND] of AMR1 on B.Cu
+    @(239.4500 mm, 71.5500 mm): Segment of AMR3 on B.Silkscreen
+    @(230.0550 mm, 71.0250 mm): Pad 9 [MUX_A2] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(187.6540 mm, 70.1530 mm): Circle of AMR1 on B.Silkscreen
-    @(187.6540 mm, 69.9530 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(233.8650 mm, 75.9750 mm): Pad 5 [HE_R22] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(239.7640 mm, 62.5030 mm): Pad 9 [MUX_A2] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(232.5950 mm, 75.9750 mm): Pad 6 [GND] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(241.0340 mm, 62.5030 mm): Pad 10 [MUX_A1] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(231.3250 mm, 75.9750 mm): Pad 7 [GND] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(242.3040 mm, 62.5030 mm): Pad 11 [MUX_A0] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(235.1350 mm, 75.9750 mm): Pad 4 [HE_R24] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(243.5740 mm, 62.5030 mm): Pad 12 [HE_R20] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(238.9450 mm, 75.9750 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(244.8440 mm, 62.5030 mm): Pad 13 [HE_R17] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(237.6750 mm, 75.9750 mm): Pad 2 [HE_R23] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(246.1140 mm, 62.5030 mm): Pad 14 [HE_R18] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(236.4050 mm, 75.9750 mm): Pad 3 [ADC_R3] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(247.3840 mm, 62.5030 mm): Pad 15 [HE_R19] of AMR3 on B.Cu
+    @(239.4500 mm, 75.4500 mm): Segment of AMR3 on B.Silkscreen
+    @(230.0550 mm, 75.9750 mm): Pad 8 [GND] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 63.0280 mm): Segment of AMR3 on B.Silkscreen
-    @(248.6540 mm, 62.5030 mm): Pad 16 [+3V3A] of AMR3 on B.Cu
+    @(238.9450 mm, 76.1750 mm): Circle of AMR3 on B.Silkscreen
+    @(238.9450 mm, 75.9750 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(241.0340 mm, 67.4530 mm): Pad 7 [GND] of AMR3 on B.Cu
+    @(234.2081 mm, 62.1568 mm): Reference field of DR24
+    @(234.5100 mm, 62.5000 mm): Pad 2 [RGB_R_24] of RBPR24 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(239.7640 mm, 67.4530 mm): Pad 8 [GND] of AMR3 on B.Cu
+    @(234.2081 mm, 62.1568 mm): Reference field of DR24
+    @(233.4900 mm, 62.5000 mm): Pad 1 [RGB_R_23] of RBPR24 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(248.6540 mm, 67.4530 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(231.4450 mm, 84.9000 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(247.3840 mm, 67.4530 mm): Pad 2 [HE_R23] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(230.1750 mm, 84.9000 mm): Pad 2 [HE_R31] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(246.1140 mm, 67.4530 mm): Pad 3 [ADC_R3] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(228.9050 mm, 84.9000 mm): Pad 3 [ADC_R4] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(244.8440 mm, 67.4530 mm): Pad 4 [HE_R24] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(227.6350 mm, 84.9000 mm): Pad 4 [HE_R32] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(243.5740 mm, 67.4530 mm): Pad 5 [HE_R22] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(226.3650 mm, 84.9000 mm): Pad 5 [HE_R30] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.1590 mm, 66.9280 mm): Segment of AMR3 on B.Silkscreen
-    @(242.3040 mm, 67.4530 mm): Pad 6 [GND] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(225.0950 mm, 84.9000 mm): Pad 6 [GND] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(248.6540 mm, 67.6530 mm): Circle of AMR3 on B.Silkscreen
-    @(248.6540 mm, 67.4530 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(223.8250 mm, 84.9000 mm): Pad 7 [GND] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(212.1090 mm, 65.9780 mm): Reference field of AMR2
-    @(213.7334 mm, 65.9953 mm): Pad 2 [GND] of HER27 on B.Cu
+    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
+    @(222.5550 mm, 84.9000 mm): Pad 8 [GND] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(206.3440 mm, 63.5030 mm): Pad 13 [HE_R09] of AMR2 on B.Cu
+    @(231.4450 mm, 85.1000 mm): Circle of AMR4 on B.Silkscreen
+    @(231.4450 mm, 84.9000 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(207.6140 mm, 63.5030 mm): Pad 14 [HE_R10] of AMR2 on B.Cu
+    @(270.8650 mm, 60.9500 mm): Segment of DR22 on B.Silkscreen
+    @(272.4148 mm, 59.6900 mm): NPTH pad of SR2
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(208.8840 mm, 63.5030 mm): Pad 15 [HE_R11] of AMR2 on B.Cu
+    @(272.4150 mm, 83.7250 mm): Reference field of DR36
+    @(271.2775 mm, 84.7750 mm): Pad 2 [GND] of HER32 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(210.1540 mm, 63.5030 mm): Pad 16 [+3V3A] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(273.9450 mm, 42.4750 mm): Pad 9 [MUX_A2] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(201.2640 mm, 63.5030 mm): Pad 9 [MUX_A2] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(272.6750 mm, 42.4750 mm): Pad 10 [MUX_A1] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(202.5340 mm, 63.5030 mm): Pad 10 [MUX_A1] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(271.4050 mm, 42.4750 mm): Pad 11 [MUX_A0] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(203.8040 mm, 63.5030 mm): Pad 11 [MUX_A0] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(270.1350 mm, 42.4750 mm): Pad 12 [HE_R12] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 64.0280 mm): Segment of AMR2 on B.Silkscreen
-    @(205.0740 mm, 63.5030 mm): Pad 12 [HE_R12] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(266.3250 mm, 42.4750 mm): Pad 15 [HE_R11] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(207.6140 mm, 68.4530 mm): Pad 3 [ADC_R2] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(265.0550 mm, 42.4750 mm): Pad 16 [+3V3A] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(210.1540 mm, 68.4530 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(268.8650 mm, 42.4750 mm): Pad 13 [HE_R09] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(208.8840 mm, 68.4530 mm): Pad 2 [HE_R15] of AMR2 on B.Cu
+    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
+    @(267.5950 mm, 42.4750 mm): Pad 14 [HE_R10] of AMR2 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(206.3440 mm, 68.4530 mm): Pad 4 [HE_R16] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(269.3650 mm, 45.5250 mm): Pad 4 [HE_R08] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(205.0740 mm, 68.4530 mm): Pad 5 [HE_R14] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(270.6350 mm, 45.5250 mm): Pad 5 [HE_R06] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(203.8040 mm, 68.4530 mm): Pad 6 [GND] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(271.9050 mm, 45.5250 mm): Pad 6 [GND] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(202.5340 mm, 68.4530 mm): Pad 7 [GND] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(273.1750 mm, 45.5250 mm): Pad 7 [GND] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.6590 mm, 67.9280 mm): Segment of AMR2 on B.Silkscreen
-    @(201.2640 mm, 68.4530 mm): Pad 8 [GND] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(274.4450 mm, 45.5250 mm): Pad 8 [GND] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(210.1540 mm, 68.6530 mm): Circle of AMR2 on B.Silkscreen
-    @(210.1540 mm, 68.4530 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(265.5550 mm, 45.5250 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(250.6090 mm, 64.9780 mm): Reference field of AMR3
-    @(252.2275 mm, 65.7250 mm): Pad 2 [GND] of HER23 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(266.8250 mm, 45.5250 mm): Pad 2 [HE_R07] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(277.1140 mm, 50.5030 mm): Pad 14 [HE_R26] of AMR4 on B.Cu
+    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
+    @(268.0950 mm, 45.5250 mm): Pad 3 [ADC_R1] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(278.3840 mm, 50.5030 mm): Pad 15 [HE_R27] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(274.4450 mm, 50.4750 mm): Pad 9 [MUX_A2] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(279.6540 mm, 50.5030 mm): Pad 16 [+3V3A] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(273.1750 mm, 50.4750 mm): Pad 10 [MUX_A1] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(270.7640 mm, 50.5030 mm): Pad 9 [MUX_A2] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(271.9050 mm, 50.4750 mm): Pad 11 [MUX_A0] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(272.0340 mm, 50.5030 mm): Pad 10 [MUX_A1] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(270.6350 mm, 50.4750 mm): Pad 12 [HE_R04] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(273.3040 mm, 50.5030 mm): Pad 11 [MUX_A0] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(269.3650 mm, 50.4750 mm): Pad 13 [HE_R01] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(274.5740 mm, 50.5030 mm): Pad 12 [HE_R28] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(266.8250 mm, 50.4750 mm): Pad 15 [HE_R03] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 51.0280 mm): Segment of AMR4 on B.Silkscreen
-    @(275.8440 mm, 50.5030 mm): Pad 13 [HE_R25] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(268.0950 mm, 50.4750 mm): Pad 14 [HE_R02] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(279.6540 mm, 55.4530 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
+    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
+    @(265.5550 mm, 50.4750 mm): Pad 16 [+3V3A] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(278.3840 mm, 55.4530 mm): Pad 2 [HE_R31] of AMR4 on B.Cu
+    @(265.5550 mm, 45.3250 mm): Circle of AMR1 on B.Silkscreen
+    @(265.5550 mm, 45.5250 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(275.8440 mm, 55.4530 mm): Pad 4 [HE_R32] of AMR4 on B.Cu
+    @(240.9000 mm, 73.5000 mm): Reference field of AMR3
+    @(241.9012 mm, 73.6705 mm): Pad 2 [GND] of CR22B on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(274.5740 mm, 55.4530 mm): Pad 5 [HE_R30] of AMR4 on B.Cu
+    @(240.9000 mm, 73.5000 mm): Reference field of AMR3
+    @(240.9424 mm, 73.7197 mm): Pad 1 [HE_R22] of CR22B on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(273.3040 mm, 55.4530 mm): Pad 6 [GND] of AMR4 on B.Cu
+    @(263.1000 mm, 40.0000 mm): Reference field of AMR2
+    @(263.3070 mm, 40.0250 mm): Pad 2 [GND] of CRGBR17 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(272.0340 mm, 55.4530 mm): Pad 7 [GND] of AMR4 on B.Cu
+    @(263.1000 mm, 40.0000 mm): Reference field of AMR2
+    @(262.3470 mm, 40.0250 mm): Pad 1 [VBUS] of CRGBR17 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(270.7640 mm, 55.4530 mm): Pad 8 [GND] of AMR4 on B.Cu
+    @(263.1000 mm, 40.0000 mm): Reference field of AMR2
+    @(260.8520 mm, 39.2750 mm): Pad 4 [RGB_R_17] of DR17 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.1590 mm, 54.9280 mm): Segment of AMR4 on B.Silkscreen
-    @(277.1140 mm, 55.4530 mm): Pad 3 [ADC_R4] of AMR4 on B.Cu
+    @(263.1000 mm, 40.0000 mm): Reference field of AMR2
+    @(260.8520 mm, 40.7750 mm): Pad 3 [VBUS] of DR17 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(279.6540 mm, 55.6530 mm): Circle of AMR4 on B.Silkscreen
-    @(279.6540 mm, 55.4530 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(169.3812 mm, 43.6367 mm): Reference field of CR21A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(171.0327 mm, 43.2547 mm): Value field of CR21A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(170.9061 mm, 44.4078 mm): Footprint text of CR21A (CR21A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(167.1460 mm, 13.0330 mm): Reference field of HER8
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(170.1997 mm, 10.9654 mm): Value field of HER8 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(169.9280 mm, 13.3500 mm): Footprint text of HER8 (HER8)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(174.2091 mm, 88.6675 mm): Reference field of HER36
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(177.2430 mm, 86.5710 mm): Value field of HER36 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(176.9940 mm, 88.9580 mm): Footprint text of HER36 (HER36)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(258.2000 mm, 86.4000 mm): Reference field of CR30A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(259.8000 mm, 85.8400 mm): Value field of CR30A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(259.8000 mm, 87.0000 mm): Footprint text of CR30A (CR30A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(274.5580 mm, 15.8250 mm): Reference field of CR3B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(276.1580 mm, 15.2650 mm): Value field of CR3B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(276.1580 mm, 16.4250 mm): Footprint text of CR3B (CR3B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(281.5210 mm, 47.6250 mm): Reference field of HER18
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.3210 mm, 45.2250 mm): Value field of HER18 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.3210 mm, 47.6250 mm): Footprint text of HER18 (HER18)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(161.0675 mm, 6.4642 mm): Reference field of CR8A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(162.7206 mm, 6.0890 mm): Value field of CR8A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(162.5893 mm, 7.2415 mm): Footprint text of CR8A (CR8A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(291.0460 mm, 66.6750 mm): Reference field of HER26
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(293.8460 mm, 64.2750 mm): Value field of HER26 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(293.8460 mm, 66.6750 mm): Footprint text of HER26 (HER26)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(206.4501 mm, 59.6382 mm): Reference field of CR27A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(208.0667 mm, 59.1280 mm): Value field of CR27A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(208.0308 mm, 60.2874 mm): Footprint text of CR27A (CR27A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(182.7451 mm, 94.3732 mm): Reference field of CR36B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(184.3945 mm, 93.9823 mm): Value field of CR36B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(184.2742 mm, 95.1360 mm): Footprint text of CR36B (CR36B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(254.6090 mm, 62.3780 mm): Reference field of CMR3
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(256.2090 mm, 61.8180 mm): Value field of CMR3 (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(256.2090 mm, 62.9780 mm): Footprint text of CMR3 (CMR3)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(247.7080 mm, 9.5250 mm): Reference field of HER2
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(250.5080 mm, 7.1250 mm): Value field of HER2 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(250.5080 mm, 9.5250 mm): Footprint text of HER2 (HER2)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(290.7500 mm, 34.8750 mm): Reference field of CR11B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(292.3500 mm, 34.3150 mm): Value field of CR11B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(292.3500 mm, 35.4750 mm): Footprint text of CR11B (CR11B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(164.1654 mm, 63.2641 mm): Reference field of CR29A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(165.8183 mm, 62.8879 mm): Value field of CR29A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(165.6876 mm, 64.0405 mm): Footprint text of CR29A (CR29A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(283.2650 mm, 78.2250 mm): Reference field of CR34A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.8650 mm, 77.6650 mm): Value field of CR34A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.8650 mm, 78.8250 mm): Footprint text of CR34A (CR34A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(270.8830 mm, 2.0250 mm): Reference field of CR4A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(272.4830 mm, 1.4650 mm): Value field of CR4A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(272.4830 mm, 2.6250 mm): Footprint text of CR4A (CR4A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(223.2226 mm, 2.0557 mm): Reference field of CR1A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(224.8238 mm, 1.4991 mm): Value field of CR1A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(224.8213 mm, 2.6591 mm): Footprint text of CR1A (CR1A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(184.0090 mm, 55.9131 mm): Reference field of CR21B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(185.6605 mm, 55.5311 mm): Value field of CR21B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(185.5339 mm, 56.6842 mm): Footprint text of CR21B (CR21B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(289.3210 mm, 53.9250 mm): Reference field of CR18B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(290.9210 mm, 53.3650 mm): Value field of CR18B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(290.9210 mm, 54.5250 mm): Footprint text of CR18B (CR18B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(185.3459 mm, 61.0415 mm): Reference field of CR28A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(186.9855 mm, 60.6111 mm): Value field of CR28A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(186.8928 mm, 61.7674 mm): Footprint text of CR28A (CR28A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(291.7030 mm, 92.0250 mm): Reference field of CR33B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(293.3030 mm, 91.4650 mm): Value field of CR33B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(293.3030 mm, 92.6250 mm): Footprint text of CR33B (CR33B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(190.7006 mm, 41.5375 mm): Reference field of CR20A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(192.3348 mm, 41.0867 mm): Value field of CR20A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(192.2565 mm, 42.2441 mm): Footprint text of CR20A (CR20A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(212.0423 mm, 66.8934 mm): Reference field of HER27
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(214.9152 mm, 64.5811 mm): Value field of HER27 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(214.8410 mm, 66.9800 mm): Footprint text of HER27 (HER27)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(182.1289 mm, 4.1975 mm): Reference field of CR7A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(183.7717 mm, 3.7794 mm): Value field of CR7A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(183.6704 mm, 4.9350 mm): Footprint text of CR7A (CR7A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(278.5030 mm, 78.2250 mm): Reference field of CR33A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(280.1030 mm, 77.6650 mm): Value field of CR33A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(280.1030 mm, 78.8250 mm): Footprint text of CR33A (CR33A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(261.3580 mm, 2.0250 mm): Reference field of CR3A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(262.9580 mm, 1.4650 mm): Value field of CR3A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(262.9580 mm, 2.6250 mm): Footprint text of CR3A (CR3A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(281.5210 mm, 66.6750 mm): Reference field of HER25
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.3210 mm, 64.2750 mm): Value field of HER25 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.3210 mm, 66.6750 mm): Footprint text of HER25 (HER25)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(220.9252 mm, 28.6525 mm): Reference field of HER12
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(223.7529 mm, 26.2852 mm): Value field of HER12 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(223.7250 mm, 28.6850 mm): Footprint text of HER12 (HER12)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(255.3270 mm, 47.6250 mm): Reference field of HER17
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(258.1270 mm, 45.2250 mm): Value field of HER17 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(258.1270 mm, 47.6250 mm): Footprint text of HER17 (HER17)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(159.2090 mm, 56.0000 mm): Reference field of JR1
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(149.2090 mm, 56.0000 mm): Value field of JR1 (FFC_12P)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(153.1635 mm, 26.4152 mm): Reference field of CR15A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(154.8166 mm, 26.0400 mm): Value field of CR15A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(154.6853 mm, 27.1925 mm): Footprint text of CR15A (CR15A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(258.3650 mm, 72.9750 mm): Reference field of CR23B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(259.9650 mm, 72.4150 mm): Value field of CR23B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(259.9650 mm, 73.5750 mm): Footprint text of CR23B (CR23B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(266.9380 mm, 34.8750 mm): Reference field of CR10B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(268.5380 mm, 34.3150 mm): Value field of CR10B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
     Local override; warning
-    @(268.5380 mm, 35.4750 mm): Footprint text of CR10B (CR10B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(281.6090 mm, 55.3780 mm): Reference field of CMR4
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(283.2090 mm, 54.8180 mm): Value field of CMR4 (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(283.2090 mm, 55.9780 mm): Footprint text of CMR4 (CMR4)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(208.9790 mm, 9.8272 mm): Reference field of HER6
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(211.8685 mm, 7.5357 mm): Value field of HER6 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(211.7770 mm, 9.9340 mm): Footprint text of HER6 (HER6)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(236.4520 mm, 15.8275 mm): Reference field of CR1B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(238.0532 mm, 15.2709 mm): Value field of CR1B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(238.0507 mm, 16.4309 mm): Footprint text of CR1B (CR1B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(189.6090 mm, 67.4780 mm): Reference field of AMR1
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(176.8090 mm, 67.4780 mm): Value field of AMR1 (SN74LV4051A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(183.2090 mm, 67.4780 mm): Footprint text of AMR1 (AMR1)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(168.1847 mm, 82.0172 mm): Reference field of CR36A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(169.8341 mm, 81.6263 mm): Value field of CR36A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(169.7138 mm, 82.7800 mm): Footprint text of CR36A (CR36A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(230.8780 mm, 40.1250 mm): Reference field of CR16A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(232.4780 mm, 39.5650 mm): Value field of CR16A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(232.4780 mm, 40.7250 mm): Footprint text of CR16A (CR16A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(196.4841 mm, 16.7915 mm): Reference field of CR7B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(198.1269 mm, 16.3734 mm): Value field of CR7B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(198.0256 mm, 17.5290 mm): Footprint text of CR7B (CR7B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(173.5951 mm, 24.1328 mm): Reference field of CR14A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(175.2447 mm, 23.7423 mm): Value field of CR14A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(175.1240 mm, 24.8960 mm): Footprint text of CR14A (CR14A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(285.6460 mm, 59.1750 mm): Reference field of CR26A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(287.2460 mm, 58.6150 mm): Value field of CR26A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(287.2460 mm, 59.7750 mm): Footprint text of CR26A (CR26A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(244.0780 mm, 53.9250 mm): Reference field of CR16B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(245.6780 mm, 53.3650 mm): Value field of CR16B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(245.6780 mm, 54.5250 mm): Footprint text of CR16B (CR16B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(170.2408 mm, 69.8375 mm): Reference field of HER29
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(173.2934 mm, 67.7683 mm): Value field of HER29 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(173.0230 mm, 70.1530 mm): Footprint text of HER29 (HER29)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(282.9500 mm, 28.5750 mm): Reference field of HER11
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(285.7500 mm, 26.1750 mm): Value field of HER11 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(285.7500 mm, 28.5750 mm): Footprint text of HER11 (HER11)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(203.3427 mm, 2.6300 mm): Reference field of CR6A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(204.9629 mm, 2.1314 mm): Value field of CR6A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(204.9187 mm, 3.2906 mm): Footprint text of CR6A (CR6A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(217.0435 mm, 47.7521 mm): Reference field of HER19
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(219.8892 mm, 45.4064 mm): Value field of HER19 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(219.8430 mm, 47.8060 mm): Footprint text of HER19 (HER19)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(266.7580 mm, 9.5250 mm): Reference field of HER3
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(269.5580 mm, 7.1250 mm): Value field of HER3 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(269.5580 mm, 9.5250 mm): Footprint text of HER3 (HER3)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(255.5080 mm, 15.8250 mm): Reference field of CR2B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(257.1080 mm, 15.2650 mm): Value field of CR2B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(257.1080 mm, 16.4250 mm): Footprint text of CR2B (CR2B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(212.1743 mm, 86.0761 mm): Reference field of HER35
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(215.0475 mm, 83.7642 mm): Value field of HER35 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(214.9730 mm, 86.1630 mm): Footprint text of HER35 (HER35)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(284.0830 mm, 15.8250 mm): Reference field of CR4B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(285.6830 mm, 15.2650 mm): Value field of CR4B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(285.6830 mm, 16.4250 mm): Footprint text of CR4B (CR4B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(259.1380 mm, 28.5750 mm): Reference field of HER10
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(261.9380 mm, 26.1750 mm): Value field of HER10 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(261.9380 mm, 28.5750 mm): Footprint text of HER10 (HER10)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(293.6080 mm, 15.8250 mm): Reference field of CR5B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(295.2080 mm, 15.2650 mm): Value field of CR5B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(295.2080 mm, 16.4250 mm): Footprint text of CR5B (CR5B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(288.6650 mm, 85.7250 mm): Reference field of HER34
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(291.4650 mm, 83.3250 mm): Value field of HER34 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(291.4650 mm, 85.7250 mm): Footprint text of HER34 (HER34)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(188.0587 mm, 10.9874 mm): Reference field of HER7
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(191.0577 mm, 8.8412 mm): Value field of HER7 (MT9102ET)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(190.8480 mm, 11.2320 mm): Footprint text of HER7 (HER7)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(210.6090 mm, 71.3780 mm): Reference field of CMR2
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(212.2090 mm, 70.8180 mm): Value field of CMR2 (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(212.2090 mm, 71.9780 mm): Footprint text of CMR2 (CMR2)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(245.1650 mm, 59.1750 mm): Reference field of CR23A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
-    Local override; warning
-    @(246.7650 mm, 58.6150 mm): Value field of CR23A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(261.9380 mm, 26.5750 mm): Reference field of DR9
+    @(260.8005 mm, 27.6250 mm): Pad 2 [GND] of HER10 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(246.7650 mm, 59.7750 mm): Footprint text of CR23A (CR23A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(285.4340 mm, 76.8500 mm): Segment of DR31 on B.Silkscreen
+    @(285.3450 mm, 77.0000 mm): Pad 2 [GND] of CR34A on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(280.4080 mm, 2.0250 mm): Reference field of CR5A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(285.4340 mm, 76.8500 mm): Segment of DR31 on B.Silkscreen
+    @(285.3450 mm, 77.0000 mm): Pad 2 [GND] of CR34A on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(282.0080 mm, 1.4650 mm): Value field of CR5A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(292.0550 mm, 47.0250 mm): Pad 1 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(282.0080 mm, 2.6250 mm): Footprint text of CR5A (CR5A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(293.3250 mm, 47.0250 mm): Pad 2 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(234.6880 mm, 21.0750 mm): Reference field of CR9A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(294.5950 mm, 47.0250 mm): Pad 3 [ADC_R5] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(236.2880 mm, 20.5150 mm): Value field of CR9A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(295.8650 mm, 47.0250 mm): Pad 4 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(236.2880 mm, 21.6750 mm): Footprint text of CR9A (CR9A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(297.1350 mm, 47.0250 mm): Pad 5 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(239.3129 mm, 72.9757 mm): Reference field of CR22B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(298.4050 mm, 47.0250 mm): Pad 6 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(240.9132 mm, 72.4165 mm): Value field of CR22B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(299.6750 mm, 47.0250 mm): Pad 7 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(240.9126 mm, 73.5765 mm): Footprint text of CR22B (CR22B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
+    @(300.9450 mm, 47.0250 mm): Pad 8 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(178.8362 mm, 75.4891 mm): Reference field of CR29B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(300.9450 mm, 51.9750 mm): Pad 9 [MUX_A2] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(180.4891 mm, 75.1129 mm): Value field of CR29B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(299.6750 mm, 51.9750 mm): Pad 10 [MUX_A1] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(180.3584 mm, 76.2655 mm): Footprint text of CR29B (CR29B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(298.4050 mm, 51.9750 mm): Pad 11 [MUX_A0] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(264.2150 mm, 59.1750 mm): Reference field of CR24A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(297.1350 mm, 51.9750 mm): Pad 12 [HE_R36] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(265.8150 mm, 58.6150 mm): Value field of CR24A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(295.8650 mm, 51.9750 mm): Pad 13 [HE_R33] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(265.8150 mm, 59.7750 mm): Footprint text of CR24A (CR24A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(294.5950 mm, 51.9750 mm): Pad 14 [HE_R34] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(298.8460 mm, 72.9750 mm): Reference field of CR26B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(293.3250 mm, 51.9750 mm): Pad 15 [HE_R35] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(300.4460 mm, 72.4150 mm): Value field of CR26B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
+    @(292.0550 mm, 51.9750 mm): Pad 16 [+3V3A] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(300.4460 mm, 73.5750 mm): Footprint text of CR26B (CR26B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(292.0550 mm, 46.8250 mm): Circle of AMR5 on B.Silkscreen
+    @(292.0550 mm, 47.0250 mm): Pad 1 [GND] of AMR5 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(188.1591 mm, 36.4848 mm): Reference field of CR14B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(268.8650 mm, 37.5250 mm): Pad 4 [HE_R16] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(189.8087 mm, 36.0943 mm): Value field of CR14B (4.7n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(270.1350 mm, 37.5250 mm): Pad 5 [HE_R14] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(189.6880 mm, 37.2480 mm): Footprint text of CR14B (CR14B)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(271.4050 mm, 37.5250 mm): Pad 6 [GND] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(249.9270 mm, 40.1250 mm): Reference field of CR17A
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(272.6750 mm, 37.5250 mm): Pad 7 [GND] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(251.5270 mm, 39.5650 mm): Value field of CR17A (100n)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(273.9450 mm, 37.5250 mm): Pad 8 [GND] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(251.5270 mm, 40.7250 mm): Footprint text of CR17A (CR17A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(265.0550 mm, 37.5250 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(250.6090 mm, 64.9780 mm): Reference field of AMR3
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(266.3250 mm, 37.5250 mm): Pad 2 [HE_R15] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(237.8090 mm, 64.9780 mm): Value field of AMR3 (SN74LV4051A)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
+    @(267.5950 mm, 37.5250 mm): Pad 3 [ADC_R2] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(244.2090 mm, 64.9780 mm): Footprint text of AMR3 (AMR3)
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(265.0550 mm, 37.3250 mm): Circle of AMR2 on B.Silkscreen
+    @(265.0550 mm, 37.5250 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(228.8117 mm, 34.8894 mm): Reference field of CR12B
-[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    @(285.7500 mm, 26.5750 mm): Reference field of DR8
+    @(284.6125 mm, 27.6250 mm): Pad 2 [GND] of HER11 on B.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(230.4181 mm, 34.3480 mm): Value field of CR12B (4.7n)
+    @(281.6830 mm, 4.1750 mm): Reference field of DR33
+    @(282.8557 mm, 3.4070 mm): Pad 2 [RGB_R_04] of DR5 on B.Cu
 
 ** Found 0 unconnected pads **
 

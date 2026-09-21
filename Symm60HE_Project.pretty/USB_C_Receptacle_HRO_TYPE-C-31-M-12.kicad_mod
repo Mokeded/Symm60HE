@@ -36,9 +36,4 @@
   (pad "SH" thru_hole oval (at 4.32 -3.13) (size 1 2.1) (drill oval 0.6 1.7) (layers "*.Cu" "*.Mask"))
   (pad "SH" thru_hole oval (at 4.32 1.05) (size 1 1.6) (drill oval 0.6 1.2) (layers "*.Cu" "*.Mask"))
   (embedded_fonts no)
-  (model "${SYMM60HE_3DMODEL_DIR}/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP"
-    (offset (xyz 0 0 0))
-    (scale (xyz 1 1 1))
-    (rotate (xyz 0 0 0))
-  )
 )

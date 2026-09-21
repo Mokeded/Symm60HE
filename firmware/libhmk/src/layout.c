@@ -259,6 +259,12 @@ static bool layout_set_profile(uint8_t profile) {
   if (status && profile != 0)
     status = EECONFIG_WRITE(last_non_default_profile, &profile);
   layout_load_advanced_keys();
+#if defined(PROFILE_ACTIVE_KEY_MATRIX)
+  // A different physical-layout profile enables a different Hall-sensor set.
+  // Establish fresh rest values before accepting events from those sensors.
+  if (status)
+    matrix_recalibrate(false);
+#endif
 
   return status;
 }

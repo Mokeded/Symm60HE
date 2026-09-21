@@ -56,19 +56,28 @@ def read(path):
             n = first(p, "net")
             a = first(p, "at"); sz = first(p, "size")
             lx, ly = float(a[1]), float(a[2])
+            pr = float(a[3]) if len(a) > 3 else 0.0
+            # KiCad stores the pad angle in a placed footprint as the board-
+            # space pad orientation.  The footprint rotation is still needed
+            # to transform the pad centre, but adding it again here rotates
+            # every non-square pad twice.  That made the clearance model see
+            # the SOIC mux lands sideways and falsely sealed their escape
+            # corridors.
+            pa = pr
             dx, dy = rot(lx, ly, fr)
             w, h = float(sz[1]), float(sz[2])
             g = (Point(fx+dx, fy+dy).buffer(w/2) if p[3] == "circle"
-                 else stran(srot(sbox(-w/2, -h/2, w/2, h/2), -fr, origin=(0,0)), fx+dx, fy+dy))
+                 else stran(srot(sbox(-w/2, -h/2, w/2, h/2), -pa,
+                                       origin=(0,0)), fx+dx, fy+dy))
             # long axis of the pad, in board coords, pointing away from the body
             if p[3] == "circle" or abs(w - h) < 1e-9:
                 ax, ay, half, wid = 0.0, 0.0, max(w, h)/2, min(w, h)
             elif w > h:
                 s = 1.0 if lx >= 0 else -1.0
-                ax, ay = rot(s, 0.0, fr); half, wid = w/2, h
+                ax, ay = rot(s, 0.0, pa); half, wid = w/2, h
             else:
                 s = 1.0 if ly >= 0 else -1.0
-                ax, ay = rot(0.0, s, fr); half, wid = h/2, w
+                ax, ay = rot(0.0, s, pa); half, wid = h/2, w
             pads.append(dict(ref=ref, num=p[1], net=(n[1] if n else None),
                              x=fx+dx, y=fy+dy, geom=g, ax=ax, ay=ay,
                              half=half, wid=wid,

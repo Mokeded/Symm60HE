@@ -1,119 +1,102 @@
-# Symm60HE Fusion 360 case-design reference
+# Symm60HE Fusion 360 case-design references
 
-Run the add-in under `fusion-setup/` to start the case around the complete
-assembled geometry. The setup imports globally positioned individual STEP
-files into a native Fusion component hierarchy, including a standalone exact
-HRO USB-C component whose checked J1 placement is baked into its B-rep. The
-master STEP remains a convenient single-file reference mechanism rather than
-the componentized import source.
+`Symm60HE-reference-assembly.step` is the primary Fusion 360 handoff. Import
+it with **File > Open > Upload** and save the imported design as a Fusion
+project. It contains fourteen separately named reference bodies:
 
-The generated Fusion browser tree has these independent top-level reference
-components:
+- Left PCB
+- Right PCB
+- Daughterboard PCB
+- Left PCB components
+- Right PCB components
+- Daughterboard components
+- Left 12-way ribbon-cable clearance envelope
+- Right 12-way ribbon-cable clearance envelope
+- Left universal plate
+- Right universal plate
+- Left switches
+- Right switches
+- Left keycaps
+- Right keycaps
 
-- left plate + switches + keycaps
-- right plate + switches + keycaps
-- left Hall-effect PCB, including its directly mounted pogo target
-- right Hall-effect PCB, including its directly mounted pogo target
-- the fitted Hall sensor, capacitor and mux package bodies on both halves
-- central controller daughterboard, including its fitted package bodies, both
-  exact C20111 ZIF bodies, both exact C318884 buttons and the actual placed
-  HRO USB-C receptacle
-- left floating pogo daughterboard, spring block and ZIF body
-- right floating pogo daughterboard, spring block and ZIF body
-- one cable-and-movement-keepout component, hidden by default
+The two keyboard halves are each shown at 3 degrees from horizontal—left at
+-3 degrees and right at +3 degrees, for a 6 degree included angle—and a rear-up 7 degree
+typing angle. The plate bodies are 1.5 mm thick, matching the locked POM plate
+specification. Each Hall PCB is 5 mm below its plate. The daughterboard is
+centered at the rear on the split axis, remains flat across the lateral tent,
+shares the same 7 degree typing angle, and sits 7 mm below the Hall-PCB datum.
+The blue ribbon solids connect the actual current FPC coordinates and reserve
+a 12 mm wide, 0.3 mm thick service-loop path below the gasket planes. They
+rise outside the daughterboard perimeter and enter the outward-facing J2/J3
+mouths across the F.Cu/top surface rather than passing through its underside. There is
+deliberately no case solid: build new top and bottom components around these
+reference bodies.
 
-Every individual STEP has its checked assembly transform baked into the B-rep
-geometry. Do not regenerate these files by exporting the FCStd objects without
-the project exporter: ordinary FreeCAD STEP occurrence transforms are not
-preserved when Fusion imports a STEP into an existing child component, which
-would return the small boards and pogo blocks to their local origins.
+The switches and keycaps show the primary 60-key `doe-wkl` configuration, with
+30 populated positions on each half. The switches are dimensional Gateron
+KS-20 Magnetic Jade `KS-20TF10B045NW-Y89` references reconstructed from
+Gateron's official `DS-02-001-A0` drawing: the model includes the 15.40 x 15.10
+mm upper envelope, 13.97 mm plate body, 15.00 x 14.70 mm lower/clip envelope,
+11.10 mm height, 5.00 mm lower body, 4.00 x 1.30 mm MX cross and both 1.70 mm
+locating pins on the PCB's matching +/-5.08 mm centres. Gateron does not
+publish a production STEP, so this is an exterior dimensional reconstruction,
+not proprietary mold geometry.
 
-`Case - model here` remains a separate empty component and is activated at the
-end of setup. Fusion therefore ghosts the grounded reference tree while case
-geometry is being authored; activate the root to inspect everything opaque.
-
-The Fusion setup contains separately named solids for the split plates, 1.2 mm
-Neo Hall PCBs, their fitted KiCad package models, switches, keycaps, flat
-controller daughterboard and its fitted package models, the actual
-HRO TYPE-C-31-M-12 USB-C receptacle, both 20 x 6 mm
-floating FPC-to-pogo PCBs, both Mill-Max 854 spring blocks, both directly
-mounted 856 targets, spring-travel keepouts, four exact C20111 ZIF bodies and two
-flexible FPC route envelopes. The controller is oriented left-to-right: its
-USB-C receptacle and plug keepout pass directly through the rear case wall,
-while J2 and J3 face the left and right interconnects.
-
-The plate is the mechanical datum. Each plate, its Hall PCB, and its floating
-pogo head move together on a mirrored 3 degree tent and 7 degree typing-angle
-plane. To accommodate equal-size opposing centre gasket mounts, the complete
-left and right moving assemblies are translated 2.75 mm outward per side
-(5.50 mm additional split width); the controller remains centred and fixed.
-The plate bottom is 6.5 mm above the Hall-PCB bottom. The target/spring
-board surfaces are 5.0 mm apart. With the exact configured Mill-Max models,
-that applies 0.2578 mm of spring preload, leaves 0.7582 mm of travel, and makes
-the spring tips meet the target faces. The former 6.0 mm placeholder datum
-would leave a 0.7422 mm electrical gap. The controller is
-rigid and flat beneath the centre blocker; the cyan FPC solids reserve
-clearance and slack for independent gasket movement.
-
-All eight integral plate gasket tongues now use a Neo-Ergo-inspired long
-side-bearing geometry adapted to the plate: 24.0 mm overall edgewise length,
-a 20.0 x 4.0 mm gasket-bearing area, 4.0 mm exposed projection and 0.6 mm root
-inset. Broad 2.0 mm end transitions eliminate abrupt shoulders. The opposed
-centre tongues retain a 0.50 mm flat-layout gap and clearance in the assembled
-tented model.
-
-The controller PCB has one continuous straight rear edge. The actual HRO
-TYPE-C-31-M-12 shell remains on J1's routed footprint datum and projects beyond
-that complete wall by exactly 1.0 mm, providing a real case-opening engagement
-datum rather than a preview-only body or a local PCB notch.
-
-`Symm60HE-case-reference-assembly.FCStd` is the editable generated source and
-contains the placed HRO receptacle. The combined assembly STEP intentionally
-omits only that connector, but the componentized Fusion setup imports
-`Symm60HE-ControllerUSBConnector.step`. The exporter applies the verified
-rotation and translation to the underlying exact vendor TopoShape before it
-writes that standalone STEP, leaving Fusion no nested vendor transform to
-reinterpret. The verifier now imports that file again and checks its complete
-bounding box against the exact placed HRO source. The add-in also checks every
-imported component against `generated/component-placement.json` before setup
-completes.
-The legacy `Symm60HE-reference-assembly.step` and `.FCStd` names are updated to
-the same integrated geometry for compatibility. Individual globally positioned
-STEP files are also supplied for the major boards, plates, switches and
-keycaps.
-
+The caps use licensed thin-wall Cherry-profile reference CAD with the correct
+width and R1/R2/R3/R4 sculpt for each physical key. This is the closest
+auditable public CAD equivalent of GMK CYL: GMK publicly identifies CYL as the
+original Cherry profile, 1.5 mm double-shot ABS with an MX-cross mount, but does
+not publish its proprietary production surfaces. The assembly uses R1 on the
+number row, R2 on QWERTY, R3 on the home row and R4 on both lower rows. The
+exporter performs pairwise solid collision checks and records the minimum
+clearance in `generated/switch-keycap-model-provenance.json`. Hide the switch
+and cap bodies for PCB or plate work and show them to judge case-wall, blocker
+and typing clearances.
 Set `SYMM60HE_VISUAL_LAYOUT` to `doe-wkl`, `doe-wklbs2`, `doe-wklarrows`, or
-`doe-wklbs2arrows` before regeneration to preview another supported layout.
-The switch bank now represents the selected XVX Whisper EC/HE switch and its
-published MX-stem, N-pole-down and 3.5 +/- 0.2 mm-travel configuration. XVX
-does not publish an exact mechanical STEP or dimensioned housing drawing, so it
-remains a product-specific clearance reference rather than manufacturer CAD.
-The keycap bank uses row-specific Cherry R1-R4 depth and tilt from the open
-KeyV2 Cherry profile. An exact keycap-kit CAD model can only replace it after a
-specific keycap manufacturer and kit are selected.
+`doe-wklbs2arrows` before running `build.sh` to regenerate another populated
+layout.
 
-The USB-C, both tactile buttons and all four FPC-compatible ZIF bodies are exact,
-source-locked LCSC/EasyEDA models for C165948, C318884 and C20111. Their URLs,
-model UUIDs and SHA-256
-digests are recorded in `models/model-provenance.json`; run
-`python tools/verify_model_provenance.py` to detect replacement or corruption.
-These are exact distributor EDA models, which is stronger than a generic
-package but is not mislabeled as manufacturer-certified CAD.
+The three populated-component bodies are generated separately from the current
+KiCad footprint models so LEDs, Hall sensors, muxes, passives, MCU, crystal,
+power circuitry and other fitted electronics can be shown or hidden without
+changing the PCB reference solids. The four 12-way FPC sockets use the exact
+LCSC-owned EasyEDA STEP asset for BOOMELE C20111. The HRO C165948 USB-C
+receptacle reuses the exact vendor solid and native coordinate frame from the
+first validated assembly (`f18a949`) together with its corrected placement
+convention (`4bc6caa`). Its historical 180-degree body rotation is adapted to
+the current board-coordinate pipeline, and its mating mouth projects 0.6 mm
+through the rear daughterboard wall. This avoids the opposite coordinate frame
+of the newer EasyEDA conversion. Both buttons use XKB's manufacturer-published
+`TS-1187A-B-A-B.stp`. The source URLs, identifiers, baseline revisions and
+SHA-256 hashes are recorded under `models/official/provenance.json`. Only rigid
+placement transforms are applied, and the USB-C projection beyond the
+daughterboard edge is preserved.
 
-The exact configured 12-position Mill-Max 854/856 AP214 models are installed
-from Mill-Max's verified 3D ContentCentral supplier catalog and locked by
-SHA-256 in `models/model-provenance.json`. The 856 target is used unchanged.
-For the seated 854 pose, the exact housing and board-side contact geometry are
-unchanged and only the exposed plunger ends are translated by the 0.2578 mm
-working preload; the model is never globally scaled. See
-`models/vendor/README.md` for filenames, envelopes and hashes.
+`Symm60HE-reference-assembly.FCStd` is the editable source assembly used to
+create the STEP file. The individual STEP files are provided when importing
+each reference as a separate Fusion component is preferable.
 
-This reference does not establish a finished enclosure or physical fit. Pogo
-compression, retention clearances, FPC bend life, Hall noise, gasket motion,
-keycap-wall clearance and controller service access still require a prototype.
+The PCB bodies are generated from the current packaged two-layer boards under
+`work/enclosure-style-hotswap-freerouting-candidate/routed-final/`, not from
+the older development copies under `pcb/`. `generated/reference-layout.json`
+records each source path, SHA-256 digest, exact Edge.Cuts bounds, and placement
+centre so the Fusion handoff can be audited against the routed release files.
+The build also reopens the generated STEP/FCStd artifacts and rejects a PCB
+whose solid dimensions, source digest, stackup-compatible body thickness, or
+named assembly body does not match that manifest. It additionally enforces a
+minimum component-solid count and rejects a populated component body displaced
+from its matching PCB.
 
-The original 20 x 20 mm floating-head interference has been removed. The two
-20 x 6 mm heads keep the target rows in their electrically correct positions
-and retain approximately 0.418 mm projected clearance at the centre seam.
-Their F.Cu spring blocks and B.Cu FPC-compatible connectors are included as explicit case
-reference solids.
+The opposing centre-side gasket tongues terminate with a controlled 2 mm gap.
+The verifier rejects plate-to-plate, daughterboard-to-Hall-PCB, and
+ribbon-to-plate intersections so the reference cannot silently regenerate the
+previous overlapping geometry.
+
+The previous case was removed from this directory. A hash-verified recovery
+copy is retained under `work/recovery-case-20260911-0837/`.
+
+`tenting-solution/` contains a separate editable 27-body fixed 6 degree
+pogo/controller mechanism. It is intentionally independent from the empty
+case-design reference assembly so it can be inserted, repositioned, or omitted
+as one subsystem while the enclosure is modeled around the real PCBs and
+plates.

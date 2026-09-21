@@ -18,7 +18,7 @@ R = nets("../pcb/Symm60HE-Right.kicad_pcb")
 D = nets("../pcb/Symm60HE-Daughterboard.kicad_pcb")
 
 bad = 0
-for half, m, nch in (("L", L, 31), ("R", R, 32)):
+for half, m, nch in (("L", L, 33), ("R", R, 36)):
     chans = sorted(n for n in m if n.startswith("HE_%s" % half))
     print("%s half: %d channel nets (expected %d)" % (half, len(chans), nch))
     if len(chans) != nch: bad += 1
@@ -33,9 +33,9 @@ for half, m, nch in (("L", L, 31), ("R", R, 32)):
         pins = m.get(ctl, [])
         muxes = len([p for p in pins if p.startswith("AM")])
         ffc = len([p for p in pins if p.startswith("J")])
-        if muxes != 4 or ffc != 1:
+        if muxes != 5 or ffc != 1:
             print("   !! %s: %d mux pins, %d ffc pins" % (ctl, muxes, ffc)); bad += 1
-    for i in range(1, 5):
+    for i in range(1, 6):
         n = "ADC_%s%d" % (half, i)
         pins = m.get(n, [])
         if len(pins) != 2:
@@ -44,11 +44,11 @@ for half, m, nch in (("L", L, 31), ("R", R, 32)):
 
 print("\ndaughterboard nets: %s" % ", ".join(sorted(D)))
 for half in ("L", "R"):
-    for i in range(1, 5):
+    for i in range(1, 6):
         n = "ADC_%s%d" % (half, i)
         pins = D.get(n, [])
         if len(pins) != 2 or not any(x.startswith("U1.") for x in pins):
-            print("   !! %s should reach the MCU and one FPC connector, got %s" % (n, pins)); bad += 1
+            print("   !! %s should reach the MCU and one FFC, got %s" % (n, pins)); bad += 1
 missing = [n for n in ("MUX_A0","MUX_A1","MUX_A2","+3V3A") if len(D.get(n,[])) < 3]
 if missing: print("   !! not bussed to both halves on the daughterboard: %s" % missing); bad += 1
 

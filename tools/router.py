@@ -9,7 +9,7 @@ Two layers are not a luxury: a 0.65 mm TSSOP has 0.25 mm between adjacent pads,
 and a 0.25 mm trace with 0.2 mm clearance needs 0.65 mm, so an interior pin
 cannot be reached on one layer at all.  It has to escape by via.
 """
-import heapq, math
+import heapq, math, os
 
 # The design rule is picked so that the grid itself enforces it.  Cells are
 # 0.5 mm apart orthogonally and 0.7071 mm diagonally, but two traces on
@@ -35,9 +35,14 @@ class Grid:
         # everything it routes.
         self.halo = step < SPACING
         assert step * 1.4142 >= SPACING - 1e-9, "grid too fine for the design rule"
-        self.x0, self.y0 = b[0], b[1]
-        self.nx = int((b[2] - b[0]) / step) + 2
-        self.ny = int((b[3] - b[1]) / step) + 2
+        # A small origin offset is useful for deterministic retry passes in a
+        # dense board: the same legal corridor can put vias on very different
+        # spots when sampled on a shifted grid.  The default remains exactly
+        # the historical grid.
+        self.x0 = b[0] + float(os.environ.get("SYMM60_GRID_OFFSET_X", "0"))
+        self.y0 = b[1] + float(os.environ.get("SYMM60_GRID_OFFSET_Y", "0"))
+        self.nx = int((b[2] - self.x0) / step) + 3
+        self.ny = int((b[3] - self.y0) / step) + 3
         area = poly.buffer(-inset)
         self.free = bytearray(self.nx * self.ny)
         from shapely.geometry import Point

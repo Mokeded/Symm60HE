@@ -1,0 +1,38 @@
+{
+  "policy": "Exact fitted part number only; no visually similar substitutions.",
+  "models": [
+    {
+      "file": "BOOMELE_1.0-12P_C20111.step",
+      "manufacturer": "BOOMELE (Boom Precision Elec)",
+      "manufacturer_part": "1.0-12P top-contact slide-lock",
+      "lcsc": "C20111",
+      "easyeda_package_uuid": "fab3e1c977f546e38a3efa8aceec01cf",
+      "easyeda_3d_uuid": "a10e763233ae46d58b089a3cf0d7cbba",
+      "source_product": "https://www.lcsc.com/product-detail/FFC-FPC-Connectors_BOOMELE-Boom-Precision-Elec_C20111.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/a10e763233ae46d58b089a3cf0d7cbba",
+      "sha256": "eafc43da677e59fbd8814ac933d393a57454454ca89607310eecbba321c94e9d"
+    },
+    {
+      "file": "HRO_TYPE-C-31-M-12_C165948.step",
+      "manufacturer": "HRO (Korean Hroparts Elec)",
+      "manufacturer_part": "TYPE-C-31-M-12",
+      "lcsc": "C165948",
+      "source_product": "https://www.lcsc.com/product-detail/USB-Connectors_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.html",
+      "source_baseline_commit": "f18a949",
+      "source_baseline_path": "case/fusion360/models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP",
+      "alignment_fix_commit": "4bc6caa",
+      "note": "Exact HRO solid and native coordinate frame reused from the first validated 3D assembly.",
+      "sha256": "f902880f83a1b397b76360ed8686b6132a66920b3c1aac8e98239315842ff43e"
+    },
+    {
+      "file": "XKB_TS-1187A-B-A-B_C318884.stp",
+      "manufacturer": "XKB Connection",
+      "manufacturer_part": "TS-1187A-B-A-B",
+      "lcsc": "C318884",
+      "source_product": "https://www.helloxkb.com/Home/Goods/goodsInfoxq/id/1913",
+      "source_archive": "https://www.helloxkb.com/public/images/zip/TS-1187A-B-A-B.zip",
+      "archive_member": "TS-1187A-B-A-B.stp",
+      "sha256": "dbf207c04fdedb9dfee97ef4ae53e6efce86cbec7c228219265ee51460683abd"
+    }
+  ]
+}

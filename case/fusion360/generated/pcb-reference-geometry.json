@@ -1,0 +1,137 @@
+{
+  "LeftPCB": {
+    "name": "LeftPCB",
+    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Left.kicad_pcb",
+    "sha256": "bea9262b8e982290bd174ca6f30584d135870c5dd5778d9b439eec96c000577c",
+    "centre": [
+      72.4927,
+      52.6625
+    ],
+    "bounds": [
+      -0.453,
+      0.3043,
+      145.4384,
+      105.0207
+    ],
+    "size": [
+      145.8914,
+      104.71640000000001
+    ],
+    "edge_item_count": 137,
+    "edge_stroke_mm": 0.1,
+    "configured_board_thickness_mm": 1.2,
+    "reference_footprints": {
+      "JL1": {
+        "position": [
+          140.209,
+          58.0
+        ],
+        "rotation_deg": -90.0,
+        "side": "B.Cu",
+        "value": "FFC_12P"
+      }
+    }
+  },
+  "RightPCB": {
+    "name": "RightPCB",
+    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Right.kicad_pcb",
+    "sha256": "161c29bf0cf2f6d42f3e018403d2df6b191d2527f3d4dfb2bf1e1744b9b158af",
+    "centre": [
+      229.9253,
+      52.6625
+    ],
+    "bounds": [
+      156.9796,
+      0.3043,
+      302.871,
+      105.0207
+    ],
+    "size": [
+      145.89139999999998,
+      104.71640000000001
+    ],
+    "edge_item_count": 137,
+    "edge_stroke_mm": 0.1,
+    "configured_board_thickness_mm": 1.2,
+    "reference_footprints": {
+      "JR1": {
+        "position": [
+          164.209,
+          58.0
+        ],
+        "rotation_deg": 90.0,
+        "side": "B.Cu",
+        "value": "FFC_12P"
+      }
+    }
+  },
+  "DaughterboardPCB": {
+    "name": "DaughterboardPCB",
+    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Daughterboard.kicad_pcb",
+    "sha256": "db9cfd77511f947b050d1532b7ad9e6216cc7ab7e6f12b791b96d3b701278408",
+    "centre": [
+      187.209,
+      8.736699999999999
+    ],
+    "bounds": [
+      162.209,
+      -6.7633,
+      212.20899999999997,
+      24.2367
+    ],
+    "size": [
+      49.99999999999997,
+      31.0
+    ],
+    "edge_item_count": 68,
+    "edge_stroke_mm": 0.1,
+    "configured_board_thickness_mm": 1.2,
+    "reference_footprints": {
+      "J1": {
+        "position": [
+          187.209,
+          -3.1133
+        ],
+        "rotation_deg": 180.0,
+        "side": "F.Cu",
+        "value": "TYPE-C-31-M-12"
+      },
+      "J2": {
+        "position": [
+          164.909,
+          8.7367
+        ],
+        "rotation_deg": 90.0,
+        "side": "F.Cu",
+        "value": "FFC_12P"
+      },
+      "J3": {
+        "position": [
+          209.509,
+          8.7367
+        ],
+        "rotation_deg": -90.0,
+        "side": "F.Cu",
+        "value": "FFC_12P"
+      },
+      "SW1": {
+        "position": [
+          175.0,
+          3.5
+        ],
+        "rotation_deg": 0.0,
+        "side": "F.Cu",
+        "value": "TS-1187A"
+      },
+      "SW2": {
+        "position": [
+          181.5,
+          16.2
+        ],
+        "rotation_deg": 90.0,
+        "side": "F.Cu",
+        "value": "TS-1187A"
+      }
+    }
+  }
+}

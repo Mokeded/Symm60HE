@@ -1,0 +1,3 @@
+# Symm60HE fixed-layout PCB fabrication packages
+
+Each of the eight layout directories contains independent Left and Right Gerber ZIPs plus matching BOM, CPL and drill reports. Order as 2-layer, 1.2 mm FR-4, 1 oz copper, black solder mask and white silkscreen. All alignment holes are ordinary circular NPTHs on these fixed-layout boards; the routed shared slots exist only on the universal right half. The BOM/CPL pairs omit every sensor, LED and support part not used by that physical layout. Confirm board outline, LED apertures, four M2 mounts and NPTH status in the fabricator viewer before payment.

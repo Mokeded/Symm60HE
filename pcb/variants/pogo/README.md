@@ -1,12 +1,9 @@
-# Symm60HE pogo alternates
+# Symm60HE 16-contact magnetic pogo alternate
 
 This is a separate prototype stream. It does **not** replace the checked
-outward-facing FFC keyboard release under `release/jlcpcb`. The current
-connector, stack and gate definition is `CONNECTOR-AND-TENTING.md`; the routed
-12-contact boards are under `../pogo-neo/`.
+outward-facing FFC keyboard release under `release/jlcpcb`.
 
-The original 16-contact coupon interface, now superseded by the 12-contact
-`pogo-neo` design, is an orderable Mill-Max pair:
+The selected interface is an orderable Mill-Max pair:
 
 - `855-22-016-30-004101`: 16-contact, 2 × 8, 1.27 mm-pitch SMT spring block
 - `857-10-016-30-051000`: matching 16-contact SMT gold target block
@@ -30,6 +27,6 @@ active tree and retained under `.recovery/pogo12-superseded-*`.
 
 The routed Neo-style rebuild is now under `../pogo-neo/`. It replaces each
 half's FFC with a direct 12-contact target and uses only two floating spring
-heads, each joined to the controller by one short 12-way FPC. This is
+heads, each joined to the controller by one short 12-way FFC. This is
 electrically complete and DRC-clean, but it remains a prototype until the coupon,
 connector-stack, and Hall-noise gates pass.

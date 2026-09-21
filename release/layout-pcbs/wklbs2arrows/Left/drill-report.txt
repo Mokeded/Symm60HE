@@ -1,0 +1,26 @@
+Drill report for Symm60HE-wklbs2arrows-Left.kicad_pcb
+Created on 2026-09-21T10:22:31
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  B.Cu                      back
+
+
+Drill file 'Symm60HE-wklbs2arrows-Left-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (252 holes))
+
+    Total plated holes count 252
+
+
+Drill file 'Symm60HE-wklbs2arrows-Left-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  1.750mm  0.0689"  (62 holes))
+    T2  2.200mm  0.0866"  (4 holes))
+    T3  3.048mm  0.1200"  (4 holes))
+    T4  3.988mm  0.1570"  (4 holes))
+
+    Total unplated holes count 74

@@ -1,14 +1,29 @@
 Symm60HE firmware release build
-Date: 2026-09-10
+Date: 2026-09-18
 Target: symm60he
 MCU/board: AT32F405RCT7 / genericAT32F405RCT7
 Framework: at32firmlib
-Result: SUCCESS
-Flash: 33500 / 262144 bytes (12.8%)
-RAM: 13884 / 104448 bytes (13.3%)
-firmware.bin size: 33508 bytes
-firmware.bin SHA-256: 856639e04d1b6d8582e9d653f6a7f04aa83aea6be9b8a4f0ca60c88a5a7cde78
+Python: 3.14.3
+PlatformIO Core: 6.1.18
+Result: SUCCESS (clean build)
+Flash: 34168 / 262144 bytes (13.0%)
+RAM: 14072 / 104448 bytes (13.5%)
+firmware.bin size: 34176 bytes
+firmware.bin SHA-256: f5445f886bdf41b6ce2b36ae6a61d5080814ca05aa73ed53d9b78db8c9a92dbd
+firmware.elf size: 67476 bytes
+firmware.elf SHA-256: 967df57b4fdfa330fff9e75d4f36f569ca1c8c493ea02cd6386b07f311827e79
 
-Build note: the upstream metadata/link-map step does not quote project paths,
-so the checked build was performed from a temporary path without spaces and
-the resulting BIN/ELF were copied back into firmware/build.
+Build procedure:
+1. Regenerate firmware/libhmk/keyboards/symm60he from the released channel,
+   switch and sensor-alias maps with tools/mkfirmware.py.
+2. Copy firmware/libhmk and the project Python environment to a temporary path
+   without spaces.
+3. Run `python setup.py -k symm60he`.
+4. Run `python -m platformio run -e symm60he -t clean`.
+5. Run `python -m platformio run -e symm60he`.
+6. Copy firmware.bin and firmware.elf from the clean build into firmware/build.
+
+The link completed successfully. The toolchain emitted its standard newlib
+nano notices for unimplemented host-style _close/_lseek/_read/_write syscalls
+and a LOAD-segment RWX warning; neither was promoted to an error. No source
+compiler warning or build failure was reported.

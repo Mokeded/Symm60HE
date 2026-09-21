@@ -1,11 +1,12 @@
 #,Value,Package,Manufacturer,MPN,Qty_Left,Qty_Right,LCSC,Notes
-1,MT9102ET,SOT-23-3 (key centre),NOVOSENSE,MT9102ET,33,36,C5447698,"Linear Hall sensor, one per switch position; populate only the positions your layout uses"
-2,SN74LV4051A,SOIC-16_3.9x9.9mm_P1.27mm,Texas Instruments,SN74LV4051ADR,4,4,C128414,"8:1 analog mux; INH (pin 6) tied to GND. SOIC rather than FN40HE's TSSOP: 1.27 mm pitch leaves 0.67 mm between pads, which a 0.2 mm trace clears, so the fan-out is routable on two layers"
-3,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,37,40,C1525,One per sensor (VCC) plus one per mux
+1,MT9102ET,SOT-23-3 (key centre),NOVOSENSE,MT9102ET,33,36,C5447698,"Linear Hall sensor; populate every position for universal on-the-fly layout changes"
+2,SN74LV4051A,SOIC-16_3.9x9.9mm_P1.27mm,Texas Instruments,SN74LV4051ADR,5,5,C128414,"8:1 analog mux; the fifth mux gives every alternate Hall position an independent channel"
+3,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,69,75,C1525,"One per Hall sensor, mux and reverse-mount RGB LED"
 4,4.7n,C_0402_1005Metric,Murata,GRM1555C1H472JE01D,33,36,C1518204,One per sensor output
-5,FPC/FFC ZIF 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,1,1,C20111,"Exact locked connector: slide-lock, top-contact, right-angle, 12P, 1.0 mm pitch, accepts a 0.3 mm FPC tail"
+5,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,1,1,C20111,"Exact locked connector: top-contact, right-angle, 12P, 1.0 mm pitch, 0.3 mm FFC"
 6,Cherry PCB-mount stabiliser,STABILIZER_MX_2U,--,--,2,3,--,2.25u shift + 2.25u spacebar per half; right also has the 2u backspace
 7,M2 mounting hole,MountingHole_2.2mm_M2_Pad,--,--,4,4,--,To the case standoffs
+8,SK6812MINI-E,SK6812MINI-E_ReverseMount,OPSCO Optoelectronics,SK6812MINI-E,31,34,C5149201,"Reverse-mount per-key RGB LED; close alternate positions intentionally share an LED where noted on the PCB"
 
 #,Value,Package,Manufacturer,MPN,Qty_Daughterboard,LCSC,Notes
 1,AT32F405RCT7,LQFP-64_10x10mm_P0.5mm,Artery,AT32F405RCT7,1,C47090415,216 MHz MCU; pinout taken from the FN40HE board
@@ -20,11 +21,13 @@
 10,10u,C_0603_1608Metric,CCTC,TCC0603X5R106M6R3CT,2,C380318,"VBUS and 3V3D bulk; X5R 6.3 V 20%; JLC-stocked selection"
 11,2.2u,C_0603_1608Metric,Samsung,CL10B225KP8NFNC,4,C3905270,"Input/output capacitors for both LDOs; X7R 10 V 10%"
 12,1u,C_0603_1608Metric,Murata,GRM188R71A105KA61D,2,C97888,"3V3D bulk and MCU analog bypass; X7R 10 V 10%"
-13,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,4,C1525,"Three digital MCU bypass capacitors plus one analog bypass"
+13,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,7,C1525,"MCU and regulator bypass plus one bypass capacitor per RGB level shifter"
 14,30p,C_0402_1005Metric,CCTC,TCC0402C0G300J500AT,2,C466228,"12 MHz crystal load capacitors; C0G 50 V 5%; confirm against selected crystal CL and measured stray capacitance"
 15,100n,C_0402_1005Metric,Samsung,CL05B104KO5NNNC,1,C1525,NRST filter
-16,FPC/FFC ZIF 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,2,C20111,"Exact locked connector: slide-lock, top-contact, right-angle, 12P, 1.0 mm pitch, accepts a 0.3 mm FPC tail"
+16,FFC 12P 1.0mm top contact,FFC_12P_1.00mm_TopContact,BOOMELE,1.0-12P,2,C20111,"Exact locked connector: top-contact, right-angle, 12P, 1.0 mm pitch, 0.3 mm FFC"
 17,USB-C receptacle,USB_C_Receptacle_HRO_TYPE-C-31-M-12,HRO,TYPE-C-31-M-12,1,C165948,Placed at the daughterboard edge
+18,SN74AHCT1G125,SOT-23-5,Texas Instruments,SN74AHCT1G125DBVR,2,C7484,"5 V RGB data level shifters; one independently drives each keyboard half"
+19,470R,R_0402_1005Metric,UNI-ROYAL,0402WGF4700TCE,2,C25117,"Series damping resistor on each RGB data output"
 
 #,Off-board cable,Specification,Manufacturer,MPN,Qty_Set,LCSC,Notes
-1,Custom FPC jumper 12P 1.0mm same-side,12-conductor flex circuit with 0.3mm reinforced same-side contact tails,Custom flex PCB,TBD-after-case-route,2,--,"Use the C20111 top-contact ZIFs; final length and service loop come from the completed case CAD; continuity-check pins 1 through 12 before applying power"
+1,FFC cable 12P 1.0mm same-side 10cm,0.3mm 12P 1.0mm Type-A same-side,JXTCONN,FC-1012P-100T3,2,C37635129,"Locked cable/contact configuration; continuity-check pin 1 through pin 12 before applying power"

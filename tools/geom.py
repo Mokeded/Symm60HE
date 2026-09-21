@@ -78,7 +78,11 @@ def collect():
 
 KEYS = collect()
 xs = [k["cx"] for k in KEYS]
-AXIS = (min(xs) + max(xs)) / 2.0
+# The assembly/PCB mirror datum is a mechanical contract, not the midpoint of
+# whichever optional switch positions happen to be present.  Deriving it from
+# min/max drifted when the right-only arrow/Backspace choices were added.
+AXIS_MM = 151.209
+AXIS = AXIS_MM / U
 for k in KEYS:
     k["half"] = "L" if k["cx"] < AXIS else "R"
 

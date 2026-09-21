@@ -45,6 +45,17 @@ matrix_bottom_out_value(uint8_t key, uint16_t rest_value) {
 
 key_state_t key_matrix[NUM_KEYS];
 
+#if defined(PROFILE_ACTIVE_KEY_MATRIX)
+static const uint8_t profile_active_keys[NUM_PROFILES][NUM_KEYS] =
+    PROFILE_ACTIVE_KEY_MATRIX;
+
+static bool matrix_key_is_active(uint8_t key) {
+  return profile_active_keys[eeconfig->current_profile][key] != 0;
+}
+#else
+static bool matrix_key_is_active(uint8_t key) { return true; }
+#endif
+
 // Bitmap for tracking which keys have Rapid Trigger disabled
 static bitmap_t rapid_trigger_disabled[] = MAKE_BITMAP(NUM_KEYS);
 
@@ -75,6 +86,8 @@ void matrix_recalibrate(bool reset_bottom_out_threshold) {
     analog_task();
 
     for (uint32_t i = 0; i < NUM_KEYS; i++) {
+      if (!matrix_key_is_active(i))
+        continue;
       const uint16_t new_adc_filtered =
           EMA(matrix_analog_read(i), key_matrix[i].adc_filtered);
 
@@ -96,6 +109,13 @@ void matrix_recalibrate(bool reset_bottom_out_threshold) {
 
 void matrix_scan(void) {
   for (uint32_t i = 0; i < NUM_KEYS; i++) {
+    if (!matrix_key_is_active(i)) {
+      key_matrix[i].distance = 0;
+      key_matrix[i].extremum = 0;
+      key_matrix[i].key_dir = KEY_DIR_INACTIVE;
+      key_matrix[i].is_pressed = false;
+      continue;
+    }
     const uint16_t new_adc_filtered =
         EMA(matrix_analog_read(i), key_matrix[i].adc_filtered);
     const actuation_t *actuation = &CURRENT_PROFILE.actuation_map[i];

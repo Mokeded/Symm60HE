@@ -21,7 +21,7 @@ and OpenSCAD case. They are not conceptual renders.
 - `pogo-right-spring-module-bottom.png`
 
 The KiCad top/bottom labels describe the physical side being viewed. The Hall
-sensors, muxes, and FPC-compatible ZIF connectors are on the bottom of the two keyboard
+sensors, muxes, and FFC connectors are on the bottom of the two keyboard
 halves; the daughterboard's MCU and support components are on its top.
 
 On the daughterboard, J2's cable opening faces the left outside edge and J3's
@@ -44,6 +44,6 @@ discrete gasket pads from 1.5 mm Poron.
 
 ## Regeneration
 
-`tools/render_current_pcbs.py` uses KiCad's native `pcb render` command for the
-current PCB files. `tools/render_gallery.py` renders the DXF images and rebuilds
+`tools/rendering/render_current_pcbs.py` uses KiCad's native `pcb render` command for the
+current PCB files. `tools/rendering/render_gallery.py` renders the DXF images and rebuilds
 the contact sheet.

@@ -1,11 +1,14 @@
 __pycache__/
 .DS_Store
+._*
 .venv/
 work/
+.recovery/
+.history/
 firmware/libhmk/.pio/
 *.pyc
 *-backups/
 *.kicad_prl
+*.kicad_pro.lck
 fp-info-cache
-._*
-.recovery/
+pcb/LocalFPTest.*

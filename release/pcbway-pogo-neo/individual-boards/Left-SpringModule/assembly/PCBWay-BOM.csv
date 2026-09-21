@@ -1,3 +1,3 @@
 Item,Quantity,Reference Designators,Description,Package,Assembly Type,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,Substitution Allowed,Special Instructions
 1,1,PS1,12-position 1.27 mm SMT spring-loaded connector,MillMax_854-22-012-30-004101,SMT,Mill-Max,854-22-012-30-004101,PCBWay turnkey quote or customer consigned,,No,NO SUBSTITUTE; mechanically critical; manual SMT placement acceptable; spring contacts face Hall-PCB target
-2,1,JF1,12-position 1.00 mm top-contact FPC/FFC ZIF connector,FFC_12P_1.00mm_TopContact,SMT,BOOMELE,1.0-12P,LCSC,C20111,Written approval only,Top-contact orientation; verify cable-entry direction in assembly drawing
+2,1,JF1,12-position 1.00 mm top-contact FFC connector,FFC_12P_1.00mm_TopContact,SMT,BOOMELE,1.0-12P,LCSC,C20111,Written approval only,Top-contact orientation; verify cable-entry direction in assembly drawing

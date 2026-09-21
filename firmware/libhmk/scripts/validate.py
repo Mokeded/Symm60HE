@@ -27,6 +27,19 @@ kb_json = utils.get_kb_json(keyboard)
 
 # Validate default keymaps
 default_keymaps = utils.resolve_default_keymaps(kb_json)
+
+if kb_json.keyboard.profile_names is not None:
+    if len(kb_json.keyboard.profile_names) != kb_json.keyboard.num_profiles:
+        raise ValueError("Expected one profile name per keyboard profile")
+
+if kb_json.keyboard.active_key_masks is not None:
+    masks = kb_json.keyboard.active_key_masks
+    if len(masks) != kb_json.keyboard.num_profiles:
+        raise ValueError("Expected one active-key mask per keyboard profile")
+    if any(len(mask) != kb_json.keyboard.num_keys for mask in masks):
+        raise ValueError("Each active-key mask must contain num_keys entries")
+    if any(value not in (0, 1) for mask in masks for value in mask):
+        raise ValueError("Active-key mask entries must be zero or one")
 if len(default_keymaps) != kb_json.keyboard.num_profiles:
     raise ValueError(
         f"Expected default keymaps to have {kb_json.keyboard.num_profiles} profiles"

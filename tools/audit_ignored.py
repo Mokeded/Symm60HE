@@ -58,12 +58,11 @@ def main():
     else:
         summary += ["The raw reports above are the authority for each location. Only findings",
                     "from rules that were ignored in the released projects are counted here.",
-                    "The courtyard, footprint-type and back-text findings are metadata or",
-                    "documentation issues. Silkscreen conflicts are clipped to solder-mask",
-                    "openings by `tools/release.py`. The one hole-to-hole finding is a tangent",
-                    "pair of NPTH holes at HER24/SR2 on the right board: mutually exclusive",
-                    "up-arrow and 2.25u-shift/stabilizer geometry on the universal PCB. It must",
-                    "be confirmed in the fabricator viewer, or avoided with a layout-specific PCB.", "",
+                    "The courtyard and footprint-type findings are metadata or documentation",
+                    "issues. Silkscreen conflicts are clipped to solder-mask openings by",
+                    "`tools/releases/release.py`. Physical copper, drill and routed-slot rules are enabled",
+                    "in the released projects and are therefore not part of this ignored-rule",
+                    "inventory. The raw reports remain the authority for every location.", "",
                     "| Rule | Total |", "|---|---:|"]
         summary += [f"| `{rule}` | {count} |" for rule, count in sorted(total.items())]
     out = ROOT / "release/reports/ignored-drc-audit.md"

@@ -47,7 +47,7 @@ for w in WIDTHS:
 
 # --------------------------------------------------------------- mux package --
 # FN40HE fits the SN74LV4051A in TSSOP-16.  Here it goes in SOIC-16 instead --
-# the same part, SN74LV4051ADR rather than ...APWR.  The reason is routing: a
+# the same part, SN74LV4051AD rather than ...APWR.  The reason is routing: a
 # 0.65 mm TSSOP leaves 0.25 mm between adjacent pads, so no trace can be taken
 # out between them at any sane design rule, and every interior pin has to escape
 # by via through a gap its neighbours already own.  SOIC-16's 1.27 mm pitch

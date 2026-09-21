@@ -1,0 +1,7 @@
+ARCHIVED / DO NOT ORDER
+
+This Neo-style pogo release snapshot predates the final outward-facing FFC
+connector placement on the production Hall PCBs.  Its generator no longer
+produces complete, verified breakouts from the current sources.  These files
+are retained only as design history and are not part of the manufacturing-ready
+FFC release.

@@ -1,0 +1,3 @@
+The adjacent ZIP is an archived Neo pogo RFQ snapshot.  It predates the final
+production FFC connector placement, is excluded from build.sh, and must not be
+submitted for manufacture.

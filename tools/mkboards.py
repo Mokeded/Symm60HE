@@ -9,6 +9,7 @@ from sexp import loads, dumps, find, first, Sym, set_uuids
 from flip import flip as flip_fp, set_pad_angles
 from geom import KEYS, U, AXIS
 from outline import LEFT_PCB, RIGHT_PCB, DB, CASE_IN, axis_mm, USB_X_OFF
+from pcb.relocate_half_mounts import MOUNTS
 from shapely.geometry import Polygon
 from shapely.affinity import rotate as srot, translate as stran
 from shapely.geometry import box as sbox, Point as spoint
@@ -151,7 +152,7 @@ def tight_pcb(half):
     # buffers remove microscopic self-intersections without rounding it away.
     hull = unary_union(cells).buffer(RIM, join_style=2)
     hull = hull.buffer(0.05, join_style=2).buffer(-0.05, join_style=2)
-    # Each half needs one narrow inner-edge tongue for its 12-pin FPC connector. This is
+    # Each half needs one narrow inner-edge tongue for its 12-pin FFC.  This is
     # the only deliberate departure from the keymap silhouette and is kept to
     # the connector courtyard rather than restoring a large central wedge.
     tab_x = axis_mm - 7.0 if half == "L" else axis_mm + 7.0
@@ -262,23 +263,13 @@ for half, poly, fname in (("L", LEFT_PCB, "Symm60HE-Left"),
     fps.append(place("FFC_12P_1.00mm_TopContact", "J%s1" % half, "FFC_12P",
                      jx, jy, jrot,
                      nets={str(i + 1): n for i, n in enumerate(pin_order)}, back=True))
-    mh = 0
-    # The two rear inner holes must stay outside the central daughterboard
-    # pocket.  The old near-axis positions put case bosses through that board.
-    inner_top = ((axis_mm - 45.0, 30.0) if half == "L"
-                 else (axis_mm + 45.0, 30.0))
-    mount_wants = ([(b[0]+14, b[1]+12), (b[0]+14, b[3]-12),
-                    inner_top, (b[2]-14, b[3]-12)] if half == "L" else
-                   [inner_top, (b[0]+14, b[3]-12),
-                    (b[2]-14, b[1]+12), (b[2]-14, b[3]-12)])
-    for wx, wy in mount_wants:
-        spot = find_spot(poly, wx, wy, 7.0, 7.0, busy=busy, step=0.5)
-        if spot is None: continue
-        busy.append(sbox(spot[0]-4, spot[1]-4, spot[0]+4, spot[1]+4))
-        mh += 1
-        fps.append(place("MountingHole_2.2mm_M2_Pad", "MH%s%d" % (half, mh),
-                         "M2", spot[0], spot[1], 0, nets={"1": "GND"}))
-    print("   %s: muxes at %s | FPC connector at (%.1f, %.1f) rot %d | %d mounting holes"
+    mount_side = "Left" if half == "L" else "Right"
+    for ref, spot in MOUNTS[mount_side].items():
+        busy.append(sbox(spot[0]-2, spot[1]-2, spot[0]+2, spot[1]+2))
+        fps.append(place("MountingHole_2.2mm_M2_NPTH", ref,
+                         "M2_NPTH", spot[0], spot[1], 0))
+    mh = len(MOUNTS[mount_side])
+    print("   %s: muxes at %s | FFC at (%.1f, %.1f) rot %d | %d mounting holes"
           % (half, ", ".join("(%.0f,%.0f)" % t for t in taken), jx, jy, jrot, mh))
     n = board(poly, fps, os.path.join(PCB_OUT, "%s.kicad_pcb" % fname), fname)
     report[half] = dict(pos=len(ks), chan=len(groups), sens=nsens, caps=ncap,
@@ -297,7 +288,7 @@ for h in ("L", "R"):
 #
 # The MCU pin assignment and its support circuit follow the proven FN40HE
 # reference design.  Core circuitry and support passives use opposite sides to
-# preserve the compact daughterboard outline (57 x 27 mm after allowing the
+# preserve the compact daughterboard outline (57 x 28 mm after allowing the
 # full C20111 hold-down lands at both outward-facing cable mouths).
 _p = []
 fps = []
@@ -399,5 +390,5 @@ for i, (dx, dy) in enumerate(((-24.0, -11.0), (24.0, -11.0)), 1):
     x, y = at(dx, dy)
     fps.append(place("MountingHole_2.2mm_M2_NPTH", "MHD%d" % i, "M2_NPTH", x, y))
 n = board(db, fps, os.path.join(PCB_OUT, "Symm60HE-Daughterboard.kicad_pcb"), "Symm60HE-Daughterboard")
-print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB-C/ESD/CC, 2 LDOs, xtal, complete support passives, fuse, 2 tacts, 2 FPC-compatible ZIFs, 2 M2 NPTH)"
+print("daughterboard: %.1f x %.1f mm | %d footprints (MCU, USB-C/ESD/CC, 2 LDOs, xtal, complete support passives, fuse, 2 tacts, 2 FFC, 2 M2 NPTH)"
       % (db.bounds[2]-db.bounds[0], db.bounds[3]-db.bounds[1], n))

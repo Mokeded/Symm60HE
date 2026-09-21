@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Neo-Left-Half.kicad_pcb
-Created on 2026-09-13T20:07:19
+Created on 2026-09-12T13:41:25
 
 Copper Layer Stackup:
     =============================================================

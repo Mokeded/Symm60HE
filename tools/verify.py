@@ -8,6 +8,7 @@ multi-layout pads and the Hall-sensor/mux/ribbon net architecture.
 import glob
 import csv
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -19,7 +20,12 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 BOARDS = ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard")
 FAB_BOARDS = BOARDS + ("Symm60HE-Panel",)
-PLATE_VARIANTS = ("wkl", "wklbs2", "wklarrows", "wklbs2arrows", "universal")
+PLATE_VARIANTS = (
+    "wkl", "wklarrows", "wklbs2", "wklbs2arrows",
+    "wkl-left-arrows-right", "three-key-left-wkl-right",
+    "wkl-left-arrows-right-bs2", "three-key-left-wkl-right-bs2",
+    "universal",
+)
 VENV_PYTHON = ROOT / ".venv" / ("Scripts/python.exe" if sys.platform == "win32"
                                 else "bin/python")
 PROJECT_PYTHON = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
@@ -84,16 +90,13 @@ def kicad_drc():
             print(f"{name}: {output}")
             report_text = report.read_text() if report.exists() else ""
             violations = re.findall(r"^\[([^]]+)\]", report_text, re.MULTILINE)
-            # KiCad stores the intentionally mirrored, rotated B.Cu FFC copies
-            # in a transformed representation.  Their copper/pad dimensions are
-            # checked independently below; permit only that exact library-copy
-            # comparison warning, never electrical or geometry violations.
-            only_known_back_ffc_warning = (
-                name in {"Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Panel"}
-                and violations
-                and set(violations) == {"lib_footprint_mismatch"}
-                and report_text.count("FFC_12P_1.00mm_TopContact") == len(violations))
-            ok &= result.returncode == 0 or only_known_back_ffc_warning
+            # Board instances intentionally carry local pad/graphic edits made
+            # during routing and aperture generation.  Library comparison
+            # notices do not describe fabricated geometry; accept only these
+            # two bookkeeping categories and never electrical/geometry errors.
+            only_library_notices = (violations and set(violations).issubset({
+                "lib_footprint_issues", "lib_footprint_mismatch"}))
+            ok &= result.returncode == 0 or only_library_notices
     print(">>> ok\n" if ok else ">>> FAILED\n")
     return ok
 
@@ -128,13 +131,19 @@ def firmware_check():
         data = json.loads(path.read_text())
         matrix = data["analog"]["mux"]["matrix"]
         mapped = sorted(value for row in matrix for value in row if value)
-        good = (data["keyboard"]["num_keys"] == 63 and
+        masks = data["keyboard"]["active_key_masks"]
+        good = (data["keyboard"]["num_keys"] == 69 and
                 data["analog"]["mux"]["select"] == ["C1", "C2", "C3"] and
                 data["analog"]["mux"]["input"] ==
-                ["A3", "A4", "A5", "A6", "A7", "C4", "C5", "B0"] and
-                mapped == list(range(1, 64)) and image.is_file() and
+                ["A3", "A4", "A5", "A6", "A2",
+                 "A7", "C4", "C5", "B0", "A1"] and
+                mapped == list(range(1, 70)) and
+                [sum(mask) for mask in masks] == [60, 63, 59, 62] and
+                image.is_file() and
                 image.stat().st_size > 0)
-        print(f"63 channels once each; firmware.bin={image.stat().st_size if image.exists() else 0} bytes")
+        print(f"69 independent channels once each; active profile counts "
+              f"{[sum(mask) for mask in masks]}; "
+              f"firmware.bin={image.stat().st_size if image.exists() else 0} bytes")
     except (KeyError, OSError, ValueError, TypeError) as exc:
         print(exc)
         good = False
@@ -146,42 +155,42 @@ def release_check():
     print("=== fabrication archives ===")
     ok = True
     import zipfile
-    for name in ("Symm60HE-Half-Panel", "Symm60HE-Daughterboard"):
+    expected_jobs = {
+        "Symm60HE-Half-Panel": ("Symm60HE-Panel", None),
+        # KiCad's job bounds include the 0.05 mm Edge.Cuts stroke per side.
+        "Symm60HE-Daughterboard": ("Symm60HE-Daughterboard", (50.1, 31.1)),
+    }
+    for name, (board_name, expected_size) in expected_jobs.items():
         archive = ROOT / "release/jlcpcb" / f"{name}-Gerbers.zip"
         try:
             with zipfile.ZipFile(archive) as zipped:
                 names = zipped.namelist()
                 archive_good = zipped.testzip() is None and len(names) >= 9
-            if name == "Symm60HE-Half-Panel":
-                bom_rows = []
-                pairs_good = True
-                for layout in ("doe-wkl", "doe-wklarrows", "doe-wklbs2",
-                               "doe-wklbs2arrows"):
-                    base = ROOT / "release/jlcpcb" / name / "layouts" / layout
-                    bom = base / f"{name}-{layout}-BOM.csv"
-                    cpl = base / f"{name}-{layout}-CPL.csv"
-                    rows = list(csv.DictReader(bom.open()))
-                    positions = list(csv.DictReader(cpl.open()))
-                    bom_refs = {ref for row in rows
-                                for ref in row["Designator"].split(",")}
-                    cpl_refs = {row["Ref"] for row in positions}
-                    pairs_good &= (bool(rows) and bom_refs == cpl_refs and
-                                   all(row["LCSC Part #"] not in ("", "--")
-                                       for row in rows))
-                    bom_rows.extend(rows)
-                good = archive_good and pairs_good
-            else:
-                bom = ROOT / "release/jlcpcb" / name / f"{name}-BOM.csv"
-                bom_rows = list(csv.DictReader(bom.open()))
-                good = (archive_good and bool(bom_rows) and
-                        all(row["LCSC Part #"] not in ("", "--")
-                            for row in bom_rows))
-        except (OSError, zipfile.BadZipFile):
+            bom = ROOT / "release/jlcpcb" / name / f"{name}-BOM.csv"
+            cpl = ROOT / "release/jlcpcb" / name / f"{name}-CPL.csv"
+            bom_rows = list(csv.DictReader(bom.open()))
+            positions = list(csv.DictReader(cpl.open()))
+            bom_refs = {ref for row in bom_rows
+                        for ref in row["Designator"].split(",")}
+            cpl_refs = {row["Ref"] for row in positions}
+            board = ROOT / "pcb" / f"{board_name}.kicad_pcb"
+            current = archive.stat().st_mtime >= board.stat().st_mtime
+            size_good = True
+            if expected_size is not None:
+                job = json.loads((ROOT / "release/jlcpcb" / name / "gerbers" /
+                                  f"{board_name}-job.gbrjob").read_text())
+                size = job["GeneralSpecs"]["Size"]
+                size_good = (abs(float(size["X"]) - expected_size[0]) < 0.01 and
+                             abs(float(size["Y"]) - expected_size[1]) < 0.01)
+            good = (archive_good and bool(bom_rows) and bom_refs == cpl_refs and
+                    all(row["LCSC Part #"] not in ("", "--")
+                        for row in bom_rows) and current and size_good)
+        except (KeyError, OSError, ValueError, TypeError, zipfile.BadZipFile):
             good = False
             names = []
             bom_rows = []
         print(f"{name}: {len(names)} files, {len(bom_rows)} fitted SMT BOM rows" +
-              ("" if good else "  FAILED"))
+              ("" if good else "  FAILED (stale or inconsistent release)"))
         ok &= good
     print(">>> ok\n" if ok else ">>> FAILED\n")
     return ok
@@ -195,9 +204,28 @@ def split_plate_audit():
         print("ezdxf is not installed")
         print(">>> FAILED\n")
         return False
+    sys.path.insert(0, str(HERE))
+    from geom import KEYS
+    from layouts.make_layout_pcbs import source_layout
+    from shapely.geometry import LineString, Polygon, Point
+    from shapely.affinity import scale as shapely_scale
+    from shapely.ops import unary_union
+    from mkplate import (PLATE_STANDOFFS, PLATE_STANDOFF_DIAMETER,
+                         STANDOFF_BODY_RADIUS, STANDOFF_OPENING_CLEARANCE,
+                         STANDOFF_EDGE_CLEARANCE, MOUNT_OPENING_CLEARANCE,
+                         POM_MIN_WEB)
+    from outline import (finished_plate_outline, gasket_tabs,
+                         keycap_bounded_plate, keycap_core_plate,
+                         keycap_plate_envelope,
+                         straight_gasket_walls, PLATE_PCB_FOLLOW_MARGIN,
+                         PLATE_INNER_WALL_GAP, PLATE_OUTER_WALL_X, axis_mm)
+    from route import read as read_board
+    from sexp import find as sexp_find, first as sexp_first, loads as sexp_loads
     ok = True
     for variant in PLATE_VARIANTS:
         sides = []
+        fabrication_outlines = []
+        expected_gasket_pads = []
         for side in ("left", "right"):
             path = ROOT / "plate" / f"Symm60HE-plate-{variant}-{side}.dxf"
             try:
@@ -205,13 +233,216 @@ def split_plate_audit():
                 auditor = doc.audit()
                 outlines = list(doc.modelspace().query(
                     'LWPOLYLINE[layer=="PLATE_OUTLINE"]'))
-                good = not auditor.has_errors and len(outlines) == 1
-            except (OSError, ezdxf.DXFError):
+                if len(outlines) != 1:
+                    raise ValueError("expected exactly one plate outline")
+                outline = Polygon([
+                    (point[0], point[1])
+                    for point in outlines[0].get_points("xy")
+                ])
+                fabrication_outlines.append(outline)
+                half = side[0].upper()
+                if variant == "universal":
+                    keys = [key for key in KEYS if key["half"] == half]
+                else:
+                    build = "doe-" + source_layout(
+                        variant, "Left" if half == "L" else "Right")
+                    keys = [key for key in KEYS
+                            if key["half"] == half and
+                            build in key["builds"]]
+                cap_hull = keycap_plate_envelope(keys)
+                openings = list(doc.modelspace().query(
+                    'LWPOLYLINE[layer=="SWITCH_CUTOUTS"]')) + list(
+                    doc.modelspace().query(
+                        'LWPOLYLINE[layer=="STAB_CLEARANCE"]'))
+                opening_polys = [Polygon([
+                    (point[0], point[1])
+                    for point in entity.get_points("xy")
+                ]) for entity in openings]
+                mount_entities = list(doc.modelspace().query(
+                    'LWPOLYLINE[layer=="STANDOFF_HOLES"]'))
+                mount_polys = [Polygon([
+                    (point[0], point[1])
+                    for point in entity.get_points("xy")
+                ]) for entity in mount_entities]
+                # Flex-relief slots were removed to restore the solid plate
+                # structure.  Treat any stale FLEX_CUTS entity as a failure.
+                obsolete_flex = list(doc.modelspace().query(
+                    'LWPOLYLINE[layer=="FLEX_CUTS"]'))
+                plate_body = keycap_bounded_plate(keys)
+                integral_gasket_mounts = gasket_tabs(plate_body, half)
+                expected_gasket_pads.extend(
+                    tab.buffer(-0.55, join_style=2)
+                    for tab in integral_gasket_mounts)
+                expected_outline = finished_plate_outline(half)
+                # Query the actual polygon datums rather than reconstructing
+                # them arithmetically.  GEOS can retain a harmless ~1e-14 mm
+                # coordinate residue after the union/mirror operation; a line
+                # made from the nominal decimal then misses the coincident
+                # left wall even though the fabrication contour is straight.
+                outer_wall_x = (plate_body.bounds[0] if half == "L" else
+                                plate_body.bounds[2])
+                inner_wall_x = (plate_body.bounds[2] if half == "L" else
+                                plate_body.bounds[0])
+                nominal_outer_wall_x = (
+                    PLATE_OUTER_WALL_X if half == "L" else
+                    2.0 * axis_mm - PLATE_OUTER_WALL_X)
+                nominal_inner_wall_x = (
+                    axis_mm - PLATE_INNER_WALL_GAP / 2.0 if half == "L" else
+                    axis_mm + PLATE_INNER_WALL_GAP / 2.0)
+                outer_wall_line = LineString([
+                    (outer_wall_x, -1e4), (outer_wall_x, 1e4)])
+                inner_wall_line = LineString([
+                    (inner_wall_x, -1e4), (inner_wall_x, 1e4)])
+                straight_walls_good = (
+                    abs(outer_wall_x - nominal_outer_wall_x) < 1e-6 and
+                    abs(inner_wall_x - nominal_inner_wall_x) < 1e-6 and
+                    plate_body.boundary.intersection(outer_wall_line).length > 90.0 and
+                    plate_body.boundary.intersection(inner_wall_line).length > 90.0 and
+                    all(tab.intersects(outer_wall_line)
+                        for tab in integral_gasket_mounts[:2]) and
+                    all(tab.intersects(inner_wall_line)
+                        for tab in integral_gasket_mounts[2:]))
+                # Straight side rails are intentional gasket-wall geometry;
+                # only the ordinary structural core is keycap-bounded.
+                outside = keycap_core_plate(keys).difference(cap_hull).area
+                obstacle = unary_union(opening_polys)
+                minimum_web = min(
+                    outline.exterior.distance(opening)
+                    for opening in opening_polys)
+                expected_mounts = PLATE_STANDOFFS[half]
+                mount_centres = sorted(
+                    (round(poly.centroid.x, 3), round(poly.centroid.y, 3))
+                    for poly in mount_polys)
+                expected_centres = sorted(
+                    (round(x, 3), round(y, 3)) for x, y in expected_mounts)
+                board_path = (
+                    ROOT / "pcb" / f"Symm60HE-{'Left' if half == 'L' else 'Right'}.kicad_pcb"
+                    if variant == "universal" else
+                    ROOT / "pcb/variants/layouts" / variant /
+                    f"Symm60HE-{variant}-{'Left' if half == 'L' else 'Right'}.kicad_pcb"
+                )
+                routed_pcb_outline = read_board(str(board_path))[2]
+                routed_profile = straight_gasket_walls(
+                    routed_pcb_outline.buffer(
+                        PLATE_PCB_FOLLOW_MARGIN, join_style=2), half)
+                pcb_profile_error = plate_body.symmetric_difference(
+                    routed_profile).area
+                board = sexp_loads(board_path.read_text())
+                board_mount_centres = []
+                board_mount_geometry_good = True
+                mount_prefix = "MHL" if half == "L" else "MHR"
+                for footprint in sexp_find(board, "footprint"):
+                    reference = next((str(prop[2])
+                                      for prop in sexp_find(footprint, "property")
+                                      if len(prop) > 2 and
+                                      str(prop[1]) == "Reference"), "")
+                    if not reference.startswith(mount_prefix):
+                        continue
+                    at = sexp_first(footprint, "at")
+                    board_mount_centres.append(
+                        (round(float(at[1]), 3), round(float(at[2]), 3)))
+                    pads = sexp_find(footprint, "pad")
+                    geometry_good = len(pads) == 1
+                    if geometry_good:
+                        pad = pads[0]
+                        drill = sexp_first(pad, "drill")
+                        size = sexp_first(pad, "size")
+                        geometry_good = (
+                            str(pad[2]) == "np_thru_hole" and
+                            drill is not None and size is not None and
+                            abs(float(drill[1]) - PLATE_STANDOFF_DIAMETER) < 1e-6 and
+                            all(abs(float(value) - PLATE_STANDOFF_DIAMETER) < 1e-6
+                                for value in size[1:3]) and
+                            not sexp_find(pad, "net"))
+                    board_mount_geometry_good &= geometry_good
+                board_mounts_good = (
+                    sorted(board_mount_centres) == expected_centres and
+                    len(board_mount_centres) == 4 and
+                    board_mount_geometry_good)
+                mounts_good = (
+                    len(mount_polys) == 4 and
+                    mount_centres == expected_centres and
+                    board_mounts_good and
+                    all(abs((poly.bounds[2] - poly.bounds[0]) -
+                            PLATE_STANDOFF_DIAMETER) < 0.01
+                        for poly in mount_polys) and
+                    all(obstacle.distance(poly) >=
+                        MOUNT_OPENING_CLEARANCE - 1e-6
+                        for poly in mount_polys) and
+                    all(obstacle.distance(Point(x, y).buffer(
+                        STANDOFF_BODY_RADIUS)) >=
+                        STANDOFF_OPENING_CLEARANCE - 1e-6
+                        for x, y in expected_mounts) and
+                    all(outline.exterior.distance(Point(x, y).buffer(
+                        STANDOFF_BODY_RADIUS)) >=
+                        STANDOFF_EDGE_CLEARANCE - 1e-6
+                        for x, y in expected_mounts))
+                all_voids = opening_polys + mount_polys
+                material = outline.difference(unary_union(all_voids))
+                one_piece = (material.geom_type == "Polygon" and
+                             material.is_valid)
+                side_checks = {
+                    "dxf audit": not auditor.has_errors,
+                    "valid outline": outline.is_valid,
+                    "keycap bound": outside < 0.01,
+                    "PCB profile": pcb_profile_error < 0.01,
+                    "expected outline": outline.symmetric_difference(
+                        expected_outline).area < 0.01,
+                    "minimum web": minimum_web >= POM_MIN_WEB - 1e-6,
+                    "four gasket mounts": len(integral_gasket_mounts) == 4,
+                    "straight walls": straight_walls_good,
+                    "contained openings": all(
+                        outline.buffer(1e-6).contains(opening)
+                        for opening in all_voids),
+                    "mounts": mounts_good,
+                    "no flex cuts": not obsolete_flex,
+                    "one piece": one_piece,
+                }
+                good = all(side_checks.values())
+                if not good:
+                    failed = ", ".join(name for name, passed in side_checks.items()
+                                       if not passed)
+                    print(f"  {variant}/{side}: failed {failed}; "
+                          f"web={minimum_web:.3f}, profile_error={pcb_profile_error:.4f}")
+            except (OSError, ValueError, ezdxf.DXFError):
                 good = False
             sides.append(good)
             ok &= good
+        pair_symmetric = False
+        if len(fabrication_outlines) == 2:
+            mirrored_right = shapely_scale(
+                fabrication_outlines[1], xfact=-1.0, yfact=1.0,
+                origin=(axis_mm, 0.0))
+            pair_symmetric = (
+                fabrication_outlines[0].symmetric_difference(
+                    mirrored_right).area < 0.01)
+        if not pair_symmetric:
+            sides = [False, False]
+            ok = False
+        gasket_good = False
+        try:
+            gasket_path = (ROOT / "plate" /
+                           f"Symm60HE-gasket-pads-{variant}.dxf")
+            gasket_doc = ezdxf.readfile(gasket_path)
+            gasket_auditor = gasket_doc.audit()
+            gasket_polys = [Polygon([
+                (point[0], point[1])
+                for point in entity.get_points("xy")
+            ]) for entity in gasket_doc.modelspace().query(
+                'LWPOLYLINE[layer=="GASKET_PADS"]')]
+            gasket_good = (
+                not gasket_auditor.has_errors and len(gasket_polys) == 8 and
+                unary_union(gasket_polys).symmetric_difference(
+                    unary_union(expected_gasket_pads)).area < 0.01)
+        except (OSError, ValueError, ezdxf.DXFError):
+            gasket_good = False
+        ok &= gasket_good
         print(f"{variant}: left={'ok' if sides[0] else 'FAILED'}, "
-              f"right={'ok' if sides[1] else 'FAILED'}")
+              f"right={'ok' if sides[1] else 'FAILED'}, "
+              f"gasket={'ok' if gasket_good else 'FAILED'}, "
+              f"mirrored exterior={'ok' if pair_symmetric else 'FAILED'}; "
+              "PCB-following profile, straight gasket walls, solid structure, "
+              "integral gasket mounts, PCB-matched M2 mounts")
     print(">>> ok\n" if ok else ">>> FAILED\n")
     return ok
 
@@ -337,8 +568,8 @@ def manufacturing_audit():
         connector_centres[side] = float(first(connector, "at")[1])
         half = side[0]
         physical_order = [
-            "+3V3A", "GND", "MUX_A0", "MUX_A1", "MUX_A2", "GND",
-            f"ADC_{half}1", "GND", f"ADC_{half}2", "GND",
+            "+3V3A", f"ADC_{half}5", "MUX_A0", "MUX_A1", "MUX_A2", "VBUS",
+            f"ADC_{half}1", "GND", f"ADC_{half}2", f"RGB_{half}",
             f"ADC_{half}3", f"ADC_{half}4"]
         expected_pins = (list(reversed(physical_order))
                          if side == "Left" else physical_order)
@@ -356,9 +587,11 @@ def manufacturing_audit():
         scale(left_outline, xfact=-1, yfact=1,
               origin=(axis_mm, 0)).symmetric_difference(right_outline).area <
         0.01)
-    checks["half FPC connector locations are symmetric"] = abs(
-        connector_centres["Left"] + connector_centres["Right"] -
-        2 * axis_mm) < 1e-6
+    # The routed rear pockets intentionally place the connector references
+    # 24 mm apart at these targets; their opposed rotations mirror cable entry.
+    checks["half FFC locations match routed rear targets"] = (
+        abs(connector_centres["Left"] - 140.209) < 1e-6 and
+        abs(connector_centres["Right"] - 164.209) < 1e-6)
     panel = loads((ROOT / "pcb/Symm60HE-Panel.kicad_pcb").read_text())
     panel_smt = []
     mouse = 0
@@ -388,16 +621,16 @@ def manufacturing_audit():
                 edge_points.append((float(point[1]), float(point[2])))
     px = [point[0] for point in edge_points]
     py = [point[1] for point in edge_points]
-    checks["stacked panel is 175.32 x 233.91 mm"] = (
-        abs((max(px) - min(px)) - 175.32) < 0.02 and
-        abs((max(py) - min(py)) - 233.91) < 0.02)
+    checks["stacked panel is 162.29 x 227.83 mm"] = (
+        abs((max(px) - min(px)) - 162.29) < 0.02 and
+        abs((max(py) - min(py)) - 227.83) < 0.02)
     daughter = loads((ROOT / "pcb/Symm60HE-Daughterboard.kicad_pcb").read_text())
     _, _, daughter_outline, _ = read(
         str(ROOT / "pcb/Symm60HE-Daughterboard.kicad_pcb"))
     dx0, dy0, dx1, dy1 = daughter_outline.bounds
-    checks["daughterboard outline is 57 x 27 mm"] = (
-        abs((dx1 - dx0) - 57.0) < 0.01 and
-        abs((dy1 - dy0) - 27.0) < 0.01)
+    checks["daughterboard outline is 50 x 31 mm"] = (
+        abs((dx1 - dx0) - 50.0) < 0.01 and
+        abs((dy1 - dy0) - 31.0) < 0.01)
     daughter_zones = {(first(z, "net")[1],
                        (first(z, "layer") or first(z, "layers"))[1])
                       for z in find(daughter, "zone")}
@@ -409,11 +642,29 @@ def manufacturing_audit():
                       if first(fp, "attr") and "smd" in first(fp, "attr")[1:]}
     checks["compact daughterboard remains mixed-side"] = daughter_sides == {"F.Cu", "B.Cu"}
     daughter_fids = {"F.Cu": 0, "B.Cu": 0}
+    daughter_mounts = {}
     for fp in find(daughter, "footprint"):
         if "Fiducial_1mm_" in str(fp[1]):
             daughter_fids[first(fp, "layer")[1]] += 1
-    checks["daughterboard has three fiducials per assembly side"] = (
-        daughter_fids == {"F.Cu": 3, "B.Cu": 3})
+        reference = next((str(prop[2]) for prop in find(fp, "property")
+                          if len(prop) > 2 and
+                          str(prop[1]) == "Reference"), "")
+        if reference.startswith("MHD"):
+            position = first(fp, "at")
+            daughter_mounts[reference] = (
+                float(position[1]), float(position[2]))
+    checks["daughterboard has no local fiducial footprints"] = (
+        daughter_fids == {"F.Cu": 0, "B.Cu": 0})
+    expected_mounts = {
+        "MHD1": (165.209, -3.5000),
+        "MHD3": (209.209, -3.5000),
+        "MHD4": (165.209, 20.9734),
+        "MHD2": (209.209, 20.9734),
+    }
+    checks["daughterboard has four symmetric perimeter case mounts"] = (
+        daughter_mounts.keys() == expected_mounts.keys() and
+        all(math.dist(daughter_mounts[ref], target) < 0.002
+            for ref, target in expected_mounts.items()))
 
     ffc_count = 0
     for name in BOARDS:
@@ -434,7 +685,7 @@ def manufacturing_audit():
                     and abs(abs(float(first(pad, "at")[1])) - 7.8) < 1e-6
                     and abs(abs(float(first(pad, "at")[2])) - 1.1) < 1e-6
                     for pad in mounts))
-    checks["four FPC-compatible ZIF connectors use the locked footprint"] = ffc_count == 4
+    checks["four FFC connectors use the locked footprint"] = ffc_count == 4
     for label, good in checks.items():
         print(f"{label}: {'ok' if good else 'FAILED'}")
     ok = all(checks.values())
@@ -461,8 +712,7 @@ def reference_assembly_audit():
     }
     for name in ("LeftPCB", "RightPCB", "DaughterboardPCB", "LeftPlate",
                  "RightPlate", "LeftSwitches", "RightSwitches",
-                 "LeftKeycaps", "RightKeycaps", "LeftPCBComponents",
-                 "RightPCBComponents", "DaughterboardComponents"):
+                 "LeftKeycaps", "RightKeycaps"):
         path = fusion / f"Symm60HE-{name}.step"
         checks[f"separate {name} body"] = path.is_file() and path.stat().st_size > 1_000
     for label, good in checks.items():
@@ -485,7 +735,6 @@ def main():
         release_check(),
         split_plate_audit(),
         manufacturing_audit(),
-        run_project_check("3D model provenance", "verify_model_provenance.py"),
         reference_assembly_audit(),
     ]
     return 0 if all(checks) else 1

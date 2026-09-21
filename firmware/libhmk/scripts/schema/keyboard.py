@@ -38,6 +38,11 @@ class KeyboardKeyboard(BaseModel):
     # Maximum number of Dynamic Keystroke bindings per key. Higher values may require higher storage sizes.
     num_dynamic_keystroke_max_bindings: int = Field(ge=4, le=64, default=4)
     num_macro_nodes: int = Field(ge=1, le=255, default=128)
+    # Optional compile-time profile descriptions and Hall-channel masks. A zero
+    # mask entry prevents that key from being calibrated or scanned while the
+    # corresponding profile is active.
+    profile_names: list[str] | None = None
+    active_key_masks: list[list[int]] | None = None
 
 
 # Hardware Configuration

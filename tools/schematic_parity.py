@@ -3,7 +3,7 @@
 from pathlib import Path
 import sys
 
-from mkschematics import components, symbol_name
+from generators.mkschematics import components, symbol_name
 from sexp import find, first, loads
 
 ROOT = Path(__file__).resolve().parent.parent

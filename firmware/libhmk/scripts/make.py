@@ -137,6 +137,10 @@ build_flags.define("NUM_PROFILES", kb.num_profiles)
 build_flags.define("NUM_LAYERS", kb.num_layers)
 build_flags.define("NUM_KEYS", kb.num_keys)
 build_flags.define("NUM_ADVANCED_KEYS", kb.num_advanced_keys)
+if kb.active_key_masks is not None:
+    build_flags.define(
+        "PROFILE_ACTIVE_KEY_MATRIX", utils.to_c_array(kb.active_key_masks)
+    )
 build_flags.define(
     "NUM_DYNAMIC_KEYSTROKE_MAX_BINDINGS", kb.num_dynamic_keystroke_max_bindings
 )

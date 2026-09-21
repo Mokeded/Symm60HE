@@ -4,7 +4,7 @@
   "jlcpcb_smt_placements": 30,
   "unmatched_lcsc_placements": 0,
   "hand_or_consigned_placements": 0,
-  "source_sha256": "cc00c91b80809582a377322969ee62aa0fffa7c6e9b70081379109b37ff88f51",
+  "source_sha256": "ae1b86b82054f5f4696628e99e176813d070b57b5f5249edfd86c5cd2dd27040",
   "files": [
     "Symm60HE-Neo-Controller-BOM.csv",
     "Symm60HE-Neo-Controller-CPL.csv",

@@ -1,13 +1,13 @@
 daughter_pin,left_half_pin,right_half_pin,net,direction,notes
 1,12,1,+3V3A,daughterboard -> half,"analog rail, from the XC6206"
-2,11,2,GND,common,
+2,11,2,ADC_L5 / ADC_R5,half -> daughterboard,"left JL1 pin 11 reaches J2 pin 2; right JR1 pin 2 reaches J3 pin 2"
 3,10,3,MUX_A0,daughterboard -> half,"mux address, shared by both halves"
 4,9,4,MUX_A1,daughterboard -> half,"mux address, shared by both halves"
 5,8,5,MUX_A2,daughterboard -> half,"mux address, shared by both halves"
-6,7,6,GND,common,
+6,7,6,VBUS,daughterboard -> half,"5 V LED power"
 7,6,7,ADC_x1,half -> daughterboard,"analog, keep the adjacent ground"
 8,5,8,GND,common,
 9,4,9,ADC_x2,half -> daughterboard,"analog, keep the adjacent ground"
-10,3,10,GND,common,
+10,3,10,RGB_L / RGB_R,daughterboard -> half,"buffered addressable-LED data"
 11,2,11,ADC_x3,half -> daughterboard,"analog, keep the adjacent ground"
-12,1,12,ADC_x4,half -> daughterboard,"analog, keep the adjacent ground"
+12,1,12,ADC_x4,half -> daughterboard,"analog; the dedicated ground conductor is pin 8"

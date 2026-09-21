@@ -5,14 +5,14 @@ use FR-4 as a living hinge.
 
 ## Electrical stack per side
 
-1. The compact 57 x 27 mm controller uses its existing 12-way FPC-compatible ZIF connector.
-2. One short, replaceable FPC reaches a 20 x 6 mm floating spring head carrying
+1. The unchanged 57 x 28 mm controller uses its existing 12-way FFC connector.
+2. One short, replaceable FFC reaches a 20 x 20 mm floating spring head carrying
    the 12-contact Mill-Max `854-22-012-30-004101` block.
-3. The spring head sits in a captured 3 degree kernel aperture with 0.4 mm X/Y
+3. The spring head sits in a captured 6 degree kernel aperture with 0.4 mm X/Y
    clearance per side; lips retain it without clamping it rigidly.
 4. A matching Mill-Max `856-10-012-30-051000` target is mounted directly on
-   the copied Hall PCB in place of its FPC-compatible ZIF connector.
-5. There is no target daughterboard and no target-to-Hall-PCB FPC.
+   the copied Hall PCB in place of its FFC connector.
+5. There is no target daughterboard and no target-to-Hall-PCB FFC.
 
 The 12 contacts are exactly the 12 existing ribbon conductors. Mating is
 power-off only. Magnets remain DNP until an assembled Hall-offset/noise test
@@ -23,22 +23,21 @@ passes.
 The target connector is soldered directly to its **Hall PCB**, following the
 Neo Ergo mounting topology. The spring head is a replaceable connector module
 captured loosely by the central kernel and plugs into the controller's ZIF
-socket through one short FPC. Compression hard stops and the two apertures
+socket through one short FFC. Compression hard stops and the two apertures
 control pogo compression without preventing gasket-following motion. This is
 independent of the keyboard suspension: gasket load still enters only through
 the plates.
 
-The keyboard suspension is also plate-only: four outer side gasket pads plus
-four centre-side pads, eight total. There are no top/bottom gasket tabs and no PCB
-gasket tabs. This keeps case/gasket load out of the sensor board while allowing
-each split plate to move independently.
+The keyboard suspension is also plate-only: two short mounts on each outer and
+centre-facing plate edge, eight total. The interior pairs use the edge sections
+closest to the split. All eight use the same short smooth-tapered mount
+geometry. There are no
+top/bottom or PCB gasket tabs. This keeps case and gasket load out of the sensor
+board while allowing each split plate to move independently.
 
-Each compact module is a two-sided assembly: the Mill-Max spring row is on
-F.Cu and the FPC-compatible ZIF connector is directly behind it on B.Cu. This removes the old
-10 mm routing corridor and prevents the two floating boards from overlapping
-at the 6.418 mm target-row separation. The module boards have no alignment
-holes through their fanout; the case pockets must locate them from the 20 x 6
-mm perimeter and retain them loosely enough to follow gasket motion.
+The module boards have no alignment holes through their fanout. Asymmetric
+perimeter keys in the captured carrier pockets provide X/Y/theta location and
+prevent 180 degree installation.
 
 ## Files and status
 
@@ -50,8 +49,8 @@ mm perimeter and retain them loosely enough to follow gasket motion.
 - `*-drc.rpt`: KiCad DRC evidence
 
 All five boards currently report zero DRC violations and zero unconnected pads.
-The original Hall-PCB outlines are retained; only the local flex-cable breakouts are
-replaced in the variant copies. Physical fit, connector compression, FPC bend
+The original Hall-PCB outlines are retained; only the local FFC breakouts are
+replaced in the variant copies. Physical fit, connector compression, FFC bend
 radius, Hall noise, and typing-motion endurance still require a prototype.
 
 Regenerate and check with:
@@ -84,9 +83,9 @@ assembler's placement viewer before ordering.
 
 ## Fusion mounting reference
 
-`case/fusion360/Symm60HE-case-reference-assembly.step` is the authoritative
-assembled reference. It includes the real 20 x 6 mm module boards, F.Cu spring
-blocks, B.Cu FPC connector envelopes, direct Hall-PCB targets, flat controller,
-and flexible cable envelopes in the keyboard's tented/typed coordinate system.
-The previous detached 20 x 20 mm carrier demonstration is retired because it
-cannot represent the current hardware or its centre-seam clearance.
+`case/fusion360/pogo-neo-mounting-reference/` contains an assembled STEP, an
+exploded STEP, the editable FreeCAD source, dimensions, and individual STEP
+bodies. It shows an example two-hole controller tray, anti-rock ledges, 20.8 mm
+floating spring-head pockets, Poron supports, perimeter capture lips, direct
+Hall-PCB target datums, compression stops, and the two FFC route envelopes.
+The model is a reserved-volume and mounting reference, not a finished case.

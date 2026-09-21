@@ -5,53 +5,57 @@ temporarily changed to `warning`; the released project settings were not modifie
 
 ## Symm60HE-Left
 
-Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, hole_clearance, hole_to_hole, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, track_not_centered_on_via, tuning_profile_track_geometries
+Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, tuning_profile_track_geometries
 
 | Rule | Findings |
 |---|---:|
-| `missing_courtyard` | 6 |
-| `nonmirrored_text_on_back_layer` | 199 |
-| `silk_over_copper` | 68 |
+| `courtyards_overlap` | 5 |
+| `missing_courtyard` | 2 |
+| `npth_inside_courtyard` | 6 |
+| `silk_edge_clearance` | 2 |
+| `silk_over_copper` | 90 |
+| `silk_overlap` | 20 |
 
 ## Symm60HE-Right
 
-Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, hole_clearance, hole_to_hole, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, track_not_centered_on_via, tuning_profile_track_geometries
+Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, tuning_profile_track_geometries
 
 | Rule | Findings |
 |---|---:|
-| `hole_to_hole` | 1 |
-| `missing_courtyard` | 5 |
-| `nonmirrored_text_on_back_layer` | 199 |
-| `silk_over_copper` | 70 |
+| `courtyards_overlap` | 3 |
+| `missing_courtyard` | 3 |
+| `npth_inside_courtyard` | 6 |
+| `silk_edge_clearance` | 6 |
+| `silk_over_copper` | 100 |
+| `silk_overlap` | 25 |
 
 ## Symm60HE-Daughterboard
 
-Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, hole_clearance, hole_to_hole, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, track_not_centered_on_via, tuning_profile_track_geometries
+Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, tuning_profile_track_geometries
 
 | Rule | Findings |
 |---|---:|
+| `courtyards_overlap` | 9 |
 | `footprint_type_mismatch` | 1 |
-| `missing_courtyard` | 6 |
-| `nonmirrored_text_on_back_layer` | 42 |
-| `silk_edge_clearance` | 5 |
-| `silk_over_copper` | 20 |
+| `silk_edge_clearance` | 1 |
+| `silk_over_copper` | 23 |
 
 ## Interpretation
 
 The raw reports above are the authority for each location. Only findings
 from rules that were ignored in the released projects are counted here.
-The courtyard, footprint-type and back-text findings are metadata or
-documentation issues. Silkscreen conflicts are clipped to solder-mask
-openings by `tools/release.py`. The one hole-to-hole finding is a tangent
-pair of NPTH holes at HER24/SR2 on the right board: mutually exclusive
-up-arrow and 2.25u-shift/stabilizer geometry on the universal PCB. It must
-be confirmed in the fabricator viewer, or avoided with a layout-specific PCB.
+The courtyard and footprint-type findings are metadata or documentation
+issues. Silkscreen conflicts are clipped to solder-mask openings by
+`tools/releases/release.py`. Physical copper, drill and routed-slot rules are enabled
+in the released projects and are therefore not part of this ignored-rule
+inventory. The raw reports remain the authority for every location.
 
 | Rule | Total |
 |---|---:|
+| `courtyards_overlap` | 17 |
 | `footprint_type_mismatch` | 1 |
-| `hole_to_hole` | 1 |
-| `missing_courtyard` | 17 |
-| `nonmirrored_text_on_back_layer` | 440 |
-| `silk_edge_clearance` | 5 |
-| `silk_over_copper` | 158 |
+| `missing_courtyard` | 5 |
+| `npth_inside_courtyard` | 12 |
+| `silk_edge_clearance` | 9 |
+| `silk_over_copper` | 213 |
+| `silk_overlap` | 45 |

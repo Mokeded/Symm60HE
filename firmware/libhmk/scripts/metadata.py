@@ -58,6 +58,7 @@ def keyboard_metadata_def():
         "numProfiles": kb_json.keyboard.num_profiles,
         "numLayers": kb_json.keyboard.num_layers,
         "numKeys": kb_json.keyboard.num_keys,
+        "profileNames": kb_json.keyboard.profile_names,
         "numAdvancedKeys": kb_json.keyboard.num_advanced_keys,
         "numDynamicKeystrokeMaxBindings": kb_json.keyboard.num_dynamic_keystroke_max_bindings,
         "numMacroNodes": kb_json.keyboard.num_macro_nodes,

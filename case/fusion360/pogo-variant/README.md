@@ -10,7 +10,7 @@ separate bodies for the central controller reference, independently angled
 left/right spring wings, connector envelopes, target-board planes, guide/key
 pins, hard stops, Poron pads, and provisional magnet envelopes.
 
-The two wings are parallel to their respective 3 degree keyboard-half planes.
+The two wings are parallel to their respective 6 degree keyboard-half planes.
 This avoids the impossible constraint of asking one flat rigid daughterboard
 to mate normally to both sides of a tented assembly. A short fixed soldered
 harness connects each wing to the central controller in the prototype; a
