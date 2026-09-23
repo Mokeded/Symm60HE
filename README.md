@@ -39,7 +39,8 @@ by ribbon cable:
 |---|---|---|
 | `pcb/Symm60HE-Left.kicad_pcb` | **158.9 × 107.7 mm** | 33 independent Hall positions, 5 muxes, 1 ribbon link |
 | `pcb/Symm60HE-Right.kicad_pcb` | **158.9 × 107.7 mm** | 36 independent Hall positions, 5 muxes, 1 ribbon link |
-| `pcb/Symm60HE-Panel.kicad_pcb` | **162.29 × 227.83 mm** | Stacked connected manufacturing panel containing both keyboard halves |
+| `pcb/Symm60HE-Panel.kicad_pcb` | **162.29 × 227.83 mm** | Stacked connected manufacturing panel containing both keyboard halves; this is the one that gets ordered |
+| `pcb/Symm60HE-Panel-SideBySide.kicad_pcb` | **310.18 × 121.12 mm** | The same two halves in their assembled orientation, for anyone who prefers it; larger in both area and longest edge, so it costs more to make |
 | `pcb/Symm60HE-Daughterboard.kicad_pcb` | **50 × 31 mm** | MCU, USB-C, ESD, both LDOs, crystal, BOOT/RESET, 2 outward-facing ribbon links and 4 perimeter M2 mounts |
 
 Open each `.kicad_pro` in KiCad 10.
@@ -439,7 +440,9 @@ resetting, install `dfu-util`, and run `pio run -e symm60he -t upload`.
 - `Symm60HE-Half-Panel-Gerbers.zip`: both keyboard halves in one connected
   162.29 × 227.83 mm stacked panel, with thirteen five-hole mouse-bite rows at
   0.75 mm pitch, three B.Cu global fiducials, four 2 mm tooling holes, and all
-  SMT parts on B.Cu
+  SMT parts on B.Cu.  `tools/pcb/panelize.py --arrangement side-by-side` builds
+  the 310.18 × 121.12 mm alternative instead; the release uses the stacked one
+  because it is smaller in both area (369.7 against 375.7 cm²) and longest edge
 - `Symm60HE-Daughterboard-Gerbers.zip`: the separate compact, mixed-side
   daughterboard order, with only the four symmetric M2 NPTH case mounts and no
   additional local fiducial footprints

@@ -100,3 +100,20 @@ pogo/controller mechanism. It is intentionally independent from the empty
 case-design reference assembly so it can be inserted, repositioned, or omitted
 as one subsystem while the enclosure is modeled around the real PCBs and
 plates.
+
+## Componentized import
+
+`Symm60HECaseSetup/` is a Fusion script that builds the same reference as a
+componentized project rather than one imported body: each half's plate,
+switches and keycaps as one component, each Hall PCB and the controller
+daughterboard on their own, the ribbon routes grouped and hidden, and five
+empty components to model the case into. It grounds the reference and checks
+that nothing imported empty.
+
+Copy that folder into Fusion's scripts directory — on Windows
+`%APPDATA%\Autodesk\Autodesk Fusion 360\API\Scripts`, on macOS
+`~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Scripts` — and
+run it from **Utilities > Scripts and Add-Ins**. Installed outside the
+repository it cannot find these files on its own, so set
+`SYMM60HE_REFERENCE_DIR` to this folder, or edit `REFERENCE_DIR` at the top of
+the script.

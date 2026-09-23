@@ -1,8 +1,8 @@
 {
   "LeftPCB": {
     "name": "LeftPCB",
-    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Left.kicad_pcb",
-    "sha256": "bea9262b8e982290bd174ca6f30584d135870c5dd5778d9b439eec96c000577c",
+    "source": "F:\\Symm60HE-GitHub-Upload\\Symm60HE\\pcb\\Symm60HE-Left.kicad_pcb",
+    "sha256": "4096434879baa2de459faca6ebe3f6fb3e36d66f65e9bc20f2e6e826b41ee36d",
     "centre": [
       72.4927,
       52.6625
@@ -34,8 +34,8 @@
   },
   "RightPCB": {
     "name": "RightPCB",
-    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Right.kicad_pcb",
-    "sha256": "161c29bf0cf2f6d42f3e018403d2df6b191d2527f3d4dfb2bf1e1744b9b158af",
+    "source": "F:\\Symm60HE-GitHub-Upload\\Symm60HE\\pcb\\Symm60HE-Right.kicad_pcb",
+    "sha256": "84401a6a018dd4bc861f36f6327fdb6081896026ecb11130ae15901a7e382335",
     "centre": [
       229.9253,
       52.6625
@@ -67,7 +67,7 @@
   },
   "DaughterboardPCB": {
     "name": "DaughterboardPCB",
-    "source": "/Users/smburke/Downloads/DAI BA Testing/TEST_BA_D2M_FIXED/Symm60HE/pcb/Symm60HE-Daughterboard.kicad_pcb",
+    "source": "F:\\Symm60HE-GitHub-Upload\\Symm60HE\\pcb\\Symm60HE-Daughterboard.kicad_pcb",
     "sha256": "db9cfd77511f947b050d1532b7ad9e6216cc7ab7e6f12b791b96d3b701278408",
     "centre": [
       187.209,

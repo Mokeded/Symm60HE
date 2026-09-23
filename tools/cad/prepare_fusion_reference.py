@@ -37,11 +37,25 @@ def find_cli():
 
 
 def find_kicad_python():
+    """KiCad's own interpreter, which is the one that can import pcbnew."""
+    override = os.environ.get("SYMM60_KICAD_PYTHON")
+    if override:
+        return override
     candidates = sorted(glob.glob(
         "/opt/homebrew/Caskroom/kicad/*/KiCad/KiCad.app/Contents/Frameworks/"
         "Python.framework/Versions/*/bin/python3.*"), reverse=True)
     candidates = [path for path in candidates
                   if Path(path).name.removeprefix("python3.").isdigit()]
+    # Windows and Linux keep it beside kicad-cli instead.  Sort on the version
+    # numerically: as text, "9.0" sorts above "10.0".
+    def version_key(path):
+        name = Path(path).parents[1].name
+        return tuple(int(part) if part.isdigit() else -1
+                     for part in name.split("."))
+
+    candidates += sorted(glob.glob("C:/Program Files/KiCad/*/bin/python.exe"),
+                         key=version_key, reverse=True)
+    candidates += [path for path in (shutil.which("kicad-python"),) if path]
     if not candidates:
         raise RuntimeError("KiCad bundled Python not found")
     return candidates[0]
@@ -94,15 +108,28 @@ def scad_polygon(poly):
 
 def main():
     cli = find_cli()
-    model_dirs = sorted(glob.glob(
+    def newest(pattern, version_part):
+        """Newest match, comparing version numbers rather than their text."""
+        def key(path):
+            name = Path(path).parents[version_part].name
+            return tuple(int(part) if part.isdigit() else -1
+                         for part in name.split("."))
+        return sorted(glob.glob(pattern), key=key, reverse=True)
+
+    # macOS, Windows and Linux installs of the same library.
+    model_dirs = newest(
         "/opt/homebrew/Caskroom/kicad/*/KiCad/KiCad.app/Contents/"
-        "SharedSupport/3dmodels"), reverse=True)
+        "SharedSupport/3dmodels", 4)
+    model_dirs += glob.glob(
+        "/Applications/KiCad/KiCad.app/Contents/SharedSupport/3dmodels")
+    model_dirs += newest("C:/Program Files/KiCad/*/share/kicad/3dmodels", 2)
+    model_dirs += glob.glob("/usr/share/kicad/3dmodels")
     if not model_dirs:
         raise RuntimeError("KiCad 3D model library not found")
     model_dir = model_dirs[0]
+    # The plate solids need OpenSCAD.  The boards do not, so a machine without
+    # it still gets the PCB and component STEPs rather than nothing at all.
     openscad = shutil.which("openscad")
-    if not openscad:
-        raise RuntimeError("OpenSCAD not found")
     board_sources = {
         "LeftPCB": CURRENT_PCB_DIR / "Symm60HE-Left.kicad_pcb",
         "RightPCB": CURRENT_PCB_DIR / "Symm60HE-Right.kicad_pcb",
@@ -165,7 +192,10 @@ def main():
             "-o", str(OUT / f"{name}Components.step"), str(source),
         ], check=True)
 
-    for name, side in (("LeftPlate", "left"), ("RightPlate", "right")):
+    if not openscad:
+        print("OpenSCAD not found: skipping the plate solids")
+    for name, side in (() if not openscad else
+                       (("LeftPlate", "left"), ("RightPlate", "right"))):
         dxf = ROOT / "plate" / f"Symm60HE-plate-universal-{side}.dxf"
         scad = OUT / f"{name}.scad"
         plate = fused_plate_polygon(dxf)

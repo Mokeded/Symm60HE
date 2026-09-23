@@ -9,6 +9,7 @@ make the result one connected PCB while preserving each sculpted board edge.
 import math
 from copy import deepcopy
 from pathlib import Path
+import argparse
 import shutil
 
 from shapely.affinity import translate as translate_geom
@@ -19,7 +20,7 @@ from sexp import Sym, dumps, find, first, loads, newuuid, set_uuids
 
 ROOT = Path(__file__).resolve().parents[2]
 PCB = ROOT / "pcb"
-OUT = PCB / "Symm60HE-Panel.kicad_pcb"
+# The default panel path now depends on the arrangement; see main().
 GAP = 3.2
 BOARD_GAP = 2.0
 RAIL = 5.0
@@ -215,6 +216,23 @@ def copper_geometry(raw, offsets):
     return unary_union(shapes)
 
 
+def slide_clear(candidates, holes_at, copper):
+    """First candidate whose mouse bites miss the boards' copper."""
+    reach = MOUSE_D / 2 + 0.2 + 0.05
+    for value in candidates:
+        holes = [Point(hx, hy).buffer(reach) for hx, hy in holes_at(value)]
+        if not any(copper.intersects(hole) for hole in holes):
+            return value, True
+    return candidates[0], False
+
+
+def offsets_around(value, limit=6.0, step=0.25):
+    out = [value]
+    for index in range(1, int(limit / step) + 1):
+        out += [value + index * step, value - index * step]
+    return out
+
+
 def clear_tab_x(nominal, polys, copper, limit=6.0, step=0.25):
     """Slide a whole tab until none of its mouse bites drills board copper.
 
@@ -240,17 +258,34 @@ def clear_tab_x(nominal, polys, copper, limit=6.0, step=0.25):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--arrangement", choices=("stacked", "side-by-side"),
+                        default="stacked",
+                        help="how the two halves sit on the panel")
+    parser.add_argument("--output", type=Path,
+                        help="where to write the panel (default depends on "
+                             "the arrangement)")
+    args = parser.parse_args()
+    out = args.output or (PCB / "Symm60HE-Panel.kicad_pcb"
+                          if args.arrangement == "stacked"
+                          else PCB / "Symm60HE-Panel-SideBySide.kicad_pcb")
     source_specs = [
         ("L", PCB / "Symm60HE-Left.kicad_pcb"),
         ("R", PCB / "Symm60HE-Right.kicad_pcb"),
     ]
     raw = [(prefix, loads(path.read_text()), path) for prefix, path in source_specs]
     left_poly, right_poly = [edge_polygon(board) for _, board, _ in raw]
-    # Stack the two halves to avoid the previous 336 mm-long panel.  This is an
-    # in-plane translation only, so bottom-side component rotations and CPL
-    # coordinates remain straightforward for assembly.
-    right_dx = left_poly.bounds[0] - right_poly.bounds[0]
-    right_dy = left_poly.bounds[3] + BOARD_GAP - right_poly.bounds[1]
+    # Either arrangement is an in-plane translation only, so bottom-side
+    # component rotations and CPL coordinates stay straightforward for
+    # assembly.  Stacked keeps the panel short; side by side keeps the two
+    # halves in the orientation they are assembled in, at the cost of a
+    # roughly 336 mm long panel.
+    if args.arrangement == "side-by-side":
+        right_dx = left_poly.bounds[2] + BOARD_GAP - right_poly.bounds[0]
+        right_dy = left_poly.bounds[1] - right_poly.bounds[1]
+    else:
+        right_dx = left_poly.bounds[0] - right_poly.bounds[0]
+        right_dy = left_poly.bounds[3] + BOARD_GAP - right_poly.bounds[1]
     offsets = {"L": (0.0, 0.0), "R": (right_dx, right_dy)}
     polys = {"L": left_poly,
              "R": translate_geom(right_poly, xoff=right_dx, yoff=right_dy)}
@@ -271,41 +306,106 @@ def main():
     xmin, _, xmax, _ = bounds
     copper = copper_geometry(raw, offsets)
     tab_xs, shifted = [], 0
-    for fraction in (0.23, 0.50, 0.77):
-        x, offset = clear_tab_x(xmin + (xmax - xmin) * fraction, polys, copper)
-        tab_xs.append(x)
-        shifted += 1 if offset else 0
+    if args.arrangement == "stacked":
+        # One column of tabs runs through both halves, so the same x has to
+        # work for the top board, the gap and the bottom board.
+        for fraction in (0.23, 0.50, 0.77):
+            x, offset = clear_tab_x(xmin + (xmax - xmin) * fraction, polys,
+                                    copper)
+            tab_xs.append(x)
+            shifted += 1 if offset else 0
     tab_xs = tuple(tab_xs)
 
-    # Three top tabs, three inter-board tabs and three bottom tabs provide a
-    # short load path through the stacked panel.
-    for x in tab_xs:
-        top, bottom = y_edges(polys["L"], x)
-        tabs.append(box(x - TAB_W/2, top_inner - 0.2,
-                        x + TAB_W/2, top + 0.6))
-        add_break_row(break_rows, (x, top), horizontal=True)
-        lower_top, _ = y_edges(polys["R"], x)
-        tabs.append(box(x - TAB_W/2, bottom - 0.6,
-                        x + TAB_W/2, lower_top + 0.6))
-        add_break_row(break_rows, (x, (bottom + lower_top) / 2), horizontal=True)
-        _, lower_bottom = y_edges(polys["R"], x)
-        tabs.append(box(x - TAB_W/2, lower_bottom - 0.6,
-                        x + TAB_W/2, bottom_inner + 0.2))
-        add_break_row(break_rows, (x, lower_bottom), horizontal=True)
-
-    # One side-rail tab on each side of each half prevents twisting during
-    # transport and reflow without over-perforating the keymap edge.
     left_inner = bounds[0] - GAP
     right_inner = bounds[2] + GAP
-    for poly in (polys["L"], polys["R"]):
-        y = (poly.bounds[1] + poly.bounds[3]) / 2
-        left, right = x_edges(poly, y)
-        tabs.append(box(left_inner - 0.2, y - TAB_W/2,
-                        left + 0.6, y + TAB_W/2))
-        add_break_row(break_rows, (left, y), horizontal=False)
-        tabs.append(box(right - 0.6, y - TAB_W/2,
-                        right_inner + 0.2, y + TAB_W/2))
-        add_break_row(break_rows, (right, y), horizontal=False)
+    if args.arrangement == "side-by-side":
+        # Both halves reach the top and bottom rails, so each gets three tabs
+        # on each rail, and the pair is joined across the centre gap.
+        for poly in (polys["L"], polys["R"]):
+            xmin_p, _, xmax_p, _ = poly.bounds
+            for fraction in (0.23, 0.50, 0.77):
+                nominal = xmin_p + (xmax_p - xmin_p) * fraction
+                for upper in (True, False):
+                    def holes_at(x, poly=poly, upper=upper):
+                        top, bottom = y_edges(poly, x)
+                        edge = top if upper else bottom
+                        return [(x + value * MOUSE_PITCH, edge)
+                                for value in (-2, -1, 0, 1, 2)]
+                    x, moved = slide_clear(offsets_around(nominal), holes_at,
+                                           copper)
+                    shifted += 1 if moved and x != nominal else 0
+                    top, bottom = y_edges(poly, x)
+                    if upper:
+                        tabs.append(box(x - TAB_W/2, top_inner - 0.2,
+                                        x + TAB_W/2, top + 0.6))
+                        add_break_row(break_rows, (x, top), horizontal=True)
+                    else:
+                        tabs.append(box(x - TAB_W/2, bottom - 0.6,
+                                        x + TAB_W/2, bottom_inner + 0.2))
+                        add_break_row(break_rows, (x, bottom), horizontal=True)
+        # Two tabs bridge the halves across the centre gap.
+        for fraction in (0.3, 0.7):
+            nominal = bounds[1] + (bounds[3] - bounds[1]) * fraction
+
+            def centre_holes(y):
+                _, left_edge = x_edges(polys["L"], y)
+                right_edge, _ = x_edges(polys["R"], y)
+                return [((left_edge + right_edge) / 2, y + value * MOUSE_PITCH)
+                        for value in (-2, -1, 0, 1, 2)]
+            y, moved = slide_clear(offsets_around(nominal), centre_holes, copper)
+            shifted += 1 if moved and y != nominal else 0
+            _, left_edge = x_edges(polys["L"], y)
+            right_edge, _ = x_edges(polys["R"], y)
+            tabs.append(box(left_edge - 0.6, y - TAB_W/2,
+                            right_edge + 0.6, y + TAB_W/2))
+            add_break_row(break_rows, ((left_edge + right_edge) / 2, y),
+                          horizontal=False)
+        # One tab on each outer rail stops the pair twisting in transport.
+        for poly, inner, outward in ((polys["L"], left_inner, -1),
+                                     (polys["R"], right_inner, 1)):
+            nominal = (poly.bounds[1] + poly.bounds[3]) / 2
+
+            def rail_holes(y, poly=poly, outward=outward):
+                left, right = x_edges(poly, y)
+                edge = left if outward < 0 else right
+                return [(edge, y + value * MOUSE_PITCH)
+                        for value in (-2, -1, 0, 1, 2)]
+            y, moved = slide_clear(offsets_around(nominal), rail_holes, copper)
+            shifted += 1 if moved and y != nominal else 0
+            left, right = x_edges(poly, y)
+            edge = left if outward < 0 else right
+            tabs.append(box(min(inner - 0.2, edge - 0.6), y - TAB_W/2,
+                            max(inner + 0.2, edge + 0.6), y + TAB_W/2))
+            add_break_row(break_rows, (edge, y), horizontal=False)
+    else:
+        # Three top tabs, three inter-board tabs and three bottom tabs provide
+        # a short load path through the stacked panel.
+        for x in tab_xs:
+            top, bottom = y_edges(polys["L"], x)
+            tabs.append(box(x - TAB_W/2, top_inner - 0.2,
+                            x + TAB_W/2, top + 0.6))
+            add_break_row(break_rows, (x, top), horizontal=True)
+            lower_top, _ = y_edges(polys["R"], x)
+            tabs.append(box(x - TAB_W/2, bottom - 0.6,
+                            x + TAB_W/2, lower_top + 0.6))
+            add_break_row(break_rows, (x, (bottom + lower_top) / 2),
+                          horizontal=True)
+            _, lower_bottom = y_edges(polys["R"], x)
+            tabs.append(box(x - TAB_W/2, lower_bottom - 0.6,
+                            x + TAB_W/2, bottom_inner + 0.2))
+            add_break_row(break_rows, (x, lower_bottom), horizontal=True)
+
+        # One side-rail tab on each side of each half prevents twisting during
+        # transport and reflow without over-perforating the keymap edge.
+        for poly in (polys["L"], polys["R"]):
+            y = (poly.bounds[1] + poly.bounds[3]) / 2
+            left, right = x_edges(poly, y)
+            tabs.append(box(left_inner - 0.2, y - TAB_W/2,
+                            left + 0.6, y + TAB_W/2))
+            add_break_row(break_rows, (left, y), horizontal=False)
+            tabs.append(box(right - 0.6, y - TAB_W/2,
+                            right_inner + 0.2, y + TAB_W/2))
+            add_break_row(break_rows, (right, y), horizontal=False)
 
     material = unary_union([frame] + list(polys.values()) + tabs).buffer(0)
     if material.geom_type != "Polygon":
@@ -381,9 +481,9 @@ def main():
     panel_items.extend(placed_feature(tool_template, x, y, f"TH{i + 1}")
                        for i, (x, y) in enumerate(tooling))
     panel = [Sym("kicad_pcb")] + body + net_decls + panel_items + [embedded]
-    OUT.write_text(dumps(panel) + "\n")
-    shutil.copy2(PCB / "Symm60HE-Left.kicad_pro", PCB / "Symm60HE-Panel.kicad_pro")
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    out.write_text(dumps(panel) + "\n")
+    shutil.copy2(PCB / "Symm60HE-Left.kicad_pro", out.with_suffix(".kicad_pro"))
+    print(f"wrote {out.relative_to(ROOT)}")
     print(f"panel size {outer.bounds[2]-outer.bounds[0]:.2f} x "
           f"{outer.bounds[3]-outer.bounds[1]:.2f} mm")
     print(f"mouse-bite drill count {len(break_rows)} across "

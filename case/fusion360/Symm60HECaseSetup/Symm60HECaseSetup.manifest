@@ -1,0 +1,10 @@
+{
+    "autodeskProduct": "Fusion",
+    "type": "script",
+    "author": "Symm60HE",
+    "description": {
+        "": "Imports the tented Symm60HE reference assembly - plates, switches, keycaps, both Hall PCBs, the controller daughterboard and the ribbon routes - as separate components for enclosure design."
+    },
+    "supportedOS": "windows|mac",
+    "editEnabled": true
+}

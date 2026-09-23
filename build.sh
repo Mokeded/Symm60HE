@@ -30,12 +30,27 @@ for board in ../pcb/Symm60HE-Left.kicad_pcb \
 done
 # Every alternate switch position remains independently sensed on the universal
 # PCB. Do not collapse close alternatives to shared midpoint sensors.
+# The stacked panel is the one that gets ordered: it is the smaller of the two
+# in both area (369.7 vs 375.7 cm2) and longest edge (227.8 vs 310.2 mm).  The
+# side-by-side arrangement is kept beside it for anyone who would rather have
+# the halves in their assembled orientation.
 "$PYTHON" pcb/panelize.py
+"$PYTHON" pcb/panelize.py --arrangement side-by-side
 "$PYTHON" mkplate.py
 "$PYTHON" cad/prepare_fusion_reference.py
-FREECADCMD=${FREECADCMD:-/Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd}
-if [ ! -x "$FREECADCMD" ]; then
-    echo "Missing FreeCAD command line tool: $FREECADCMD" >&2
+# FreeCAD assembles the reference solids the step above exported.  Look for it
+# where each platform puts it rather than assuming one; FREECADCMD overrides.
+if [ -z "${FREECADCMD:-}" ]; then
+    for candidate in         /Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd         "/c/Program Files/FreeCAD "*/bin/FreeCADCmd.exe         "C:/Program Files/FreeCAD "*/bin/FreeCADCmd.exe         "$(command -v freecadcmd 2>/dev/null)"         "$(command -v FreeCADCmd 2>/dev/null)"; do
+        if [ -x "$candidate" ]; then
+            FREECADCMD=$candidate
+            break
+        fi
+    done
+fi
+if [ -z "${FREECADCMD:-}" ] || [ ! -x "$FREECADCMD" ]; then
+    echo "Missing FreeCAD command line tool. Install FreeCAD, or point" >&2
+    echo "FREECADCMD at its freecadcmd/FreeCADCmd.exe." >&2
     exit 2
 fi
 "$FREECADCMD" cad/export_fusion_reference.py
