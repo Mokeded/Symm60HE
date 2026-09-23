@@ -34,6 +34,8 @@ def main():
     parser.add_argument("board")
     parser.add_argument("drc_report")
     parser.add_argument("output")
+    parser.add_argument("--skip-missing", action="store_true",
+                        help="ignore reported items the board no longer has")
     args = parser.parse_args()
 
     lines = Path(args.drc_report).read_text().splitlines()
@@ -51,6 +53,7 @@ def main():
 
     board = loads(Path(args.board).read_text())
     removed = []
+    skipped = 0
     for kind, net, layer, x, y, length in targets:
         best = None
         for item in board[1:]:
@@ -76,12 +79,19 @@ def main():
             if best is None or score < best[0]:
                 best = (score, item)
         if best is None or best[0] > 0.02:
+            # A report is a snapshot.  When the caller knows the board has
+            # moved on since -- a joint pulled together, a net restored -- an
+            # item it cannot find is stale, not a bug worth stopping for.
+            if args.skip_missing:
+                skipped += 1
+                continue
             raise RuntimeError(f"could not resolve {kind} {net} at {(x, y)}")
         board.remove(best[1])
         removed.append((kind, net, x, y))
 
     Path(args.output).write_text(dumps(board) + "\n")
-    print(f"removed {len(removed)} exact DRC-reported dangling items")
+    note = f"; skipped {skipped} stale" if skipped else ""
+    print(f"removed {len(removed)} exact DRC-reported dangling items{note}")
 
 
 if __name__ == "__main__":

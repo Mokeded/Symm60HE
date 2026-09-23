@@ -25,7 +25,7 @@ Chaining the +3V3A rail straight from sensor to sensor was the first attempt
 and it was wrong -- the line between two sensors' VCC pads runs through the MX
 leg holes between them.  The router goes round them.
 """
-import sys, math, uuid, random
+import sys, math, os, uuid, random
 sys.path.insert(0, ".")
 from sexp import loads, dumps, find, first, Sym
 from router import Grid, simplify, GRID, TRACE, CLEAR, PAD_MARGIN
@@ -159,8 +159,15 @@ class Space:
         for L in layers:
             for k in self._keys(g.buffer(CLEAR)):
                 self.b[L].setdefault(k, []).append((g, net))
+    # Buffered circles are polygons drawn inside the true circle, so a probe
+    # built exactly on the rule can report a gap KiCad measures as slightly
+    # under it.  A few microns of headroom costs nothing and keeps accepted
+    # routes on the right side of the check; a local repair that keeps landing
+    # just inside the rule can be given more through the environment.
+    SAFETY = float(os.environ.get("SYMM60_CLEAR_SAFETY", 0.005))
+
     def clear(self, g, net, layers):
-        probe = g.buffer(CLEAR - 1e-6)
+        probe = g.buffer(CLEAR + self.SAFETY)
         for L in layers:
             seen = set()
             for k in self._keys(g):

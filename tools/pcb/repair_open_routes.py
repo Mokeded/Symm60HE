@@ -19,6 +19,8 @@ from router import Grid, simplify
 from sexp import Sym, dumps, find, first
 
 
+HOLE_CLEAR = 0.2   # board setup: hole to copper
+
 ITEM = re.compile(
     r"@\(([-0-9.]+) mm, ([-0-9.]+) mm\): .* \[([^]]+)\].* on ([FB]\.Cu)")
 
@@ -256,6 +258,15 @@ def main():
         space.add(keepout, "#keepout", (0, 1))
     for pad in pads:
         layers = pad_layers(pad)
+        if pad["thru"] and not pad["net"]:
+            # Unplated holes (switch alignment pins, mounts) are governed by
+            # the 0.2 mm hole-to-copper rule, not the copper clearance, so a
+            # trace must stay a little farther from them than from a pad.
+            extra = max(0.0, HOLE_CLEAR - CLEAR)
+            grid.block(pad["geom"], net="#hole", margin=PAD_MARGIN + extra,
+                       layers=layers)
+            space.add(pad["geom"].buffer(extra), "#hole", layers)
+            continue
         grid.block(pad["geom"], net=pad["net"] or "#pad", layers=layers)
         if pad["net"]:
             grid.block(pad["geom"], net=pad["net"], margin=0,
@@ -270,7 +281,18 @@ def main():
 
     added = []
     failures = []
-    for first_item, second_item in parse_pairs(args.drc_report):
+    # Most constrained first.  A pad with only a handful of legal escape cells
+    # loses its corridor to whichever net happens to be routed before it, and
+    # never gets it back; one with room to spare can wait.
+    pairs = parse_pairs(args.drc_report)
+
+    def room(pair):
+        (point, layer, net), (other_point, other_layer, _) = pair
+        return min(len(endpoint_cells(grid, space, point, layer, net)),
+                   len(endpoint_cells(grid, space, other_point, other_layer,
+                                      net)))
+
+    for first_item, second_item in sorted(pairs, key=room):
         p0, layer0, net = first_item
         p1, layer1, _ = second_item
         routed = False

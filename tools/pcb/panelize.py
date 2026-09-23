@@ -6,12 +6,13 @@ uniquely-prefixed references and net names so KiCad does not create false
 cross-board ratsnest connections.  A routed 5 mm perimeter rail and 5 mm tabs
 make the result one connected PCB while preserving each sculpted board edge.
 """
+import math
 from copy import deepcopy
 from pathlib import Path
 import shutil
 
 from shapely.affinity import translate as translate_geom
-from shapely.geometry import LineString, Polygon, box
+from shapely.geometry import LineString, Point, Polygon, box
 from shapely.ops import polygonize, unary_union
 
 from sexp import Sym, dumps, find, first, loads, newuuid, set_uuids
@@ -184,6 +185,60 @@ def add_break_row(rows, centre, horizontal=True):
         rows.extend((centre[0], centre[1] + value * MOUSE_PITCH) for value in values)
 
 
+def copper_geometry(raw, offsets):
+    """Everything on the boards a mouse-bite drill has to miss, in panel space."""
+    shapes = []
+    for prefix, board, _ in raw:
+        dx, dy = offsets[prefix]
+        for item in find(board, "segment"):
+            start, end = first(item, "start"), first(item, "end")
+            width = float(first(item, "width")[1])
+            shapes.append(LineString(
+                [(float(start[1]) + dx, float(start[2]) + dy),
+                 (float(end[1]) + dx, float(end[2]) + dy)]).buffer(width / 2))
+        for item in find(board, "via"):
+            at = first(item, "at")
+            shapes.append(Point(float(at[1]) + dx, float(at[2]) + dy).buffer(
+                float(first(item, "size")[1]) / 2))
+        for footprint in find(board, "footprint"):
+            at = first(footprint, "at")
+            fx, fy = float(at[1]) + dx, float(at[2]) + dy
+            angle = math.radians(-(float(at[3]) if len(at) > 3 else 0.0))
+            for pad in find(footprint, "pad"):
+                pat = first(pad, "at")
+                px, py = float(pat[1]), float(pat[2])
+                size = first(pad, "size")
+                reach = max(float(size[1]), float(size[2])) / 2 if size else 0.3
+                shapes.append(Point(
+                    fx + px * math.cos(angle) - py * math.sin(angle),
+                    fy + px * math.sin(angle) + py * math.cos(angle)).buffer(reach))
+    return unary_union(shapes)
+
+
+def clear_tab_x(nominal, polys, copper, limit=6.0, step=0.25):
+    """Slide a whole tab until none of its mouse bites drills board copper.
+
+    The tabs sit at fixed fractions of the panel width, which is fine until a
+    board's routing runs along the edge underneath one: the panel would then
+    drill through a trace that is perfectly legal on the board itself.  The tab
+    and its three rows move together, so the perforation stays inside the tab.
+    """
+    reach = MOUSE_D / 2 + 0.2 + 0.05
+    offsets = [0.0]
+    for index in range(1, int(limit / step) + 1):
+        offsets += [index * step, -index * step]
+    for offset in offsets:
+        x = nominal + offset
+        top, bottom = y_edges(polys["L"], x)
+        lower_top, lower_bottom = y_edges(polys["R"], x)
+        rows = (top, (bottom + lower_top) / 2, lower_bottom)
+        holes = [Point(x + value * MOUSE_PITCH, y).buffer(reach)
+                 for value in (-2, -1, 0, 1, 2) for y in rows]
+        if not any(copper.intersects(hole) for hole in holes):
+            return x, offset
+    return nominal, None
+
+
 def main():
     source_specs = [
         ("L", PCB / "Symm60HE-Left.kicad_pcb"),
@@ -214,7 +269,13 @@ def main():
     bottom_inner = bounds[3] + GAP
 
     xmin, _, xmax, _ = bounds
-    tab_xs = tuple(xmin + (xmax - xmin) * fraction for fraction in (0.23, 0.50, 0.77))
+    copper = copper_geometry(raw, offsets)
+    tab_xs, shifted = [], 0
+    for fraction in (0.23, 0.50, 0.77):
+        x, offset = clear_tab_x(xmin + (xmax - xmin) * fraction, polys, copper)
+        tab_xs.append(x)
+        shifted += 1 if offset else 0
+    tab_xs = tuple(tab_xs)
 
     # Three top tabs, three inter-board tabs and three bottom tabs provide a
     # short load path through the stacked panel.
@@ -325,7 +386,10 @@ def main():
     print(f"wrote {OUT.relative_to(ROOT)}")
     print(f"panel size {outer.bounds[2]-outer.bounds[0]:.2f} x "
           f"{outer.bounds[3]-outer.bounds[1]:.2f} mm")
-    print(f"mouse-bite drill count {len(break_rows)} across {len(break_rows)//5} break rows")
+    print(f"mouse-bite drill count {len(break_rows)} across "
+          f"{len(break_rows) // 5} break rows"
+          + (f"; {shifted} tab(s) shifted clear of board copper"
+             if shifted else ""))
     print(f"global fiducials {len(fiducials)}; tooling holes {len(tooling)}")
 
 

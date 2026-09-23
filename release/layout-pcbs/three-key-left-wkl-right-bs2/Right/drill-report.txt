@@ -1,5 +1,5 @@
 Drill report for Symm60HE-three-key-left-wkl-right-bs2-Right.kicad_pcb
-Created on 2026-09-21T10:23:06
+Created on 2026-09-22T21:49:56
 
 Copper Layer Stackup:
     =============================================================
@@ -10,9 +10,9 @@ Copper Layer Stackup:
 Drill file 'Symm60HE-three-key-left-wkl-right-bs2-Right-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (377 holes))
+    T1  0.300mm  0.0118"  (480 holes))
 
-    Total plated holes count 377
+    Total plated holes count 480
 
 
 Drill file 'Symm60HE-three-key-left-wkl-right-bs2-Right-NPTH.drl' contains

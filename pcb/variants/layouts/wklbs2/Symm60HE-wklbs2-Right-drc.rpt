@@ -1,8 +1,8 @@
 ** Drc report for Symm60HE-wklbs2-Right.kicad_pcb **
-** Created on 2026-09-21T08:34:46 **
+** Created on 2026-09-22T20:55:43 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 93 DRC violations **
+** Found 92 DRC violations **
 [lib_footprint_mismatch]: Footprint 'MountingHole_2.2mm_M2_NPTH' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(273.0000 mm, 21.0000 mm): Footprint MHR3
@@ -15,9 +15,6 @@
 [lib_footprint_mismatch]: Footprint 'MountingHole_2.2mm_M2_NPTH' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(204.0000 mm, 92.0000 mm): Footprint MHR2
-[lib_footprint_mismatch]: Footprint 'STABILIZER_MX_2U' does not match copy in library 'Symm60HE_Project'
-    Local override; warning
-    @(284.3210 mm, 66.6750 mm): Footprint SR2
 [lib_footprint_mismatch]: Footprint 'MountingHole_2.2mm_M2_NPTH' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(167.0000 mm, 49.0000 mm): Footprint MHR1
@@ -32,13 +29,13 @@
     @(209.9261 mm, 81.3103 mm): Footprint CR35A
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(221.0911 mm, 79.4330 mm): Footprint CRGBR28
+    @(223.3398 mm, 92.2180 mm): Footprint CRGBR28
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(180.4544 mm, 85.3768 mm): Footprint DR32
+    @(181.6928 mm, 98.2092 mm): Footprint DR32
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(258.1270 mm, 78.1250 mm): Footprint DR29
+    @(258.1270 mm, 91.0750 mm): Footprint DR29
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(170.2771 mm, 68.3284 mm): Footprint CR29A
@@ -47,19 +44,19 @@
     @(230.9104 mm, 41.2926 mm): Footprint CR16A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(237.4647 mm, 40.2482 mm): Footprint DR16
+    @(238.1424 mm, 53.1805 mm): Footprint DR16
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(219.3137 mm, 17.6499 mm): Footprint CR6B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(178.0845 mm, 9.4497 mm): Footprint CRGBR7
+    @(175.9063 mm, 25.7410 mm): Footprint CRGBR7
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(196.8884 mm, 6.4581 mm): Footprint CRGBR6
+    @(194.7101 mm, 22.7494 mm): Footprint CRGBR6
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(217.8644 mm, 41.3362 mm): Footprint DR15
+    @(219.2180 mm, 54.2153 mm): Footprint DR15
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(173.7507 mm, 48.2924 mm): Footprint CR21A
@@ -71,7 +68,7 @@
     @(244.8145 mm, 54.3829 mm): Footprint CR16B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(185.1483 mm, 85.6154 mm): Footprint CRGBR32
+    @(187.2239 mm, 97.3332 mm): Footprint CRGBR32
 [lib_footprint_mismatch]: Footprint 'FFC_12P_1.00mm_TopContact' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(164.2090 mm, 58.0000 mm): Footprint JR1
@@ -83,61 +80,61 @@
     @(187.0971 mm, 100.1513 mm): Footprint CR36B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(242.1582 mm, 40.0022 mm): Footprint CRGBR16
+    @(243.7347 mm, 52.8874 mm): Footprint CRGBR16
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(286.7030 mm, 78.1250 mm): Footprint DR31
+    @(286.7030 mm, 91.0750 mm): Footprint DR31
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(284.3210 mm, 59.0750 mm): Footprint DR21
+    @(284.3210 mm, 72.0250 mm): Footprint DR21
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(185.4734 mm, 79.8936 mm): Footprint CR29B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(222.5387 mm, 40.8449 mm): Footprint CRGBR15
+    @(219.5943 mm, 57.7956 mm): Footprint CRGBR15
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(215.9920 mm, 4.2235 mm): Footprint CRGBR1
+    @(212.9641 mm, 20.3786 mm): Footprint CRGBR1
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(195.5247 mm, 63.6200 mm): Footprint DR26
+    @(197.5505 mm, 76.4105 mm): Footprint DR26
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(207.9346 mm, 62.3653 mm): Footprint CR27A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(253.3650 mm, 59.0750 mm): Footprint DR23
+    @(253.3650 mm, 72.0250 mm): Footprint DR23
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(180.1599 mm, 46.5686 mm): Footprint DR20
+    @(182.1857 mm, 59.3591 mm): Footprint DR20
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(227.5005 mm, 21.2821 mm): Footprint CRGBR11
+    @(224.5561 mm, 38.2328 mm): Footprint CRGBR11
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(189.4123 mm, 25.9711 mm): Footprint CRGBR13
+    @(187.3591 mm, 43.0526 mm): Footprint CRGBR13
 [lib_footprint_mismatch]: Footprint 'AM1_SOIC-16_3.9x9.9mm_P1.27mm' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(270.0000 mm, 48.0000 mm): Footprint AMR1
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(258.1270 mm, 40.0250 mm): Footprint DR17
+    @(258.1270 mm, 52.9750 mm): Footprint DR17
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(197.3923 mm, 25.1439 mm): Footprint CR13A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(234.0720 mm, 59.5604 mm): Footprint DR24
+    @(234.7498 mm, 72.4927 mm): Footprint DR24
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(285.7500 mm, 23.9750 mm): Footprint DR8
+    @(285.7500 mm, 33.9250 mm): Footprint DR8
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(227.5177 mm, 60.6049 mm): Footprint CR22A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(250.5080 mm, 2.7250 mm): Footprint DR3
+    @(250.5080 mm, 14.8750 mm): Footprint DR3
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(211.3737 mm, 42.7223 mm): Footprint CR19A
@@ -146,22 +143,22 @@
     @(204.3117 mm, 76.9090 mm): Footprint CR28B
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(198.9631 mm, 43.5913 mm): Footprint DR19
+    @(200.9889 mm, 56.3819 mm): Footprint DR19
 [lib_footprint_mismatch]: Footprint 'AM1_SOIC-16_3.9x9.9mm_P1.27mm' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(296.5000 mm, 49.5000 mm): Footprint AMR5
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(214.4252 mm, 60.9792 mm): Footprint DR25
+    @(215.7788 mm, 73.8583 mm): Footprint DR25
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(216.4168 mm, 79.9244 mm): Footprint DR28
+    @(217.7705 mm, 92.8033 mm): Footprint DR28
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(284.3210 mm, 40.0250 mm): Footprint DR18
+    @(284.3210 mm, 52.9750 mm): Footprint DR18
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(192.2462 mm, 7.1934 mm): Footprint DR6
+    @(194.1469 mm, 19.1937 mm): Footprint DR6
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(189.1155 mm, 65.3438 mm): Footprint CR28A
@@ -170,19 +167,19 @@
     @(222.5047 mm, 74.7099 mm): Footprint CR27B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(208.5572 mm, 23.2665 mm): Footprint CRGBR12
+    @(205.6129 mm, 40.2172 mm): Footprint CRGBR12
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(238.3763 mm, 16.3133 mm): Footprint CR1B
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(231.0684 mm, 2.9775 mm): Footprint DR2
+    @(231.7042 mm, 15.1109 mm): Footprint DR2
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(193.5572 mm, 39.9954 mm): Footprint CR14B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(200.1669 mm, 62.8848 mm): Footprint CRGBR26
+    @(198.1137 mm, 79.9662 mm): Footprint CRGBR26
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(200.9082 mm, 19.6922 mm): Footprint CR7B
@@ -191,22 +188,22 @@
     @(188.9470 mm, 59.8577 mm): Footprint CR21B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(235.7619 mm, 2.7315 mm): Footprint CRGBR2
+    @(231.8926 mm, 18.7059 mm): Footprint CRGBR2
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(166.9080 mm, 11.1186 mm): Footprint CR8A
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(170.6656 mm, 29.3540 mm): Footprint CRGBR14
+    @(168.5499 mm, 46.0404 mm): Footprint CRGBR14
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(203.6053 mm, 42.8561 mm): Footprint CRGBR19
+    @(201.5521 mm, 59.9376 mm): Footprint CRGBR19
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(261.9380 mm, 23.9750 mm): Footprint DR9
+    @(261.9380 mm, 33.9250 mm): Footprint DR9
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(222.8262 mm, 21.7734 mm): Footprint DR11
+    @(224.1798 mm, 34.6525 mm): Footprint DR11
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(211.9625 mm, 37.4885 mm): Footprint CR13B
@@ -215,19 +212,19 @@
     @(225.9439 mm, 55.0669 mm): Footprint CR19B
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(176.6863 mm, 66.6046 mm): Footprint DR27
+    @(178.7121 mm, 79.3951 mm): Footprint DR27
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(241.4218 mm, 73.6951 mm): Footprint CR22B
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(211.3177 mm, 4.7148 mm): Footprint DR1
+    @(212.5878 mm, 16.7983 mm): Footprint DR1
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(204.7434 mm, 5.3052 mm): Footprint CR6A
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(181.3285 mm, 65.8694 mm): Footprint CRGBR27
+    @(179.2753 mm, 82.9508 mm): Footprint CRGBR27
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(182.1044 mm, 22.6838 mm): Footprint CR8B
@@ -236,40 +233,40 @@
     @(159.5517 mm, 31.4180 mm): Footprint CR15A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(166.0236 mm, 30.0893 mm): Footprint DR14
+    @(167.9867 mm, 42.4847 mm): Footprint DR14
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(174.6148 mm, 85.6989 mm): Footprint CR36A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(203.8830 mm, 23.7578 mm): Footprint DR12
+    @(205.2366 mm, 36.6369 mm): Footprint DR12
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(219.0994 mm, 60.4880 mm): Footprint CRGBR25
+    @(216.1551 mm, 77.4386 mm): Footprint CRGBR25
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(230.9057 mm, 35.5040 mm): Footprint CR12B
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(184.8020 mm, 45.8334 mm): Footprint CRGBR20
+    @(182.7489 mm, 62.9148 mm): Footprint CRGBR20
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(185.7119 mm, 8.1271 mm): Footprint CR7A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(279.0830 mm, 2.6570 mm): Footprint DR33
+    @(279.0830 mm, 14.8750 mm): Footprint DR33
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
-    @(238.7656 mm, 59.3144 mm): Footprint CRGBR24
+    @(234.9382 mm, 76.0877 mm): Footprint CRGBR24
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(207.7501 mm, 56.8803 mm): Footprint CR20B
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(173.4425 mm, 10.1850 mm): Footprint DR7
+    @(175.3431 mm, 22.1853 mm): Footprint DR7
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(184.7701 mm, 26.7063 mm): Footprint DR13
+    @(186.7959 mm, 39.4969 mm): Footprint DR13
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(192.5539 mm, 45.3152 mm): Footprint CR20A
@@ -278,7 +275,7 @@
     @(224.4721 mm, 3.2231 mm): Footprint CR1A
 [lib_footprint_issues]: Footprint 'SK6812MINI-E_ReverseMount' not found in library 'Symm60HE_Project'
     Local override; warning
-    @(242.8880 mm, 20.9750 mm): Footprint DR10
+    @(242.8880 mm, 33.9250 mm): Footprint DR10
 [lib_footprint_mismatch]: Footprint 'C1_C_0402_1005Metric' does not match copy in library 'Symm60HE_Project'
     Local override; warning
     @(224.4964 mm, 93.6549 mm): Footprint CR35B

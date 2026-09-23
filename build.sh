@@ -16,6 +16,11 @@ fi
 "$PYTHON" pcb/remove_daughterboard_fiducials.py
 "$PYTHON" pcb/reduce_daughterboard_vias.py
 "$PYTHON" pcb/relocate_half_mounts.py
+# A footprint takes its Edge.Cuts aperture with it when it moves; the copy of
+# that aperture in each pour outline does not.  Re-sync them before pouring.
+for board in ../pcb/Symm60HE-Left.kicad_pcb ../pcb/Symm60HE-Right.kicad_pcb; do
+    "$PYTHON" pcb/resync_zone_apertures.py "$board" "$board"
+done
 # Back-side references and fabrication labels must plot readable from the
 # physical back of the board before panelization and Gerber export.
 for board in ../pcb/Symm60HE-Left.kicad_pcb \

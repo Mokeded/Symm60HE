@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.5*%
-%TF.CreationDate,2026-09-21T10:23:01-04:00*%
+%TF.CreationDate,2026-09-22T21:49:52-04:00*%
 %TF.ProjectId,Symm60HE-three-key-left-wkl-right-bs2-Left,53796d6d-3630-4484-952d-74687265652d,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-21 10:23:01*
+G04 Created by KiCad (PCBNEW 10.0.5) date 2026-09-22 21:49:52*
 %MOMM*%
 %LPD*%
 G01*
@@ -27,13 +27,13 @@ X111093702Y-82909085D03*
 %TD*%
 D10*
 %TO.C,SL1*%
-X30003250Y-73660000D03*
+X6190750Y-59690000D03*
 D11*
-X30003250Y-58420000D03*
+X6190750Y-74930000D03*
 D10*
-X6190750Y-73660000D03*
+X30003250Y-59690000D03*
 D11*
-X6190750Y-58420000D03*
+X30003250Y-74930000D03*
 %TD*%
 D12*
 %TO.C,MHL4*%

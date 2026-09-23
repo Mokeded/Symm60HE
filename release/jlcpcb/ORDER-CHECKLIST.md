@@ -7,6 +7,7 @@ Use these settings for both PCB orders unless the fabricator flags a specific in
 - 1 oz finished copper
 - black solder mask and white silkscreen
 - electrical test enabled
+- via covering: tented (solder mask over vias). A few GND pads on the half boards carry a 0.6/0.3 mm via inside the pad where the south-side LED pocket left no other stitch path; tenting keeps those pads solderable and is the ordinary JLCPCB default
 - order the half panel and daughterboard as separate assembly jobs
 
 The separate switch plates are specified as 1.5 mm POM. Supply the selected `plate/Symm60HE-plate-*-left.dxf` and matching `-right.dxf` without rescaling; the plate fabricator must apply its own kerf compensation. Each plate half must retain two short outer-edge gasket tongues and two matching short centre-side tongues. Cut the correspondingly named `plate/Symm60HE-gasket-pads-<layout>.dxf` from 1.5 mm Poron; the unsuffixed gasket-pad file is the universal-layout alias. All eight mounts use the same smooth-tapered 5 mm projection. The finished plate web is at least 2.0 mm; Hype does not publish a numeric web limit, so request their final DXF review before ordering.

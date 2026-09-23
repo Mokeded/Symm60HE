@@ -9,12 +9,11 @@ Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch,
 
 | Rule | Findings |
 |---|---:|
-| `courtyards_overlap` | 5 |
+| `courtyards_overlap` | 6 |
 | `missing_courtyard` | 2 |
-| `npth_inside_courtyard` | 6 |
-| `silk_edge_clearance` | 2 |
-| `silk_over_copper` | 90 |
-| `silk_overlap` | 20 |
+| `npth_inside_courtyard` | 2 |
+| `silk_over_copper` | 87 |
+| `silk_overlap` | 19 |
 
 ## Symm60HE-Right
 
@@ -22,12 +21,12 @@ Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch,
 
 | Rule | Findings |
 |---|---:|
-| `courtyards_overlap` | 3 |
+| `courtyards_overlap` | 6 |
 | `missing_courtyard` | 3 |
 | `npth_inside_courtyard` | 6 |
-| `silk_edge_clearance` | 6 |
-| `silk_over_copper` | 100 |
-| `silk_overlap` | 25 |
+| `silk_edge_clearance` | 1 |
+| `silk_over_copper` | 96 |
+| `silk_overlap` | 22 |
 
 ## Symm60HE-Daughterboard
 
@@ -52,10 +51,10 @@ inventory. The raw reports remain the authority for every location.
 
 | Rule | Total |
 |---|---:|
-| `courtyards_overlap` | 17 |
+| `courtyards_overlap` | 21 |
 | `footprint_type_mismatch` | 1 |
 | `missing_courtyard` | 5 |
-| `npth_inside_courtyard` | 12 |
-| `silk_edge_clearance` | 9 |
-| `silk_over_copper` | 213 |
-| `silk_overlap` | 45 |
+| `npth_inside_courtyard` | 8 |
+| `silk_edge_clearance` | 2 |
+| `silk_over_copper` | 206 |
+| `silk_overlap` | 41 |

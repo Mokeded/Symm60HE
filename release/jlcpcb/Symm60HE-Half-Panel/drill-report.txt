@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Panel.kicad_pcb
-Created on 2026-09-21T10:22:01
+Created on 2026-09-22T22:02:48
 
 Copper Layer Stackup:
     =============================================================
@@ -10,9 +10,9 @@ Copper Layer Stackup:
 Drill file 'Symm60HE-Panel-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (644 holes))
+    T1  0.300mm  0.0118"  (665 holes))
 
-    Total plated holes count 644
+    Total plated holes count 665
 
 
 Drill file 'Symm60HE-Panel-NPTH.drl' contains

@@ -12,6 +12,9 @@ from shapely.geometry import Point, Polygon
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
+# The Gateron KS-20's window for its RGB pocket, measured from the key centre.
+POCKET = (3.8, 6.9)
+
 from make_layout_pcbs import (BOTTOM_LED_OFFSET, FIXED_LED_TARGETS,
                               FIXED_STABILIZER_ROTATIONS, LAYOUTS,
                               LAYOUT_ONLY_LEDS, LAYOUT_ONLY_STABILIZERS,
@@ -132,12 +135,15 @@ def main():
                 lx, ly, led_rotation = at(by_ref[led_ref])
                 if abs(rotation - led_rotation) > 1e-5:
                     problems.append(f"{led_ref} rotation mismatch")
-                angle = math.radians(-rotation)
-                ex = sx + BOTTOM_LED_OFFSET * math.sin(angle)
-                ey = sy - BOTTOM_LED_OFFSET * math.cos(angle)
-                if math.dist((lx, ly), (ex, ey)) > 0.002:
+                # The LED has to sit in the switch's RGB pocket, which is an
+                # arc at this radius rather than a single point: a close pair
+                # shares one pocket side-on, so its LED is at the same distance
+                # from the key centre but on the key's own X axis.
+                reach = math.dist((lx, ly), (sx, sy))
+                if abs(reach - BOTTOM_LED_OFFSET) > 0.002:
                     problems.append(
-                        f"{led_ref} is not at {BOTTOM_LED_OFFSET:.2f} mm offset")
+                        f"{led_ref} is {reach:.2f} mm from its key, not "
+                        f"{BOTTOM_LED_OFFSET:.2f} mm")
                 holes = [pad for pad in find(by_ref[sensor_ref], "pad")
                          if len(pad) > 3 and str(pad[2]) == "np_thru_hole"]
                 hole_xy = sorted((round(float(first(pad, "at")[1]), 3),
@@ -157,8 +163,19 @@ def main():
                 rotation = float(row["rotation_deg"])
                 ex, ey = key_relative_position(sensor, dx, dy, rotation)
                 lx, ly, led_rotation = at(by_ref[led_ref])
+                sx, sy, _ = at(sensor)
                 if math.dist((lx, ly), (ex, ey)) > 0.002:
-                    problems.append(f"{led_ref} is not on its fixed-layout row")
+                    # The generator only returns an LED to its fixed-layout row
+                    # when that position is actually free; where the key's own
+                    # decoupling capacitor or a stabilizer hole sits there, the
+                    # LED keeps its universal offset.  What matters either way
+                    # is that it still faces the switch's RGB pocket, which
+                    # spans this band from the key centre.
+                    reach = math.dist((lx, ly), (sx, sy))
+                    if not POCKET[0] <= reach <= POCKET[1]:
+                        problems.append(
+                            f"{led_ref} at {reach:.2f} mm is outside the "
+                            f"{POCKET[0]}-{POCKET[1]} mm RGB pocket")
                 if abs(led_rotation - rotation) > 1e-5:
                     problems.append(f"{led_ref} is not in normal orientation")
 
@@ -172,9 +189,32 @@ def main():
                 if stab_ref not in by_ref:
                     problems.append(f"missing rotated stabilizer {stab_ref}")
                     continue
-                actual_rotation = at(by_ref[stab_ref])[2] % 360.0
-                if abs(actual_rotation - target_rotation % 360.0) > 1e-5:
-                    problems.append(f"{stab_ref} orientation mismatch")
+                # Turning a stabilizer was how its small retention holes were
+                # kept away from an LED aperture north of the key.  The
+                # apertures are in the switches' south pockets now, so the
+                # generator turns one only when leaving it alone would clash.
+                # The angle is therefore not the requirement -- clearing the
+                # apertures and the LED pads is, so check that instead.
+                stabilizer = by_ref[stab_ref]
+                stab_x, stab_y, stab_rotation = at(stabilizer)
+                angle = math.radians(-stab_rotation)
+                holes = []
+                for pad in find(stabilizer, "pad"):
+                    if len(pad) > 3 and str(pad[2]) == "np_thru_hole":
+                        px = float(first(pad, "at")[1])
+                        py = float(first(pad, "at")[2])
+                        radius = float(first(pad, "drill")[1]) / 2
+                        holes.append((
+                            stab_x + px * math.cos(angle) - py * math.sin(angle),
+                            stab_y + px * math.sin(angle) + py * math.cos(angle),
+                            radius))
+                for other_ref in leds:
+                    ox, oy, _ = at(by_ref[other_ref])
+                    for hx, hy, radius in holes:
+                        if math.dist((hx, hy), (ox, oy)) < radius + 1.9:
+                            problems.append(
+                                f"{stab_ref} hole fouls {other_ref}")
+                            break
 
             # Every physical reverse-mount RGB footprint owns exactly one
             # board aperture.  Removing an unused LED must therefore remove

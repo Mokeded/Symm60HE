@@ -148,12 +148,38 @@ alternatives are:
 - row 4 outer 2.25u — one shift, or ↑ + 1.25u shift
 - bottom row outer 3u, each half — two 1.5u, or three 1u (`←↓→` on the right)
 
-All 33 left and 36 right sensors have separate mux inputs. The four 4.7625 mm
-close bottom-row alternatives share reverse-mount LED positions, but not Hall
-channels. Those LEDs are shifted within the overlap of their two candidate
-keycap envelopes so the full apertures remain intact without touching the Hall
-pads, switch-alignment holes, routed copper, or board edge. Both universal
-halves now report zero electrical, connectivity, mask, aperture, and
+All 33 left and 36 right sensors have separate mux inputs.
+
+### Per-key lighting
+
+Every populated position has a reverse-mount SK6812MINI-E on B.Cu shining up
+through a 3.5 × 3.1 mm board aperture into the Gateron KS-20's "hole for
+setting RGB": the case pocket that spans roughly 3.8–6.9 mm from the switch
+centre on the cover's window side. The LED sits at **+5.35 mm along the key's
+local Y**, i.e. on the south (user-facing) side of the key, so the light fills
+the transparent cover and spills around the front of an opaque cap the way the
+Wooting 60HE+ backlight does. Install every switch with its RGB pocket toward
+the user; the plate cutout and the ±5.08 mm alignment pins are symmetric, so
+the switch fits either way. With the 0.84 mm lens section of the 1.78 mm
+package inside a 1.2 mm board the lens tip stays 0.36 mm below the switch
+seating face.
+
+A fixed-layout board restores its close-pair switches' alignment drills to the
+ordinary horizontal axis and returns the compromise LEDs to the row, but only
+where that space is actually free: where a key's own decoupling capacitor or a
+stabiliser hole occupies it, the LED keeps the universal offset, and the
+stabilisers themselves keep the master's angle now that the apertures face
+south. Every generated half is audited against the pocket window rather than a
+nominal offset, and all sixteen boards report zero DRC and connectivity errors.
+
+The universal halves carry three compromises that the fixed-layout boards do
+not: the four 4.7625 mm close bottom-row alternatives use vertical alignment
+pins, so their switches sit rotated 90° and each pair shares one LED placed in
+the side pocket of the primary WKL key (facing away from its alternate); the
+`↑` position's aperture is pulled to 4.40 mm because the 2.25u Shift
+stabiliser hole coexists under it; and the `=`, `]` and 1.25u-Shift apertures
+are shifted 1.5 mm sideways for the same stabiliser holes. Both universal
+halves report zero electrical, connectivity, mask, aperture, and
 copper-to-edge DRC findings.
 
 `pcb/variants/layouts/` contains eight generated PCB pairs covering every
@@ -163,13 +189,13 @@ and `wklbs2arrows`) are retained, alongside four mixed-half variants. Each pair
 removes inactive Hall footprints,
 alignment holes, local sensor capacitors, layout-only stabilizers, and unused
 RGB footprints. The close-pair alignment drills return to the normal horizontal
-axis and the selected LEDs return to the standard 7.60 mm key-relative offset.
+axis and the selected LEDs return to the standard +5.35 mm south-pocket offset.
 The nearby Shift stabilizers are rotated 180 degrees so their smaller retention
 holes face those apertures without changing the stabilizer or key centres.
 Unused reverse-mount RGB footprints take their board apertures with them. The
 retained Backspace and Shift-choice LEDs also return from their universal-board
-clearance positions to the ordinary row alignment; in particular, the 2U
-Backspace LED is horizontal and aligned with the other number-row LEDs.
+clearance positions to the ordinary south-pocket position under their own
+switch.
 These derivatives are mechanically audited, but their locally changed LED
 routing is audited after every regeneration: KiCad must report zero clearance,
 short, crossing, dangling-track/via, connection-width, or unconnected-item
@@ -279,8 +305,8 @@ pours on both external layers. There are no internal copper layers.
 | | Left | Right | Daughterboard |
 |---|---|---|---|
 | Connections | fully connected | fully connected | fully connected |
-| Segments | 1070 | 1241 | 405 |
-| Vias | 98 | 132 | 37 |
+| Segments | 1611 | 2411 | 716 |
+| Vias | 247 | 418 | 74 |
 | Signal copper | F.Cu + B.Cu | F.Cu + B.Cu | F.Cu + B.Cu |
 | F.Cu pour | GND | GND | GND |
 | B.Cu pour | GND | GND | GND |
@@ -290,8 +316,14 @@ pours on both external layers. There are no internal copper layers.
 The current manufacturing design uses routed +3V3A rather than treating an
 entire copper side as the analog supply. This leaves both sides available for
 GND pours around the two-layer signal routing and makes the power path explicit
-in the board connectivity. Existing stitching vias join the two ground layers
-and isolated regions. KiCad refills the pours during DRC and release generation.
+in the board connectivity. Stitching vias join the two ground layers and
+isolated regions, and both GND pours use the board's 0.15 mm clearance and
+thermal gap with a 0.18 mm minimum fill width, so copper survives between the
+dense switch-field tracks without leaving necks below the connection-width
+rule. A handful of GND pads that the south-pocket LED move
+boxed in on both layers are tied to the plane by a tented 0.6/0.3 mm via inside
+the pad (listed in the order checklist). KiCad refills the pours during DRC and
+release generation.
 
 ### Three things in the router that were bugs first
 

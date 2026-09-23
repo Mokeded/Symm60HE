@@ -22,6 +22,14 @@ import heapq, math, os
 GRID = 0.5
 TRACE = 0.2
 CLEAR = 0.15
+VIA_D = 0.6
+# A via annulus is wider than a trace, so a cell that a 0.2 mm trace may
+# occupy is not necessarily one a 0.6 mm via may occupy.  Cells this much
+# closer to an obstacle than the trace margin stay trace-only.  The extra
+# 20 um keeps the mask off the rule exactly: at the bare difference a cell
+# sits at the clearance limit, where polygon-buffer rounding decides whether
+# KiCad sees 0.150 mm or 0.149 mm.
+VIA_EXTRA = VIA_D / 2 - TRACE / 2 + 0.02
 SPACING = TRACE + CLEAR                 # centre to centre, trace to trace
 PAD_MARGIN = TRACE / 2 + CLEAR          # trace edge to pad edge
 
@@ -52,6 +60,7 @@ class Grid:
                     self.free[j*self.nx + i] = 1
         n = self.nx * self.ny
         self.owner = [[None]*n, [None]*n]     # per layer: net occupying each cell
+        self.via_owner = {}                    # cell -> nets too close for a via
         self.LAYERS = ("B.Cu", "F.Cu")
 
     def idx(self, i, j): return j * self.nx + i
@@ -68,13 +77,18 @@ class Grid:
         them -- otherwise whichever pad happened to be blocked first would own
         the ground its neighbour has to be reached through."""
         g = geom.buffer(margin)
-        b = g.bounds
+        gv = geom.buffer(margin + VIA_EXTRA)
+        b = gv.bounds
         i0, j0 = self.cell(b[0], b[1]); i1, j1 = self.cell(b[2], b[3])
         from shapely.geometry import Point
         for j in range(max(0, j0-1), min(self.ny, j1+2)):
             for i in range(max(0, i0-1), min(self.nx, i1+2)):
-                if g.contains(Point(*self.pos(i, j))):
-                    k = self.idx(i, j)
+                p = Point(*self.pos(i, j))
+                k = self.idx(i, j)
+                if gv.contains(p):
+                    self.via_owner.setdefault(k, set()).add(
+                        net if net is not None else "#")
+                if g.contains(p):
                     for L in layers:
                         if force or self.owner[L][k] is None or net is None:
                             self.owner[L][k] = net if net is not None else "#"
@@ -86,7 +100,14 @@ class Grid:
         o = self.owner[L][k]
         return o is None or o == net
 
-    VIA_COST = 8.0
+    def via_ok(self, i, j, net):
+        """A via here clears every other net's copper by the full annulus."""
+        owners = self.via_owner.get(self.idx(i, j))
+        return not owners or owners <= {net}
+
+    # Layer changes are expensive on a two-layer board; SYMM60_VIA_COST raises
+    # the penalty so the maze stays on one layer unless it has no other way.
+    VIA_COST = float(os.environ.get("SYMM60_VIA_COST", 8.0))
 
     def route(self, starts, goals, net):
         """A* over (layer, i, j).  Returns a path of (L, i, j)."""
@@ -140,7 +161,7 @@ class Grid:
                     heapq.heappush(openq, (ng + h(nxt), ng, nxt))
             # change layer
             other = (1 - L, ci, cj)
-            if self.passable(ci, cj, 1 - L, net):
+            if self.passable(ci, cj, 1 - L, net) and self.via_ok(ci, cj, net):
                 ng = g + self.VIA_COST
                 if ng < best.get(other, 1e18):
                     best[other] = ng; came[other] = cur

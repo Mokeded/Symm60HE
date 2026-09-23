@@ -8,7 +8,7 @@ The close bottom-row switch-alignment drills are returned to their ordinary
 horizontal axis without disturbing the proven Hall-pad routing.  The nearby
 Shift stabilizers are turned 180 degrees so their smaller retention holes face
 the bottom-row LEDs, allowing every retained bottom-row LED to use the ordinary
-7.60 mm key-relative offset.
++5.35 mm south-pocket key-relative offset.
 
 The WKL bottom row has one fewer key on each half.  Its otherwise-unused RGB
 chain stage is removed by merging its input/output nets and adding a short
@@ -112,7 +112,10 @@ FIXED_STABILIZER_ROTATIONS = {
     },
 }
 
-BOTTOM_LED_OFFSET = 7.600
+# Reverse-mount LEDs sit in the KS-20 RGB pocket on the south side of every
+# key: +5.35 mm along the key's local Y (KiCad +Y is south).
+LED_DY = 5.350
+BOTTOM_LED_OFFSET = LED_DY
 
 SHARED_LED_TARGETS = {
     "Left": {
@@ -140,10 +143,10 @@ SHARED_LED_TARGETS = {
 FIXED_LED_TARGETS = {
     "Left": {
         # The third arrow-cluster key is layout-only rather than shared, but
-        # it belongs on the same 7.60 mm LED line as its two neighbours.
+        # it belongs on the same south-pocket LED line as its two neighbours.
         "DL33": {
-            "wklarrows": ("HEL29", 0.0, -BOTTOM_LED_OFFSET),
-            "wklbs2arrows": ("HEL29", 0.0, -BOTTOM_LED_OFFSET),
+            "wklarrows": ("HEL29", 0.0, LED_DY),
+            "wklbs2arrows": ("HEL29", 0.0, LED_DY),
         },
     },
     "Right": {
@@ -151,40 +154,40 @@ FIXED_LED_TARGETS = {
         # PCB to coexist with the 2U option.  Fixed split-Backspace boards can
         # centre each LED directly above its own Hall sensor.
         "DR4": {
-            "wkl": ("HER3", 0.0, -6.868),
-            "wklarrows": ("HER3", 0.0, -6.868),
+            "wkl": ("HER3", 0.0, LED_DY),
+            "wklarrows": ("HER3", 0.0, LED_DY),
         },
         "DR5": {
-            "wkl": ("HER5", 0.0, -6.868),
-            "wklarrows": ("HER5", 0.0, -6.868),
+            "wkl": ("HER5", 0.0, LED_DY),
+            "wklarrows": ("HER5", 0.0, LED_DY),
         },
         # The universal 2U Backspace LED is vertical and tucked between the
         # competing 1U alignment holes.  On either 2U-only derivative it can
         # sit horizontally on the same Y line as the other number-row LEDs.
         "DR33": {
-            "wklbs2": ("HER4", 0.0, -6.868),
-            "wklbs2arrows": ("HER4", 0.0, -6.868),
+            "wklbs2": ("HER4", 0.0, LED_DY),
+            "wklbs2arrows": ("HER4", 0.0, LED_DY),
         },
         # Universal Shift alternatives are shifted sideways to preserve all
         # three mutually exclusive apertures.  Fixed variants centre the
         # selected LEDs under their own switches on the ordinary row line.
         "DR21": {
-            "wkl": ("HER25", 0.0, -7.600),
-            "wklbs2": ("HER25", 0.0, -7.600),
+            "wkl": ("HER25", 0.0, LED_DY),
+            "wklbs2": ("HER25", 0.0, LED_DY),
         },
         "DR22": {
-            "wklarrows": ("HER24", 0.0, -7.600),
-            "wklbs2arrows": ("HER24", 0.0, -7.600),
+            "wklarrows": ("HER24", 0.0, LED_DY),
+            "wklbs2arrows": ("HER24", 0.0, LED_DY),
         },
         "DR34": {
-            "wklarrows": ("HER26", 0.0, -7.600),
-            "wklbs2arrows": ("HER26", 0.0, -7.600),
+            "wklarrows": ("HER26", 0.0, LED_DY),
+            "wklbs2arrows": ("HER26", 0.0, LED_DY),
         },
         # As on the left, the centre arrow key uses the same normal offset as
         # the two shared bottom-row LED stages.
         "DR36": {
-            "wklarrows": ("HER32", 0.0, -BOTTOM_LED_OFFSET),
-            "wklbs2arrows": ("HER32", 0.0, -BOTTOM_LED_OFFSET),
+            "wklarrows": ("HER32", 0.0, LED_DY),
+            "wklbs2arrows": ("HER32", 0.0, LED_DY),
         },
     },
 }
@@ -344,6 +347,73 @@ def move_footprint(board, fp, x, y, rotation, stretch=True):
     if stretch:
         stretch_footprint_connections(board, fp, old, new)
     set_at(fp, *new)
+
+
+PLACEMENT_CLEARANCE = 0.25
+
+
+def pad_boxes(fp, state=None):
+    """Axis-aligned board-space box per pad, and one for the LED aperture."""
+    state = state or at_state(fp)
+    x, y, rotation = state
+    angle = math.radians(-rotation)
+    boxes = []
+    for pad in find(fp, "pad"):
+        px, py = pad_position(fp, pad, state)
+        size = first(pad, "size")
+        half_x = fnum(size[1]) / 2 if size else 0.3
+        half_y = fnum(size[2]) / 2 if size else 0.3
+        if abs(math.sin(angle)) > 0.5:          # 90/270 degrees: axes swap
+            half_x, half_y = half_y, half_x
+        drill = first(pad, "drill")
+        if drill and len(drill) > 1 and not isinstance(drill[1], list):
+            try:
+                radius = fnum(drill[1]) / 2
+                half_x, half_y = max(half_x, radius), max(half_y, radius)
+            except (TypeError, ValueError):
+                pass
+        boxes.append((px - half_x, py - half_y, px + half_x, py + half_y))
+    aperture = []
+    for kind in ("fp_line", "fp_arc"):
+        for item in find(fp, kind):
+            layer = first(item, "layer")
+            if not layer or str(layer[1]) != "Edge.Cuts":
+                continue
+            for name in ("start", "mid", "end"):
+                point = first(item, name)
+                if not point:
+                    continue
+                lx, ly = fnum(point[1]), fnum(point[2])
+                aperture.append(
+                    (x + lx * math.cos(angle) - ly * math.sin(angle),
+                     y + lx * math.sin(angle) + ly * math.cos(angle)))
+    if aperture:
+        boxes.append((min(p[0] for p in aperture), min(p[1] for p in aperture),
+                      max(p[0] for p in aperture), max(p[1] for p in aperture)))
+    return boxes
+
+
+def placement_fits(board, fp, state, margin=PLACEMENT_CLEARANCE):
+    """True when fp at `state` clears every other footprint's pads and holes.
+
+    The universal board offsets a few LEDs sideways to share a pocket with a
+    mutually exclusive position.  A derivative that drops the competitor can
+    usually return the LED to the ordinary south-pocket offset -- but not when
+    its own decoupling capacitor or a neighbouring drill occupies that space,
+    so the move is checked pad by pad before it is made rather than assumed.
+    """
+    mine = pad_boxes(fp, state)
+    if not mine:
+        return True
+    for other in find(board, "footprint"):
+        if other is fp:
+            continue
+        for box in pad_boxes(other):
+            for own in mine:
+                if (own[0] - margin < box[2] and box[0] - margin < own[2] and
+                        own[1] - margin < box[3] and box[1] - margin < own[3]):
+                    return False
+    return True
 
 
 def key_relative_position(sensor, dx, dy, rotation):
@@ -662,7 +732,8 @@ def transform(path, side, layout):
     for sensor_ref in sorted(close_sensors.intersection(row_by_sensor)):
         restore_alignment_holes(by_ref[sensor_ref])
 
-    # Put the two close-pair LEDs at the ordinary 7.60 mm key-relative offset.
+    # Put the two close-pair LEDs at the ordinary south-pocket offset under
+    # the key that this layout actually populates.
     for led_ref, targets in SHARED_LED_TARGETS[side].items():
         sensor_ref = targets[build]
         sensor = by_ref[sensor_ref]
@@ -671,19 +742,17 @@ def transform(path, side, layout):
         # pads routable.  LED placement follows the key angle from the switch
         # map, not that package-only rotation.
         rotation = float(row_by_sensor[sensor_ref]["rotation_deg"])
-        angle = math.radians(-rotation)
-        # Local key offset (0, -7.60), rotated with the key.
-        dx = -(-BOTTOM_LED_OFFSET) * math.sin(angle)
-        dy = (-BOTTOM_LED_OFFSET) * math.cos(angle)
+        # Local key offset (0, +LED_DY), rotated with the key: the south pocket.
+        x, y = key_relative_position(sensor, 0.0, LED_DY, rotation)
         # Preserve the old routed endpoints as same-net anchors.  Stretching a
         # long final segment across the switch field creates shorts; the local
         # repair pass instead joins each moved pad to those anchors around the
         # now-layout-specific obstacles.
-        move_footprint(board, by_ref[led_ref], sx + dx, sy + dy, rotation,
-                       stretch=False)
+        move_footprint(board, by_ref[led_ref], x, y, rotation, stretch=False)
 
     # Return the remaining universal-compromise LEDs to their ordinary fixed
     # layout positions.  This also turns the 2U Backspace LED horizontal.
+    kept_universal_leds = []
     for led_ref, targets in FIXED_LED_TARGETS.get(side, {}).items():
         target = targets.get(build)
         if not target:
@@ -692,55 +761,36 @@ def transform(path, side, layout):
         sensor = by_ref[sensor_ref]
         rotation = float(row_by_sensor[sensor_ref]["rotation_deg"])
         x, y = key_relative_position(sensor, dx, dy, rotation)
-        move_footprint(board, by_ref[led_ref], x, y, rotation, stretch=False)
+        led = by_ref[led_ref]
+        if placement_fits(board, led, (x, y, rotation)):
+            move_footprint(board, led, x, y, rotation, stretch=False)
+        else:
+            kept_universal_leds.append(led_ref)
 
     # Rotate only stabilizers that exist in this derivative.  The switch and
     # stabilizer centres do not move, so keycap alignment is unchanged.
+    # These stabilizers were turned so their smaller retention holes faced the
+    # LED apertures back when those sat north of the key.  The apertures are in
+    # the switches' south pockets now, so the turn usually buys nothing -- and
+    # it costs something, because the master routed around the holes where they
+    # are.  Turn one only when leaving it alone would actually clash.
+    kept_stabilizer_angles = []
     for stab_ref, targets in FIXED_STABILIZER_ROTATIONS.get(side, {}).items():
         if stab_ref not in by_ref or build not in targets:
             continue
-        x, y, _ = at_state(by_ref[stab_ref])
-        set_at(by_ref[stab_ref], x, y, targets[build])
+        stabilizer = by_ref[stab_ref]
+        x, y, angle = at_state(stabilizer)
+        if placement_fits(board, stabilizer, (x, y, angle)):
+            kept_stabilizer_angles.append(stab_ref)
+            continue
+        set_at(stabilizer, x, y, targets[build])
 
-    # Keep RBPL29 at the universal board's lower position.  At the normal
-    # 7.60 mm DL29 offset, the former fixed-layout restoration position would
-    # overlap the LED pads and milled aperture.
+    # Keep RBPL29 at the universal board's position; the fixed-layout DL29
+    # pocket position no longer overlaps it.
 
-    # The arrow layout's centre-key DR36 now occupies its ordinary 7.60 mm
-    # position, which is the universal compromise location of RBPR31.  Move
-    # that zero-ohm RGB-chain link toward the Hall sensor, matching the open
-    # pocket used by the corresponding left-side link, and stretch only the
-    # trace endpoints that terminate on its pads.
-    if side == "Right" and has_arrow_bottom(layout, side):
-        move_footprint(board, by_ref["RBPR31"], 272.5, 81.5, 0.0)
-
-    if side == "Left" and has_arrow_bottom(layout, side):
-        # Moving DL27 opens its RGB input from the universal trunk.  Route the
-        # local connection around the relocated LED aperture, then rejoin the
-        # proven F.Cu trunk at its existing via.
-        net = "RGB_L_26"
-        old_pad = (8.2285, 78.7500)
-        trunk_via = (8.2285, 86.5896)
-        # The standardized universal route may already have pruned this
-        # obsolete direct branch.  The layout-specific replacement below is
-        # identical either way, so only remove it when it is present.
-        remove_segment(board, net, "B.Cu", old_pad, trunk_via,
-                       required=False)
-        led_pad = next(pad_position(by_ref["DL27"], pad)
-                       for pad in find(by_ref["DL27"], "pad")
-                       if pad_net(pad) == net)
-        via_a = (5.5470, 82.3043)
-        via_b = (7.7970, 84.3043)
-        append_item(board, make_segment(led_pad, via_a, net, "B.Cu"))
-        append_item(board, make_via(via_a, net))
-        front_path = [via_a, (6.2970, 83.0543), (6.5470, 83.0543), via_b]
-        for a, b in zip(front_path, front_path[1:]):
-            append_item(board, make_segment(a, b, net, "F.Cu"))
-        append_item(board, make_via(via_b, net))
-        append_item(board, make_segment(via_b, (8.0470, 84.5543),
-                                        net, "B.Cu"))
-        append_item(board, make_segment((8.0470, 84.5543), trunk_via,
-                                        net, "B.Cu"))
+    # The south-pocket LED positions no longer collide with the zero-ohm RGB
+    # links or need a hand-built RGB_L_26 trunk repair; the finish pass routes
+    # every remaining open pair generically.
 
     inactive_leds = {ref for ref, layouts in LAYOUT_ONLY_LEDS[side].items()
                      if build not in layouts}
@@ -791,6 +841,8 @@ def transform(path, side, layout):
         "removed_zone_holes": removed_zone_holes,
         "bypassed": bypassed,
         "pruned_copper": pruned,
+        "kept_universal_leds": kept_universal_leds,
+        "kept_stabilizer_angles": kept_stabilizer_angles,
     }
 
 
@@ -811,7 +863,7 @@ The universal source boards are not modified.
 - Removed right RGB footprints: {', '.join(right['removed_leds']) or 'none'}
 - Board thickness remains 1.2 mm.
 - The close bottom-row switch-alignment holes use their normal horizontal axis.
-- Their LEDs use the standard 7.60 mm key-relative offset.
+- Their LEDs use the standard +5.35 mm south-pocket key-relative offset.
 - The adjacent Shift stabilizer is turned so its smaller retention holes face
   those LED apertures; its key centre is unchanged.
 - Mutually exclusive universal-layout LED apertures are removed with their
@@ -854,7 +906,13 @@ def main():
             print(f"{layout} {side}: {report['active_keys']} active keys; "
                   f"{report['removed_footprints']} footprints removed; "
                   f"{report['removed_zone_holes']} obsolete zone holes removed; "
-                  f"{report['pruned_copper']} copper leaves pruned")
+                  f"{report['pruned_copper']} copper leaves pruned"
+                  + (f"; kept universal LED position for "
+                     f"{', '.join(report['kept_universal_leds'])}"
+                     if report['kept_universal_leds'] else "")
+                  + (f"; left {', '.join(report['kept_stabilizer_angles'])} "
+                     f"unturned"
+                     if report['kept_stabilizer_angles'] else ""))
         # KIPRJMOD is the individual layout directory here, four levels below
         # the repository root.  Copying pcb/fp-lib-table verbatim leaves the
         # project library unresolved when a generated variant is opened.
