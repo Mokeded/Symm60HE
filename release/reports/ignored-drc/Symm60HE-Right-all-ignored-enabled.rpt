@@ -1,8 +1,8 @@
 ** Drc report for Symm60HE-Right.kicad_pcb **
-** Created on 2026-09-22T23:08:45 **
+** Created on 2026-10-05T12:02:44 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 295 DRC violations **
+** Found 206 DRC violations **
 [missing_courtyard]: Footprint has no courtyard defined
     Local override; warning
     @(180.8559 mm, 92.9251 mm): Footprint SR3
@@ -14,8 +14,12 @@
     @(279.0830 mm, 9.5250 mm): Footprint SR1
 [courtyards_overlap]: Courtyards overlap
     Rule: board setup constraints courtyard; warning
-    @(238.1424 mm, 53.1805 mm): Footprint DR16
     @(233.8800 mm, 60.6720 mm): Footprint AMR3
+    @(233.7177 mm, 57.5762 mm): Footprint CMR3
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(233.8800 mm, 60.6720 mm): Footprint AMR3
+    @(234.0000 mm, 62.5000 mm): Footprint RBPR24
 [courtyards_overlap]: Courtyards overlap
     Rule: board setup constraints courtyard; warning
     @(288.8000 mm, 71.5000 mm): Footprint CR26A
@@ -30,24 +34,12 @@
     @(164.2090 mm, 58.0000 mm): Footprint JR1
 [npth_inside_courtyard]: NPTH inside courtyard
     Local override; warning
-    @(222.2635 mm, 86.9516 mm): NPTH pad of HER35
-    @(227.0000 mm, 82.4250 mm): Footprint AMR4
-[courtyards_overlap]: Courtyards overlap
-    Rule: board setup constraints courtyard; warning
-    @(234.4698 mm, 67.1500 mm): Footprint HER22
-    @(233.8800 mm, 60.6720 mm): Footprint AMR3
-[npth_inside_courtyard]: NPTH inside courtyard
-    Local override; warning
     @(272.4148 mm, 74.9300 mm): NPTH pad of SR2
     @(272.4150 mm, 71.0750 mm): Footprint DR22
 [npth_inside_courtyard]: NPTH inside courtyard
     Local override; warning
     @(296.2273 mm, 74.9300 mm): NPTH pad of SR2
     @(293.8460 mm, 71.0750 mm): Footprint DR34
-[courtyards_overlap]: Courtyards overlap
-    Rule: board setup constraints courtyard; warning
-    @(233.7177 mm, 57.5762 mm): Footprint CMR3
-    @(233.8800 mm, 60.6720 mm): Footprint AMR3
 [npth_inside_courtyard]: NPTH inside courtyard
     Local override; warning
     @(267.1768 mm, 17.7800 mm): NPTH pad of SR1
@@ -56,10 +48,6 @@
     Local override; warning
     @(290.9893 mm, 17.7800 mm): NPTH pad of SR1
     @(286.7080 mm, 14.3750 mm): Footprint DR5
-[courtyards_overlap]: Courtyards overlap
-    Rule: board setup constraints courtyard; warning
-    @(234.0000 mm, 62.5000 mm): Footprint RBPR24
-    @(233.8800 mm, 60.6720 mm): Footprint AMR3
 [silk_edge_clearance]: Silkscreen clipped by board edge
     Rule: board setup constraints silk; warning
     @(279.0830 mm, 16.3750 mm): Segment of DR33 on Edge.Cuts
@@ -87,6 +75,9 @@
     @(279.0830 mm, 9.5250 mm): Footprint SR1
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
+    @(233.8800 mm, 60.6720 mm): Footprint AMR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
     @(290.4500 mm, 33.9250 mm): Footprint CRGBR8
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
@@ -94,6 +85,9 @@
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(292.3500 mm, 35.4750 mm): Footprint CR11B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(227.0000 mm, 82.4250 mm): Footprint AMR4
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(216.3356 mm, 23.1595 mm): Footprint CR12A
@@ -168,13 +162,7 @@
     @(298.0650 mm, 92.6250 mm): Footprint CR34B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(227.0000 mm, 82.4250 mm): Footprint AMR4
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
     @(255.3380 mm, 21.6750 mm): Footprint CR10A
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(269.5000 mm, 40.0000 mm): Footprint AMR2
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(187.0971 mm, 100.1513 mm): Footprint CR36B
@@ -237,13 +225,13 @@
     @(187.3591 mm, 43.0526 mm): Footprint CRGBR13
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
-    @(270.0000 mm, 48.0000 mm): Footprint AMR1
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
     @(264.7270 mm, 54.5250 mm): Footprint CR17B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(263.4770 mm, 81.0250 mm): Footprint CRGBR29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(270.0000 mm, 48.0000 mm): Footprint AMR1
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(293.8460 mm, 71.0750 mm): Footprint DR34
@@ -301,9 +289,6 @@
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(200.9889 mm, 56.3819 mm): Footprint DR19
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(296.5000 mm, 49.5000 mm): Footprint AMR5
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(215.7788 mm, 73.8583 mm): Footprint DR25
@@ -367,6 +352,9 @@
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(288.9210 mm, 64.0750 mm): Footprint CR25B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(296.5000 mm, 49.5000 mm): Footprint AMR5
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(277.1150 mm, 71.0750 mm): Footprint CRGBR22
@@ -510,6 +498,9 @@
     @(279.0150 mm, 73.5750 mm): Footprint CR24B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
+    @(268.5700 mm, 40.0000 mm): Footprint AMR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
     @(207.7501 mm, 56.8803 mm): Footprint CR20B
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
@@ -517,9 +508,6 @@
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(186.7959 mm, 39.4969 mm): Footprint DR13
-[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
-    Local override; warning
-    @(233.8800 mm, 60.6720 mm): Footprint AMR3
 [lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
     Local override; warning
     @(298.5460 mm, 71.0750 mm): Footprint CRGBR34
@@ -557,24 +545,16 @@
     @(194.2388 mm, 78.8334 mm): Segment of DR26 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
+    @(201.3956 mm, 58.9499 mm): Reference field of DR19
+    @(197.6772 mm, 58.8048 mm): Segment of DR19 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
     @(216.0506 mm, 76.4441 mm): Reference field of DR25
     @(212.3448 mm, 76.1046 mm): Segment of DR25 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
     @(214.3365 mm, 95.0496 mm): Segment of DR28 on B.Silkscreen
     @(218.0423 mm, 95.3891 mm): Reference field of DR28
-[silk_overlap]: Silkscreen clearance
-    Rule: board setup constraints silk; warning
-    @(238.2785 mm, 55.7769 mm): Reference field of DR16
-    @(234.5955 mm, 55.2440 mm): Segment of DR16 on B.Silkscreen
-[silk_overlap]: Silkscreen clearance
-    Rule: board setup constraints silk; warning
-    @(215.7840 mm, 56.4616 mm): Segment of DR15 on B.Silkscreen
-    @(219.4898 mm, 56.8011 mm): Reference field of DR15
-[silk_overlap]: Silkscreen clearance
-    Rule: board setup constraints silk; warning
-    @(231.2029 mm, 74.5562 mm): Segment of DR24 on B.Silkscreen
-    @(234.8859 mm, 75.0891 mm): Reference field of DR24
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
     @(178.3811 mm, 100.6321 mm): Segment of DR32 on B.Silkscreen
@@ -593,20 +573,28 @@
     @(164.6750 mm, 44.9076 mm): Segment of DR14 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(201.8026 mm, 38.8832 mm): Segment of DR12 on B.Silkscreen
-    @(205.5084 mm, 39.2227 mm): Reference field of DR12
+    @(238.2785 mm, 55.7769 mm): Reference field of DR16
+    @(234.5955 mm, 55.2440 mm): Segment of DR16 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(224.4516 mm, 37.2383 mm): Reference field of DR11
-    @(220.7458 mm, 36.8988 mm): Segment of DR11 on B.Silkscreen
+    @(215.7840 mm, 56.4616 mm): Segment of DR15 on B.Silkscreen
+    @(219.4898 mm, 56.8011 mm): Reference field of DR15
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(231.2029 mm, 74.5562 mm): Segment of DR24 on B.Silkscreen
+    @(234.8859 mm, 75.0891 mm): Reference field of DR24
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
     @(209.1538 mm, 19.0446 mm): Segment of DR1 on B.Silkscreen
     @(212.8596 mm, 19.3841 mm): Reference field of DR1
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(201.3956 mm, 58.9499 mm): Reference field of DR19
-    @(197.6772 mm, 58.8048 mm): Segment of DR19 on B.Silkscreen
+    @(228.1573 mm, 17.1744 mm): Segment of DR2 on B.Silkscreen
+    @(231.8403 mm, 17.7073 mm): Reference field of DR2
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(224.4516 mm, 37.2383 mm): Reference field of DR11
+    @(220.7458 mm, 36.8988 mm): Segment of DR11 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
     @(190.8352 mm, 21.6166 mm): Segment of DR6 on B.Silkscreen
@@ -617,6 +605,10 @@
     @(172.0314 mm, 24.6082 mm): Segment of DR7 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
+    @(201.8026 mm, 38.8832 mm): Segment of DR12 on B.Silkscreen
+    @(205.5084 mm, 39.2227 mm): Reference field of DR12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
     @(183.4842 mm, 41.9198 mm): Segment of DR13 on B.Silkscreen
     @(187.2026 mm, 42.0649 mm): Reference field of DR13
 [silk_overlap]: Silkscreen clearance
@@ -625,188 +617,12 @@
     @(293.8460 mm, 73.6750 mm): Reference field of DR34
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(228.1573 mm, 17.1744 mm): Segment of DR2 on B.Silkscreen
-    @(231.8403 mm, 17.7073 mm): Reference field of DR2
-[silk_overlap]: Silkscreen clearance
-    Rule: board setup constraints silk; warning
     @(271.4580 mm, 16.9750 mm): Reference field of DR4
     @(267.8080 mm, 16.2500 mm): Segment of DR4 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
     @(275.4330 mm, 16.7500 mm): Segment of DR33 on B.Silkscreen
     @(279.0830 mm, 17.4750 mm): Reference field of DR33
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(238.2785 mm, 55.7769 mm): Reference field of DR16
-    @(236.1190 mm, 56.1036 mm): Pad 9 [MUX_A2] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(231.4450 mm, 79.9500 mm): Pad 16 [+3V3A] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(222.5550 mm, 79.9500 mm): Pad 9 [MUX_A2] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(223.8250 mm, 79.9500 mm): Pad 10 [MUX_A1] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(225.0950 mm, 79.9500 mm): Pad 11 [MUX_A0] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(226.3650 mm, 79.9500 mm): Pad 12 [HE_R28] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(227.6350 mm, 79.9500 mm): Pad 13 [HE_R25] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(228.9050 mm, 79.9500 mm): Pad 14 [HE_R26] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 80.4750 mm): Segment of AMR4 on B.Silkscreen
-    @(230.1750 mm, 79.9500 mm): Pad 15 [HE_R27] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(231.4450 mm, 84.9000 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(230.1750 mm, 84.9000 mm): Pad 2 [HE_R31] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(228.9050 mm, 84.9000 mm): Pad 3 [ADC_R4] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(227.6350 mm, 84.9000 mm): Pad 4 [HE_R32] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(226.3650 mm, 84.9000 mm): Pad 5 [HE_R30] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(225.0950 mm, 84.9000 mm): Pad 6 [GND] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(223.8250 mm, 84.9000 mm): Pad 7 [GND] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.9500 mm, 84.3750 mm): Segment of AMR4 on B.Silkscreen
-    @(222.5550 mm, 84.9000 mm): Pad 8 [GND] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.4450 mm, 85.1000 mm): Circle of AMR4 on B.Silkscreen
-    @(231.4450 mm, 84.9000 mm): Pad 1 [HE_R29] of AMR4 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(273.9450 mm, 42.4750 mm): Pad 9 [MUX_A2] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(272.6750 mm, 42.4750 mm): Pad 10 [MUX_A1] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(271.4050 mm, 42.4750 mm): Pad 11 [MUX_A0] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(270.1350 mm, 42.4750 mm): Pad 12 [HE_R12] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(268.8650 mm, 42.4750 mm): Pad 13 [HE_R09] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(267.5950 mm, 42.4750 mm): Pad 14 [HE_R10] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(266.3250 mm, 42.4750 mm): Pad 15 [HE_R11] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 41.9500 mm): Segment of AMR2 on B.Silkscreen
-    @(265.0550 mm, 42.4750 mm): Pad 16 [+3V3A] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(265.5550 mm, 45.5250 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(266.8250 mm, 45.5250 mm): Pad 2 [HE_R07] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(271.9050 mm, 45.5250 mm): Pad 6 [GND] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(273.1750 mm, 45.5250 mm): Pad 7 [GND] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(274.4450 mm, 45.5250 mm): Pad 8 [GND] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(268.0950 mm, 45.5250 mm): Pad 3 [ADC_R1] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(269.3650 mm, 45.5250 mm): Pad 4 [HE_R08] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 46.0500 mm): Segment of AMR1 on B.Silkscreen
-    @(270.6350 mm, 45.5250 mm): Pad 5 [HE_R06] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(269.3650 mm, 50.4750 mm): Pad 13 [HE_R01] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(268.0950 mm, 50.4750 mm): Pad 14 [HE_R02] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(265.5550 mm, 50.4750 mm): Pad 16 [+3V3A] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(273.1750 mm, 50.4750 mm): Pad 10 [MUX_A1] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(274.4450 mm, 50.4750 mm): Pad 9 [MUX_A2] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(271.9050 mm, 50.4750 mm): Pad 11 [MUX_A0] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(270.6350 mm, 50.4750 mm): Pad 12 [HE_R04] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0500 mm, 49.9500 mm): Segment of AMR1 on B.Silkscreen
-    @(266.8250 mm, 50.4750 mm): Pad 15 [HE_R03] of AMR1 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.5550 mm, 45.3250 mm): Circle of AMR1 on B.Silkscreen
-    @(265.5550 mm, 45.5250 mm): Pad 1 [HE_R05] of AMR1 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(272.4150 mm, 73.6750 mm): Reference field of DR22
@@ -825,178 +641,6 @@
     @(296.2273 mm, 74.9300 mm): NPTH pad of SR2
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(270.1350 mm, 37.5250 mm): Pad 5 [HE_R14] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(271.4050 mm, 37.5250 mm): Pad 6 [GND] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(272.6750 mm, 37.5250 mm): Pad 7 [GND] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(273.9450 mm, 37.5250 mm): Pad 8 [GND] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(265.0550 mm, 37.5250 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(266.3250 mm, 37.5250 mm): Pad 2 [HE_R15] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(267.5950 mm, 37.5250 mm): Pad 3 [ADC_R2] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(264.5500 mm, 38.0500 mm): Segment of AMR2 on B.Silkscreen
-    @(268.8650 mm, 37.5250 mm): Pad 4 [HE_R16] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(265.0550 mm, 37.3250 mm): Circle of AMR2 on B.Silkscreen
-    @(265.0550 mm, 37.5250 mm): Pad 1 [HE_R13] of AMR2 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(292.0550 mm, 47.0250 mm): Pad 1 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(293.3250 mm, 47.0250 mm): Pad 2 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(294.5950 mm, 47.0250 mm): Pad 3 [ADC_R5] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(295.8650 mm, 47.0250 mm): Pad 4 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(297.1350 mm, 47.0250 mm): Pad 5 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(298.4050 mm, 47.0250 mm): Pad 6 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(299.6750 mm, 47.0250 mm): Pad 7 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 47.5500 mm): Segment of AMR5 on B.Silkscreen
-    @(300.9450 mm, 47.0250 mm): Pad 8 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(300.9450 mm, 51.9750 mm): Pad 9 [MUX_A2] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(299.6750 mm, 51.9750 mm): Pad 10 [MUX_A1] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(298.4050 mm, 51.9750 mm): Pad 11 [MUX_A0] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(297.1350 mm, 51.9750 mm): Pad 12 [HE_R36] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(295.8650 mm, 51.9750 mm): Pad 13 [HE_R33] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(294.5950 mm, 51.9750 mm): Pad 14 [HE_R34] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(293.3250 mm, 51.9750 mm): Pad 15 [HE_R35] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(291.5500 mm, 51.4500 mm): Segment of AMR5 on B.Silkscreen
-    @(292.0550 mm, 51.9750 mm): Pad 16 [+3V3A] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(292.0550 mm, 46.8250 mm): Circle of AMR5 on B.Silkscreen
-    @(292.0550 mm, 47.0250 mm): Pad 1 [GND] of AMR5 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.6410 mm, 65.2404 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.5746 mm, 63.9722 mm): Pad 2 [HE_R23] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.5081 mm, 62.7039 mm): Pad 3 [ADC_R3] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.4416 mm, 61.4357 mm): Pad 4 [HE_R24] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.3752 mm, 60.1674 mm): Pad 5 [HE_R22] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.3087 mm, 58.8991 mm): Pad 6 [GND] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.2422 mm, 57.6309 mm): Pad 7 [GND] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(232.1917 mm, 65.7173 mm): Segment of AMR3 on B.Silkscreen
-    @(231.1758 mm, 56.3626 mm): Pad 8 [GND] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.1190 mm, 56.1036 mm): Pad 9 [MUX_A2] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.1854 mm, 57.3718 mm): Pad 10 [MUX_A1] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.2519 mm, 58.6401 mm): Pad 11 [MUX_A0] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.3184 mm, 59.9083 mm): Pad 12 [HE_R20] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.3848 mm, 61.1766 mm): Pad 13 [HE_R17] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.4513 mm, 62.4449 mm): Pad 14 [HE_R18] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.5178 mm, 63.7131 mm): Pad 15 [HE_R19] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(236.0864 mm, 65.5132 mm): Segment of AMR3 on B.Silkscreen
-    @(236.5842 mm, 64.9814 mm): Pad 16 [+3V3A] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(231.4413 mm, 65.2509 mm): Circle of AMR3 on B.Silkscreen
-    @(231.6410 mm, 65.2404 mm): Pad 1 [HE_R21] of AMR3 on B.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
     @(267.8080 mm, 13.2250 mm): Segment of DR4 on B.Silkscreen
     @(267.1768 mm, 17.7800 mm): NPTH pad of SR1
 [silk_over_copper]: Silkscreen clipped by solder mask
@@ -1006,11 +650,11 @@
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(279.0830 mm, 17.4750 mm): Reference field of DR33
-    @(279.5630 mm, 18.4750 mm): Pad 2 [GND] of CRGBR33 on B.Cu
+    @(278.6030 mm, 18.4750 mm): Pad 1 [VBUS] of CRGBR33 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(279.0830 mm, 17.4750 mm): Reference field of DR33
-    @(278.6030 mm, 18.4750 mm): Pad 1 [VBUS] of CRGBR33 on B.Cu
+    @(279.5630 mm, 18.4750 mm): Pad 2 [GND] of CRGBR33 on B.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(283.0580 mm, 16.2500 mm): Segment of DR5 on B.Silkscreen

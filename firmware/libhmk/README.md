@@ -27,10 +27,11 @@ This repository contains libraries for building a Hall-effect keyboard firmware.
 - [x] **Tick Rate**: Customizable tick rate for Tap-Hold and Dynamic Keystroke.
 - [x] **8kHz Polling Rate**: Support for 8kHz polling rate on some microcontrollers (e.g., AT32F405xx).
 - [x] **Gamepad**: Support for XInput gamepad mode, allowing the keyboard to be used as a game controller.
+- [x] **Optional RGB Lighting**: AT32F405 targets can declare parallel SK6812-compatible outputs, effects, persistent settings, and a software current limit.
 
 ## Limitations
 
-- **RGB Lighting**: The firmware does not support RGB lighting.
+- **RGB Portability**: The RGB driver is currently implemented only for configured AT32F405 targets.
 
 ## Getting Started
 

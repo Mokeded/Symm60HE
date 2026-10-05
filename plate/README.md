@@ -26,14 +26,11 @@ row, and Backspace type:
 for the universal PCB.
 
 All nine pairs follow the routed PCB Edge.Cuts along their top, bottom, and
-stepped centre contours. The plate uses a uniform 0.15 mm outward allowance so
-the larger plate apertures retain the project's 2.0 mm POM web target. Only the
-side gasket regions depart from the PCB shape: each half has one continuous
-straight outer gasket wall and one continuous straight centre-facing gasket
-wall. Four smooth integral gasket-mount tongues
-per half sit directly on those walls: two outer and two centre-facing. All eight
-mounts use the same smooth 5 mm projection,
-smooth, tapered tongue geometry as the last complete plate revision. Every
+stepped centre contours. The plate uses a uniform outward allowance so the
+larger plate apertures retain the project's 2.0 mm POM web target. Four smooth
+integral gasket-mount tongues per half are placed only on the rear/top and
+front/bottom edges; no tongue projects from either side edge. All eight mounts
+use the same smooth 5 mm projection and tapered tongue geometry. Every
 switch and stabilizer
 opening is contained inside its plate outline. The narrowest finished web is
 2.01 mm at the right split-backspace stabilizer; all other checked variants are

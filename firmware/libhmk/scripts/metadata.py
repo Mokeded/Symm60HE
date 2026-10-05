@@ -49,6 +49,17 @@ def ms_os_20_guid_def():
 
 
 def keyboard_metadata_def():
+    rgb_metadata = None
+    if kb_json.rgb is not None:
+        rgb_metadata = {
+            "outputs": [
+                {"name": output.name, "ledCount": output.led_count}
+                for output in kb_json.rgb.outputs
+            ],
+            "currentLimitMa": kb_json.rgb.current_limit_ma,
+            "refreshHz": kb_json.rgb.refresh_hz,
+        }
+
     metadata = {
         "name": kb_json.name,
         "vendorId": kb_json.usb.vid,
@@ -62,6 +73,7 @@ def keyboard_metadata_def():
         "numAdvancedKeys": kb_json.keyboard.num_advanced_keys,
         "numDynamicKeystrokeMaxBindings": kb_json.keyboard.num_dynamic_keystroke_max_bindings,
         "numMacroNodes": kb_json.keyboard.num_macro_nodes,
+        "rgb": rgb_metadata,
         "layout": kb_json.layout.model_dump(exclude_none=True),
         "defaultKeymaps": utils.resolve_default_keymaps(kb_json),
     }

@@ -1,5 +1,5 @@
 ** Drc report for Symm60HE-Daughterboard.kicad_pcb **
-** Created on 2026-09-22T23:08:47 **
+** Created on 2026-10-05T16:39:41 **
 ** Report includes: Errors, Warnings, Exclusions **
 
 ** Found 74 DRC violations **
@@ -41,7 +41,7 @@
     @(175.0000 mm, 3.5000 mm): Footprint SW1
 [silk_edge_clearance]: Silkscreen clipped by board edge
     Rule: board setup constraints silk; warning
-    @(163.2090 mm, -6.7633 mm): Segment on Edge.Cuts
+    @(211.4590 mm, -6.7633 mm): Segment on Edge.Cuts
     @(191.9090 mm, 0.7867 mm): Rectangle of J1 on F.Silkscreen
 [footprint_type_mismatch]: Footprint component type doesn't match footprint pads (expected 'Through hole'; actual 'SMD')
     Local override; warning

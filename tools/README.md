@@ -1,36 +1,20 @@
-# Tooling
+# Current build tooling
 
-The project tools are grouped by the artifact or workflow they maintain. Run
-the complete, supported pipeline from the repository root with:
+Run the supported pipeline from the repository root with `./build.sh`.
 
-```sh
-./build.sh
-```
+The retained tool set is deliberately limited to the current production
+artifacts:
 
-`build.sh` sets `PYTHONPATH` so category scripts can share the parsers and
-geometry libraries kept in this directory. For an individual command, use the
-same convention from the repository root, for example:
+- `cad/`: PCB/plate preparation, populated reference export and verification.
+- `generators/`: current schematic and Symm60HE firmware generation helpers.
+- `layouts/`: the fixed-layout catalog and authoritative panel verifier.
+- `pcb/`: deterministic preparation used by the ordinary ribbon-PCB build.
+- `releases/`: universal, daughterboard and fixed-layout manufacturing packs.
+- `mkplate.py`: all eight fixed-layout plate pairs plus the universal pair.
+- `verify.py`: PCB, schematic, firmware, plate, manufacturing and 3D handoff
+  checks.
 
-```sh
-PYTHONPATH=tools .venv/bin/python tools/layouts/verify_layout_pcbs.py
-```
-
-## Folders
-
-| Folder | Purpose |
-| --- | --- |
-| [`cad/`](cad/) | Fusion 360 reference preparation, FreeCAD export, and mechanical verification |
-| [`generators/`](generators/) | Firmware and schematic source generation |
-| [`layouts/`](layouts/) | Fixed-layout derivation, materialization, and layout verification |
-| [`pcb/`](pcb/) | PCB editing, routing repair, panelization, and fabrication-preparation commands |
-| [`pogo/`](pogo/) | Pogo/ribbon prototype generation, panelization, and verification |
-| [`releases/`](releases/) | Manufacturing package creation and checksums |
-| [`rendering/`](rendering/) | PCB, plate, CAD, and gallery image generation |
-
-The Python files directly in `tools/` are shared libraries, source generators
-used by several workflows, or top-level checks. The main verification entry
-point is [`verify.py`](verify.py).
-
-Do not run PCB mutation commands casually against the routed masters. The
-supported way to regenerate release artifacts is the repository-level
-`build.sh`, which applies the operations in their validated order.
+Historical routing repair, experimental pogo, gallery-rendering and one-time
+migration scripts are outside this current-build tree. The existing combined
+panel projects are authoritative and are not regenerated from half boards by
+an ordinary build.

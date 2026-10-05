@@ -40,6 +40,8 @@ typedef enum {
   COMMAND_GET_METADATA,
   COMMAND_GET_SERIAL,
   COMMAND_SAVE_CALIBRATION_THRESHOLD,
+  COMMAND_GET_RGB_CONFIG,
+  COMMAND_SET_RGB_CONFIG,
 
   COMMAND_GET_KEYMAP = 128,
   COMMAND_SET_KEYMAP,
@@ -147,6 +149,7 @@ typedef struct __attribute__((packed)) {
     command_in_gamepad_buttons_t gamepad_buttons;
     command_in_gamepad_options_t gamepad_options;
     command_in_staged_profile_t staged_profile;
+    rgb_config_t rgb_config;
   };
 } command_in_buffer_t;
 
@@ -191,6 +194,8 @@ typedef struct __attribute__((packed)) {
     command_out_metadata_t metadata;
     // For `COMMAND_GET_SERIAL`
     char serial[32];
+    // For `COMMAND_GET_RGB_CONFIG`
+    rgb_config_t rgb_config;
 
     // For `COMMAND_GET_KEYMAP`
     uint8_t keymap[63];

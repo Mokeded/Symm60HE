@@ -1,5 +1,5 @@
 #!/bin/sh
-# Rebuild manufacturing and Fusion handoff artifacts from the routed sources.
+# Rebuild only the current ribbon-PCB, plate, Fusion and firmware artifacts.
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 TOOLS="$ROOT/tools"
@@ -30,12 +30,9 @@ for board in ../pcb/Symm60HE-Left.kicad_pcb \
 done
 # Every alternate switch position remains independently sensed on the universal
 # PCB. Do not collapse close alternatives to shared midpoint sensors.
-# The stacked panel is the one that gets ordered: it is the smaller of the two
-# in both area (369.7 vs 375.7 cm2) and longest edge (227.8 vs 310.2 mm).  The
-# side-by-side arrangement is kept beside it for anyone who would rather have
-# the halves in their assembled orientation.
-"$PYTHON" pcb/panelize.py
-"$PYTHON" pcb/panelize.py --arrangement side-by-side
+# Combined panel PCB/schematic/project files are now the authoritative
+# electrical designs.  Do not regenerate them from the retained half-board
+# migration inputs during an ordinary manufacturing build.
 "$PYTHON" mkplate.py
 "$PYTHON" cad/prepare_fusion_reference.py
 # FreeCAD assembles the reference solids the step above exported.  Look for it
@@ -53,19 +50,38 @@ if [ -z "${FREECADCMD:-}" ] || [ ! -x "$FREECADCMD" ]; then
     echo "FREECADCMD at its freecadcmd/FreeCADCmd.exe." >&2
     exit 2
 fi
-"$FREECADCMD" cad/export_fusion_reference.py
-"$FREECADCMD" cad/verify_fusion_reference.py
-"$FREECADCMD" cad/export_pogo16_mechanics.py
-"$FREECADCMD" cad/export_tenting_solution.py
-"$FREECADCMD" cad/verify_tenting_solution.py
-"$PYTHON" rendering/render_fusion_reference.py
+run_freecad_script() {
+    FREECAD_SCRIPT=$1
+    export FREECAD_SCRIPT
+    # FreeCAD 1.1 no longer treats a bare .py argument as an executable macro.
+    # Feed an explicit compile/exec command to its console so __file__ and
+    # __name__ retain normal script semantics on both old and new releases.
+    printf '%s\n' \
+        "import os; p=os.environ['FREECAD_SCRIPT']; exec(compile(open(p).read(), p, 'exec'), {'__file__': p, '__name__': '__main__'})" \
+        'exit()' | "$FREECADCMD" -c
+}
+run_freecad_script cad/export_fusion_reference.py
+run_freecad_script cad/verify_fusion_reference.py
 "$PYTHON" releases/release.py
 "$PYTHON" releases/release_layout_pcbs.py
+"$PYTHON" layouts/verify_layout_panels.py
 "$PYTHON" verify.py
-"$PYTHON" pogo/make_pogo16_coupon.py
-"$PYTHON" releases/release_pogo16.py
-"$PYTHON" rendering/render_pogo16.py
-"$PYTHON" rendering/render_tenting_solution.py
-"$PYTHON" rendering/render_current_pcbs.py
-"$PYTHON" rendering/render_layout_variants.py
-"$PYTHON" rendering/render_gallery.py
+
+# Compile the current AT32F405 Symm60HE firmware and collect the distributable
+# outputs in firmware/build.  PlatformIO is installed by requirements.txt.
+PLATFORMIO=${PLATFORMIO:-$ROOT/.venv/bin/platformio}
+if [ ! -x "$PLATFORMIO" ]; then
+    PLATFORMIO=$(command -v platformio 2>/dev/null || true)
+fi
+if [ -z "$PLATFORMIO" ] || [ ! -x "$PLATFORMIO" ]; then
+    echo "Missing PlatformIO. Install the project requirements first." >&2
+    exit 2
+fi
+"$PLATFORMIO" run --project-dir "$ROOT/firmware/libhmk" -e symm60he
+mkdir -p "$ROOT/firmware/build"
+for artifact in firmware.bin firmware.elf firmware.hex; do
+    artifact_source="$ROOT/firmware/libhmk/.pio/build/symm60he/$artifact"
+    if [ -f "$artifact_source" ]; then
+        cp "$artifact_source" "$ROOT/firmware/build/$artifact"
+    fi
+done

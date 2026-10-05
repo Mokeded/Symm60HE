@@ -8,7 +8,7 @@ import shutil
 import subprocess
 import tempfile
 
-from verify import BOARDS, ROOT, find_kicad_cli
+from verify import PROJECT_BOARDS, ROOT, find_kicad_cli
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     total = Counter()
     with tempfile.TemporaryDirectory(prefix="symm60he-full-drc-") as tmp_name:
         tmp = Path(tmp_name)
-        for name in BOARDS:
+        for name in PROJECT_BOARDS:
             board_src = ROOT / "pcb" / f"{name}.kicad_pcb"
             pro_src = ROOT / "pcb" / f"{name}.kicad_pro"
             board = tmp / board_src.name

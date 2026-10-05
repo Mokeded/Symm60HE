@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove every PCB reference/pad/net tuple matches its captured symbol."""
+"""Prove each authoritative PCB reference/pad/net tuple matches its symbol."""
 from pathlib import Path
 import sys
 
@@ -7,7 +7,10 @@ from generators.mkschematics import components, symbol_name
 from sexp import find, first, loads
 
 ROOT = Path(__file__).resolve().parent.parent
-BOARDS = ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard")
+# Standalone half schematics were retired when the two halves became one
+# namespaced electrical project. Validate only the current combined panel and
+# independent daughterboard rather than requiring obsolete half captures.
+BOARDS = ("Symm60HE-Panel", "Symm60HE-Daughterboard")
 
 
 def symbol_map(path):

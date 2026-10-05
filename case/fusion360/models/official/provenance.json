@@ -1,5 +1,6 @@
 {
-  "policy": "Exact fitted part number only; no visually similar substitutions.",
+  "policy": "Use an exact manufacturer model when published; otherwise use the STEP asset linked to the exact fitted LCSC part in the JLCEDA/EasyEDA Official Library. Never use a visually similar part as an exact substitute.",
+  "notice": "JLCEDA/EasyEDA Official Library source attribution and terms are in JLCEDA-EasyEDA-OFFICIAL-LIBRARY-NOTICE.md.",
   "models": [
     {
       "file": "BOOMELE_1.0-12P_C20111.step",
@@ -8,8 +9,9 @@
       "lcsc": "C20111",
       "easyeda_package_uuid": "fab3e1c977f546e38a3efa8aceec01cf",
       "easyeda_3d_uuid": "a10e763233ae46d58b089a3cf0d7cbba",
-      "source_product": "https://www.lcsc.com/product-detail/FFC-FPC-Connectors_BOOMELE-Boom-Precision-Elec_C20111.html",
+      "source_product": "https://www.lcsc.com/product-detail/C20111.html",
       "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/a10e763233ae46d58b089a3cf0d7cbba",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
       "sha256": "eafc43da677e59fbd8814ac933d393a57454454ca89607310eecbba321c94e9d"
     },
     {
@@ -17,10 +19,11 @@
       "manufacturer": "HRO (Korean Hroparts Elec)",
       "manufacturer_part": "TYPE-C-31-M-12",
       "lcsc": "C165948",
-      "source_product": "https://www.lcsc.com/product-detail/USB-Connectors_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.html",
+      "source_product": "https://www.lcsc.com/product-detail/C165948.html",
       "source_baseline_commit": "f18a949",
       "source_baseline_path": "case/fusion360/models/USB_C_Receptacle_HRO_TYPE-C-31-M-12.STEP",
       "alignment_fix_commit": "4bc6caa",
+      "source_type": "exact vendor solid from the first validated assembly",
       "note": "Exact HRO solid and native coordinate frame reused from the first validated 3D assembly.",
       "sha256": "f902880f83a1b397b76360ed8686b6132a66920b3c1aac8e98239315842ff43e"
     },
@@ -32,7 +35,172 @@
       "source_product": "https://www.helloxkb.com/Home/Goods/goodsInfoxq/id/1913",
       "source_archive": "https://www.helloxkb.com/public/images/zip/TS-1187A-B-A-B.zip",
       "archive_member": "TS-1187A-B-A-B.stp",
+      "source_type": "manufacturer-published STEP",
       "sha256": "dbf207c04fdedb9dfee97ef4ae53e6efce86cbec7c228219265ee51460683abd"
+    },
+    {
+      "file": "TI_SN74LV4051APWR_C7793.step",
+      "manufacturer": "Texas Instruments",
+      "manufacturer_part": "SN74LV4051APWR",
+      "lcsc": "C7793",
+      "easyeda_package_uuid": "23b2db629115442e9f5e0bc6ed46a6c2",
+      "easyeda_3d_uuid": "534f03d8fe164fbab551f91e5a792e30",
+      "source_product": "https://www.lcsc.com/product-detail/C7793.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/534f03d8fe164fbab551f91e5a792e30",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "note": "TSSOP-16 PW package matches the routed footprint. The older BOM entry C128414/SN74LV4051ADR is SOIC-16 and does not match the PCB.",
+      "sha256": "684b2d11f7a055c38254eef824e203106e06c3dc151b194d126a8ebd59075f52"
+    },
+    {
+      "file": "NOVOSENSE_MT9102ET_C5447698.step",
+      "manufacturer": "NOVOSENSE",
+      "manufacturer_part": "MT9102ET",
+      "lcsc": "C5447698",
+      "linked_parts": [
+        {"lcsc": "C5447698", "manufacturer_part": "MT9102ET"},
+        {"lcsc": "C5446", "manufacturer_part": "XC6206P332MR-G"}
+      ],
+      "easyeda_package_uuid": "1fb6146406a34819a86e33d73e7677db",
+      "easyeda_3d_uuid": "cefd4596db214da394d9632b2b88f8f2",
+      "source_product": "https://www.lcsc.com/product-detail/C5447698.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/cefd4596db214da394d9632b2b88f8f2",
+      "source_type": "exact-part-linked shared SOT-23-3 package STEP",
+      "sha256": "5dcb6e5e088c8891b321686a6eb872c57d71b75753aac8519a866feb21821607"
+    },
+    {
+      "file": "OPSCO_SK6812MINI-E_C5149201.step",
+      "manufacturer": "OPSCO",
+      "manufacturer_part": "SK6812MINI-E",
+      "lcsc": "C5149201",
+      "easyeda_package_uuid": "5d49e56c22c44cf6b234b7ab70e8e943",
+      "easyeda_3d_uuid": "1fdd18f600ee4914bff270f177ea42a0",
+      "source_product": "https://www.lcsc.com/product-detail/C5149201.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/1fdd18f600ee4914bff270f177ea42a0",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "96dff146822319d5dacfa2998fdb25fac16ac683f7991960670f3763a3faab59"
+    },
+    {
+      "file": "ARTERY_AT32F405RCT7_C47090415.step",
+      "manufacturer": "Artery Technology",
+      "manufacturer_part": "AT32F405RCT7",
+      "lcsc": "C47090415",
+      "easyeda_package_uuid": "2afd511af2e94adea785d3da1efd72a1",
+      "easyeda_3d_uuid": "7e9b9111dcfd48d3add0eab11d882721",
+      "source_product": "https://www.lcsc.com/product-detail/C47090415.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/7e9b9111dcfd48d3add0eab11d882721",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "e89210c536532875955c55d06e34cec5570f38584f20fdb7b3bf55b061c061ac"
+    },
+    {
+      "file": "ST_USBLC6-2SC6_C7519.step",
+      "manufacturer": "STMicroelectronics",
+      "manufacturer_part": "USBLC6-2SC6",
+      "lcsc": "C7519",
+      "easyeda_package_uuid": "9a066f903e65476fa74739d5e9b0ceb9",
+      "easyeda_3d_uuid": "229b69761e2c45dba6a83d8866dec72d",
+      "source_product": "https://www.lcsc.com/product-detail/C7519.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/229b69761e2c45dba6a83d8866dec72d",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "f24d05dd87ac04518fdaed88a57d135441fe22452089387784c4deda2bc09d61"
+    },
+    {
+      "file": "TI_TLV75733PDBVR_C485517.step",
+      "manufacturer": "Texas Instruments",
+      "manufacturer_part": "TLV75733PDBVR",
+      "lcsc": "C485517",
+      "easyeda_package_uuid": "82dc0bb42e6440dca9b666a7b0ad6e11",
+      "easyeda_3d_uuid": "de83a77687e64788a98e316d865b3813",
+      "source_product": "https://www.lcsc.com/product-detail/C485517.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/de83a77687e64788a98e316d865b3813",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "1ae1ff6a4ddc1ad2507887bbc7be18463de8bca76090993d37f3c6a269a85516"
+    },
+    {
+      "file": "YXC_X322512MSB4SI_C9002.step",
+      "manufacturer": "YXC",
+      "manufacturer_part": "X322512MSB4SI",
+      "lcsc": "C9002",
+      "easyeda_package_uuid": "9e297fbdb6c24ee39419d7ac96617dbf",
+      "easyeda_3d_uuid": "02485e56ba8d4732a26526d2983fc729",
+      "source_product": "https://www.lcsc.com/product-detail/C9002.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/02485e56ba8d4732a26526d2983fc729",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "46e80157d859ee18098fd27c351039895d29a036f1c1dfadefaf26fa56124a8d"
+    },
+    {
+      "file": "BHFUSE_BSMD0805-050-24V_C910822.step",
+      "manufacturer": "BHFUSE",
+      "manufacturer_part": "BSMD0805-050-24V",
+      "lcsc": "C910822",
+      "easyeda_package_uuid": "daefbe13f13c4f838192caad5e2aecac",
+      "easyeda_3d_uuid": "c1f1754ff6184d2bbcbdd91af271b895",
+      "source_product": "https://www.lcsc.com/product-detail/C910822.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/c1f1754ff6184d2bbcbdd91af271b895",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "9605935e5eccf4df140219ee43a403373ad004bf13a7925e969367e0aa6acff9"
+    },
+    {
+      "file": "TI_SN74AHCT1G125DBVR_C7484.step",
+      "manufacturer": "Texas Instruments",
+      "manufacturer_part": "SN74AHCT1G125DBVR",
+      "lcsc": "C7484",
+      "easyeda_package_uuid": "e7f085e4f71344109c090040716070ab",
+      "easyeda_3d_uuid": "460193f9bf2d42e58cf3c2f675b07dc6",
+      "source_product": "https://www.lcsc.com/product-detail/C7484.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/460193f9bf2d42e58cf3c2f675b07dc6",
+      "source_type": "exact LCSC-part-linked JLCEDA/EasyEDA Official Library STEP",
+      "sha256": "428abdfbc472055993422a992aaa8df42fe862d74021d8cd7cbee9d7277f41b1"
+    },
+    {
+      "file": "SAMSUNG_CL05B104KO5NNNC_C1525.step",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "manufacturer_part": "CL05B104KO5NNNC",
+      "lcsc": "C1525",
+      "linked_parts": [
+        {"lcsc": "C1525", "manufacturer_part": "CL05B104KO5NNNC"},
+        {"lcsc": "C1518204", "manufacturer_part": "GRM1555C1H472JE01D"},
+        {"lcsc": "C466228", "manufacturer_part": "TCC0402C0G300J500AT"}
+      ],
+      "easyeda_package_uuid": "0821ed6ea50c44f4909e4be7610e4198",
+      "easyeda_3d_uuid": "32fe2cf9314f444ca2785a33c2db7189",
+      "source_product": "https://www.lcsc.com/product-detail/C1525.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/32fe2cf9314f444ca2785a33c2db7189",
+      "source_type": "exact-part-linked shared C0402 package STEP",
+      "sha256": "0ca13e031cb175d8dc5c0393959392c0e3213eb099cc9b61fe4118feffcebad8"
+    },
+    {
+      "file": "UNI-ROYAL_0402WGF1202TCE_C25752.step",
+      "manufacturer": "UNI-ROYAL",
+      "manufacturer_part": "0402WGF1202TCE",
+      "lcsc": "C25752",
+      "linked_parts": [
+        {"lcsc": "C25752", "manufacturer_part": "0402WGF1202TCE"},
+        {"lcsc": "C25905", "manufacturer_part": "0402WGF5101TCE"},
+        {"lcsc": "C25117", "manufacturer_part": "0402WGF4700TCE"}
+      ],
+      "easyeda_package_uuid": "fafd024f554e426eb74cf4a204aa88b0",
+      "easyeda_3d_uuid": "026a4a15ab5c4a92ac0e421d6d013717",
+      "source_product": "https://www.lcsc.com/product-detail/C25752.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/026a4a15ab5c4a92ac0e421d6d013717",
+      "source_type": "exact-part-linked shared R0402 package STEP",
+      "sha256": "134d58dd68899b29f9e19def208de6690d06010e01c304866fbd4d81c8640aa6"
+    },
+    {
+      "file": "CCTC_TCC0603X5R106M6R3CT_C380318.step",
+      "manufacturer": "CCTC",
+      "manufacturer_part": "TCC0603X5R106M6R3CT",
+      "lcsc": "C380318",
+      "linked_parts": [
+        {"lcsc": "C380318", "manufacturer_part": "TCC0603X5R106M6R3CT"},
+        {"lcsc": "C3905270", "manufacturer_part": "CL10B225KP8NFNC"},
+        {"lcsc": "C97888", "manufacturer_part": "GRM188R71A105KA61D"}
+      ],
+      "easyeda_package_uuid": "f8151fdc728a41ebbc304e11d39e5437",
+      "easyeda_3d_uuid": "ac9b32e974bc448eab36b1293f859dcb",
+      "source_product": "https://www.lcsc.com/product-detail/C380318.html",
+      "source_model": "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/ac9b32e974bc448eab36b1293f859dcb",
+      "source_type": "exact-part-linked shared C0603 package STEP",
+      "sha256": "f9918dd3888f5ca8b9c906b8cb10b9d8e335f6855513b3e235a18123ae353a78"
     }
   ]
 }

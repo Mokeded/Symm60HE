@@ -75,25 +75,17 @@ def edge_x(poly, y, left=True):
     return min(xs) if left else max(xs)
 
 
-def smooth_side_tab(x, y, left=True, dx_dy=0.0,
+def smooth_edge_tab(x, y, tangent, normal,
                     root_half_span=7.0, bearing_half_span=5.0):
-    """Create a side tongue with curved, tapered roots.
+    """Create an outward tongue along an arbitrary plate-edge tangent.
 
-    The two cubic shoulders leave a continuous vertical plate edge tangentially,
+    The two cubic shoulders leave a continuous plate edge tangentially,
     ease out to the 5 mm projection, and meet its support face tangentially.
     This removes both the square outer corners and the small 90-degree steps at
     the root while preserving a parallel Poron-bearing section.  The default
     dimensions reproduce the short, smooth tongue used by the last complete
     plate revision. Optional spans remain available for future prototypes.
     """
-    direction = -1.0 if left else 1.0
-    # Follow the local plate-edge tangent. This matters on the sloped centre
-    # edges: a vertical-root tongue there leaves triangular slivers after the
-    # boolean union even though the tongue itself is curved.
-    tangent_length = math.hypot(dx_dy, 1.0)
-    tangent = (dx_dy / tangent_length, 1.0 / tangent_length)
-    normal = (tangent[1] * direction, -tangent[0] * direction)
-
     def local(u, v):
         return (x + normal[0] * u + tangent[0] * v,
                 y + normal[1] * u + tangent[1] * v)
@@ -128,44 +120,61 @@ def smooth_side_tab(x, y, left=True, dx_dy=0.0,
                    [local(-0.5, -root_half_span)])
 
 
+def smooth_side_tab(x, y, left=True, dx_dy=0.0,
+                    root_half_span=7.0, bearing_half_span=5.0):
+    """Compatibility wrapper for a tongue on a vertical plate edge."""
+    tangent_length = math.hypot(dx_dy, 1.0)
+    tangent = (dx_dy / tangent_length, 1.0 / tangent_length)
+    direction = -1.0 if left else 1.0
+    normal = (tangent[1] * direction, -tangent[0] * direction)
+    return smooth_edge_tab(
+        x, y, tangent, normal, root_half_span, bearing_half_span)
+
+
+def smooth_top_bottom_tab(x, y, top=True, dy_dx=0.0,
+                          root_half_span=7.0, bearing_half_span=5.0):
+    """Create a tongue on the rear/top or front/bottom plate edge.
+
+    KiCad uses increasing Y toward the front of the keyboard.  The top normal
+    therefore points toward negative Y and the bottom normal toward positive
+    Y.  Following the local perimeter slope keeps the tapered roots tangent to
+    the keymap-derived plate edge instead of leaving small boolean hooks.
+    """
+    tangent_length = math.hypot(1.0, dy_dx)
+    tangent = (1.0 / tangent_length, dy_dx / tangent_length)
+    normal = ((tangent[1], -tangent[0]) if top else
+              (-tangent[1], tangent[0]))
+    return smooth_edge_tab(
+        x, y, tangent, normal, root_half_span, bearing_half_span)
+
+
 def _gasket_tabs_direct(poly, half):
-    """Two short mounts on each outer and centre-facing plate edge.
+    """Two short mounts on each rear/top and front/bottom plate edge.
 
     Across the assembled keyboard this produces eight locations: four on the
-    outer edges and four on the interior edges. All eight use the same short,
-    smooth, tapered tongue from the last complete plate revision. The two
-    interior stations are deliberately placed on the new continuous straight
-    wall closest to the split axis. The tabs are integral to the plate only;
-    gasket compression never loads the Hall-effect PCBs directly.
+    rear edge and four on the front edge. All eight use the same short, smooth,
+    tapered tongue from the last complete plate revision. The tabs are integral
+    to the plate only; gasket compression never loads the Hall-effect PCBs
+    directly.
     """
-    _, y0, _, y1 = poly.bounds
-    outer_left = half == "L"
-    inner_left = not outer_left
+    x0, _, x1, _ = poly.bounds
     tabs = []
-    # Keep the full 14 mm tongue on the uninterrupted straight outside wall.
-    for fraction in (0.18, 0.82):
-        y = y0 + (y1 - y0) * fraction
-        x = edge_x(poly, y, left=outer_left)
-        tabs.append(smooth_side_tab(x, y, left=outer_left))
-    # Put the interior pair directly on the continuous centre-facing wall.
-    for fraction in (0.34, 0.82):
-        y = y0 + (y1 - y0) * fraction
-        x = edge_x(poly, y, left=inner_left)
-        sample = 2.0
-        slope = ((edge_x(poly, y + sample, left=inner_left) -
-                  edge_x(poly, y - sample, left=inner_left)) /
-                 (2.0 * sample))
-        tab = smooth_side_tab(x, y, left=inner_left, dx_dy=slope)
-        if half == "L":
-            tab = tab.intersection(box(-1e4, -1e4, axis_mm - 1.0, 1e4))
-        else:
-            tab = tab.intersection(box(axis_mm + 1.0, -1e4, 1e4, 1e4))
-        tabs.append(tab)
+    for top, fractions in ((True, (0.25, 0.72)),
+                           (False, (0.25, 0.72))):
+        for fraction in fractions:
+            x = x0 + (x1 - x0) * fraction
+            y = edge_y(poly, x, top=top)
+            sample = 2.0
+            slope = ((edge_y(poly, x + sample, top=top) -
+                      edge_y(poly, x - sample, top=top)) /
+                     (2.0 * sample))
+            tabs.append(smooth_top_bottom_tab(
+                x, y, top=top, dy_dx=slope))
     return tabs
 
 
 def gasket_tabs(poly, half):
-    """Return four tabs, mirroring the right set from the left construction."""
+    """Return four front/rear tabs, mirroring right from left construction."""
     if half == "L":
         return _gasket_tabs_direct(poly, half)
     if half != "R":
@@ -223,11 +232,9 @@ def flatten_plate_side_wall(poly, side):
 
 
 # Unlike the PCB, the plate does not need to trace every shifted key-cell edge.
-# Straight outside walls give both outer gasket tongues one clean datum and
-# eliminate the stacked rectangular shelves visible in earlier previews.
-# Both outside and centre-facing sides use one continuous wall.  The inner
-# tongues therefore become the outermost material at the tent gap instead of
-# emerging from a staircase of key-cell offsets.
+# Straight outside and centre-facing walls provide clean enclosure datums and
+# eliminate the stacked rectangular shelves visible in earlier previews. The
+# front/rear gasket tongues are added separately after this body is built.
 LEFT_PLATE_BODY = flatten_plate_side_wall(LEFT_PLATE_BODY, "left")
 LEFT_PLATE_BODY = flatten_plate_side_wall(LEFT_PLATE_BODY, "right")
 RIGHT_PLATE_BODY = flatten_plate_side_wall(RIGHT_PLATE_BODY, "right")
@@ -248,16 +255,17 @@ GASKET_PROJECTION = 5.0
 # explicit gasket tongues added after this body is built may project beyond it.
 PLATE_KEYCAP_INSET = 0.50
 # Extend the outer rail far enough to retain at least 2.0 mm of finished POM
-# around the closest stabilizer opening. The 12 mm centre root gap plus the two
-# 5 mm tongues preserves the previous nominal 2 mm tip-to-tip tent gap.
+# around the closest stabilizer opening. With the side tongues removed, the
+# centre wall can move 0.10 mm toward the split on each half while retaining a
+# generous assembly gap and restoring the full 2.0 mm POM web at the innermost
+# switch opening.
 PLATE_OUTER_WALL_X = -2.10
-PLATE_INNER_WALL_GAP = 12.0
-# The plate follows the routed PCB Edge.Cuts everywhere except the two
-# straight side rails that carry the gasket tongues.  A 0.26 mm normal offset
-# is the smallest rounded value that retains the conservative 2.0 mm POM web
-# around the closest stabilizer opening when the plate is derived directly
-# from the routed PCB Edge.Cuts.
-PLATE_PCB_FOLLOW_MARGIN = 0.26
+PLATE_INNER_WALL_GAP = 11.8
+# The plate follows the routed PCB Edge.Cuts everywhere except the two straight
+# side rails retained as clean case datums. A 0.34 mm normal offset retains the
+# conservative 2.0 mm POM web around the closest stabilizer opening when the
+# plate is derived directly from the routed PCB Edge.Cuts.
+PLATE_PCB_FOLLOW_MARGIN = 0.34
 # The PCB-mounted spacebar stabilizers sit unusually close to the swept lower
 # edge.  Use the actual rotated spacebar cell for their local reinforcement
 # instead of the former axis-aligned rectangular shelf.  A 0.05 mm inset keeps
@@ -382,14 +390,14 @@ def keycap_core_plate(keys):
     return round_plate_edges(bounded)
 
 
-def straight_gasket_walls(poly, half):
-    """Replace the four stepped side regions with straight gasket walls.
+def straight_plate_side_walls(poly, half):
+    """Replace the four stepped side regions with clean straight walls.
 
-    The outside walls sit at the straight gasket datum (and its exact mirror),
+    The outside walls sit at the established case datum (and its exact mirror),
     leaving at least 2 mm around the outer stabilizer. The centre-facing walls
-    are symmetric about the split axis with a 12 mm root-to-root gap. Each
-    rectangular rail spans only the real top/bottom intersections of material
-    10 mm inboard, avoiding artificial feet beyond the swept key field.
+    are symmetric about the split axis. Each rectangular rail spans only the
+    real front/rear intersections of material 10 mm inboard, avoiding
+    artificial feet beyond the swept key field.
     """
     outer_line = (PLATE_OUTER_WALL_X if half == "L" else
                   2.0 * axis_mm - PLATE_OUTER_WALL_X)
@@ -450,7 +458,7 @@ def straight_gasket_walls(poly, half):
     if merged.geom_type == "Polygon" and merged.interiors:
         merged = Polygon(merged.exterior)
     if merged.geom_type != "Polygon" or not merged.is_valid:
-        raise RuntimeError("straight gasket walls did not produce one plate body")
+        raise RuntimeError("straight side walls did not produce one plate body")
 
     return merged
 
@@ -463,19 +471,19 @@ def _unsymmetrized_keycap_bounded_plate(keys):
         raise RuntimeError("plate keys must all belong to the same half")
     core = unary_union([core, PLATE_SPACEBAR_SUPPORT[half],
                         PLATE_BACKSPACE_SUPPORT[half]]).buffer(0)
-    return straight_gasket_walls(core, half)
+    return straight_plate_side_walls(core, half)
 
 
 _PCB_FOLLOWING_PLATE_BODIES = None
 
 
 def pcb_following_plate_bodies():
-    """Return plate bodies that track the PCB except at gasket side walls.
+    """Return plate bodies that track the PCB except at straight side walls.
 
     The routed PCB outline is expanded by only the POM web allowance.  The
-    existing straight outer and centre-facing rails then replace the PCB's
-    stepped side edges so the four gasket tongues retain clean compression
-    datums.  The completed right body is mirrored from the left source to keep
+    existing straight outer and centre-facing rails replace the PCB's stepped
+    side edges. Gasket tongues are added separately on the rear and front
+    edges. The completed right body is mirrored from the left source to keep
     the exterior pair exactly symmetric.
 
     This function is called only after LEFT_PCB_ENCLOSURE has been built near
@@ -510,7 +518,7 @@ def pcb_following_plate_bodies():
             left_board = polygons[0]
         left_pcb_profile = (left_board or LEFT_PCB_ENCLOSURE).buffer(
             PLATE_PCB_FOLLOW_MARGIN, join_style=2)
-        left = straight_gasket_walls(left_pcb_profile, "L")
+        left = straight_plate_side_walls(left_pcb_profile, "L")
         right = scale(left, xfact=-1.0, yfact=1.0,
                       origin=(axis_mm, 0.0))
         if (left.geom_type != "Polygon" or not left.is_valid or
@@ -526,7 +534,7 @@ def symmetric_plate_bodies():
 
 
 def keycap_bounded_plate(keys):
-    """Shared PCB-following body with four deliberate gasket-wall rails."""
+    """Shared PCB-following body with clean enclosure side-wall datums."""
     if not keys:
         raise RuntimeError("plate requires at least one key")
     half = keys[0]["half"]
@@ -1046,16 +1054,16 @@ LEFT_PCB_ENCLOSURE = round_pcb_outer_corners(
 RIGHT_PCB_ENCLOSURE = mirror_about_layout_axis(LEFT_PCB_ENCLOSURE)
 
 # Build the production plate perimeter only after the routed PCB reference
-# outline exists.  The top, bottom, and stepped centre contours now follow the
-# PCB; only the straight side rails and their gasket tongues intentionally
-# differ.  All layout variants reuse this exterior and change only apertures.
+# outline exists. The keymap-derived body follows the PCB while four deliberate
+# gasket tongues project from its rear/top and front/bottom edges. All layout
+# variants reuse this exterior and change only apertures.
 LEFT_PLATE_BODY = keycap_bounded_plate(
     [key for key in KEYS if key["half"] == "L"])
 RIGHT_PLATE_BODY = keycap_bounded_plate(
     [key for key in KEYS if key["half"] == "R"])
-# Use eight short integral side-suspension mounts on four straight gasket-wall
-# rails. They belong to the plate, never to the Hall PCB, so compression cannot
-# bend the sensor board.
+# Use eight short integral front/rear suspension mounts: two at the rear and two
+# at the front of each half. They belong to the plate, never to the Hall PCB, so
+# compression cannot bend the sensor board.
 LEFT_GASKET_TABS = gasket_tabs(LEFT_PLATE_BODY, "L")
 RIGHT_GASKET_TABS = gasket_tabs(RIGHT_PLATE_BODY, "R")
 LEFT_PLATE = round_plate_edges(

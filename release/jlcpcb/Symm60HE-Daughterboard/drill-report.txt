@@ -1,5 +1,5 @@
 Drill report for Symm60HE-Daughterboard.kicad_pcb
-Created on 2026-09-22T23:06:30
+Created on 2026-10-05T15:10:36
 
 Copper Layer Stackup:
     =============================================================
@@ -10,10 +10,10 @@ Copper Layer Stackup:
 Drill file 'Symm60HE-Daughterboard-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (74 holes))
+    T1  0.300mm  0.0118"  (73 holes))
     T2  0.600mm  0.0236"  (4 holes)  (with 4 slots)
 
-    Total plated holes count 78
+    Total plated holes count 77
 
 
 Drill file 'Symm60HE-Daughterboard-NPTH.drl' contains

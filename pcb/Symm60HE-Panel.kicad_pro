@@ -513,7 +513,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Symm60HE-Left.kicad_pro",
+    "filename": "Symm60HE-Panel.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -552,7 +552,7 @@
       "netlist": "",
       "plot": "",
       "pos_files": "",
-      "specctra_dsn": "Symm60HE-Left.dsn",
+      "specctra_dsn": "",
       "step": "",
       "svg": "",
       "vrml": ""
@@ -680,9 +680,9 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "Symm60HE-Left.kicad_sch",
-        "name": "Symm60HE-Left",
-        "uuid": "a04a08f6-0aff-4526-8b14-085b944c1df1"
+        "filename": "Symm60HE-Panel.kicad_sch",
+        "name": "Symm60HE-Panel",
+        "uuid": "c5f99a3d-bd16-4e1a-a7c9-3c99cef89249"
       }
     ],
     "used_designators": "",
@@ -690,11 +690,15 @@
   },
   "sheets": [
     [
-      "00000000-0000-0000-0000-000000000000",
+      "c5f99a3d-bd16-4e1a-a7c9-3c99cef89249",
       "Root"
     ]
   ],
-  "text_variables": {},
+  "text_variables": {
+    "PANEL_EDIT_POLICY": "Combined left/right electrical project generated from source halves",
+    "PANEL_LEFT_SOURCE": "pcb/Symm60HE-Left.kicad_pcb",
+    "PANEL_RIGHT_SOURCE": "pcb/Symm60HE-Right.kicad_pcb"
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0

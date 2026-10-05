@@ -1,8 +1,0 @@
-{
-  "model": "HRO_TYPE-C-31-M-12_C165948.step",
-  "model_body_rotation_deg": 180.0,
-  "opening_edge": "rear/min-y",
-  "rear_edge_y_mm": -6.7633,
-  "shell_min_y_mm": -7.3633000000000015,
-  "overhang_mm": 0.6000000000000014
-}

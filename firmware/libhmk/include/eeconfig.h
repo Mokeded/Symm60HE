@@ -16,6 +16,7 @@
 #pragma once
 
 #include "common.h"
+#include "rgb.h"
 #include "wear_leveling.h"
 
 //--------------------------------------------------------------------+
@@ -74,7 +75,11 @@ typedef struct __attribute__((packed)) {
 // Persistent configuration version. The size of the configuration must be
 // non-decreasing, so that the migration can assume that the new version is at
 // least as large as the previous version.
+#if defined(RGB_ENABLE)
+#define EECONFIG_VERSION 0x0106
+#else
 #define EECONFIG_VERSION 0x0105
+#endif
 
 // Keyboard configuration
 // Whenever there is a change in the configuration, `EECONFIG_VERSION` must be
@@ -98,6 +103,10 @@ typedef struct __attribute__((packed)) {
   uint8_t current_profile;
   // Last non-default profile index, used for profile swapping
   uint8_t last_non_default_profile;
+#if defined(RGB_ENABLE)
+  // Global addressable-lighting configuration.
+  rgb_config_t rgb;
+#endif
   // End of global configurations
 
   // Profiles

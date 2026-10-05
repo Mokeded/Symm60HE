@@ -68,6 +68,16 @@ static bool v1_5_profile_config_func(uint8_t profile, uint8_t *dst,
    NUM_ADVANCED_KEYS * MIGRATION_V1_5_ADVANCED_KEY_SIZE +                      \
    NUM_MACRO_NODES * MIGRATION_V1_5_MACRO_NODE_SIZE + NUM_KEYS + 9 + 1)
 
+#if defined(RGB_ENABLE)
+static bool v1_6_global_config_func(uint8_t *dst, const uint8_t *src);
+static bool v1_6_profile_config_func(uint8_t profile, uint8_t *dst,
+                                     const uint8_t *src);
+
+#define MIGRATION_V1_6_GLOBAL_CONFIG_SIZE                                      \
+  (MIGRATION_V1_5_GLOBAL_CONFIG_SIZE + sizeof(rgb_config_t))
+#define MIGRATION_V1_6_PROFILE_CONFIG_SIZE MIGRATION_V1_5_PROFILE_CONFIG_SIZE
+#endif
+
 // Migration metadata for each configuration version. The first entry is
 // reserved for the initial version (v1.0) which does not require migration.
 static const migration_t migrations[] = {
@@ -111,15 +121,31 @@ static const migration_t migrations[] = {
         .global_config_func = v1_5_global_config_func,
         .profile_config_func = v1_5_profile_config_func,
     },
+#if defined(RGB_ENABLE)
+    {
+        .version = 0x0106,
+        .global_config_size = MIGRATION_V1_6_GLOBAL_CONFIG_SIZE,
+        .profile_config_size = MIGRATION_V1_6_PROFILE_CONFIG_SIZE,
+        .global_config_func = v1_6_global_config_func,
+        .profile_config_func = v1_6_profile_config_func,
+    },
+#endif
 };
 
 // An assertion to remind us to bump the persistent configuration version, and
 // implement a migration function if there is a change to the configuration
 // type. Update the assertion when a new version is added.
+#if defined(RGB_ENABLE)
+_Static_assert(MIGRATION_V1_6_GLOBAL_CONFIG_SIZE +
+                       NUM_PROFILES * MIGRATION_V1_6_PROFILE_CONFIG_SIZE ==
+                   offsetof(eeconfig_t, magic_end),
+               "Invalid RGB configuration size");
+#else
 _Static_assert(MIGRATION_V1_5_GLOBAL_CONFIG_SIZE +
                        NUM_PROFILES * MIGRATION_V1_5_PROFILE_CONFIG_SIZE ==
                    offsetof(eeconfig_t, magic_end),
                "Invalid configuration size");
+#endif
 
 // An assertion to remind us if there is a breaking change to `MACRO_NODE_NONE`.
 // Update the assertion when a new version is added.
@@ -391,3 +417,26 @@ bool v1_5_profile_config_func(uint8_t profile, uint8_t *dst,
 
   return true;
 }
+
+#if defined(RGB_ENABLE)
+//--------------------------------------------------------------------+
+// v1.5 -> v1.6 Migration
+//--------------------------------------------------------------------+
+
+bool v1_6_global_config_func(uint8_t *dst, const uint8_t *src) {
+  if (((eeconfig_t *)src)->version != 0x0105)
+    return false;
+
+  migration_memcpy(&dst, &src, MIGRATION_V1_5_GLOBAL_CONFIG_SIZE);
+  const rgb_config_t default_rgb_config = DEFAULT_RGB_CONFIG;
+  memcpy(dst, &default_rgb_config, sizeof(default_rgb_config));
+  return true;
+}
+
+bool v1_6_profile_config_func(uint8_t profile, uint8_t *dst,
+                              const uint8_t *src) {
+  (void)profile;
+  migration_memcpy(&dst, &src, MIGRATION_V1_6_PROFILE_CONFIG_SIZE);
+  return true;
+}
+#endif

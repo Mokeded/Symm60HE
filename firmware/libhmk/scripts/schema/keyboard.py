@@ -53,6 +53,21 @@ class KeyboardHardware(BaseModel):
     driver: str
 
 
+class KeyboardRGBOutput(BaseModel):
+    # Human-readable output name and MCU GPIO pin for one addressable LED chain.
+    name: str
+    pin: str
+    led_count: int = Field(ge=1, le=256)
+
+
+class KeyboardRGB(BaseModel):
+    # Multiple chains are transmitted in parallel when they share one GPIO port.
+    outputs: list[KeyboardRGBOutput] = Field(min_length=1, max_length=8)
+    current_limit_ma: int = Field(ge=50, le=5000)
+    channel_current_ma: int = Field(ge=1, le=50, default=12)
+    refresh_hz: int = Field(ge=1, le=60, default=30)
+
+
 # Raw ADC input configuration
 class KeyboardAnalogRaw(BaseModel):
     # Array of raw ADC input channels. If a string is provided, it is used as the GPIO pin name
@@ -128,9 +143,13 @@ class Keyboard(BaseModel):
     name: str
     manufacturer: str
     maintainer: str
+    firmware_version: str | None = Field(
+        default=None, pattern=r"^0x[0-9A-Fa-f]{4}$"
+    )
     usb: KeyboardUSB
     keyboard: KeyboardKeyboard
     hardware: KeyboardHardware
+    rgb: KeyboardRGB | None = None
     analog: KeyboardAnalog
     calibration: KeyboardCalibration
     wear_leveling: KeyboardWearLeveling | None = None

@@ -53,6 +53,19 @@ def board_geometry(name, path):
             "side": footprint.GetLayerName(),
             "value": footprint.GetValue(),
         }
+    fitted_footprints = []
+    for footprint in sorted(board.GetFootprints(),
+                            key=lambda item: str(item.GetReference())):
+        position = footprint.GetPosition()
+        fitted_footprints.append({
+            "reference": str(footprint.GetReference()),
+            "value": str(footprint.GetValue()),
+            "footprint": str(footprint.GetFPID().GetLibItemName()),
+            "position": [mm(position.x), mm(position.y)],
+            "rotation_deg": footprint.GetOrientationDegrees(),
+            "side": str(footprint.GetLayerName()),
+            "dnp": bool(footprint.IsDNP()),
+        })
     return {
         "name": name,
         "source": str(path),
@@ -65,6 +78,10 @@ def board_geometry(name, path):
         "configured_board_thickness_mm": mm(
             board.GetDesignSettings().GetBoardThickness()),
         "reference_footprints": footprints,
+        # The case assembly uses this complete placement manifest to build its
+        # populated bodies from exact part-linked STEP assets.  Recording the
+        # DNP state also prevents a no-load jumper from silently appearing.
+        "fitted_footprints": fitted_footprints,
     }
 
 

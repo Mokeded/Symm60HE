@@ -28,6 +28,16 @@ EXPECTED_CHERRY_CAD_SHA256 = (
     "839630855fc95a5aee74658655b31a9037fdf7995a8269f8c4475ebaf88a8758")
 EXPECTED_GATERON_SPEC_SHA256 = (
     "cdc1ff6d3354b4f10a28a2379c63e2e8bdfe8540eca2e74c31c97f7ac204655a")
+EXPECTED_PCB_SOURCES = {
+    "LeftPCB": "Symm60HE-Left.kicad_pcb",
+    "RightPCB": "Symm60HE-Right.kicad_pcb",
+    "DaughterboardPCB": "Symm60HE-Daughterboard.kicad_pcb",
+}
+EXPECTED_DAUGHTERBOARD_SIZE_MM = (49.5, 29.2)
+EXPECTED_PLATE_THICKNESS_MM = 1.5
+EXPECTED_PLATE_TO_PCB_TOP_MM = 5.0
+EXPECTED_PLATE_UNDERSIDE_TO_PCB_TOP_MM = 3.5
+EXPECTED_DAUGHTERBOARD_BELOW_HALL_PCB_MM = 7.0
 
 
 def imported_primary_shape(path, document_name):
@@ -47,20 +57,49 @@ def close_enough(actual, expected):
     return abs(actual - expected) <= TOLERANCE_MM
 
 
+def flatten_half_shape(shape, layout, side, z):
+    """Undo the assembly tilt while retaining the object's absolute Z datum."""
+    result = shape.copy()
+    pivot = App.Vector(layout["axis_x"], layout["front_y"], 0)
+    result.translate(App.Vector(0, 0, -z))
+    result.rotate(pivot, App.Vector(1, 0, 0),
+                  -layout["typing_rotation_deg"])
+    tent_angle = (-layout["tent_deg"] if side == "Left"
+                  else layout["tent_deg"])
+    result.rotate(pivot, App.Vector(0, 1, 0), -tent_angle)
+    result.translate(App.Vector(0, 0, z))
+    return result
+
+
 def main():
     provenance = json.loads(
         (OFFICIAL_MODEL_DIR / "provenance.json").read_text())
+    notice = (OFFICIAL_MODEL_DIR /
+              "JLCEDA-EasyEDA-OFFICIAL-LIBRARY-NOTICE.md").read_text()
+    for required in ("JLCEDA/EasyEDA Official Library", "https://lceda.cn/",
+                     "https://easyeda.com/"):
+        if required not in notice:
+            raise RuntimeError("official-library attribution notice incomplete")
+    provenance_files = set()
     for model in provenance["models"]:
         path = OFFICIAL_MODEL_DIR / model["file"]
-        digest = sha256(path.read_bytes()).hexdigest()
-        if digest != model["sha256"]:
+        provenance_files.add(model["file"])
+        model_bytes = path.read_bytes()
+        digest = sha256(model_bytes).hexdigest()
+        # BOOMELE and XKB publish their text STEP assets with CRLF endings.
+        # Git may materialize the same geometry with LF endings on macOS/Linux,
+        # so also compare the canonical source-line-ending representation.
+        crlf_bytes = model_bytes.replace(b"\r\n", b"\n").replace(
+            b"\n", b"\r\n")
+        source_digest = sha256(crlf_bytes).hexdigest()
+        if model["sha256"] not in (digest, source_digest):
             raise RuntimeError(
                 f"official component model changed: {path.name}")
         shape = imported_primary_shape(path, model["lcsc"] + "ModelCheck")
         if not shape.Solids or shape.Volume <= 1e-6:
             raise RuntimeError(f"official component model is empty: {path.name}")
         print(model["lcsc"], model["manufacturer_part"],
-              "official model verified", digest[:12])
+              "official model verified", model["sha256"][:12])
 
     model_record = json.loads(
         (GEN / "switch-keycap-model-provenance.json").read_text())
@@ -74,6 +113,16 @@ def main():
     if (gateron_digest != EXPECTED_GATERON_SPEC_SHA256 or
             gateron_digest != model_record["switch"]["sha256"]):
         raise RuntimeError("Gateron KS-20 official drawing changed")
+    detailed_path = ROOT / model_record["switch"]["detailed_model"]
+    detailed_digest = sha256(detailed_path.read_bytes()).hexdigest()
+    if detailed_digest != model_record["switch"]["detailed_model_sha256"]:
+        raise RuntimeError("generated multi-part KS-20 model changed")
+    detailed_shape = imported_primary_shape(
+        detailed_path, "DetailedKS20ModelCheck")
+    if (detailed_shape.BoundBox.XLength < 13.9 or
+            detailed_shape.BoundBox.YLength < 13.9 or
+            detailed_shape.BoundBox.ZLength < 5.0):
+        raise RuntimeError("generated multi-part KS-20 model is incomplete")
     if (model_record["switch"]["part"] !=
             "KS-20 Magnetic Jade KS-20TF10B045NW-Y89" or
             model_record["keycaps"]["target"] !=
@@ -101,9 +150,93 @@ def main():
           round(usb_placement["overhang_mm"], 3), "mm projection")
 
     layout = json.loads((GEN / "reference-layout.json").read_text())
+    coverage = json.loads((GEN / "component-model-coverage.json").read_text())
+    fitted_electrical = 0
+    unresolved_mechanical = 0
+    used_model_files = set()
+    for board_name in PCB_NAMES:
+        expected = layout[board_name]["fitted_footprints"]
+        actual = coverage["boards"][board_name]
+        expected_refs = [item["reference"] for item in expected]
+        actual_refs = [item["reference"] for item in actual]
+        if expected_refs != actual_refs or len(actual_refs) != len(set(actual_refs)):
+            raise RuntimeError(
+                f"{board_name}: component coverage does not match PCB footprints")
+        for item in actual:
+            status = item["status"]
+            if item["dnp"]:
+                if status != "not fitted (DNP)":
+                    raise RuntimeError(
+                        f"{board_name} {item['reference']}: DNP was modeled")
+            elif item["value"] == "M2_NPTH":
+                if status != "board aperture; no fitted body":
+                    raise RuntimeError(
+                        f"{board_name} {item['reference']}: aperture coverage wrong")
+            elif item["value"] == "STAB_MX":
+                unresolved_mechanical += 1
+                if status != "unresolved mechanical identity":
+                    raise RuntimeError(
+                        f"{board_name} {item['reference']}: stabilizer falsely certified")
+            else:
+                fitted_electrical += 1
+                if status not in ("exact part-linked model", "exact vendor model"):
+                    raise RuntimeError(
+                        f"{board_name} {item['reference']}: fitted part not exact")
+                if item["model"] not in provenance_files:
+                    raise RuntimeError(
+                        f"{board_name} {item['reference']}: unverified model file")
+                used_model_files.add(item["model"])
+    if used_model_files != provenance_files:
+        raise RuntimeError(
+            "official model provenance contains unused or missing assets: "
+            f"used={sorted(used_model_files)} recorded={sorted(provenance_files)}")
+    if unresolved_mechanical != 5:
+        raise RuntimeError(
+            f"expected five unspecified stabilizers, found {unresolved_mechanical}")
+    print("component coverage verified:", fitted_electrical,
+          "fitted electrical parts use exact part-linked/vendor models;",
+          unresolved_mechanical, "stabilizers explicitly unresolved")
+    stack_checks = {
+        "plate thickness": (
+            layout["plate_thickness_mm"], EXPECTED_PLATE_THICKNESS_MM),
+        "plate seating plane to PCB top": (
+            layout["plate_to_pcb_top_mm"], EXPECTED_PLATE_TO_PCB_TOP_MM),
+        "plate underside to PCB top": (
+            layout["plate_underside_to_pcb_top_mm"],
+            EXPECTED_PLATE_UNDERSIDE_TO_PCB_TOP_MM),
+        "daughterboard below Hall PCB": (
+            layout["daughterboard_below_hall_pcb_mm"],
+            EXPECTED_DAUGHTERBOARD_BELOW_HALL_PCB_MM),
+    }
+    for label, (actual, expected) in stack_checks.items():
+        if not close_enough(actual, expected):
+            raise RuntimeError(
+                f"incorrect {label}: {actual} mm; expected {expected} mm")
+    if not close_enough(
+            layout["plate_seating_z"] - layout["pcb_z"],
+            EXPECTED_PLATE_TO_PCB_TOP_MM):
+        raise RuntimeError("plate seating and PCB Z datums do not make 5.00 mm")
+    if not close_enough(
+            layout["plate_seating_z"] - layout["plate_z"],
+            EXPECTED_PLATE_THICKNESS_MM):
+        raise RuntimeError("plate solid is not below its top seating datum")
+    if not close_enough(
+            layout["plate_z"] - layout["pcb_z"],
+            EXPECTED_PLATE_UNDERSIDE_TO_PCB_TOP_MM):
+        raise RuntimeError("plate underside and PCB top do not make 3.50 mm")
+    if not close_enough(
+            layout["pcb_z"] - layout["daughterboard_z"],
+            EXPECTED_DAUGHTERBOARD_BELOW_HALL_PCB_MM):
+        raise RuntimeError("daughterboard did not follow the corrected PCB datum")
+    print("Gateron KS-20 stack verified: 5.00 mm plate seating plane to PCB "
+          "top; 1.50 mm plate; 3.50 mm underside gap")
     for name in PCB_NAMES:
         record = layout[name]
         source = Path(record["source"])
+        if source.name != EXPECTED_PCB_SOURCES[name]:
+            raise RuntimeError(
+                f"{name}: stale case-reference source {source.name}; expected "
+                f"{EXPECTED_PCB_SOURCES[name]}")
         digest = sha256(source.read_bytes()).hexdigest()
         if digest != record["sha256"]:
             raise RuntimeError(f"{name}: routed PCB changed after preparation")
@@ -126,6 +259,12 @@ def main():
         print(name, "verified", *(round(value, 4) for value in actual_size),
               "mm", "thickness", round(shape.BoundBox.ZLength, 4),
               "of", configured_thickness, "mm stackup", digest[:12])
+    daughter_size = tuple(layout["DaughterboardPCB"]["size"])
+    if not all(close_enough(actual, expected) for actual, expected in zip(
+            daughter_size, EXPECTED_DAUGHTERBOARD_SIZE_MM)):
+        raise RuntimeError(
+            "case reference must use the compact 49.5 x 29.2 mm "
+            f"daughterboard, not {daughter_size}")
 
     assembly_source = OUT / "Symm60HE-reference-assembly.FCStd"
     doc = App.openDocument(str(assembly_source))
@@ -133,15 +272,58 @@ def main():
         obj = doc.getObject(name)
         if obj is None or not hasattr(obj, "Shape") or obj.Shape.isNull():
             raise RuntimeError(f"assembly missing valid {name} body")
+    for side in ("Left", "Right"):
+        plate = flatten_half_shape(
+            doc.getObject(side + "Plate").Shape, layout, side,
+            layout["plate_z"])
+        pcb = flatten_half_shape(
+            doc.getObject(side + "PCB").Shape, layout, side,
+            layout["pcb_z"])
+        switches = flatten_half_shape(
+            doc.getObject(side + "Switches").Shape, layout, side,
+            layout["plate_seating_z"])
+        if (not close_enough(plate.BoundBox.ZMin, layout["plate_z"]) or
+                not close_enough(
+                    plate.BoundBox.ZMax, layout["plate_seating_z"])):
+            raise RuntimeError(f"{side}: generated plate solid has wrong Z faces")
+        if not close_enough(pcb.BoundBox.ZMax, layout["pcb_z"]):
+            raise RuntimeError(f"{side}: generated PCB top has wrong Z datum")
+        lower_housings = [
+            solid for solid in switches.Solids
+            if (solid.BoundBox.XLength > 13.0 and
+                solid.BoundBox.YLength > 13.0 and
+                close_enough(solid.BoundBox.ZMin, layout["pcb_z"]) and
+                close_enough(
+                    solid.BoundBox.ZMax, layout["plate_seating_z"]))
+        ]
+        if len(lower_housings) != 30:
+            raise RuntimeError(
+                f"{side}: found {len(lower_housings)} KS-20 lower housings, "
+                "expected 30")
+        for housing in lower_housings:
+            if (not close_enough(housing.BoundBox.ZMin, layout["pcb_z"]) or
+                    not close_enough(
+                        housing.BoundBox.ZMax, layout["plate_seating_z"])):
+                raise RuntimeError(
+                    f"{side}: a switch lower housing does not seat on PCB")
+    print("generated solids verified: 3.50 mm plate underside clearance; "
+          "switch bases seated on both PCB tops")
     expected_roles = {
-        "LeftSwitches": "Gateron KS-20 Magnetic Jade dimensional reference",
-        "RightSwitches": "Gateron KS-20 Magnetic Jade dimensional reference",
-        "LeftKeycaps": "GMK CYL / Cherry-profile dimensional reference",
-        "RightKeycaps": "GMK CYL / Cherry-profile dimensional reference",
+        "LeftSwitches": (
+            "Gateron KS-20 Magnetic Jade detailed multi-part real-form model"),
+        "RightSwitches": (
+            "Gateron KS-20 Magnetic Jade detailed multi-part real-form model"),
+        "LeftKeycaps": "GMK CYL / Cherry-profile full thin-wall CAD model",
+        "RightKeycaps": "GMK CYL / Cherry-profile full thin-wall CAD model",
     }
     for name, role in expected_roles.items():
         if getattr(doc.getObject(name), "Role", "") != role:
             raise RuntimeError(f"{name}: wrong model role")
+    for name in ("LeftPCBComponents", "RightPCBComponents",
+                 "DaughterboardPCBComponents"):
+        if getattr(doc.getObject(name), "Role", "") != (
+                "exact part-number-linked fitted component models"):
+            raise RuntimeError(f"{name}: generic or unverified component role")
     for name in ("LeftKeycaps", "RightKeycaps"):
         if len(doc.getObject(name).Shape.Solids) != 30:
             raise RuntimeError(f"{name}: expected 30 detailed cap solids")
@@ -179,6 +361,10 @@ def main():
         ("LeftPlate", "RightPlate"),
         ("LeftPCB", "DaughterboardPCB"),
         ("RightPCB", "DaughterboardPCB"),
+        ("LeftPlate", "DaughterboardPCB"),
+        ("RightPlate", "DaughterboardPCB"),
+        ("LeftPlate", "DaughterboardPCBComponents"),
+        ("RightPlate", "DaughterboardPCBComponents"),
         ("LeftRibbonCable", "DaughterboardPCB"),
         ("RightRibbonCable", "DaughterboardPCB"),
         ("LeftRibbonCable", "LeftPlate"),
@@ -221,4 +407,5 @@ def main():
     print("Fusion assembly verified", len(ASSEMBLY_OBJECTS), "named bodies")
 
 
-main()
+if __name__ == "__main__":
+    main()

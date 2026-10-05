@@ -1,0 +1,1686 @@
+** Drc report for Symm60HE-Panel.kicad_pcb **
+** Created on 2026-10-05T16:39:40 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 487 DRC violations **
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-6.1530 mm, 151.5873 mm): Footprint TH3
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(144.1598 mm, 51.1625 mm): Footprint MB51
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(34.6020 mm, 103.3429 mm): Footprint MB10
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(70.9927 mm, 101.1424 mm): Footprint MB21
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(71.7427 mm, 0.6591 mm): Footprint MB17
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(144.1598 mm, 53.4125 mm): Footprint MB54
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(145.5882 mm, 160.1289 mm): Footprint MB64
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-0.6028 mm, 51.9125 mm): Footprint MB47
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.8520 mm, 103.3429 mm): Footprint MB9
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.1334 mm, 103.7146 mm): Footprint MB39
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(121.6504 mm, 116.2414 mm): Footprint R-SR1
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(106.6334 mm, 201.6212 mm): Footprint MB42
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.8520 mm, 0.3500 mm): Footprint MB4
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(105.8834 mm, 4.3507 mm): Footprint MB31
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(107.3834 mm, 103.7146 mm): Footprint MB38
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(144.1598 mm, 51.9125 mm): Footprint MB52
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(144.1598 mm, 52.6625 mm): Footprint MB53
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(144.1598 mm, 54.1625 mm): Footprint MB55
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.1020 mm, 207.7920 mm): Footprint MB13
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-6.1530 mm, 60.4541 mm): Footprint TH1
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(70.9927 mm, 0.6591 mm): Footprint MB16
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(18.0970 mm, 66.6750 mm): Footprint L-SL1
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(107.3834 mm, 4.3507 mm): Footprint MB33
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(105.8834 mm, 103.7146 mm): Footprint MB36
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(151.1384 mm, 151.5873 mm): Footprint TH4
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(145.5882 mm, 157.8789 mm): Footprint MB61
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(31.6020 mm, 103.3429 mm): Footprint MB6
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.8834 mm, 4.3507 mm): Footprint MB35
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(0.8256 mm, 160.1289 mm): Footprint MB59
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(145.5882 mm, 158.6289 mm): Footprint MB62
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(71.7427 mm, 201.6257 mm): Footprint MB27
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(126.8884 mm, 173.3914 mm): Footprint R-SR2
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(145.5882 mm, 160.8789 mm): Footprint MB65
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(107.3834 mm, 201.6212 mm): Footprint MB43
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(105.8834 mm, 201.6212 mm): Footprint MB41
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.1020 mm, 103.3429 mm): Footprint MB8
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(145.5882 mm, 159.3789 mm): Footprint MB63
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-0.6028 mm, 51.1625 mm): Footprint MB46
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-0.6028 mm, 52.6625 mm): Footprint MB48
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(71.7427 mm, 101.1424 mm): Footprint MB22
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.2427 mm, 0.6591 mm): Footprint MB19
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(106.6334 mm, 4.3507 mm): Footprint MB32
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(72.4927 mm, 201.6257 mm): Footprint MB28
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.1334 mm, 4.3507 mm): Footprint MB34
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-0.6028 mm, 54.1625 mm): Footprint MB50
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(72.4927 mm, 101.1424 mm): Footprint MB23
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(70.9927 mm, 201.6257 mm): Footprint MB26
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.8834 mm, 103.7146 mm): Footprint MB40
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(0.8256 mm, 160.8789 mm): Footprint MB60
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-0.6028 mm, 53.4125 mm): Footprint MB49
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.9927 mm, 0.6591 mm): Footprint MB20
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(32.3520 mm, 0.3500 mm): Footprint MB2
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(0.8256 mm, 158.6289 mm): Footprint MB57
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(34.6020 mm, 0.3500 mm): Footprint MB5
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(121.5620 mm, 92.9250 mm): Footprint L-SL2
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(32.3520 mm, 207.7920 mm): Footprint MB12
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(0.8256 mm, 159.3789 mm): Footprint MB58
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(106.6334 mm, 103.7146 mm): Footprint MB37
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(31.6020 mm, 0.3500 mm): Footprint MB1
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(151.1384 mm, 60.4541 mm): Footprint TH2
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.1334 mm, 201.6212 mm): Footprint MB44
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(108.8834 mm, 201.6212 mm): Footprint MB45
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(0.8256 mm, 157.8789 mm): Footprint MB56
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.9927 mm, 101.1424 mm): Footprint MB25
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.9927 mm, 201.6257 mm): Footprint MB30
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.8520 mm, 207.7920 mm): Footprint MB14
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(72.4927 mm, 0.6591 mm): Footprint MB18
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(33.1020 mm, 0.3500 mm): Footprint MB3
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(32.3520 mm, 103.3429 mm): Footprint MB7
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.2427 mm, 201.6257 mm): Footprint MB29
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(23.4233 mm, 199.6415 mm): Footprint R-SR3
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(73.2427 mm, 101.1424 mm): Footprint MB24
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(31.6020 mm, 207.7920 mm): Footprint MB11
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(34.6020 mm, 207.7920 mm): Footprint MB15
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-4.8030 mm, 216.0871 mm): Footprint FID3
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(149.7884 mm, -4.0457 mm): Footprint FID2
+[missing_courtyard]: Footprint has no courtyard defined
+    Local override; warning
+    @(-4.8030 mm, -4.0457 mm): Footprint FID1
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(76.5674 mm, 169.2164 mm): Footprint R-RBPR24
+    @(76.4474 mm, 167.3884 mm): Footprint R-AMR3
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(9.5674 mm, 155.7164 mm): Footprint R-MHR1
+    @(6.7764 mm, 164.7164 mm): Footprint R-JR1
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(9.5674 mm, 155.7164 mm): NPTH pad of R-MHR1
+    @(6.7764 mm, 164.7164 mm): Footprint R-JR1
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(138.7946 mm, 181.6464 mm): NPTH pad of R-SR2
+    @(136.4134 mm, 177.7914 mm): Footprint R-DR34
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(68.5388 mm, 60.6704 mm): Footprint L-AML3
+    @(68.7011 mm, 57.5746 mm): Footprint L-CML3
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(109.7442 mm, 124.4964 mm): NPTH pad of R-SR1
+    @(114.0254 mm, 121.0914 mm): Footprint R-DR4
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(133.5566 mm, 124.4964 mm): NPTH pad of R-SR1
+    @(129.2754 mm, 121.0914 mm): Footprint R-DR5
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(131.3674 mm, 178.2164 mm): Footprint R-CR26A
+    @(126.8884 mm, 178.7414 mm): Footprint R-DR21
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(76.2851 mm, 164.2926 mm): Footprint R-CMR3
+    @(76.4474 mm, 167.3884 mm): Footprint R-AMR3
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(114.9822 mm, 181.6464 mm): NPTH pad of R-SR2
+    @(114.9824 mm, 177.7914 mm): Footprint R-DR22
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; warning
+    @(137.0000 mm, 50.0000 mm): Footprint L-MHL3
+    @(140.2090 mm, 58.0000 mm): Footprint L-JL1
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; warning
+    @(137.0000 mm, 50.0000 mm): NPTH pad of L-MHL3
+    @(140.2090 mm, 58.0000 mm): Footprint L-JL1
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(144.0099 mm, 50.1625 mm): Segment on Edge.Cuts
+    @(144.1598 mm, 47.9625 mm): Reference field of MB51
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(35.6020 mm, 111.5347 mm): Segment on Edge.Cuts
+    @(34.6020 mm, 100.1429 mm): Reference field of MB10
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(69.9927 mm, 94.7590 mm): Segment on Edge.Cuts
+    @(70.9927 mm, 97.9424 mm): Reference field of MB21
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(35.6020 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(71.7427 mm, -2.5409 mm): Reference field of MB17
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(144.0099 mm, 50.1625 mm): Segment on Edge.Cuts
+    @(144.1598 mm, 50.2125 mm): Reference field of MB54
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(145.4382 mm, 156.8789 mm): Segment on Edge.Cuts
+    @(145.5882 mm, 156.9289 mm): Reference field of MB64
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(-0.4528 mm, 39.4413 mm): Segment on Edge.Cuts
+    @(-0.6028 mm, 48.7125 mm): Reference field of MB47
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(109.8834 mm, 107.2164 mm): Segment on Edge.Cuts
+    @(108.1334 mm, 100.5146 mm): Reference field of MB39
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(104.8834 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(105.8834 mm, 1.1507 mm): Reference field of MB31
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(144.0099 mm, 50.1625 mm): Segment on Edge.Cuts
+    @(144.1598 mm, 48.7125 mm): Reference field of MB52
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(144.0099 mm, 50.1625 mm): Segment on Edge.Cuts
+    @(144.1598 mm, 49.4625 mm): Reference field of MB53
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(35.6020 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(70.9927 mm, -2.5409 mm): Reference field of MB16
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(145.4382 mm, 156.8789 mm): Segment on Edge.Cuts
+    @(145.5882 mm, 154.6789 mm): Reference field of MB61
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(30.6020 mm, 94.7538 mm): Segment on Edge.Cuts
+    @(31.6020 mm, 100.1429 mm): Reference field of MB6
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(109.8834 mm, 4.8977 mm): Segment on Edge.Cuts
+    @(108.8834 mm, 1.1507 mm): Reference field of MB35
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(0.9755 mm, 156.8789 mm): Segment on Edge.Cuts
+    @(0.8256 mm, 156.9289 mm): Reference field of MB59
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(145.4382 mm, 156.8789 mm): Segment on Edge.Cuts
+    @(145.5882 mm, 155.4289 mm): Reference field of MB62
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(145.4382 mm, 156.8789 mm): Segment on Edge.Cuts
+    @(145.5882 mm, 156.1789 mm): Reference field of MB63
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(-0.4528 mm, 39.4413 mm): Segment on Edge.Cuts
+    @(-0.6028 mm, 47.9625 mm): Reference field of MB46
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(-0.4528 mm, 39.4413 mm): Segment on Edge.Cuts
+    @(-0.6028 mm, 49.4625 mm): Reference field of MB48
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(69.9927 mm, 94.7590 mm): Segment on Edge.Cuts
+    @(71.7427 mm, 97.9424 mm): Reference field of MB22
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(74.9927 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(73.2427 mm, -2.5409 mm): Reference field of MB19
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(104.8834 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(106.6334 mm, 1.1507 mm): Reference field of MB32
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(109.8834 mm, 4.8977 mm): Segment on Edge.Cuts
+    @(108.1334 mm, 1.1507 mm): Reference field of MB34
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(109.8834 mm, 107.2164 mm): Segment on Edge.Cuts
+    @(108.8834 mm, 100.5146 mm): Reference field of MB40
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(-0.4528 mm, 50.1625 mm): Segment on Edge.Cuts
+    @(-0.6028 mm, 50.2125 mm): Reference field of MB49
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(74.9927 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(73.9927 mm, -2.5409 mm): Reference field of MB20
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(0.9753 mm, 152.2821 mm): Segment on Edge.Cuts
+    @(0.8256 mm, 155.4289 mm): Reference field of MB57
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(35.6020 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(34.6020 mm, -2.8500 mm): Reference field of MB5
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(0.9753 mm, 152.2821 mm): Segment on Edge.Cuts
+    @(0.8256 mm, 156.1789 mm): Reference field of MB58
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(104.8834 mm, 99.8169 mm): Segment on Edge.Cuts
+    @(106.6334 mm, 100.5146 mm): Reference field of MB37
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(-3.6530 mm, -2.8957 mm): Segment on Edge.Cuts
+    @(31.6020 mm, -2.8500 mm): Reference field of MB1
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(0.9753 mm, 152.2821 mm): Segment on Edge.Cuts
+    @(0.8256 mm, 154.6789 mm): Reference field of MB56
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(74.9927 mm, 107.3945 mm): Segment on Edge.Cuts
+    @(73.9927 mm, 97.9424 mm): Reference field of MB25
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(74.9927 mm, 107.3945 mm): Segment on Edge.Cuts
+    @(73.2427 mm, 97.9424 mm): Reference field of MB24
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.6504 mm, 123.0914 mm): Segment of R-DR33 on Edge.Cuts
+    @(121.6504 mm, 124.1914 mm): Reference field of R-DR33
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(28.0000 mm, 22.0000 mm): Footprint L-MHL1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(9.5674 mm, 155.7164 mm): Footprint R-MHR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.6504 mm, 116.2414 mm): Footprint R-SR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(115.5674 mm, 127.7164 mm): Footprint R-MHR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(18.0970 mm, 66.6750 mm): Footprint L-SL1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(141.5674 mm, 150.7164 mm): Footprint R-MHR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(46.5674 mm, 198.7164 mm): Footprint R-MHR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(126.8884 mm, 173.3914 mm): Footprint R-SR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(100.0000 mm, 92.0000 mm): Footprint L-MHL4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(38.0000 mm, 66.0000 mm): Footprint L-MHL2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(137.0000 mm, 50.0000 mm): Footprint L-MHL3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.5620 mm, 92.9250 mm): Footprint L-SL2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(23.4233 mm, 199.6415 mm): Footprint R-SR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(111.0177 mm, 26.3645 mm): Footprint L-CL13A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(81.3560 mm, 60.9849 mm): Footprint L-CL24A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(18.4737 mm, 132.4574 mm): Footprint R-CRGBR7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(62.1617 mm, 164.5120 mm): Footprint R-CRGBR15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(78.2388 mm, 34.6525 mm): Footprint L-DL9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(123.9204 mm, 197.1414 mm): Footprint R-CRGBR31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(76.5674 mm, 169.2164 mm): Footprint R-RBPR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(40.1179 mm, 183.1269 mm): Footprint R-DR26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(12.4710 mm, 53.1490 mm): Footprint L-CML5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(126.5111 mm, 25.7416 mm): Footprint L-CRGBL7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(126.8884 mm, 159.6914 mm): Footprint R-DR18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(50.8910 mm, 92.6250 mm): Footprint L-CL30B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.7174 mm, 128.3914 mm): Footprint R-CR11A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(21.3680 mm, 33.9250 mm): Footprint L-CRGBL12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(100.6944 mm, 159.6914 mm): Footprint R-DR17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(37.2775 mm, 129.4658 mm): Footprint R-CRGBR6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(47.8040 mm, 143.3533 mm): Footprint R-DR12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(50.3175 mm, 163.5967 mm): Footprint R-CR20B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(38.9410 mm, 85.7250 mm): Footprint L-DL29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(55.1552 mm, 123.5147 mm): Footprint R-DR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(70.7148 mm, 15.1105 mm): Footprint L-DL4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(84.5470 mm, 3.9259 mm): Footprint L-CL5A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(76.1201 mm, 185.5678 mm): Footprint R-CMR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(136.4134 mm, 177.7914 mm): Footprint R-DR34
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(51.9100 mm, 14.8750 mm): Footprint L-DL3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(127.8030 mm, 85.6990 mm): Footprint L-CL33A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.8964 mm, 42.0595 mm): Footprint L-CL13B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(93.0413 mm, 76.0891 mm): Footprint L-CL24B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(96.2322 mm, 19.0301 mm): Footprint L-CL5B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(106.0444 mm, 192.4414 mm): Footprint R-DR29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(67.0638 mm, 200.3713 mm): Footprint R-CR35B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(68.5388 mm, 60.6704 mm): Footprint L-AML3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(58.3245 mm, 40.6003 mm): Footprint L-CL17A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(54.6530 mm, 72.0250 mm): Footprint L-CRGBL22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(100.6324 mm, 178.7414 mm): Footprint R-CRGBR23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(10.5541 mm, 149.2011 mm): Footprint R-DR14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(9.4754 mm, 117.8350 mm): Footprint R-CR8A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(105.5147 mm, 150.3650 mm): Footprint R-CMR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(115.0674 mm, 184.7164 mm): Footprint R-RBPR31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(96.8273 mm, 43.2489 mm): Footprint L-CL19A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(90.2171 mm, 93.3891 mm): Footprint L-CRGBL30
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(89.3324 mm, 166.4914 mm): Footprint R-CR23A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(29.7913 mm, 204.0496 mm): Footprint R-CRGBR32
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(133.9754 mm, 121.0914 mm): Footprint R-CRGBR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(107.5254 mm, 113.6414 mm): Footprint R-CR3B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(106.0510 mm, 73.9130 mm): Footprint L-CL25B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(102.5324 mm, 199.3414 mm): Footprint R-CR30B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(108.3824 mm, 185.5414 mm): Footprint R-CR32A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(68.7011 mm, 57.5746 mm): Footprint L-CML3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(109.2054 mm, 140.6414 mm): Footprint R-CRGBR9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(112.5674 mm, 154.7164 mm): Footprint R-AMR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(20.4100 mm, 16.4250 mm): Footprint L-CL1B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(55.6530 mm, 92.6250 mm): Footprint L-CL31B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(6.7764 mm, 164.7164 mm): Footprint R-JR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(82.8233 mm, 57.7958 mm): Footprint L-CRGBL17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(115.0569 mm, 43.0518 mm): Footprint L-CRGBL13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(35.1213 mm, 152.0316 mm): Footprint R-CR20A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(17.3154 mm, 149.6995 mm): Footprint R-CR15B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(36.7143 mm, 125.9101 mm): Footprint R-DR6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(119.6701 mm, 62.9156 mm): Footprint L-CRGBL15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(80.7098 mm, 159.8969 mm): Footprint R-DR16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(97.9054 mm, 128.3914 mm): Footprint R-CR10A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(26.2600 mm, 2.6250 mm): Footprint L-CL2A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(102.5324 mm, 180.2914 mm): Footprint R-CR23B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(28.0408 mm, 186.6100 mm): Footprint R-CR29B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(83.1996 mm, 54.2155 mm): Footprint L-DL17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(131.3674 mm, 178.2164 mm): Footprint R-CR26A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(114.9824 mm, 197.7914 mm): Footprint R-DR36
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(97.1810 mm, 36.6357 mm): Footprint L-DL8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(61.7854 mm, 160.9317 mm): Footprint R-DR15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(12.8445 mm, 175.0448 mm): Footprint R-CR29A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(74.2716 mm, 121.8273 mm): Footprint R-DR2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(52.9308 mm, 21.6757 mm): Footprint L-CL10A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(89.4541 mm, 20.3790 mm): Footprint L-CRGBL5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(36.6030 mm, 92.6250 mm): Footprint L-CL29B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(114.0254 mm, 121.0914 mm): Footprint R-DR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(91.8976 mm, 23.7629 mm): Footprint L-CL12A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(111.1054 mm, 142.1914 mm): Footprint R-CR10B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(86.3021 mm, 159.6038 mm): Footprint R-CRGBR16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(120.2333 mm, 59.3599 mm): Footprint L-DL15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(38.9410 mm, 90.4250 mm): Footprint L-CRGBL29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(133.8695 mm, 46.0416 mm): Footprint L-CRGBL14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(21.2795 mm, 186.1115 mm): Footprint R-DR27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(122.6704 mm, 185.5414 mm): Footprint R-CR33A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(21.0650 mm, 81.0250 mm): Footprint L-CRGBL27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(115.6201 mm, 39.4961 mm): Footprint L-DL13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(77.8625 mm, 38.2328 mm): Footprint L-CRGBL9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(24.2602 mm, 204.9256 mm): Footprint R-DR32
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(73.4731 mm, 142.2204 mm): Footprint R-CR12B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(31.5144 mm, 166.5741 mm): Footprint R-CR21B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(123.7071 mm, 79.3951 mm): Footprint L-DL26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(93.6944 mm, 185.5414 mm): Footprint R-CR31A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(61.7191 mm, 59.9124 mm): Footprint L-CL23A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(86.4754 mm, 109.3414 mm): Footprint R-CR2A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(24.6970 mm, 73.5750 mm): Footprint L-CL21B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(77.9220 mm, 93.6550 mm): Footprint L-CL32B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(134.9174 mm, 142.1914 mm): Footprint R-CR11B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(97.7754 mm, 121.5914 mm): Footprint R-CRGBR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(46.8810 mm, 81.5000 mm): Footprint L-RBPL29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(77.5056 mm, 182.8041 mm): Footprint R-CRGBR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(85.4554 mm, 140.6414 mm): Footprint R-DR10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(18.0970 mm, 56.5750 mm): Footprint L-CRGBL20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(24.7531 mm, 166.0755 mm): Footprint R-DR20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(133.0174 mm, 140.6414 mm): Footprint R-CRGBR8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(107.7060 mm, 58.9439 mm): Footprint L-CL19B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(104.8679 mm, 76.4119 mm): Footprint L-DL25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(58.3462 mm, 180.5747 mm): Footprint R-DR25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(22.3150 mm, 92.6250 mm): Footprint L-CL28B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(46.8791 mm, 183.6254 mm): Footprint R-CR28B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(95.9324 mm, 178.7414 mm): Footprint R-DR23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(60.3379 mm, 199.5197 mm): Footprint R-DR28
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(53.9411 mm, 149.4387 mm): Footprint R-CR19A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(28.2793 mm, 114.8435 mm): Footprint R-CR7A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(39.4600 mm, 16.4250 mm): Footprint L-CL2B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(38.9710 mm, 51.6490 mm): Footprint L-CML1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(76.2851 mm, 164.2926 mm): Footprint R-CMR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(92.0554 mm, 142.1914 mm): Footprint R-CR9B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(2.1191 mm, 138.1344 mm): Footprint R-CR15A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(115.6309 mm, 46.2283 mm): Footprint L-CL20A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(37.6910 mm, 39.4750 mm): Footprint L-CL16A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(67.4806 mm, 76.0861 mm): Footprint L-CRGBL23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(47.0800 mm, 35.4750 mm): Footprint L-CL9B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(128.3174 mm, 140.6414 mm): Footprint R-DR8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(45.3100 mm, 2.6250 mm): Footprint L-CL3A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(24.6718 mm, 129.4002 mm): Footprint R-CR8B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(17.5530 mm, 92.6250 mm): Footprint L-CL27B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(16.3181 mm, 155.0088 mm): Footprint R-CR21A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(103.6694 mm, 6.0607 mm): Footprint L-CL6A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(58.9030 mm, 129.8759 mm): Footprint R-CR12A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(70.5264 mm, 18.7055 mm): Footprint L-CRGBL4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(45.1800 mm, 33.9250 mm): Footprint L-CRGBL11
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(106.0444 mm, 187.7414 mm): Footprint R-CRGBR29
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(78.8554 mm, 128.3914 mm): Footprint R-CR9A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(72.9554 mm, 21.7798 mm): Footprint L-CL11A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(84.6406 mm, 36.8839 mm): Footprint L-CL11B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(77.3172 mm, 179.2091 mm): Footprint R-DR24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(68.5113 mm, 161.7833 mm): Footprint R-CR19B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(86.2631 mm, 77.4380 mm): Footprint L-CRGBL24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(94.0944 mm, 147.4414 mm): Footprint R-CR17A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(137.7754 mm, 123.1414 mm): Footprint R-CR5B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(59.5308 mm, 33.9258 mm): Footprint L-DL10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(31.6829 mm, 172.0602 mm): Footprint R-CR28A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(131.4884 mm, 170.7914 mm): Footprint R-CR25B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(135.8704 mm, 199.3414 mm): Footprint R-CR33B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(122.1884 mm, 159.6914 mm): Footprint R-CRGBR18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(140.6324 mm, 199.3414 mm): Footprint R-CR34B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(126.2561 mm, 99.0852 mm): Footprint L-CRGBL31
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(33.8480 mm, 40.0000 mm): Footprint L-AML2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(101.4297 mm, 56.3805 mm): Footprint L-DL16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(18.0970 mm, 75.6250 mm): Footprint L-CRGBL21
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(69.8667 mm, 53.4719 mm): Footprint L-CRGBL18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(120.2884 mm, 147.4414 mm): Footprint R-CR18A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(84.6478 mm, 92.8037 mm): Footprint L-DL30
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(69.5674 mm, 189.1414 mm): Footprint R-AMR4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(16.6680 mm, 33.9250 mm): Footprint L-DL12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(119.6824 mm, 197.7914 mm): Footprint R-CRGBR36
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(34.7030 mm, 91.0750 mm): Footprint L-CRGBL33
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(139.0674 mm, 156.2164 mm): Footprint R-AMR5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(17.1822 mm, 192.4153 mm): Footprint R-CR36A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(73.4778 mm, 148.0090 mm): Footprint R-CR16A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(107.2944 mm, 161.2414 mm): Footprint R-CR17B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(123.1439 mm, 82.9508 mm): Footprint L-CRGBL26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(37.6910 mm, 78.8250 mm): Footprint L-CL30A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(119.6824 mm, 177.7914 mm): Footprint R-CRGBR22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(8.7150 mm, 78.8250 mm): Footprint L-CL28A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(106.0147 mm, 158.3650 mm): Footprint R-CMR1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(25.3163 mm, 169.6312 mm): Footprint R-CRGBR20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(64.7649 mm, 2.5319 mm): Footprint L-CL4A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(61.8811 mm, 124.3663 mm): Footprint R-CR6B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(133.3506 mm, 24.7494 mm): Footprint L-CL7B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(100.2655 mm, 63.2803 mm): Footprint L-CL25A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(120.2884 mm, 166.4914 mm): Footprint R-CR25A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(70.0851 mm, 167.3213 mm): Footprint R-CR22A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(43.5563 mm, 163.0983 mm): Footprint R-DR19
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(66.1308 mm, 35.4757 mm): Footprint L-CL10B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(67.0395 mm, 109.9395 mm): Footprint R-CR1A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(33.8800 mm, 21.6750 mm): Footprint L-CL9A
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(77.2246 mm, 17.0037 mm): Footprint L-CL4B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(18.5100 mm, 14.8750 mm): Footprint L-CRGBL1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(37.5600 mm, 14.8750 mm): Footprint L-CRGBL2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(86.6394 mm, 73.8577 mm): Footprint L-DL24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(93.0754 mm, 121.5914 mm): Footprint R-DR3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.5824 mm, 180.2914 mm): Footprint R-CR24B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(121.5824 mm, 199.3414 mm): Footprint R-CR32B
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(48.1803 mm, 146.9336 mm): Footprint R-CRGBR12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'Symm60HE_Project'
+    Local override; warning
+    @(40.4800 mm, 33.9250 mm): Footprint L-DL11
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, -2.5409 mm): Reference field of MB17
+    @(70.9927 mm, -2.5409 mm): Reference field of MB16
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, -2.5409 mm): Reference field of MB19
+    @(71.7427 mm, -2.5409 mm): Reference field of MB17
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(72.4927 mm, -2.5409 mm): Reference field of MB18
+    @(71.7427 mm, -2.5409 mm): Reference field of MB17
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(72.4927 mm, -2.5409 mm): Reference field of MB18
+    @(70.9927 mm, -2.5409 mm): Reference field of MB16
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, -2.5409 mm): Reference field of MB19
+    @(70.9927 mm, -2.5409 mm): Reference field of MB16
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(72.4927 mm, -2.5409 mm): Reference field of MB18
+    @(73.2427 mm, -2.5409 mm): Reference field of MB19
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, -2.5409 mm): Reference field of MB20
+    @(72.4927 mm, -2.5409 mm): Reference field of MB18
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, -2.5409 mm): Reference field of MB20
+    @(73.2427 mm, -2.5409 mm): Reference field of MB19
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, -2.5409 mm): Reference field of MB20
+    @(71.7427 mm, -2.5409 mm): Reference field of MB17
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, -2.5409 mm): Reference field of MB20
+    @(70.9927 mm, -2.5409 mm): Reference field of MB16
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 1.1507 mm): Reference field of MB33
+    @(105.8834 mm, 1.1507 mm): Reference field of MB31
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 1.1507 mm): Reference field of MB32
+    @(105.8834 mm, 1.1507 mm): Reference field of MB31
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 1.1507 mm): Reference field of MB33
+    @(106.6334 mm, 1.1507 mm): Reference field of MB32
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 1.1507 mm): Reference field of MB33
+    @(108.1334 mm, 1.1507 mm): Reference field of MB34
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 1.1507 mm): Reference field of MB32
+    @(108.1334 mm, 1.1507 mm): Reference field of MB34
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.8834 mm, 1.1507 mm): Reference field of MB31
+    @(108.1334 mm, 1.1507 mm): Reference field of MB34
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 1.1507 mm): Reference field of MB33
+    @(108.8834 mm, 1.1507 mm): Reference field of MB35
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 1.1507 mm): Reference field of MB32
+    @(108.8834 mm, 1.1507 mm): Reference field of MB35
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.8834 mm, 1.1507 mm): Reference field of MB31
+    @(108.8834 mm, 1.1507 mm): Reference field of MB35
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 1.1507 mm): Reference field of MB34
+    @(108.8834 mm, 1.1507 mm): Reference field of MB35
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 100.5146 mm): Reference field of MB38
+    @(108.1334 mm, 100.5146 mm): Reference field of MB39
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.8834 mm, 100.5146 mm): Reference field of MB36
+    @(108.1334 mm, 100.5146 mm): Reference field of MB39
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 100.5146 mm): Reference field of MB37
+    @(108.1334 mm, 100.5146 mm): Reference field of MB39
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 100.5146 mm): Reference field of MB38
+    @(105.8834 mm, 100.5146 mm): Reference field of MB36
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 100.5146 mm): Reference field of MB37
+    @(107.3834 mm, 100.5146 mm): Reference field of MB38
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 100.5146 mm): Reference field of MB37
+    @(105.8834 mm, 100.5146 mm): Reference field of MB36
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 100.5146 mm): Reference field of MB38
+    @(108.8834 mm, 100.5146 mm): Reference field of MB40
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(105.8834 mm, 100.5146 mm): Reference field of MB36
+    @(108.8834 mm, 100.5146 mm): Reference field of MB40
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 100.5146 mm): Reference field of MB39
+    @(108.8834 mm, 100.5146 mm): Reference field of MB40
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(144.1598 mm, 50.9625 mm): Reference field of MB55
+    @(144.1598 mm, 50.2125 mm): Reference field of MB54
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(144.1598 mm, 49.4625 mm): Reference field of MB53
+    @(144.1598 mm, 50.2125 mm): Reference field of MB54
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(72.4927 mm, 97.9424 mm): Reference field of MB23
+    @(70.9927 mm, 97.9424 mm): Reference field of MB21
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 97.9424 mm): Reference field of MB22
+    @(70.9927 mm, 97.9424 mm): Reference field of MB21
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 97.9424 mm): Reference field of MB25
+    @(70.9927 mm, 97.9424 mm): Reference field of MB21
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, 97.9424 mm): Reference field of MB24
+    @(70.9927 mm, 97.9424 mm): Reference field of MB21
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, 97.9424 mm): Reference field of MB24
+    @(73.9927 mm, 97.9424 mm): Reference field of MB25
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(144.1598 mm, 48.7125 mm): Reference field of MB52
+    @(144.1598 mm, 49.4625 mm): Reference field of MB53
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(144.1598 mm, 48.7125 mm): Reference field of MB52
+    @(144.1598 mm, 47.9625 mm): Reference field of MB51
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(137.0000 mm, 50.0000 mm): Circle of L-MHL3 on F.Silkscreen
+    @(138.0590 mm, 51.3000 mm): Segment of L-JL1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, -2.8500 mm): Reference field of MB1
+    @(32.3520 mm, -2.8500 mm): Reference field of MB2
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, -2.8500 mm): Reference field of MB2
+    @(33.8520 mm, -2.8500 mm): Reference field of MB4
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, -2.8500 mm): Reference field of MB2
+    @(33.1020 mm, -2.8500 mm): Reference field of MB3
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, -2.8500 mm): Reference field of MB1
+    @(33.1020 mm, -2.8500 mm): Reference field of MB3
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(-0.6028 mm, 49.4625 mm): Reference field of MB48
+    @(-0.6028 mm, 48.7125 mm): Reference field of MB47
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(-0.6028 mm, 48.7125 mm): Reference field of MB47
+    @(-0.6028 mm, 47.9625 mm): Reference field of MB46
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(-0.6028 mm, 49.4625 mm): Reference field of MB48
+    @(-0.6028 mm, 50.2125 mm): Reference field of MB49
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.8520 mm, -2.8500 mm): Reference field of MB4
+    @(34.6020 mm, -2.8500 mm): Reference field of MB5
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, -2.8500 mm): Reference field of MB2
+    @(34.6020 mm, -2.8500 mm): Reference field of MB5
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.8520 mm, -2.8500 mm): Reference field of MB4
+    @(33.1020 mm, -2.8500 mm): Reference field of MB3
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(34.6020 mm, -2.8500 mm): Reference field of MB5
+    @(33.1020 mm, -2.8500 mm): Reference field of MB3
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, -2.8500 mm): Reference field of MB1
+    @(33.8520 mm, -2.8500 mm): Reference field of MB4
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(-0.6028 mm, 50.9625 mm): Reference field of MB50
+    @(-0.6028 mm, 50.2125 mm): Reference field of MB49
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.8520 mm, 100.1429 mm): Reference field of MB9
+    @(34.6020 mm, 100.1429 mm): Reference field of MB10
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 97.9424 mm): Reference field of MB22
+    @(72.4927 mm, 97.9424 mm): Reference field of MB23
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 97.9424 mm): Reference field of MB22
+    @(73.2427 mm, 97.9424 mm): Reference field of MB24
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 97.9424 mm): Reference field of MB22
+    @(73.9927 mm, 97.9424 mm): Reference field of MB25
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, 97.9424 mm): Reference field of MB24
+    @(72.4927 mm, 97.9424 mm): Reference field of MB23
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 97.9424 mm): Reference field of MB25
+    @(72.4927 mm, 97.9424 mm): Reference field of MB23
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.1020 mm, 100.1429 mm): Reference field of MB8
+    @(34.6020 mm, 100.1429 mm): Reference field of MB10
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.8520 mm, 100.1429 mm): Reference field of MB9
+    @(33.1020 mm, 100.1429 mm): Reference field of MB8
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 100.5146 mm): Reference field of MB37
+    @(108.8834 mm, 100.5146 mm): Reference field of MB40
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(145.5882 mm, 157.6789 mm): Reference field of MB65
+    @(145.5882 mm, 156.9289 mm): Reference field of MB64
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(145.5882 mm, 156.1789 mm): Reference field of MB63
+    @(145.5882 mm, 156.9289 mm): Reference field of MB64
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 198.4212 mm): Reference field of MB42
+    @(107.3834 mm, 198.4212 mm): Reference field of MB43
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 198.4212 mm): Reference field of MB44
+    @(106.6334 mm, 198.4212 mm): Reference field of MB42
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.8834 mm, 198.4212 mm): Reference field of MB45
+    @(106.6334 mm, 198.4212 mm): Reference field of MB42
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.8834 mm, 198.4212 mm): Reference field of MB45
+    @(107.3834 mm, 198.4212 mm): Reference field of MB43
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 198.4212 mm): Reference field of MB44
+    @(107.3834 mm, 198.4212 mm): Reference field of MB43
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 198.4212 mm): Reference field of MB44
+    @(108.8834 mm, 198.4212 mm): Reference field of MB45
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(145.5882 mm, 156.1789 mm): Reference field of MB63
+    @(145.5882 mm, 155.4289 mm): Reference field of MB62
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(145.5882 mm, 154.6789 mm): Reference field of MB61
+    @(145.5882 mm, 155.4289 mm): Reference field of MB62
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(106.6334 mm, 198.4212 mm): Reference field of MB42
+    @(105.8834 mm, 198.4212 mm): Reference field of MB41
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(107.3834 mm, 198.4212 mm): Reference field of MB43
+    @(105.8834 mm, 198.4212 mm): Reference field of MB41
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.1334 mm, 198.4212 mm): Reference field of MB44
+    @(105.8834 mm, 198.4212 mm): Reference field of MB41
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(108.8834 mm, 198.4212 mm): Reference field of MB45
+    @(105.8834 mm, 198.4212 mm): Reference field of MB41
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 198.4257 mm): Reference field of MB30
+    @(73.2427 mm, 198.4257 mm): Reference field of MB29
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 198.4257 mm): Reference field of MB30
+    @(72.4927 mm, 198.4257 mm): Reference field of MB28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(8.9264 mm, 171.4164 mm): Segment of R-JR1 on F.Silkscreen
+    @(9.5674 mm, 155.7164 mm): Circle of R-MHR1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(0.8256 mm, 155.4289 mm): Reference field of MB57
+    @(0.8256 mm, 154.6789 mm): Reference field of MB56
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(0.8256 mm, 155.4289 mm): Reference field of MB57
+    @(0.8256 mm, 156.1789 mm): Reference field of MB58
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(0.8256 mm, 157.6789 mm): Reference field of MB60
+    @(0.8256 mm, 156.9289 mm): Reference field of MB59
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.1020 mm, 204.5920 mm): Reference field of MB13
+    @(34.6020 mm, 204.5920 mm): Reference field of MB15
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.1020 mm, 204.5920 mm): Reference field of MB13
+    @(32.3520 mm, 204.5920 mm): Reference field of MB12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.1020 mm, 204.5920 mm): Reference field of MB13
+    @(33.8520 mm, 204.5920 mm): Reference field of MB14
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, 204.5920 mm): Reference field of MB11
+    @(33.1020 mm, 204.5920 mm): Reference field of MB13
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, 204.5920 mm): Reference field of MB11
+    @(32.3520 mm, 204.5920 mm): Reference field of MB12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, 204.5920 mm): Reference field of MB12
+    @(33.8520 mm, 204.5920 mm): Reference field of MB14
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, 204.5920 mm): Reference field of MB11
+    @(33.8520 mm, 204.5920 mm): Reference field of MB14
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(34.6020 mm, 100.1429 mm): Reference field of MB10
+    @(31.6020 mm, 100.1429 mm): Reference field of MB6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.8520 mm, 100.1429 mm): Reference field of MB9
+    @(31.6020 mm, 100.1429 mm): Reference field of MB6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, 100.1429 mm): Reference field of MB7
+    @(33.8520 mm, 100.1429 mm): Reference field of MB9
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, 100.1429 mm): Reference field of MB7
+    @(33.1020 mm, 100.1429 mm): Reference field of MB8
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.1020 mm, 100.1429 mm): Reference field of MB8
+    @(31.6020 mm, 100.1429 mm): Reference field of MB6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, 100.1429 mm): Reference field of MB7
+    @(34.6020 mm, 100.1429 mm): Reference field of MB10
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(32.3520 mm, 100.1429 mm): Reference field of MB7
+    @(31.6020 mm, 100.1429 mm): Reference field of MB6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(70.9927 mm, 198.4257 mm): Reference field of MB26
+    @(71.7427 mm, 198.4257 mm): Reference field of MB27
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 198.4257 mm): Reference field of MB27
+    @(73.2427 mm, 198.4257 mm): Reference field of MB29
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(71.7427 mm, 198.4257 mm): Reference field of MB27
+    @(72.4927 mm, 198.4257 mm): Reference field of MB28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(70.9927 mm, 198.4257 mm): Reference field of MB26
+    @(72.4927 mm, 198.4257 mm): Reference field of MB28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.2427 mm, 198.4257 mm): Reference field of MB29
+    @(72.4927 mm, 198.4257 mm): Reference field of MB28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(70.9927 mm, 198.4257 mm): Reference field of MB26
+    @(73.2427 mm, 198.4257 mm): Reference field of MB29
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 198.4257 mm): Reference field of MB30
+    @(70.9927 mm, 198.4257 mm): Reference field of MB26
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.9927 mm, 198.4257 mm): Reference field of MB30
+    @(71.7427 mm, 198.4257 mm): Reference field of MB27
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(34.6020 mm, 204.5920 mm): Reference field of MB15
+    @(32.3520 mm, 204.5920 mm): Reference field of MB12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.6020 mm, 204.5920 mm): Reference field of MB11
+    @(34.6020 mm, 204.5920 mm): Reference field of MB15
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(34.6020 mm, 204.5920 mm): Reference field of MB15
+    @(33.8520 mm, 204.5920 mm): Reference field of MB14
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(0.8256 mm, 156.9289 mm): Reference field of MB59
+    @(0.8256 mm, 156.1789 mm): Reference field of MB58
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(144.1598 mm, 50.9625 mm): Reference field of MB55
+    @(144.1598 mm, 51.1625 mm): NPTH pad of MB51
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(-0.6028 mm, 50.9625 mm): Reference field of MB50
+    @(-0.6028 mm, 51.1625 mm): NPTH pad of MB46
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(145.5882 mm, 157.6789 mm): Reference field of MB65
+    @(145.5882 mm, 157.8789 mm): NPTH pad of MB61
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(33.1020 mm, 204.5920 mm): Reference field of MB13
+    @(36.2757 mm, 204.6780 mm): NPTH pad of R-SR3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(33.8520 mm, 204.5920 mm): Reference field of MB14
+    @(36.2757 mm, 204.6780 mm): NPTH pad of R-SR3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(34.6020 mm, 204.5920 mm): Reference field of MB15
+    @(36.2757 mm, 204.6780 mm): NPTH pad of R-SR3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(0.8256 mm, 157.6789 mm): Reference field of MB60
+    @(0.8256 mm, 157.8789 mm): NPTH pad of MB56
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(74.4128 mm, 36.1357 mm): Segment of L-DL9 on B.Silkscreen
+    @(77.9670 mm, 37.2383 mm): Reference field of L-DL9
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(66.9717 mm, 16.7919 mm): Segment of L-DL4 on B.Silkscreen
+    @(70.5787 mm, 17.7069 mm): Reference field of L-DL4
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(82.9278 mm, 56.8013 mm): Reference field of L-DL17
+    @(79.3736 mm, 55.6987 mm): Segment of L-DL17 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(96.9092 mm, 39.2215 mm): Reference field of L-DL8
+    @(93.3550 mm, 38.1189 mm): Segment of L-DL8 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(115.2134 mm, 42.0641 mm): Reference field of L-DL13
+    @(111.7217 mm, 40.7770 mm): Segment of L-DL13 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(119.8087 mm, 80.6760 mm): Segment of L-DL26 on B.Silkscreen
+    @(123.3004 mm, 81.9631 mm): Reference field of L-DL26
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.4612 mm, 78.9799 mm): Reference field of L-DL25
+    @(100.9695 mm, 77.6928 mm): Segment of L-DL25 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(120.3184 mm, 100.7771 mm): Reference field of L-DL31
+    @(116.8267 mm, 99.4900 mm): Segment of L-DL31 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(60.5313 mm, 54.8603 mm): Segment of L-DL18 on B.Silkscreen
+    @(64.1383 mm, 55.7753 mm): Reference field of L-DL18
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(119.8266 mm, 61.9279 mm): Reference field of L-DL15
+    @(116.3349 mm, 60.6408 mm): Segment of L-DL15 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.0230 mm, 58.9485 mm): Reference field of L-DL16
+    @(97.5313 mm, 57.6614 mm): Segment of L-DL16 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(134.0260 mm, 45.0539 mm): Reference field of L-DL14
+    @(130.5343 mm, 43.7668 mm): Segment of L-DL14 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(123.1759 mm, 23.4668 mm): Segment of L-DL7 on B.Silkscreen
+    @(126.6676 mm, 24.7539 mm): Reference field of L-DL7
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(104.3735 mm, 20.4732 mm): Segment of L-DL6 on B.Silkscreen
+    @(107.8652 mm, 21.7603 mm): Reference field of L-DL6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(89.5586 mm, 19.3845 mm): Reference field of L-DL5
+    @(86.0044 mm, 18.2819 mm): Segment of L-DL5 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(80.8459 mm, 162.4933 mm): Reference field of R-DR16
+    @(77.1629 mm, 161.9604 mm): Segment of R-DR16 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(132.7634 mm, 179.6664 mm): Segment of R-DR34 on B.Silkscreen
+    @(136.4134 mm, 180.3914 mm): Reference field of R-DR34
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(62.0572 mm, 163.5175 mm): Reference field of R-DR15
+    @(58.3514 mm, 163.1780 mm): Segment of R-DR15 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(67.0190 mm, 143.9547 mm): Reference field of R-DR11
+    @(63.3132 mm, 143.6152 mm): Segment of R-DR11 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(118.0004 mm, 123.4664 mm): Segment of R-DR33 on B.Silkscreen
+    @(121.6504 mm, 124.1914 mm): Reference field of R-DR33
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.7703 mm, 181.2726 mm): Segment of R-DR24 on B.Silkscreen
+    @(77.4533 mm, 181.8055 mm): Reference field of R-DR24
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(110.3754 mm, 122.9664 mm): Segment of R-DR4 on B.Silkscreen
+    @(114.0254 mm, 123.6914 mm): Reference field of R-DR4
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(40.5246 mm, 185.6949 mm): Reference field of R-DR26
+    @(36.8062 mm, 185.5498 mm): Segment of R-DR26 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(17.9678 mm, 188.5344 mm): Segment of R-DR27 on B.Silkscreen
+    @(21.6862 mm, 188.6795 mm): Reference field of R-DR27
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(24.6669 mm, 207.4936 mm): Reference field of R-DR32
+    @(20.9485 mm, 207.3485 mm): Segment of R-DR32 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(56.9039 mm, 201.7660 mm): Segment of R-DR28 on B.Silkscreen
+    @(60.6097 mm, 202.1055 mm): Reference field of R-DR28
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(44.3700 mm, 145.5996 mm): Segment of R-DR12 on B.Silkscreen
+    @(48.0758 mm, 145.9391 mm): Reference field of R-DR12
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(26.0516 mm, 148.6362 mm): Segment of R-DR13 on B.Silkscreen
+    @(29.7700 mm, 148.7813 mm): Reference field of R-DR13
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(10.9608 mm, 151.7691 mm): Reference field of R-DR14
+    @(7.2424 mm, 151.6240 mm): Segment of R-DR14 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(40.2446 mm, 165.5212 mm): Segment of R-DR19 on B.Silkscreen
+    @(43.9630 mm, 165.6663 mm): Reference field of R-DR19
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(21.4414 mm, 168.4984 mm): Segment of R-DR20 on B.Silkscreen
+    @(25.1598 mm, 168.6435 mm): Reference field of R-DR20
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(58.6180 mm, 183.1605 mm): Reference field of R-DR25
+    @(54.9122 mm, 182.8210 mm): Segment of R-DR25 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(51.7212 mm, 125.7610 mm): Segment of R-DR1 on B.Silkscreen
+    @(55.4270 mm, 126.1005 mm): Reference field of R-DR1
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(80.8218 mm, 94.2869 mm): Segment of L-DL30 on B.Silkscreen
+    @(84.3760 mm, 95.3895 mm): Reference field of L-DL30
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(86.3676 mm, 76.4435 mm): Reference field of L-DL24
+    @(82.8134 mm, 75.3409 mm): Segment of L-DL24 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(67.5329 mm, 75.0875 mm): Reference field of L-DL23
+    @(63.9259 mm, 74.1725 mm): Segment of L-DL23 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(70.7247 mm, 123.8908 mm): Segment of R-DR2 on B.Silkscreen
+    @(74.4077 mm, 124.4237 mm): Reference field of R-DR2
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(33.4026 mm, 128.3330 mm): Segment of R-DR6 on B.Silkscreen
+    @(37.1210 mm, 128.4781 mm): Reference field of R-DR6
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(18.3172 mm, 131.4697 mm): Reference field of R-DR7
+    @(14.5988 mm, 131.3246 mm): Segment of R-DR7 on B.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(136.4134 mm, 180.3914 mm): Reference field of R-DR34
+    @(138.7946 mm, 181.6464 mm): NPTH pad of R-SR2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(132.7634 mm, 179.6664 mm): Segment of R-DR34 on B.Silkscreen
+    @(138.7946 mm, 181.6464 mm): NPTH pad of R-SR2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(129.2754 mm, 123.6914 mm): Reference field of R-DR5
+    @(133.5566 mm, 124.4964 mm): NPTH pad of R-SR1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(132.9254 mm, 122.9664 mm): Segment of R-DR5 on B.Silkscreen
+    @(133.5566 mm, 124.4964 mm): NPTH pad of R-SR1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(125.6254 mm, 122.9664 mm): Segment of R-DR5 on B.Silkscreen
+    @(133.5566 mm, 124.4964 mm): NPTH pad of R-SR1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.9824 mm, 180.3914 mm): Reference field of R-DR22
+    @(114.9822 mm, 181.6464 mm): NPTH pad of R-SR2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(111.3324 mm, 179.6664 mm): Segment of R-DR22 on B.Silkscreen
+    @(114.9822 mm, 181.6464 mm): NPTH pad of R-SR2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3754 mm, 119.9414 mm): Segment of R-DR4 on B.Silkscreen
+    @(109.7442 mm, 124.4964 mm): NPTH pad of R-SR1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(110.3754 mm, 122.9664 mm): Segment of R-DR4 on B.Silkscreen
+    @(109.7442 mm, 124.4964 mm): NPTH pad of R-SR1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(114.0254 mm, 123.6914 mm): Reference field of R-DR4
+    @(109.7442 mm, 124.4964 mm): NPTH pad of R-SR1
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - None
+
+** End of Report **

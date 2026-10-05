@@ -142,6 +142,10 @@ def main():
         board_dir = release / name
         gerber_dir = board_dir / "gerbers"
         gerber_dir.mkdir(parents=True)
+        subprocess.run([
+            cli, "sch", "erc", "--exit-code-violations", "--severity-all",
+            "--format", "report", "--output", str(board_dir / "erc-report.txt"),
+            str(board.with_suffix(".kicad_sch"))], check=True)
         subprocess.run([cli, "pcb", "export", "gerbers", "--layers", LAYERS,
                         "--subtract-soldermask", "--check-zones", "-o", str(gerber_dir),
                         str(board)], check=True)
@@ -177,6 +181,10 @@ def main():
         "assignment. Use the single matched BOM/CPL pair: every assembled board "
         "supports all four physical layouts, while firmware profiles mask the "
         "inactive Hall channels.\n\n"
+        "`Symm60HE-Panel.kicad_pro` is the universal pair's self-contained "
+        "electrical project. Its linked combined schematic uses L-/R- component "
+        "references, isolated /L/ and /R/ nets, assigned footprints, and passes "
+        "ERC with zero messages.\n\n"
         "Gerbers include both copper layers, both solder masks, both silkscreens and "
         "Edge.Cuts. Silkscreen was clipped to solder-mask openings during plotting.\n\n"
         "The panel's right board uses four explicit 1.75 mm-wide routed NPTH slots "
@@ -241,11 +249,14 @@ def main():
         assembly_files.extend((
             board_dir / f"{name}-BOM.csv",
             board_dir / f"{name}-CPL.csv",
+            board_dir / "erc-report.txt",
         ))
-    source_boards = [ROOT / "pcb" / f"{board_name}.kicad_pcb"
-                     for _, board_name in targets]
+    source_designs = [ROOT / "pcb" / f"{board_name}{suffix}"
+                      for _, board_name in targets
+                      for suffix in (".kicad_pcb", ".kicad_pro",
+                                     ".kicad_sch", ".kicad_sym")]
     manifest_paths = (archives + assembly_files + [readme, checklist] +
-                      source_boards + [
+                      source_designs + [
         ROOT / "firmware/build/firmware.bin",
         ROOT / "release/reports/firmware-build.txt",
     ])

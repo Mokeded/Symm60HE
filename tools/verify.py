@@ -19,7 +19,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 BOARDS = ("Symm60HE-Left", "Symm60HE-Right", "Symm60HE-Daughterboard")
-FAB_BOARDS = BOARDS + ("Symm60HE-Panel",)
+# Left and right remain useful PCB/reference captures, but no longer have
+# standalone KiCad project containers.  Project-level DRC/ERC therefore runs
+# only on the authoritative combined pair and the independent daughterboard.
+PROJECT_BOARDS = ("Symm60HE-Panel", "Symm60HE-Daughterboard")
+FAB_BOARDS = PROJECT_BOARDS
+ERC_BOARDS = PROJECT_BOARDS
 PLATE_VARIANTS = (
     "wkl", "wklarrows", "wklbs2", "wklbs2arrows",
     "wkl-left-arrows-right", "three-key-left-wkl-right",
@@ -110,7 +115,7 @@ def kicad_erc():
         return False
     ok = True
     with tempfile.TemporaryDirectory(prefix="symm60he-erc-") as temp:
-        for name in BOARDS:
+        for name in ERC_BOARDS:
             schematic = ROOT / "pcb" / f"{name}.kicad_sch"
             report = Path(temp) / f"{name}.rpt"
             result = subprocess.run(
@@ -158,7 +163,7 @@ def release_check():
     expected_jobs = {
         "Symm60HE-Half-Panel": ("Symm60HE-Panel", None),
         # KiCad's job bounds include the 0.05 mm Edge.Cuts stroke per side.
-        "Symm60HE-Daughterboard": ("Symm60HE-Daughterboard", (50.1, 31.1)),
+        "Symm60HE-Daughterboard": ("Symm60HE-Daughterboard", (49.6, 29.3)),
     }
     for name, (board_name, expected_size) in expected_jobs.items():
         archive = ROOT / "release/jlcpcb" / f"{name}-Gerbers.zip"
@@ -206,7 +211,7 @@ def split_plate_audit():
         return False
     sys.path.insert(0, str(HERE))
     from geom import KEYS
-    from layouts.make_layout_pcbs import source_layout
+    from layouts.catalog import source_layout
     from shapely.geometry import LineString, Polygon, Point
     from shapely.affinity import scale as shapely_scale
     from shapely.ops import unary_union
@@ -217,7 +222,7 @@ def split_plate_audit():
     from outline import (finished_plate_outline, gasket_tabs,
                          keycap_bounded_plate, keycap_core_plate,
                          keycap_plate_envelope,
-                         straight_gasket_walls, PLATE_PCB_FOLLOW_MARGIN,
+                         straight_plate_side_walls, PLATE_PCB_FOLLOW_MARGIN,
                          PLATE_INNER_WALL_GAP, PLATE_OUTER_WALL_X, axis_mm)
     from route import read as read_board
     from sexp import find as sexp_find, first as sexp_first, loads as sexp_loads
@@ -297,10 +302,21 @@ def split_plate_audit():
                     abs(outer_wall_x - nominal_outer_wall_x) < 1e-6 and
                     abs(inner_wall_x - nominal_inner_wall_x) < 1e-6 and
                     plate_body.boundary.intersection(outer_wall_line).length > 90.0 and
-                    plate_body.boundary.intersection(inner_wall_line).length > 90.0 and
-                    all(tab.intersects(outer_wall_line)
+                    plate_body.boundary.intersection(inner_wall_line).length > 90.0)
+                # Gasket tongues were intentionally moved from the side rails
+                # to the rear/top and front/bottom plate edges.  The first two
+                # extend above the body and the last two below it, while every
+                # tongue overlaps its parent body at the tapered root.
+                top_bottom_gaskets_good = (
+                    len(integral_gasket_mounts) == 4 and
+                    all(not tab.difference(plate_body).is_empty and
+                        tab.intersection(plate_body).area > 0
+                        for tab in integral_gasket_mounts) and
+                    all(tab.difference(plate_body).centroid.y <
+                        tab.intersection(plate_body).centroid.y
                         for tab in integral_gasket_mounts[:2]) and
-                    all(tab.intersects(inner_wall_line)
+                    all(tab.difference(plate_body).centroid.y >
+                        tab.intersection(plate_body).centroid.y
                         for tab in integral_gasket_mounts[2:]))
                 # Straight side rails are intentional gasket-wall geometry;
                 # only the ordinary structural core is keycap-bounded.
@@ -322,7 +338,7 @@ def split_plate_audit():
                     f"Symm60HE-{variant}-{'Left' if half == 'L' else 'Right'}.kicad_pcb"
                 )
                 routed_pcb_outline = read_board(str(board_path))[2]
-                routed_profile = straight_gasket_walls(
+                routed_profile = straight_plate_side_walls(
                     routed_pcb_outline.buffer(
                         PLATE_PCB_FOLLOW_MARGIN, join_style=2), half)
                 pcb_profile_error = plate_body.symmetric_difference(
@@ -390,6 +406,7 @@ def split_plate_audit():
                         expected_outline).area < 0.01,
                     "minimum web": minimum_web >= POM_MIN_WEB - 1e-6,
                     "four gasket mounts": len(integral_gasket_mounts) == 4,
+                    "top/bottom gasket mounts": top_bottom_gaskets_good,
                     "straight walls": straight_walls_good,
                     "contained openings": all(
                         outline.buffer(1e-6).contains(opening)
@@ -593,6 +610,12 @@ def manufacturing_audit():
         abs(connector_centres["Left"] - 140.209) < 1e-6 and
         abs(connector_centres["Right"] - 164.209) < 1e-6)
     panel = loads((ROOT / "pcb/Symm60HE-Panel.kicad_pcb").read_text())
+    from layouts.verify_layout_panels import hall_keepout_problems
+    keepout_problems = hall_keepout_problems(panel)
+    checks["universal panel uses exact FN40HE Hall keepouts"] = (
+        not keepout_problems)
+    if keepout_problems:
+        print("Hall keepout audit: " + "; ".join(keepout_problems))
     panel_smt = []
     mouse = 0
     panel_fiducials = 0
@@ -628,9 +651,9 @@ def manufacturing_audit():
     _, _, daughter_outline, _ = read(
         str(ROOT / "pcb/Symm60HE-Daughterboard.kicad_pcb"))
     dx0, dy0, dx1, dy1 = daughter_outline.bounds
-    checks["daughterboard outline is 50 x 31 mm"] = (
-        abs((dx1 - dx0) - 50.0) < 0.01 and
-        abs((dy1 - dy0) - 31.0) < 0.01)
+    checks["daughterboard outline is 49.5 x 29.2 mm"] = (
+        abs((dx1 - dx0) - 49.5) < 0.01 and
+        abs((dy1 - dy0) - 29.2) < 0.01)
     daughter_zones = {(first(z, "net")[1],
                        (first(z, "layer") or first(z, "layers"))[1])
                       for z in find(daughter, "zone")}

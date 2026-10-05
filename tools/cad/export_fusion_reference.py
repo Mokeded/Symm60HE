@@ -32,9 +32,113 @@ GATERON_JADE_SPEC = (REFERENCE_MODELS /
                      "GATERON-Magnetic-Jade-KS20-specification.pdf")
 KEYCAP_SKIRT_Z = 6.15
 _keycap_library = None
+_step_shape_cache = {}
+
+
+# Exact fitted-part model selection.  The STEP assets are either published by
+# the manufacturer or linked to the exact LCSC ordering code in the
+# JLCEDA/EasyEDA Official Library.  Shared passive/package assets are only
+# reused where the exact part records themselves point at the same model UUID.
+COMPONENT_MODELS = {
+    "ffc": {
+        "file": "BOOMELE_1.0-12P_C20111.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "mux": {
+        "file": "TI_SN74LV4051APWR_C7793.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "hall": {
+        "file": "NOVOSENSE_MT9102ET_C5447698.step",
+        "rotations": (("z", 90),), "seat": True,
+        "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "led": {
+        "file": "OPSCO_SK6812MINI-E_C5149201.step", "rotations": (),
+        # This reverse-mount model deliberately straddles B.Cu: 0.84 mm enters
+        # the board aperture and 0.94 mm remains below the board.
+        "seat": False, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "mcu": {
+        "file": "ARTERY_AT32F405RCT7_C47090415.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "esd": {
+        "file": "ST_USBLC6-2SC6_C7519.step",
+        "rotations": (("z", 90),), "seat": True,
+        "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "tlv757": {
+        "file": "TI_TLV75733PDBVR_C485517.step",
+        "rotations": (("z", 90),), "seat": True,
+        "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "xc6206": {
+        "file": "NOVOSENSE_MT9102ET_C5447698.step",
+        "rotations": (("z", 90),), "seat": True,
+        "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "crystal": {
+        "file": "YXC_X322512MSB4SI_C9002.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "fuse": {
+        "file": "BHFUSE_BSMD0805-050-24V_C910822.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "buffer": {
+        "file": "TI_SN74AHCT1G125DBVR_C7484.step",
+        "rotations": (("z", 180),), "seat": True,
+        "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "c0402": {
+        "file": "SAMSUNG_CL05B104KO5NNNC_C1525.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "r0402": {
+        "file": "UNI-ROYAL_0402WGF1202TCE_C25752.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "c0603": {
+        "file": "CCTC_TCC0603X5R106M6R3CT_C380318.step", "rotations": (),
+        "seat": True, "source": "JLCEDA/EasyEDA Official Library",
+    },
+    "button": {
+        "file": "XKB_TS-1187A-B-A-B_C318884.stp",
+        "rotations": (("x", 90),), "seat": True,
+        "source": "XKB manufacturer STEP",
+    },
+}
+
+VALUE_MODELS = {
+    "FFC_12P": ("ffc", "C20111", "BOOMELE 1.0-12P top-contact"),
+    "SN74LV4051A": ("mux", "C7793", "TI SN74LV4051APWR"),
+    "MT9102ET": ("hall", "C5447698", "NOVOSENSE MT9102ET"),
+    "SK6812MINI-E": ("led", "C5149201", "OPSCO SK6812MINI-E"),
+    "AT32F405RCT7": ("mcu", "C47090415", "Artery AT32F405RCT7"),
+    "USBLC6-2SC6": ("esd", "C7519", "ST USBLC6-2SC6"),
+    "TLV75733PDBV": ("tlv757", "C485517", "TI TLV75733PDBVR"),
+    "XC6206P332MR": ("xc6206", "C5446", "Torex XC6206P332MR-G"),
+    "12MHz": ("crystal", "C9002", "YXC X322512MSB4SI"),
+    "0.5A": ("fuse", "C910822", "BHFUSE BSMD0805-050-24V"),
+    "SN74AHCT1G125": ("buffer", "C7484", "TI SN74AHCT1G125DBVR"),
+    "100n": ("c0402", "C1525", "Samsung CL05B104KO5NNNC"),
+    "4.7n": ("c0402", "C1518204", "Murata GRM1555C1H472JE01D"),
+    "30p": ("c0402", "C466228", "CCTC TCC0402C0G300J500AT"),
+    "12k": ("r0402", "C25752", "UNI-ROYAL 0402WGF1202TCE"),
+    "5.1k": ("r0402", "C25905", "UNI-ROYAL 0402WGF5101TCE"),
+    "470R": ("r0402", "C25117", "UNI-ROYAL 0402WGF4700TCE"),
+    "10u": ("c0603", "C380318", "CCTC TCC0603X5R106M6R3CT"),
+    "2.2u": ("c0603", "C3905270", "Samsung CL10B225KP8NFNC"),
+    "1u": ("c0603", "C97888", "Murata GRM188R71A105KA61D"),
+    "TS-1187A": ("button", "C318884", "XKB TS-1187A-B-A-B"),
+}
 
 
 def import_step_shape(path):
+    path = Path(path).resolve()
+    if path in _step_shape_cache:
+        return _step_shape_cache[path].copy()
     temp = App.newDocument("ImportTemp")
     Import.insert(str(path), temp.Name)
     shapes = [obj.Shape for obj in temp.Objects
@@ -47,7 +151,8 @@ def import_step_shape(path):
     # FreeCAD's infinite origin planes.
     result = max(shapes, key=lambda shape: abs(shape.Volume)).copy()
     App.closeDocument(temp.Name)
-    return result
+    _step_shape_cache[path] = result.copy()
+    return result.copy()
 
 
 def solid_from_stl(path):
@@ -176,7 +281,8 @@ def native_component(shape, position, rotation):
 
 
 def official_component_shape(record, model_path, board_thickness,
-                             rotations=(), offset=(0.0, 0.0, 0.0)):
+                             rotations=(), offset=(0.0, 0.0, 0.0),
+                             seat_on_board=False):
     """Place an unmodified supplier/manufacturer STEP on a KiCad footprint.
 
     ``align_board_coordinates`` later applies a 180 degree X rotation to the
@@ -194,6 +300,12 @@ def official_component_shape(record, model_path, board_thickness,
     }
     for axis, angle in rotations:
         local.rotate(App.Vector(0, 0, 0), axes[axis], angle)
+    if seat_on_board:
+        # Supplier STEP origins are not consistent: some passives are centred
+        # on Z=0 while most ICs use the pad seating plane.  A rigid Z shift to
+        # the lowest model point preserves the exact geometry while placing the
+        # fitted SMD body on its physical board face.
+        local.translate(App.Vector(0, 0, -local.BoundBox.ZMin))
     local.translate(App.Vector(*offset))
     if record["side"] == "F.Cu":
         local.rotate(App.Vector(0, 0, 0), App.Vector(1, 0, 0), 180)
@@ -206,16 +318,45 @@ def official_component_shape(record, model_path, board_thickness,
 
 
 def official_component_shapes(layout, body):
-    """Return exact-part official models omitted by the local KiCad bundle."""
+    """Return exact-part models for every fitted electrical component."""
     references = layout[body]["reference_footprints"]
     board_thickness = layout[body]["configured_board_thickness_mm"]
     shapes = []
-    for reference in ("JL1", "JR1", "J2", "J3"):
-        if reference in references:
-            shapes.append(official_component_shape(
-                references[reference],
-                OFFICIAL_MODELS / "BOOMELE_1.0-12P_C20111.step",
-                board_thickness))
+    coverage = []
+    for record in layout[body]["fitted_footprints"]:
+        reference = record["reference"]
+        value = record["value"]
+        base = {key: record[key] for key in
+                ("reference", "value", "footprint", "side", "dnp")}
+        if record["dnp"]:
+            coverage.append({**base, "status": "not fitted (DNP)"})
+            continue
+        if value == "M2_NPTH":
+            coverage.append({**base, "status": "board aperture; no fitted body"})
+            continue
+        if value == "STAB_MX":
+            coverage.append({
+                **base,
+                "status": "unresolved mechanical identity",
+                "reason": "BOM says Cherry PCB-mount stabiliser but gives no "
+                          "manufacturer part number",
+            })
+            continue
+        if body == "DaughterboardPCB" and reference == "J1":
+            continue
+        if value not in VALUE_MODELS:
+            raise RuntimeError(
+                f"{body} {reference}: no exact model mapping for {value}")
+        model_key, lcsc, identity = VALUE_MODELS[value]
+        spec = COMPONENT_MODELS[model_key]
+        shapes.append(official_component_shape(
+            record, OFFICIAL_MODELS / spec["file"], board_thickness,
+            rotations=spec["rotations"], seat_on_board=spec["seat"]))
+        coverage.append({
+            **base, "status": "exact part-linked model",
+            "identity": identity, "lcsc": lcsc,
+            "model": spec["file"], "source": spec["source"],
+        })
     if body == "DaughterboardPCB" and "J1" in references:
         # Reuse the exact HRO solid and native coordinate frame from the first
         # validated assembly (f18a949).  That assembly explicitly rotated this
@@ -250,17 +391,25 @@ def official_component_shapes(layout, body):
             "overhang_mm": overhang,
         }, indent=2) + "\n")
         shapes.append(usb_shape)
-    if body == "DaughterboardPCB":
-        for reference in ("SW1", "SW2"):
-            if reference in references:
-                # XKB's manufacturer STEP uses Y as the vertical axis.  A
-                # placement rotation—not a geometry rewrite—maps it to KiCad's
-                # Z-up component convention.
-                shapes.append(official_component_shape(
-                    references[reference],
-                    OFFICIAL_MODELS / "XKB_TS-1187A-B-A-B_C318884.stp",
-                    board_thickness, rotations=(("x", 90),)))
-    return shapes
+        record = next(item for item in layout[body]["fitted_footprints"]
+                      if item["reference"] == "J1")
+        coverage.append({
+            **{key: record[key] for key in
+               ("reference", "value", "footprint", "side", "dnp")},
+            "status": "exact vendor model", "identity": "HRO TYPE-C-31-M-12",
+            "lcsc": "C165948",
+            "model": "HRO_TYPE-C-31-M-12_C165948.step",
+            "source": "validated exact vendor solid",
+        })
+    # Special-case bodies such as the USB connector are constructed after the
+    # general loop, but the audit manifest must retain the PCB's authoritative
+    # footprint order so it can be compared record-for-record.
+    footprint_order = {
+        item["reference"]: index
+        for index, item in enumerate(layout[body]["fitted_footprints"])
+    }
+    coverage.sort(key=lambda item: footprint_order[item["reference"]])
+    return shapes, coverage
 
 
 def at_key(shape, key):
@@ -271,44 +420,140 @@ def at_key(shape, key):
     return result
 
 
-def switch_shape(key):
-    """Gateron KS-20 Magnetic Jade dimensional mechanical reference.
+_ks20_local_parts = None
 
-    Gateron does not publish a production STEP for KS-20TF10B045NW-Y89.  This
-    exterior is reconstructed from its official DS-02-001-A0 drawing instead
-    of using the previous generic MX box.  The drawing defines a 15.40 x 15.10
-    mm upper envelope, 13.97 mm plate body, 11.10 mm height above the PCB
-    datum, 5.00 mm lower body, 4.00/1.30 mm MX cross, and two 1.70 mm locating
-    pins on the PCB's matching +/-5.08 mm centres.
+
+def rounded_prism(width, depth, height, z, radius):
+    """A fillet-like rounded rectangular prism using exact analytic solids."""
+    horizontal = Part.makeBox(
+        width - 2 * radius, depth, height,
+        App.Vector(-width / 2 + radius, -depth / 2, z))
+    vertical = Part.makeBox(
+        width, depth - 2 * radius, height,
+        App.Vector(-width / 2, -depth / 2 + radius, z))
+    corners = [
+        Part.makeCylinder(radius, height, App.Vector(x, y, z))
+        for x in (-width / 2 + radius, width / 2 - radius)
+        for y in (-depth / 2 + radius, depth / 2 - radius)
+    ]
+    return horizontal.multiFuse([vertical, *corners])
+
+
+def ks20_local_parts():
+    """Detailed production-form KS-20 solids in the switch's local frame.
+
+    Gateron does not publish its mold/production STEP.  This model therefore
+    combines the exact DS-02-001-A0 mounting envelope with the separate bottom
+    housing, transparent top housing, wall stem, spring and centre magnet shown
+    in Gateron's official product and exploded views.  Keeping those real
+    manufactured subassemblies separate produces useful visual and case-fit
+    geometry without falsely presenting reverse-engineered internal surfaces
+    as confidential OEM CAD.
     """
-    lower = centred_box(13.97, 13.97, 5.00, -5.00)
-    # The sloped transparent cover and its upper rim follow the manufacturer
-    # drawing's maximum external envelope rather than a clearance-only cube.
-    cover = Part.makeLoft([
+    global _ks20_local_parts
+    if _ks20_local_parts is not None:
+        return {name: shape.copy()
+                for name, shape in _ks20_local_parts.items()}
+
+    # Local Z=0 is the switch flange/plate-top seating plane. The main bottom
+    # housing spans exactly five millimetres to the PCB top at Z=-5.
+    bottom_body = rounded_prism(13.97, 13.97, 4.55, -5.00, 0.70)
+    bottom_lip = rounded_prism(15.00, 14.70, 0.70, -0.70, 1.00)
+    # Fuse the flange to the principal lower housing so one verifiable solid
+    # spans the complete official five-millimetre PCB-to-plate datum. The
+    # detailed ribs, clips, boss and locating pins remain separate solids.
+    bottom_main = bottom_body.fuse(bottom_lip)
+    bottom = Part.makeCompound([
+        bottom_main,
+        centred_box(11.6, 1.10, 2.8, -3.90),
+        centred_box(1.10, 11.2, 2.8, -3.90),
+        # Four side retention blocks and the visible closed-back acoustic boss.
+        Part.makeBox(1.15, 4.20, 3.00, App.Vector(-7.50, -2.10, -3.80)),
+        Part.makeBox(1.15, 4.20, 3.00, App.Vector(6.35, -2.10, -3.80)),
+        Part.makeBox(4.20, 0.85, 2.80, App.Vector(-2.10, -7.35, -3.70)),
+        Part.makeBox(4.20, 0.85, 2.80, App.Vector(-2.10, 6.50, -3.70)),
+        Part.makeCylinder(3.05, 0.45, App.Vector(0, -7.35, -3.25),
+                          App.Vector(0, 1, 0)),
+        # The two 1.70 mm locating pins use the board's exact +/-5.08 centres.
+        Part.makeCylinder(0.85, 2.70, App.Vector(-5.08, 0, -7.70)),
+        Part.makeCylinder(0.85, 2.70, App.Vector(5.08, 0, -7.70)),
+    ])
+
+    # Sloped transparent upper housing. A central opening, front/back windows,
+    # corner ears and diagonal ribs reproduce the manufactured top housing
+    # instead of the earlier single closed loft.
+    outer_top = Part.makeLoft([
         rectangle_wire(15.40, 15.10, 0.00),
         rectangle_wire(14.70, 14.40, 5.65),
     ], True)
-    rim = centred_box(13.97, 13.97, 1.45, 5.65)
-    stem_a = centred_box(4.00, 1.30, 4.00, 7.10)
-    stem_b = centred_box(1.30, 4.00, 4.00, 7.10)
-    # Plate-retention details bring the lower envelope to the documented
-    # 15.00 x 14.70 mm maximum without changing the 13.97 mm cutout body.
-    clip_l = Part.makeBox(0.515, 5.2, 2.8,
-                          App.Vector(-7.50, -2.6, -3.8))
-    clip_r = Part.makeBox(0.515, 5.2, 2.8,
-                          App.Vector(6.985, -2.6, -3.8))
-    clip_f = Part.makeBox(5.2, 0.365, 2.8,
-                          App.Vector(-2.6, -7.35, -3.8))
-    clip_b = Part.makeBox(5.2, 0.365, 2.8,
-                          App.Vector(-2.6, 6.985, -3.8))
-    pins = [Part.makeCylinder(0.85, 2.70,
-                              App.Vector(x, 0, -7.70))
-            for x in (-5.08, 5.08)]
-    switch = Part.makeCompound([
-        lower, cover, rim, stem_a, stem_b,
-        clip_l, clip_r, clip_f, clip_b, *pins,
+    inner_opening = centred_box(8.70, 8.70, 6.20, 0.15)
+    top_shell = outer_top.cut(inner_opening)
+    windows = [
+        Part.makeBox(7.6, 5.0, 3.2, App.Vector(-3.8, -9.0, 1.45)),
+        Part.makeBox(7.6, 5.0, 3.2, App.Vector(-3.8, 4.0, 1.45)),
+        Part.makeBox(5.0, 7.6, 3.2, App.Vector(-9.0, -3.8, 1.45)),
+        Part.makeBox(5.0, 7.6, 3.2, App.Vector(4.0, -3.8, 1.45)),
+    ]
+    for window in windows:
+        top_shell = top_shell.cut(window)
+    top = Part.makeCompound([
+        top_shell,
+        rounded_prism(15.40, 15.10, 0.45, 0.00, 1.05),
+        # Retention ears and four tall structural ribs visible in product views.
+        Part.makeBox(2.8, 1.1, 1.2, App.Vector(-6.9, -7.55, 0.15)),
+        Part.makeBox(2.8, 1.1, 1.2, App.Vector(4.1, -7.55, 0.15)),
+        Part.makeBox(2.8, 1.1, 1.2, App.Vector(-6.9, 6.45, 0.15)),
+        Part.makeBox(2.8, 1.1, 1.2, App.Vector(4.1, 6.45, 0.15)),
+        Part.makeBox(0.75, 2.3, 4.10, App.Vector(-6.1, -1.15, 0.65)),
+        Part.makeBox(0.75, 2.3, 4.10, App.Vector(5.35, -1.15, 0.65)),
+        Part.makeBox(2.3, 0.75, 4.10, App.Vector(-1.15, -6.1, 0.65)),
+        Part.makeBox(2.3, 0.75, 4.10, App.Vector(-1.15, 5.35, 0.65)),
     ])
-    return at_key(switch, key)
+
+    # White wall stem: guide shaft and broad paddle remain visible through the
+    # clear housing, while the cap-facing cross keeps the drawing's exact
+    # 4.00 x 1.30 mm dimensions and 11.10 mm maximum height.
+    stem = Part.makeCompound([
+        rounded_prism(9.10, 9.10, 1.35, 5.40, 0.65),
+        Part.makeCylinder(2.25, 6.60, App.Vector(0, 0, -0.20)),
+        centred_box(4.00, 1.30, 4.35, 6.75),
+        centred_box(1.30, 4.00, 4.35, 6.75),
+        Part.makeBox(1.05, 2.4, 3.6, App.Vector(-3.95, -1.2, 5.75)),
+        Part.makeBox(1.05, 2.4, 3.6, App.Vector(2.90, -1.2, 5.75)),
+    ])
+
+    # A true swept helix gives the visible spring one continuous solid rather
+    # than a stack of decorative toroids.
+    spring_path = Part.makeHelix(0.90, 5.10, 3.05)
+    spring_profile = Part.Wire([
+        Part.makeCircle(0.22, App.Vector(3.05, 0, 0), App.Vector(0, 1, 0))
+    ])
+    spring = Part.Wire(spring_path.Edges).makePipeShell(
+        [spring_profile], True, False)
+    # Seat the spring inside the housing around the magnet/stem guide instead
+    # of letting its visual envelope protrude through the transparent lid.
+    spring.translate(App.Vector(0, 0, -3.70))
+    magnet = Part.makeCylinder(2.05, 2.35, App.Vector(0, 0, -4.35))
+
+    _ks20_local_parts = {
+        "BottomHousing": bottom,
+        "TopHousing": top,
+        "Stem": stem,
+        "Spring": spring,
+        "Magnet": magnet,
+    }
+    return {name: shape.copy() for name, shape in _ks20_local_parts.items()}
+
+
+def switch_part_shapes(key):
+    """Place each real KS-20 subassembly at one physical key location."""
+    return {name: at_key(shape, key)
+            for name, shape in ks20_local_parts().items()}
+
+
+def switch_shape(key):
+    """Complete detailed Gateron KS-20 Magnetic Jade model at one key."""
+    return Part.makeCompound(list(switch_part_shapes(key).values()))
 
 
 def rectangle_wire(width, depth, z):
@@ -418,6 +663,14 @@ def add_reference(doc, root, internal, label, shape, role, colour,
     return obj
 
 
+def export_mesh_shape(doc, internal, shape, path):
+    """Export one render-only shape without retaining duplicate FCStd bodies."""
+    obj = doc.addObject("PartDesign::Feature", internal)
+    obj.Shape = shape
+    Mesh.export([obj], str(path))
+    doc.removeObject(obj.Name)
+
+
 def main():
     layout = json.loads((GEN / "reference-layout.json").read_text())
     doc = App.newDocument("Symm60HE_Reference_Assembly")
@@ -453,9 +706,9 @@ def main():
         Mesh.export([obj], str(GEN / f"{internal}-placed.stl"))
         print(label, "volume", round(obj.Shape.Volume, 2), "mm^3")
 
-    # Import every component model carried by the routed KiCad boards as a
-    # separate editable body. Add the exact BOOMELE, HRO and XKB official
-    # models whose assets are intentionally absent from the local KiCad bundle.
+    # Build every populated electrical component from an exact part-linked or
+    # manufacturer STEP.  Do not layer these over KiCad's generic package
+    # bodies: that would create doubled, intersecting components.
     component_specs = (
         ("LeftPCBComponents", "Left PCB components", "LeftPCB", "left",
          layout["pcb_z"]),
@@ -464,11 +717,13 @@ def main():
         ("DaughterboardPCBComponents", "Daughterboard components",
          "DaughterboardPCB", "centre", layout["daughterboard_z"]),
     )
+    component_coverage = {}
     for internal, label, body, side, z in component_specs:
-        raw = import_step_shape(GEN / f"{body}Components.step")
-        additions = official_component_shapes(layout, body)
-        if additions:
-            raw = Part.makeCompound([raw, *additions])
+        exact_shapes, coverage = official_component_shapes(layout, body)
+        if not exact_shapes:
+            raise RuntimeError(f"{body}: no fitted component solids")
+        raw = Part.makeCompound(exact_shapes)
+        component_coverage[body] = coverage
         desired_centre = layout[body].get(
             "assembly_centre", layout[body]["centre"])
         aligned = align_board_coordinates(
@@ -477,12 +732,23 @@ def main():
                   else place(aligned, layout, side, z))
         obj = add_reference(
             doc, root, internal, label, placed,
-            "populated KiCad component models", (0.24, 0.25, 0.27))
+            "exact part-number-linked fitted component models",
+            (0.24, 0.25, 0.27))
         objects.append(obj)
         Import.export([obj], str(OUT / f"Symm60HE-{internal}.step"))
         Mesh.export([obj], str(GEN / f"{internal}-placed.stl"))
         print(label, "volume", round(obj.Shape.Volume, 2), "mm^3",
               "solids", len(obj.Shape.Solids))
+    (GEN / "component-model-coverage.json").write_text(json.dumps({
+        "policy": "Every fitted electrical footprint uses an exact "
+                  "manufacturer or exact LCSC-part-linked model.",
+        "boards": component_coverage,
+        "known_non_electrical_exception": {
+            "value": "STAB_MX",
+            "reason": "The BOM does not specify a stabilizer manufacturer "
+                      "part number, so no production solid can be certified."
+        },
+    }, indent=2) + "\n")
 
     # Visible 12-way ribbon clearance envelopes connect the actual current FPC
     # coordinates. They drop below the gasket-loaded plate planes before
@@ -536,17 +802,44 @@ def main():
 
     selected = [key for key in KEYS
                 if layout["visual_layout"] in key["builds"]]
+    # Emit one inspectable, multi-solid KS-20 model beside the source drawing.
+    # Every switch bank below is made from rigid copies of these same solids.
+    switch_model_path = (
+        REFERENCE_MODELS / "gateron-ks20-magnetic-jade" /
+        "Gateron-KS20-Magnetic-Jade-detailed-reference.step")
+    prototype_parts = ks20_local_parts()
+    prototype_objects = []
+    prototype_names = {
+        "BottomHousing": "KS20 bottom housing",
+        "TopHousing": "KS20 transparent top housing",
+        "Stem": "KS20 wall stem",
+        "Spring": "KS20 spring",
+        "Magnet": "KS20 centre magnet",
+    }
+    for part_name, shape in prototype_parts.items():
+        obj = doc.addObject("PartDesign::Feature", "KS20Prototype" + part_name)
+        obj.Label = prototype_names[part_name]
+        obj.Shape = shape
+        prototype_objects.append(obj)
+    Import.export(prototype_objects, str(switch_model_path))
+    for obj in prototype_objects:
+        doc.removeObject(obj.Name)
+    switch_model_sha256 = sha256(switch_model_path.read_bytes()).hexdigest()
     model_record = {
         "visual_layout": layout["visual_layout"],
         "switch": {
             "manufacturer": "Gateron",
             "part": "KS-20 Magnetic Jade KS-20TF10B045NW-Y89",
-            "source_type": "dimensioned reconstruction from official drawing",
+            "source_type": "detailed multi-part production-form reconstruction "
+                           "from official drawing and product views",
             "source": "https://www.gateron.com/u_file/2406/28/file/"
                       "GATERONMagneticJadeSwitch-KS-20TF10B045NW-Y89.pdf",
             "drawing": "DS-02-001-A0",
             "local_source": str(GATERON_JADE_SPEC.relative_to(ROOT)),
             "sha256": sha256(GATERON_JADE_SPEC.read_bytes()).hexdigest(),
+            "detailed_model": str(switch_model_path.relative_to(ROOT)),
+            "detailed_model_sha256": switch_model_sha256,
+            "subassemblies": list(prototype_names.values()),
             "dimensions_mm": {
                 "upper_envelope": [15.40, 15.10],
                 "plate_body": 13.97,
@@ -556,11 +849,13 @@ def main():
                 "alignment_pin_diameter": 1.70,
                 "alignment_pin_centres": [-5.08, 5.08],
                 "travel": 3.50,
+                "plate_seating_plane_to_pcb_top": 5.00,
             },
         },
         "keycaps": {
             "target": "GMK CYL (original Cherry profile)",
-            "source_type": "licensed dimensional Cherry-profile reference CAD",
+            "source_type": "licensed full thin-wall Cherry-profile CAD "
+                           "measured from molded keycaps",
             "source": "https://github.com/ConstantinoSchillebeeckx/"
                       "cherry-mx-keycaps",
             "source_revision": "2fa89ef205e4b1529d82fd33cef4e46f057760b1",
@@ -581,20 +876,26 @@ def main():
     for side_name, side_code in (("Left", "L"), ("Right", "R")):
         keys = [key for key in selected if key["half"] == side_code]
         side = side_name.lower()
-        switch_shapes = [switch_shape(key) for key in keys]
+        switch_parts = {name: [] for name in prototype_names}
+        switch_shapes = []
+        for key in keys:
+            placed_parts = switch_part_shapes(key)
+            for name, shape in placed_parts.items():
+                switch_parts[name].append(shape)
+            switch_shapes.append(Part.makeCompound(list(placed_parts.values())))
         keycap_shapes = [keycap_shape(key) for key in keys]
         cap_clearance = minimum_pair_clearance(keycap_shapes)
         switches = Part.makeCompound(switch_shapes)
         keycaps = Part.makeCompound(keycap_shapes)
         switch_obj = add_reference(
             doc, root, side_name + "Switches", side_name + " switches",
-            place(switches, layout, side, layout["plate_z"]),
-            "Gateron KS-20 Magnetic Jade dimensional reference",
-            (0.30, 0.76, 0.68), 12)
+            place(switches, layout, side, layout["plate_seating_z"]),
+            "Gateron KS-20 Magnetic Jade detailed multi-part real-form model",
+            (0.42, 0.78, 0.69), 4)
         keycap_obj = add_reference(
             doc, root, side_name + "Keycaps", side_name + " keycaps",
-            place(keycaps, layout, side, layout["plate_z"]),
-            "GMK CYL / Cherry-profile dimensional reference",
+            place(keycaps, layout, side, layout["plate_seating_z"]),
+            "GMK CYL / Cherry-profile full thin-wall CAD model",
             (0.83, 0.84, 0.80), 0)
         objects.extend((switch_obj, keycap_obj))
         Import.export([switch_obj],
@@ -603,6 +904,15 @@ def main():
                       str(OUT / f"Symm60HE-{side_name}Keycaps.step"))
         Mesh.export([switch_obj],
                     str(GEN / f"{side_name}Switches-placed.stl"))
+        # Preserve manufactured subassemblies as separate colored render
+        # meshes while keeping one switch-bank body in the editable assembly.
+        for part_name, part_shapes in switch_parts.items():
+            part_bank = Part.makeCompound(part_shapes)
+            part_bank = place(
+                part_bank, layout, side, layout["plate_seating_z"])
+            export_mesh_shape(
+                doc, f"{side_name}{part_name}Render", part_bank,
+                GEN / f"{side_name}Switch{part_name}s-placed.stl")
         Mesh.export([keycap_obj],
                     str(GEN / f"{side_name}Keycaps-placed.stl"))
         model_record["sides"][side_name] = {
@@ -618,8 +928,8 @@ def main():
                 for width in sorted({key["w"] for key in keys})
             },
         }
-        print(side_name, len(keys), "Gateron KS-20 references and",
-              len(keys), "GMK CYL references; minimum cap clearance",
+        print(side_name, len(keys), "detailed Gateron KS-20 models and",
+              len(keys), "full Cherry-profile keycap CAD models; minimum clearance",
               round(cap_clearance, 3), "mm")
     (GEN / "switch-keycap-model-provenance.json").write_text(
         json.dumps(model_record, indent=2) + "\n")
@@ -635,4 +945,5 @@ def main():
     print("wrote", OUT / "Symm60HE-reference-assembly.FCStd")
 
 
-main()
+if __name__ == "__main__":
+    main()

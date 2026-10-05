@@ -1,9 +1,9 @@
 """Generate symmetric independent left/right plates for every layout.
 
 Every layout gets two plate files with one exactly mirrored exterior derived
-from the routed PCB outline.  The top, bottom, and stepped centre contours
-follow the PCB, while the straight side rails remain dedicated gasket walls.
-Only the switch/stabilizer openings differ between layout variants.
+from the routed PCB outline. The top, bottom, and stepped centre contours
+follow the PCB, with two gasket tongues on the rear and two on the front of
+each half. Only the switch/stabilizer openings differ between variants.
 The universal pair merges mutually exclusive switch openings into durable
 slots.  The controller daughterboard mounts independently to the case.
 """
@@ -13,7 +13,7 @@ from shapely.ops import unary_union
 from shapely.affinity import rotate, translate
 
 from geom import KEYS, U, AXIS
-from layouts.make_layout_pcbs import LAYOUTS, source_layout
+from layouts.catalog import LAYOUTS, source_layout
 from mechanics import PLATE_STANDOFFS
 from outline import (finished_plate_outline, gasket_tabs,
                      keycap_bounded_plate, keycap_core_plate,
@@ -105,7 +105,7 @@ def check(name, half, plate, plate_body, gasket_mounts, keys, cuts, stabs,
           mounts):
     cap_hull = keycap_plate_envelope(keys)
     # The legacy keycap core remains bounded even though the finished body now
-    # deliberately follows the routed PCB profile plus straight gasket rails.
+    # deliberately follows the routed PCB profile plus clean side rails.
     outside = keycap_core_plate(keys).difference(cap_hull).area
     all_openings = cuts + stabs + mounts
     bad = sum(1 for opening in all_openings
@@ -139,7 +139,7 @@ def check(name, half, plate, plate_body, gasket_mounts, keys, cuts, stabs,
           (name, half, len(cuts), web))
 
 def write_gaskets(name, mounts_by_half, legacy=False):
-    """One Poron pad per integral plate-side suspension mount."""
+    """One Poron pad per integral front/rear plate suspension mount."""
     doc = ezdxf.new("R2010"); doc.units = ezdxf.units.MM
     msp = doc.modelspace(); doc.layers.add("GASKET_PADS", color=1)
     count = 0

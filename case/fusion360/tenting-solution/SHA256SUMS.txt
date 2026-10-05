@@ -1,3 +1,0 @@
-66c9ca78d2b654340391f02800e4e2d92394c7e39029993e107ad6379ccf956c  Symm60HE-fixed-tent-pogo-module.FCStd
-5782066b9283f014f137cfb2b262f46e821211cfc44167cf70db038d61d3cdc5  Symm60HE-fixed-tent-pogo-module.step
-3eb9864e693add97b00b4ca8f7b5053c662c94c4e6240e8c6667dc368d83a6c9  dimensions.json

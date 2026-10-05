@@ -23,6 +23,19 @@ OUT.mkdir(parents=True, exist_ok=True)
 # stale outlines or mounting-hole coordinates into the Fusion reference.
 CURRENT_PCB_DIR = ROOT / "pcb"
 
+# Gateron DS-02-001-A0 defines 5.00 +/- 0.05 mm from the KS-20 plate
+# seating plane to the PCB top. The specified 1.50 mm plate therefore spans
+# downward from that seating plane and leaves 3.50 mm nominally between its
+# underside and the PCB top. Keep these as explicit datums so a plate-solid
+# origin cannot accidentally be mistaken for the seating surface again.
+PLATE_SEATING_Z_MM = 10.0
+PLATE_THICKNESS_MM = 1.5
+PLATE_TO_PCB_TOP_MM = 5.0
+PCB_TOP_Z_MM = PLATE_SEATING_Z_MM - PLATE_TO_PCB_TOP_MM
+PLATE_BOTTOM_Z_MM = PLATE_SEATING_Z_MM - PLATE_THICKNESS_MM
+DAUGHTERBOARD_BELOW_HALL_PCB_MM = 7.0
+DAUGHTERBOARD_TOP_Z_MM = PCB_TOP_Z_MM - DAUGHTERBOARD_BELOW_HALL_PCB_MM
+
 
 def find_cli():
     found = shutil.which("kicad-cli")
@@ -108,29 +121,13 @@ def scad_polygon(poly):
 
 def main():
     cli = find_cli()
-    def newest(pattern, version_part):
-        """Newest match, comparing version numbers rather than their text."""
-        def key(path):
-            name = Path(path).parents[version_part].name
-            return tuple(int(part) if part.isdigit() else -1
-                         for part in name.split("."))
-        return sorted(glob.glob(pattern), key=key, reverse=True)
-
-    # macOS, Windows and Linux installs of the same library.
-    model_dirs = newest(
-        "/opt/homebrew/Caskroom/kicad/*/KiCad/KiCad.app/Contents/"
-        "SharedSupport/3dmodels", 4)
-    model_dirs += glob.glob(
-        "/Applications/KiCad/KiCad.app/Contents/SharedSupport/3dmodels")
-    model_dirs += newest("C:/Program Files/KiCad/*/share/kicad/3dmodels", 2)
-    model_dirs += glob.glob("/usr/share/kicad/3dmodels")
-    if not model_dirs:
-        raise RuntimeError("KiCad 3D model library not found")
-    model_dir = model_dirs[0]
     # The plate solids need OpenSCAD.  The boards do not, so a machine without
     # it still gets the PCB and component STEPs rather than nothing at all.
     openscad = shutil.which("openscad")
     board_sources = {
+        # The completed manufacturing designs use the repository's canonical
+        # filenames.  Case references must follow those files so they cannot
+        # silently drift back to an obsolete routing iteration.
         "LeftPCB": CURRENT_PCB_DIR / "Symm60HE-Left.kicad_pcb",
         "RightPCB": CURRENT_PCB_DIR / "Symm60HE-Right.kicad_pcb",
         "DaughterboardPCB": CURRENT_PCB_DIR / "Symm60HE-Daughterboard.kicad_pcb",
@@ -162,8 +159,16 @@ def main():
     layout.update({"axis_x": axis_mm, "front_y": 100.0,
                    "tent_deg": 3.0, "typing_deg": 7.0,
                    "typing_rotation_deg": -7.0,
-                   "plate_z": 10.0, "pcb_z": 3.5,
-                   "daughterboard_z": -3.5,
+                   "plate_seating_z": PLATE_SEATING_Z_MM,
+                   "plate_z": PLATE_BOTTOM_Z_MM,
+                   "plate_thickness_mm": PLATE_THICKNESS_MM,
+                   "plate_to_pcb_top_mm": PLATE_TO_PCB_TOP_MM,
+                   "plate_underside_to_pcb_top_mm": (
+                       PLATE_TO_PCB_TOP_MM - PLATE_THICKNESS_MM),
+                   "pcb_z": PCB_TOP_Z_MM,
+                   "daughterboard_below_hall_pcb_mm": (
+                       DAUGHTERBOARD_BELOW_HALL_PCB_MM),
+                   "daughterboard_z": DAUGHTERBOARD_TOP_Z_MM,
                    "visual_layout": visual_layout})
     # The routed daughterboard uses its own convenient KiCad drawing origin.
     # In the enclosure it is centered on the split axis at the rear and lies
@@ -173,23 +178,13 @@ def main():
     ]
     (OUT / "reference-layout.json").write_text(json.dumps(layout, indent=2) + "\n")
 
-    model_definitions = [
-        "--define-var", f"KICAD9_3DMODEL_DIR={model_dir}",
-        "--define-var", f"KICAD10_3DMODEL_DIR={model_dir}",
-    ]
     for name, source in board_sources.items():
-        # Keep the dielectric board and electronic components as independent
-        # Fusion bodies.  This preserves useful colours/visibility controls in
-        # the editable assembly and lets the verifier measure Edge.Cuts from a
-        # board-only solid even when a connector projects beyond the outline.
+        # Keep the dielectric board independent from the exact fitted-component
+        # body assembled later by FreeCAD.  Do not export KiCad's generic
+        # package models here: using both would double every component.
         subprocess.run([
             cli, "pcb", "export", "step", "--board-only", "--force",
             "-o", str(OUT / f"{name}.step"), str(source),
-        ], check=True)
-        subprocess.run([
-            cli, "pcb", "export", "step", "--no-board-body", "--no-dnp",
-            "--subst-models", "--force", *model_definitions,
-            "-o", str(OUT / f"{name}Components.step"), str(source),
         ], check=True)
 
     if not openscad:
@@ -201,7 +196,7 @@ def main():
         plate = fused_plate_polygon(dxf)
         scad.write_text(
             "$fn=48;\n"
-            "linear_extrude(height=1.5, convexity=10)\n"
+            f"linear_extrude(height={PLATE_THICKNESS_MM}, convexity=10)\n"
             f"  {scad_polygon(plate)}\n")
         subprocess.run([openscad, "-o", str(OUT / f"{name}.stl"), str(scad)],
                        check=True)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build one connected, mouse-bite panel from the two keyboard halves.
+"""Bootstrap one combined electrical project from two half-board captures.
 
-The source boards remain the authoritative electrical designs.  The panel has
-uniquely-prefixed references and net names so KiCad does not create false
+The generated panel project becomes the authoritative electrical design.  It
+has uniquely-prefixed references and net names so KiCad does not create false
 cross-board ratsnest connections.  A routed 5 mm perimeter rail and 5 mm tabs
 make the result one connected PCB while preserving each sculpted board edge.
 """
@@ -10,6 +10,7 @@ import math
 from copy import deepcopy
 from pathlib import Path
 import argparse
+import json
 import shutil
 
 from shapely.affinity import translate as translate_geom
@@ -27,6 +28,10 @@ RAIL = 5.0
 TAB_W = 5.0
 MOUSE_D = 0.5
 MOUSE_PITCH = 0.75
+# Put perimeter mouse-bite centres just outside the finished board outline.
+# The 0.5 mm drills still overlap the board by 0.10 mm, but the extra setback
+# protects legal copper that approaches an irregular edge on a source half.
+BITE_OUTSET = 0.15
 
 
 def edge_polygon(board):
@@ -178,6 +183,27 @@ def mouse_hole(template, x, y, index):
     return fp
 
 
+def write_panel_project(source, target, left_source, right_source,
+                        schematic_uuid):
+    """Copy PCB rules and associate the panel's combined native schematic."""
+    project = json.loads(source.read_text())
+    project.setdefault("meta", {})["filename"] = target.name
+    last_paths = project.setdefault("pcbnew", {}).setdefault("last_paths", {})
+    last_paths["specctra_dsn"] = ""
+    project.setdefault("schematic", {})["top_level_sheets"] = [{
+        "filename": target.with_suffix(".kicad_sch").name,
+        "name": target.stem,
+        "uuid": schematic_uuid,
+    }]
+    project["sheets"] = [[schematic_uuid, "Root"]]
+    variables = project.setdefault("text_variables", {})
+    variables["PANEL_EDIT_POLICY"] = (
+        "Combined left/right electrical project generated from source halves")
+    variables["PANEL_LEFT_SOURCE"] = str(left_source.relative_to(ROOT))
+    variables["PANEL_RIGHT_SOURCE"] = str(right_source.relative_to(ROOT))
+    target.write_text(json.dumps(project, indent=2) + "\n")
+
+
 def add_break_row(rows, centre, horizontal=True):
     values = [-2, -1, 0, 1, 2]
     if horizontal:
@@ -249,7 +275,8 @@ def clear_tab_x(nominal, polys, copper, limit=6.0, step=0.25):
         x = nominal + offset
         top, bottom = y_edges(polys["L"], x)
         lower_top, lower_bottom = y_edges(polys["R"], x)
-        rows = (top, (bottom + lower_top) / 2, lower_bottom)
+        rows = (top - BITE_OUTSET, (bottom + lower_top) / 2,
+                lower_bottom + BITE_OUTSET)
         holes = [Point(x + value * MOUSE_PITCH, y).buffer(reach)
                  for value in (-2, -1, 0, 1, 2) for y in rows]
         if not any(copper.intersects(hole) for hole in holes):
@@ -265,13 +292,21 @@ def main():
     parser.add_argument("--output", type=Path,
                         help="where to write the panel (default depends on "
                              "the arrangement)")
+    parser.add_argument("--left", type=Path,
+                        help="left-half source PCB (default: universal left)")
+    parser.add_argument("--right", type=Path,
+                        help="right-half source PCB (default: universal right)")
     args = parser.parse_args()
+    if (args.left is None) != (args.right is None):
+        parser.error("--left and --right must be supplied together")
     out = args.output or (PCB / "Symm60HE-Panel.kicad_pcb"
                           if args.arrangement == "stacked"
                           else PCB / "Symm60HE-Panel-SideBySide.kicad_pcb")
+    out = out.resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
     source_specs = [
-        ("L", PCB / "Symm60HE-Left.kicad_pcb"),
-        ("R", PCB / "Symm60HE-Right.kicad_pcb"),
+        ("L", (args.left or PCB / "Symm60HE-Left.kicad_pcb").resolve()),
+        ("R", (args.right or PCB / "Symm60HE-Right.kicad_pcb").resolve()),
     ]
     raw = [(prefix, loads(path.read_text()), path) for prefix, path in source_specs]
     left_poly, right_poly = [edge_polygon(board) for _, board, _ in raw]
@@ -328,7 +363,8 @@ def main():
                 for upper in (True, False):
                     def holes_at(x, poly=poly, upper=upper):
                         top, bottom = y_edges(poly, x)
-                        edge = top if upper else bottom
+                        edge = (top - BITE_OUTSET if upper else
+                                bottom + BITE_OUTSET)
                         return [(x + value * MOUSE_PITCH, edge)
                                 for value in (-2, -1, 0, 1, 2)]
                     x, moved = slide_clear(offsets_around(nominal), holes_at,
@@ -338,11 +374,13 @@ def main():
                     if upper:
                         tabs.append(box(x - TAB_W/2, top_inner - 0.2,
                                         x + TAB_W/2, top + 0.6))
-                        add_break_row(break_rows, (x, top), horizontal=True)
+                        add_break_row(break_rows, (x, top - BITE_OUTSET),
+                                      horizontal=True)
                     else:
                         tabs.append(box(x - TAB_W/2, bottom - 0.6,
                                         x + TAB_W/2, bottom_inner + 0.2))
-                        add_break_row(break_rows, (x, bottom), horizontal=True)
+                        add_break_row(break_rows, (x, bottom + BITE_OUTSET),
+                                      horizontal=True)
         # Two tabs bridge the halves across the centre gap.
         for fraction in (0.3, 0.7):
             nominal = bounds[1] + (bounds[3] - bounds[1]) * fraction
@@ -367,7 +405,8 @@ def main():
 
             def rail_holes(y, poly=poly, outward=outward):
                 left, right = x_edges(poly, y)
-                edge = left if outward < 0 else right
+                edge = (left - BITE_OUTSET if outward < 0 else
+                        right + BITE_OUTSET)
                 return [(edge, y + value * MOUSE_PITCH)
                         for value in (-2, -1, 0, 1, 2)]
             y, moved = slide_clear(offsets_around(nominal), rail_holes, copper)
@@ -376,7 +415,9 @@ def main():
             edge = left if outward < 0 else right
             tabs.append(box(min(inner - 0.2, edge - 0.6), y - TAB_W/2,
                             max(inner + 0.2, edge + 0.6), y + TAB_W/2))
-            add_break_row(break_rows, (edge, y), horizontal=False)
+            add_break_row(break_rows,
+                          (edge - BITE_OUTSET if outward < 0 else
+                           edge + BITE_OUTSET, y), horizontal=False)
     else:
         # Three top tabs, three inter-board tabs and three bottom tabs provide
         # a short load path through the stacked panel.
@@ -384,7 +425,7 @@ def main():
             top, bottom = y_edges(polys["L"], x)
             tabs.append(box(x - TAB_W/2, top_inner - 0.2,
                             x + TAB_W/2, top + 0.6))
-            add_break_row(break_rows, (x, top), horizontal=True)
+            add_break_row(break_rows, (x, top - BITE_OUTSET), horizontal=True)
             lower_top, _ = y_edges(polys["R"], x)
             tabs.append(box(x - TAB_W/2, bottom - 0.6,
                             x + TAB_W/2, lower_top + 0.6))
@@ -393,7 +434,8 @@ def main():
             _, lower_bottom = y_edges(polys["R"], x)
             tabs.append(box(x - TAB_W/2, lower_bottom - 0.6,
                             x + TAB_W/2, bottom_inner + 0.2))
-            add_break_row(break_rows, (x, lower_bottom), horizontal=True)
+            add_break_row(break_rows, (x, lower_bottom + BITE_OUTSET),
+                          horizontal=True)
 
         # One side-rail tab on each side of each half prevents twisting during
         # transport and reflow without over-perforating the keymap edge.
@@ -402,10 +444,10 @@ def main():
             left, right = x_edges(poly, y)
             tabs.append(box(left_inner - 0.2, y - TAB_W/2,
                             left + 0.6, y + TAB_W/2))
-            add_break_row(break_rows, (left, y), horizontal=False)
+            add_break_row(break_rows, (left - BITE_OUTSET, y), horizontal=False)
             tabs.append(box(right - 0.6, y - TAB_W/2,
                             right_inner + 0.2, y + TAB_W/2))
-            add_break_row(break_rows, (right, y), horizontal=False)
+            add_break_row(break_rows, (right + BITE_OUTSET, y), horizontal=False)
 
     material = unary_union([frame] + list(polys.values()) + tabs).buffer(0)
     if material.geom_type != "Polygon":
@@ -482,7 +524,21 @@ def main():
                        for i, (x, y) in enumerate(tooling))
     panel = [Sym("kicad_pcb")] + body + net_decls + panel_items + [embedded]
     out.write_text(dumps(panel) + "\n")
-    shutil.copy2(PCB / "Symm60HE-Left.kicad_pro", out.with_suffix(".kicad_pro"))
+    project_source = source_specs[0][1].with_suffix(".kicad_pro")
+    if not project_source.exists():
+        # Standalone half projects were retired after the combined electrical
+        # projects became authoritative.  The universal combined project is
+        # now the project-settings template for any one-time panel bootstrap.
+        project_source = PCB / "Symm60HE-Panel.kicad_pro"
+    # The generated connectivity capture is the panel project's own combined
+    # electrical design: its L-/R- references and /L/ and /R/ net namespaces
+    # exactly match this panel PCB.
+    from generators.mkschematics_modern import write_schematic_for_board
+    schematic_uuid, symbol_count, connected_pads = write_schematic_for_board(
+        out, out.with_suffix(".kicad_sch"), assign_footprints=True)
+    write_panel_project(project_source, out.with_suffix(".kicad_pro"),
+                        source_specs[0][1], source_specs[1][1],
+                        schematic_uuid)
     print(f"wrote {out.relative_to(ROOT)}")
     print(f"panel size {outer.bounds[2]-outer.bounds[0]:.2f} x "
           f"{outer.bounds[3]-outer.bounds[1]:.2f} mm")
@@ -491,6 +547,8 @@ def main():
           + (f"; {shifted} tab(s) shifted clear of board copper"
              if shifted else ""))
     print(f"global fiducials {len(fiducials)}; tooling holes {len(tooling)}")
+    print(f"combined schematic {symbol_count} symbols; "
+          f"{connected_pads} connected pads")
 
 
 if __name__ == "__main__":

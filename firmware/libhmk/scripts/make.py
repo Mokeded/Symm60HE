@@ -59,6 +59,8 @@ build_flags.define("CFG_TUSB_MCU", f"OPT_MCU_{driver.tinyusb.mcu.upper()}")
 # Clock Configuration
 build_flags.define("BOARD_HSE_VALUE", kb_json.hardware.hse_value)
 build_flags.define("HSE_VALUE", kb_json.hardware.hse_value)
+if kb_json.firmware_version is not None:
+    build_flags.define("FIRMWARE_VERSION", kb_json.firmware_version)
 
 # USB Configuration
 if kb_json.usb.port == KeyboardUSBPort.FULL_SPEED:
@@ -114,6 +116,30 @@ if kb_json.analog.mux is not None:
 build_flags.define(
     "DEFAULT_CALIBRATION", utils.to_c_struct(kb_json.calibration.model_dump())
 )
+
+# Addressable RGB Configuration
+if kb_json.rgb is not None:
+    rgb = kb_json.rgb
+    rgb_pins = [output.pin for output in rgb.outputs]
+    rgb_ports, rgb_pin_nums = driver.metadata.adc.to_gpio_array(rgb_pins)
+    if len(set(rgb_ports)) != 1:
+        raise ValueError("RGB outputs must share one GPIO port")
+
+    build_flags.define("RGB_ENABLE")
+    build_flags.define("RGB_NUM_OUTPUTS", len(rgb.outputs))
+    build_flags.define("RGB_OUTPUT_PORT", rgb_ports[0])
+    build_flags.define("RGB_OUTPUT_PORT_CLOCK", f"CRM_{rgb_ports[0]}_PERIPH_CLOCK")
+    build_flags.define("RGB_OUTPUT_PINS", utils.to_c_array(rgb_pin_nums))
+    build_flags.define(
+        "RGB_LED_COUNTS",
+        utils.to_c_array([output.led_count for output in rgb.outputs]),
+    )
+    build_flags.define(
+        "RGB_MAX_LED_COUNT", max(output.led_count for output in rgb.outputs)
+    )
+    build_flags.define("RGB_CURRENT_LIMIT_MA", rgb.current_limit_ma)
+    build_flags.define("RGB_CHANNEL_CURRENT_MA", rgb.channel_current_ma)
+    build_flags.define("RGB_REFRESH_HZ", rgb.refresh_hz)
 
 # Wear leveling configuration
 wear_leveling = kb_json.wear_leveling

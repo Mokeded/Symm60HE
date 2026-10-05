@@ -22,6 +22,7 @@
 #include "hid.h"
 #include "layout.h"
 #include "matrix.h"
+#include "rgb.h"
 #include "tusb.h"
 #include "wear_leveling.h"
 #include "xinput.h"
@@ -36,6 +37,8 @@ int main(void) {
   // Initialize the persistent configuration
   wear_leveling_init();
   eeconfig_init();
+
+  rgb_init();
 
   // Initialize the core modules
   analog_init();
@@ -57,6 +60,7 @@ int main(void) {
     matrix_scan();
     layout_task();
     xinput_task();
+    rgb_task();
   }
 
   return 0;

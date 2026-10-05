@@ -3,30 +3,18 @@
 Every rule configured as `ignore` in the released KiCad projects was
 temporarily changed to `warning`; the released project settings were not modified.
 
-## Symm60HE-Left
+## Symm60HE-Panel
 
 Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, tuning_profile_track_geometries
 
 | Rule | Findings |
 |---|---:|
 | `courtyards_overlap` | 6 |
-| `missing_courtyard` | 2 |
-| `npth_inside_courtyard` | 2 |
-| `silk_over_copper` | 87 |
-| `silk_overlap` | 19 |
-
-## Symm60HE-Right
-
-Re-enabled rules: annular_width, courtyards_overlap, footprint_filters_mismatch, footprint_type_mismatch, malformed_courtyard, mirrored_text_on_front_layer, missing_courtyard, nonmirrored_text_on_back_layer, npth_inside_courtyard, pth_inside_courtyard, silk_edge_clearance, silk_over_copper, silk_overlap, text_height, text_thickness, tuning_profile_track_geometries
-
-| Rule | Findings |
-|---|---:|
-| `courtyards_overlap` | 6 |
-| `missing_courtyard` | 3 |
+| `missing_courtyard` | 77 |
 | `npth_inside_courtyard` | 6 |
-| `silk_edge_clearance` | 1 |
-| `silk_over_copper` | 96 |
-| `silk_overlap` | 22 |
+| `silk_edge_clearance` | 36 |
+| `silk_over_copper` | 17 |
+| `silk_overlap` | 146 |
 
 ## Symm60HE-Daughterboard
 
@@ -51,10 +39,10 @@ inventory. The raw reports remain the authority for every location.
 
 | Rule | Total |
 |---|---:|
-| `courtyards_overlap` | 21 |
+| `courtyards_overlap` | 15 |
 | `footprint_type_mismatch` | 1 |
-| `missing_courtyard` | 5 |
-| `npth_inside_courtyard` | 8 |
-| `silk_edge_clearance` | 2 |
-| `silk_over_copper` | 206 |
-| `silk_overlap` | 41 |
+| `missing_courtyard` | 77 |
+| `npth_inside_courtyard` | 6 |
+| `silk_edge_clearance` | 37 |
+| `silk_over_copper` | 40 |
+| `silk_overlap` | 146 |

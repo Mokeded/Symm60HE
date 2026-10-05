@@ -20,6 +20,7 @@
 #include "layout.h"
 #include "matrix.h"
 #include "metadata.h"
+#include "rgb.h"
 #include "tusb.h"
 
 // Helper macro to verify command parameters
@@ -206,6 +207,9 @@ static void command_process(void) {
     advanced_key_clear();
     success = eeconfig_reset();
     layout_load_advanced_keys();
+#if defined(RGB_ENABLE)
+    rgb_config_changed();
+#endif
     break;
   }
   case COMMAND_RECALIBRATE: {
@@ -312,6 +316,19 @@ static void command_process(void) {
     success = EECONFIG_WRITE(bottom_out_threshold, bottom_out_threshold);
     break;
   }
+#if defined(RGB_ENABLE)
+  case COMMAND_GET_RGB_CONFIG: {
+    out->rgb_config = eeconfig->rgb;
+    break;
+  }
+  case COMMAND_SET_RGB_CONFIG: {
+    COMMAND_VERIFY(rgb_config_valid(&in->rgb_config));
+    success = EECONFIG_WRITE(rgb, &in->rgb_config);
+    if (success)
+      rgb_config_changed();
+    break;
+  }
+#endif
     //--------------------------------------------------------------------+
     // Per-profile commands
     //--------------------------------------------------------------------+

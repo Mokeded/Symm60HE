@@ -19,7 +19,9 @@
 // Firmware Version
 //--------------------------------------------------------------------+
 
+#if !defined(FIRMWARE_VERSION)
 #define FIRMWARE_VERSION 0x0108
+#endif
 
 //--------------------------------------------------------------------+
 // Common Headers

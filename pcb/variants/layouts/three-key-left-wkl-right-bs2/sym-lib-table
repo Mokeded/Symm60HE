@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Symm60HE_three_key_left_wkl_right_bs2_Panel_Symbols")(type "KiCad")(uri "${KIPRJMOD}/Symm60HE-three-key-left-wkl-right-bs2-Panel.kicad_sym")(options "")(descr "PCB-derived connectivity symbols"))
+)
