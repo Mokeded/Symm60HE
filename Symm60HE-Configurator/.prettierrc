@@ -1,0 +1,10 @@
+{
+  "semi": false,
+  "plugins": [
+    "prettier-plugin-svelte",
+    "prettier-plugin-tailwindcss",
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
+  "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
+  "tailwindStylesheet": "./src/app.css"
+}
